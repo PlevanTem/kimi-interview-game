@@ -1,6 +1,6 @@
 # 架构与工作模式
 
-本文解释 Concept Forge 如何从约束生成概念、经过人工 Gate 逐步变成可发布的 Web 3D 垂直切片，以及文件、数据、专家和验证如何协同。它是理解迭代与纠偏路径的入口；机器可读的实时状态仍以 `game-context/index.json` 为准。
+本文解释 Concept Forge 如何从约束生成概念、根据玩法选择技术、经过人工 Gate 逐步变成可发布的游戏垂直切片，以及文件、数据、专家和验证如何协同。它是理解迭代与纠偏路径的入口；游戏库实时状态以 `games/registry.json` 为准，具体游戏状态以其 manifest 和 context index 为准。
 
 ## 1. 核心原则
 
@@ -9,7 +9,7 @@
 三个约束贯穿所有阶段：
 
 1. **先锁定，再扩展**：主题、玩法、视觉分别通过人工 Gate 后，下一阶段才可开始。
-2. **资产通过 ID 流动**：场景只引用稳定资产 ID，由 resolver 解析程序化实现或文件路径。
+2. **技术服务玩法**：Concept Lock 后先形成引擎无关需求，再通过 Tech Fit Review 和风险 Spike 选型；仓库参考实现不享有默认权重。
 3. **声明必须有证据**：完成、修复和放行都要绑定命令输出、截图或性能数据，并记录根因。
 
 ## 2. 五阶段生产工作流
@@ -19,13 +19,17 @@ flowchart LR
     A[Brief 与首版约束] --> B[概念导演<br/>恰好 3 个候选]
     B --> G1{Human Gate 1<br/>Concept Lock}
     G1 -- 退回 --> B
-    G1 -- 选择并冻结 Brief --> C[体验设计<br/>状态机、教程、灰盒]
-    C --> G2{Human Gate 2<br/>Fun Lock}
+    G1 -- 选择并冻结 Brief --> C[体验设计<br/>状态机、交互、能力需求]
+    C --> T[Tech Fit Review<br/>最多 3 个候选 + 风险 Spike]
+    T --> GT{Human Tech Fit Lock}
+    GT -- 退回 --> C
+    GT -- 批准技术 --> GB[使用选定技术制作灰盒]
+    GB --> G2{Human Gate 2<br/>Fun Lock}
     G2 -- 不够好<br/>只改机制 --> C
     G2 -- 值得继续 --> D[视觉导演<br/>关键帧、Art Bible、令牌]
     D --> G3{Human Gate 3<br/>Visual Lock}
     G3 -- 退回 --> D
-    G3 -- 批准视觉语言 --> E[Web 3D 整合<br/>场景、反馈、声音]
+    G3 -- 批准视觉语言 --> E[按已选技术整合<br/>场景、反馈、声音]
     E --> F[质量审计<br/>功能、交互、视觉、性能]
     F --> Q{达到 85 分<br/>单项≥75<br/>无 P0/P1?}
     Q -- 否 --> R[根因分析<br/>最小修改与复验]
@@ -47,13 +51,13 @@ flowchart TB
     L --> C[concept-director]
     L --> X[experience-designer]
     L --> V[visual-director]
-    L --> W[web3d-engineer]
+    L --> W[prototype-engineer]
     L --> Q[quality-auditor]
 
     C -->|候选、评分、风险| L
     X -->|玩法规格、UX 状态机| L
     V -->|Art Bible、令牌、prompts| L
-    W -->|实现、构建、性能证据| L
+    W -->|技术比较、Spike、实现与证据| L
     Q -->|独立缺陷与放行建议| L
 
     L --> S[(共享上下文与 Gate 状态)]
@@ -63,7 +67,7 @@ flowchart TB
 - **concept-director**：只在 Gate 1 前工作，不得选择自己的方案。
 - **experience-designer**：只把已选概念转换为玩法、状态机、教程和信息层级。
 - **visual-director**：只定义已选概念的色彩、形状、材质、构图、灯光、UI、动态和英文生成提示词。
-- **web3d-engineer**：只实现已批准规格，通过资产 resolver 接入资源。
+- **prototype-engineer**：先从玩法需求比较技术候选并验证最高风险，再使用人类批准的路线实现；不能默认复用 Web 3D 夹具。
 - **quality-auditor**：独立评测和提出缺陷，不替实现者悄悄修复，也不接受无证据的完成声明。
 
 专家配置在 `.codex/agents/`，技能在 `.agents/skills/`。可以并行的只有不互相依赖的研究、只读审查和测试；共享文件修改、资产 ID 分配、视觉定稿、玩法决策和 Gate 放行必须串行。
@@ -80,12 +84,14 @@ flowchart TD
     IDX --> CONCEPTS[ConceptCandidate × 3]
     IDX --> STYLE[StyleBible]
     IDX --> ASSETS[AssetRecord Registry]
+    IDX --> TECH[TechnologyDecision]
     IDX --> ITER[IterationEntry Ledger]
     IDX --> EVAL[EvalRun]
 
     BRIEF --> EXPERTS[专家 + Skills]
     CONCEPTS --> EXPERTS
     STYLE --> EXPERTS
+    TECH --> EXPERTS
     ASSETS --> RESOLVER[Asset Resolver]
     EXPERTS --> CODE[src / tests / docs]
     RESOLVER --> CODE
@@ -112,8 +118,9 @@ flowchart TD
 | --- | --- | --- | --- |
 | `GameBrief` | 受众、体验承诺、范围、核心动词、成功标准、冻结状态 | Loop Engineer / Human | 所有专家 |
 | `ConceptCandidate` | 幻想、循环、操作、视觉钩子、预算、风险、评分 | concept-director | Human / experience-designer |
-| `StyleBible` | 色板、形状、材质、构图、灯光、UI、动态、prompts、禁用规则 | visual-director | web3d-engineer / quality-auditor |
-| `AssetRecord` | 稳定 ID、定位器、版本、来源、许可、风格、预算、依赖、审批 | web3d-engineer / Loop Engineer | resolver / 资产审计 |
+| `TechnologyDecision` | 玩法能力需求、候选、权重、风险 Spike、选型、人工批准和验证命令 | prototype-engineer / Human | 实现者 / quality-auditor |
+| `StyleBible` | 色板、形状、材质、构图、灯光、UI、动态、prompts、禁用规则 | visual-director | prototype-engineer / quality-auditor |
+| `AssetRecord` | 稳定 ID、定位器、版本、来源、许可、风格、预算、依赖、审批 | prototype-engineer / Loop Engineer | resolver / 资产审计 |
 | `EvalRun` | 构建环境、自动检查、分类得分、缺陷、证据、放行结论 | quality-auditor | Loop Engineer / Human |
 | `IterationEntry` | 问题、证据、根因、修改、验证、前后结果、状态 | 缺陷所有者 | 所有后续迭代 |
 
@@ -156,7 +163,7 @@ sequenceDiagram
 │  ├─ registry.json             # 正式游戏清单、active game 与生产暂停开关
 │  ├─ README.md                 # 游戏库使用说明
 │  ├─ _template/                # 新游戏标准工作区模板
-│  └─ <game-id>/                # context/runs/assets/src/tests/docs 全部隔离
+│  └─ <game-id>/                # manifest/技术决策/context/runs/assets/src/tests/docs
 ├─ game-context/
 │  ├─ index.json                # 框架启动夹具的事实源入口
 │  ├─ game-brief.json           # 已冻结/待冻结的产品约束
@@ -176,8 +183,8 @@ sequenceDiagram
 │  ├─ assets/catalog.ts         # 类型化资产目录与 resolver
 │  ├─ game/model.ts             # 与渲染分离的纯 TypeScript 状态机
 │  ├─ game/useGameControls.ts   # 输入到状态机事件的适配层
-│  ├─ game/GameScene.tsx        # React Three Fiber 渲染层
-│  └─ App.tsx / styles.css      # React DOM UI 与语义设计令牌
+│  ├─ game/GameScene.tsx        # Web 3D 参考适配器的 R3F 渲染层
+│  └─ App.tsx / styles.css      # Web 3D 参考适配器 UI
 ├─ tests/e2e/                   # 功能、视觉、性能浏览器测试及基线
 ├─ scripts/                     # 上下文、资产、技能和质量报告校验
 ├─ docs/                        # 架构、治理和质量说明
@@ -186,7 +193,7 @@ sequenceDiagram
 
 `Note.docx` 是仓库原有用户文件，不进入生产上下文，也不会被自动提交。
 
-未来具体游戏不得继续向根级 `game-context/`、`runs/` 或 `src/game/` 混入内容。根级现有内容是可测试的框架夹具；正式内容必须由 `games/registry.json` 注册并进入 `games/<game-id>/`。详细规则见 `docs/content-governance.md`。
+未来具体游戏不得继续向根级 `game-context/`、`runs/` 或 `src/game/` 混入内容。根级现有内容是可测试的 Web 3D 框架夹具；正式内容必须由 `games/registry.json` 注册并进入 `games/<game-id>/`，并在灰盒前完成人工 Tech Fit Lock。详细规则见 `docs/content-governance.md` 与 `docs/technology-selection.md`。
 
 ## 8. 一轮迭代如何被追踪
 
@@ -226,7 +233,7 @@ npm run test:performance   # 60 秒目标路径与真实 renderer 记录
 npm run quality            # 完整检查 + Gate 4 正式质量报告
 ```
 
-实际放行顺序是：先运行框架校验，再运行浏览器检查，最后让 `quality-report` 读取当前 `EvalRun`。即使代码和浏览器测试通过，只要人工 Gate 未完成或质量分不足，完整质量命令仍应失败。
+这些根级命令验证当前 Web 3D 参考适配器和生产系统，不是所有游戏的通用构建命令。每个正式游戏在 Tech Fit Lock 后把自己的 dev/build/test/quality 命令写入 `technology-decision.json`；放行按该游戏 manifest 执行。即使某个参考适配器通过，只要人工 Gate、Tech Fit Lock 或游戏质量分不足，正式游戏仍不得放行。
 
 ## 10. Git 与发布模型
 

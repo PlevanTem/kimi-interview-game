@@ -49,6 +49,18 @@
       "after": "正式游戏必须登记并隔离在 games/<game-id>/；游离目录、错误 active game 和不匹配 manifest 会返回非零。",
       "status": "verified",
       "commit": null
+    },
+    {
+      "id": "iteration-005-technology-premature-lock",
+      "issue": "生产系统把 Vite、React、Three.js、桌面 Chrome 和键鼠写成全局技术基线，会在策划前压缩玩法、平台和交互的可能性。",
+      "evidence": ["AGENTS.md", "docs/technology-selection.md", ".cursor/rules/technology-selection.mdc"],
+      "rootCause": "初始计划把首个可验证参考实现的交付约束错误提升成了所有未来游戏的系统级不变量。",
+      "change": "将 Web 3D 降级为参考适配器；增加引擎无关玩法需求、Tech Fit Review、风险 Spike、人工 Tech Fit Lock、技术决策 Schema，并以 prototype-engineer 取代固定栈角色。",
+      "verification": "npm run validate:library、npm run validate:skills、npm run quality:framework；另以 graybox manifest 缺少已锁定技术决策的失败夹具验证校验器拒绝越过 Tech Fit Lock。",
+      "before": "任何创意默认被实现为桌面 Chrome 的 React Three Fiber 静态 Web 3D。",
+      "after": "新游戏在 Concept Lock 前不选技术；之后由玩法能力需求比较最多三个候选并经人类批准，游戏自己的验证命令随决策保存。",
+      "status": "verified",
+      "commit": null
     }
   ]
 }

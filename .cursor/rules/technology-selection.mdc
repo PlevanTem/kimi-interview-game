@@ -1,0 +1,15 @@
+---
+description: Require game-design-driven technology selection before implementation
+alwaysApply: true
+---
+
+# 技术选择治理
+
+- Concept Gate 前不得锁定引擎、框架、渲染维度、平台或资产管线。
+- 先描述玩家体验、核心机制和硬能力需求，再比较技术方案。
+- 仓库现有 Vite/React/Three.js 项目只是参考适配器，不是新游戏默认值。
+- Concept Lock 后、灰盒前执行 Tech Fit Review；比较不超过三个可行方案。
+- 比较权重必须来自玩法：交互、模拟、物理、内容管线、部署、性能、测试、团队/AI 可实现性与可逆性。
+- 关键未知必须用最小风险验证原型证明；不得用装饰性场景代替机制验证。
+- 人类批准前 `technologyDecision.locked` 必须为 `false`，manifest 不得声明生产命令为已选方案。
+- 技术选择不能反向删改已锁定的体验目标；不适配时换技术或缩小明确获批的范围。

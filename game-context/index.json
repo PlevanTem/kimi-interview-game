@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/context-index.schema.json",
   "contextVersion": "0.1.0",
-  "updatedAt": "2026-09-02T19:30:00+08:00",
+  "updatedAt": "2026-09-02T20:15:00+08:00",
   "activeRunId": "run-20260902-context-bootstrap",
   "productionState": "concept_exploration",
   "gateState": {
@@ -29,6 +29,7 @@
   "notes": [
     "Gate 1 尚未通过，任何代理不得自动选择主题。",
     "人类已暂停游戏生产；本上下文仅作为框架启动验证证据，恢复生产前必须先登记 games/<game-id>。",
+    "本夹具中的 Chrome/Web 3D 约束是历史验证条件，不是生产系统的默认技术选型。",
     "Note.docx 不属于生产上下文。"
   ]
 }

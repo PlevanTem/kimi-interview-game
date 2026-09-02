@@ -39,6 +39,19 @@ for (const game of games) {
   if (manifest.contextIndex !== `${expectedPath}/context/index.json`) {
     fail(errors, `${game.id} 的 contextIndex 不在自身工作区`);
   }
+  if (['graybox', 'visual', 'integrated', 'released'].includes(game.status)) {
+    const techPath = manifest.technologyDecision;
+    if (typeof techPath !== 'string' || !techPath.startsWith(`${expectedPath}/context/`)) {
+      fail(errors, `${game.id} 进入 ${game.status} 前必须声明自身工作区内的 technologyDecision`);
+    } else if (!(await exists(techPath))) {
+      fail(errors, `${game.id} 缺少技术决策文件: ${techPath}`);
+    } else {
+      const tech = await json(techPath);
+      if (!tech.locked || tech.status !== 'locked' || tech.selected === null || tech.humanApproval === null) {
+        fail(errors, `${game.id} 的技术决策未完成人工 Tech Fit Lock`);
+      }
+    }
+  }
   for (const folder of ['context', 'runs', 'assets', 'src', 'tests', 'docs']) {
     if (!(await exists(`${expectedPath}/${folder}`))) fail(errors, `${game.id} 缺少目录: ${folder}`);
   }
@@ -50,7 +63,7 @@ const unmanaged = entries
   .map((entry) => entry.name);
 if (unmanaged.length > 0) fail(errors, `存在未登记游戏目录: ${unmanaged.join(', ')}`);
 
-for (const schema of ['game-library', 'game-manifest']) {
+for (const schema of ['game-library', 'game-manifest', 'technology-decision']) {
   if (!(await exists(`schemas/${schema}.schema.json`))) fail(errors, `缺少 schema: ${schema}`);
 }
 

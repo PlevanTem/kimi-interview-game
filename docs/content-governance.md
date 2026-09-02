@@ -19,6 +19,7 @@ registry 同时保存唯一 `activeGameId`。当 `productionPaused=true` 时，a
 每个游戏独立拥有：
 
 - `manifest.json`：身份、生命周期、Gate 和上下文入口。
+- `technology-decision.json`：玩法能力需求、技术候选、风险 Spike、人工批准和验证命令。
 - `context/`：Brief、候选、Style Bible、资产注册表、评测与迭代账本。
 - `runs/`：每轮输入快照、输出、人工决策、Gate 状态与证据。
 - `assets/`：该游戏独占的文件资产。
@@ -51,5 +52,6 @@ registry 同时保存唯一 `activeGameId`。当 `productionPaused=true` 时，a
 3. 将游戏登记到 `games/registry.json`；只有开始生产时才设置 `activeGameId` 并解除暂停。
 4. 运行 `npm run validate:library`。
 5. 验证通过后，才为该游戏创建首个 `run-id` 并进入 Concept Gate。
+6. Concept Lock 后先完成 Tech Fit Review 与人工锁定，再实现灰盒。
 
 这个顺序确保目录结构本身不能绕过人工 Gate，也避免多个创意共享一个模糊的“当前上下文”。

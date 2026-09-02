@@ -10,6 +10,7 @@
     "gate4": "blocked"
   },
   "contextIndex": "games/game-slug/context/index.json",
+  "technologyDecision": null,
   "createdAt": "YYYY-MM-DDTHH:mm:ss+08:00",
   "updatedAt": "YYYY-MM-DDTHH:mm:ss+08:00"
 }

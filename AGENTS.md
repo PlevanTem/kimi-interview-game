@@ -12,9 +12,9 @@
 每次工作前按顺序读取：
 
 1. 本文件。
-2. `game-context/index.json`（不存在时停止依赖上下文的工作并报告）。
-3. index 当前指向的 `GameBrief` 与 Gate/决策记录。
-4. 与任务直接相关的 gameplay、StyleBible、资产注册表或评测记录。
+2. `games/registry.json`；若 `productionPaused=true` 或没有 `activeGameId`，停止游戏生产，只允许维护系统。
+3. active game 的 `manifest.json` 与 `context/index.json`；根级 `game-context/` 仅是历史框架夹具。
+4. index 当前指向的 `GameBrief`、Gate、玩法、技术决策、StyleBible、资产注册表或评测记录。
 5. 当前 `run-id` 的输入快照与最近一条 IterationEntry。
 
 所有产物必须写回 index 所引用的位置；不得从过期文件或对话补齐缺失事实。`Note.docx` 与 `~$Note.docx` 不属于生产上下文，不读取、不修改、不删除。
@@ -28,9 +28,9 @@
 ## 专家路由
 
 - `concept-director`：只负责 Gate 1 前的三个概念包、评分与风险淘汰；使用 `game-concept-forge`。
-- `experience-designer`：只负责选定概念的核心循环、状态机、教程与交互规格；使用 `vertical-slice-design`。
+- `experience-designer`：只负责选定概念的核心循环、状态机、教程、交互意图与技术能力需求；使用 `vertical-slice-design`，不选择框架。
 - `visual-director`：只负责 Art Bible、设计令牌、关键帧规范与提示词；使用 `visual-language-system`。
-- `web3d-engineer`：只负责已批准规格的 Web 3D 实现、资产解析、构建与性能；使用 `web3d-demo-build` 和 `asset-context-governance`。
+- `prototype-engineer`：先按玩法需求比较技术并验证最高风险，再按人工批准的技术实现；使用 `technology-fit-selection`、`adaptive-prototype-build` 和 `asset-context-governance`。
 - `quality-auditor`：独立评测并附证据，不代替所有者实现修复；使用 `game-quality-loop`，资产问题可使用 `asset-context-governance`。
 
 专家们需要保障游戏DEMO：让玩法有创新和吸引力/让视觉原画有原创艺术感/让世界观叙事NPC有灵魂/让动作交互有节奏呼吸
@@ -40,7 +40,8 @@
 ## Gate 与人工决策
 
 - **Gate 1 — Concept Lock**：必须恰好提供三个候选。只有人类可以选择、退回或冻结概念；未锁定不得进入玩法制作。
-- **Gate 2 — Fun Lock**：灰盒须有完整开始/游玩/暂停/重开/成功/失败循环，并由人类确认值得继续；未通过只迭代机制。
+- **Tech Fit Lock**：Gate 1 后、灰盒前，根据玩法能力需求比较不超过三个技术方案；未知项用最小机制 spike 验证。只有人类能锁定技术，现有 Web 3D 参考实现不享有默认优先级。
+- **Gate 2 — Fun Lock**：使用已批准技术完成灰盒；须有完整开始/游玩/暂停/重开/成功/失败循环，并由人类确认值得继续；未通过只迭代机制。
 - **Gate 3 — Visual Lock**：人类批准目标关键帧和 StyleBible 后才能生产正式资产；锁定后不得未经批准增加色彩、材质或形状语言。
 - **Gate 4 — Release Candidate**：质量分数总分至少 85、各分类至少 75、无 P0/P1，且证据齐全时才可放行。
 
@@ -50,7 +51,7 @@
 
 可并行：互不依赖的只读研究、候选发散、测试执行、日志分析与独立审查。
 
-必须串行：主题选择、玩法冻结、视觉冻结、共享上下文修改、资产 ID 分配、同一文件修改、Gate 决策与发布放行。并行代理必须拥有不重叠的文件所有权；Loop Engineer 等待全部结果后再合并。若出现冲突或前置决策改变，停止旧分支并重新派发。
+必须串行：主题选择、技术锁定、玩法冻结、视觉冻结、共享上下文修改、资产 ID 分配、同一文件修改、Gate 决策与发布放行。并行代理必须拥有不重叠的文件所有权；Loop Engineer 等待全部结果后再合并。若出现冲突或前置决策改变，停止旧分支并重新派发。
 
 ## 验证与迭代
 
@@ -58,4 +59,4 @@
 - 每个缺陷必须形成 `问题 → 证据 → 根因 → 最小修改 → 验证方法 → 前后结果`；不知道根因时只允许标记待诊断。
 - 连续两轮无改善时，回退方案或缩减范围，不继续叠加补丁。
 - 只验证受影响行为还不够时，运行完整质量检查；失败不得降级为“基本完成”。
-- 首版约束始终为单场景、单核心动词、3–5 分钟、桌面 Chrome 1920×1080、键鼠、程序化 3D 为主、静态部署、无后端/运行时 AI/联网依赖/复杂物理。
+- 体验范围可以追求轻量和可验证，但平台、输入、2D/3D、引擎、渲染、物理、联网、AI 与资产管线不得在 Concept Lock 前被写死。每个游戏在 Tech Fit Lock 中独立声明技术、预算和验证命令。

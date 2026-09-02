@@ -7,9 +7,10 @@
 
 - `node scripts/validate-library.mjs`：PASS；空游戏库、暂停状态与模板结构有效。
 - 失败路径：临时创建未登记 `games/unmanaged-proof/` 后校验按预期 FAIL (1)，清理后复验 PASS。
+- Tech Fit 失败路径：临时 graybox manifest 未声明 `technologyDecision` 时按预期 FAIL (1)，错误精确指向未锁定技术；清理后复验 PASS。
 - `node scripts/validate-context.mjs`：PASS；概念恰好 3 个，Gate 1 pending，Brief 未冻结，StyleBible blocked。
 - `node scripts/audit-assets.mjs`：PASS；22 个代码资产 ID 与注册表双向一致。
-- `node scripts/validate-skills.mjs`：PASS；5 个专家配置与 6 个技能位于正式项目目录且契约完整。
+- `node scripts/validate-skills.mjs`：PASS；5 个专家配置与 7 个技能位于正式项目目录且契约完整。
 - `npm run lint`：PASS。
 - `npm run test`：1 个文件、4 个 reducer 测试全部通过。
 - `npm run build`：PASS；静态 `dist` 已生成。

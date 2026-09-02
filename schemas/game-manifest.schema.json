@@ -2,12 +2,13 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "GameManifest",
   "type": "object",
-  "required": ["id", "title", "status", "gateState", "contextIndex", "createdAt", "updatedAt"],
+  "required": ["id", "title", "status", "gateState", "contextIndex", "technologyDecision", "createdAt", "updatedAt"],
   "properties": {
     "id": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
     "title": {"type": "string", "minLength": 1},
     "status": {"enum": ["idea", "concept", "graybox", "visual", "integrated", "released", "archived"]},
     "contextIndex": {"type": "string"},
+    "technologyDecision": {"type": ["string", "null"]},
     "gateState": {
       "type": "object",
       "required": ["gate1", "gate2", "gate3", "gate4"]

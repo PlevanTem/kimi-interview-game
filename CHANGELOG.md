@@ -14,12 +14,20 @@
 - 新增 `games/registry.json` 全局游戏注册表和 `games/_template/` 标准工作区模板。
 - 新增游戏库与 manifest Schema、`validate:library` 校验器，以及未登记目录拒绝机制。
 - 新增始终生效的 `.cursor/rules/content-governance.mdc` 和多游戏内容治理文档。
+- 新增 Tech Fit Review、`TechnologyDecision` Schema、风险 Spike 规范和持久技术选择规则。
+- 新增 `technology-fit-selection` 与 `adaptive-prototype-build` 技能。
 
 ### Changed
 
 - 将仓库明确划分为根级生产系统控制面与 `games/<game-id>/` 游戏内容面。
 - 正式游戏必须独立管理 context、runs、assets、src、tests、docs，并禁止隐式跨游戏引用。
 - GitHub 仓库创建与首次提交提前到生产工作流之前。
+- 将 Vite/React/Three.js 从全局技术基线降级为可选的 Web 3D 参考适配器。
+- 将 `web3d-engineer` 调整为技术中立的 `prototype-engineer`；技术选型改由策划和玩法能力需求驱动，并要求人工 Tech Fit Lock。
+
+### Fixed
+
+- 修复首个参考实现的交付约束被错误提升为所有未来游戏系统级约束的问题，避免技术栈在创意前过早锁定。
 
 ## [0.1.0] - 2026-09-02
 
