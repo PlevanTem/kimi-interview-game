@@ -60,7 +60,7 @@
       "before": "任何创意默认被实现为桌面 Chrome 的 React Three Fiber 静态 Web 3D。",
       "after": "新游戏在 Concept Lock 前不选技术；之后由玩法能力需求比较最多三个候选并经人类批准，游戏自己的验证命令随决策保存。",
       "status": "verified",
-      "commit": null
+      "commit": "13e83c9858c2da381d536cf87027375d9a7fcf30"
     }
   ]
 }
