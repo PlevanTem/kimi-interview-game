@@ -1,0 +1,64 @@
+{
+  "$schema": "../schemas/concept-candidates.schema.json",
+  "briefId": "brief-lightweight-web3d-v1",
+  "status": "awaiting_human_selection",
+  "selection": null,
+  "scoring": {
+    "scale": "0-100",
+    "weights": {"feasibility": 0.3, "coreFun": 0.25, "visualMemorability": 0.2, "onboardingClarity": 0.15, "scopeSafety": 0.1},
+    "rule": "加权分仅辅助人工判断；系统不得按最高分自动选择。"
+  },
+  "candidates": [
+    {
+      "id": "concept-resonance-garden",
+      "title": "共振庭院",
+      "fantasy": "玩家在寂静的抽象庭院中，用一次次声波脉冲唤醒沉睡构造，让整个空间逐渐产生和谐共鸣。",
+      "coreVerb": "pulse",
+      "coreLoop": ["观察节点节奏", "在正确时机释放脉冲", "形成连锁共振", "在干扰积满前点亮全部核心"],
+      "controls": ["鼠标移动瞄准", "鼠标左键释放脉冲", "Space 暂停", "R 重开"],
+      "visualHook": "黑暗雾庭中，几何节点沿同心波纹从冷色逐层点亮为温暖光谱。",
+      "contentBudget": {"scene": 1, "interactiveTypes": 3, "proceduralMeshes": 6, "textureCountMax": 1, "audioCues": 5},
+      "graybox": "平面庭院、12 个球形节点、环形脉冲与三档节拍窗口；连续命中点亮中央核心，错拍累积干扰。",
+      "risks": [
+        {"risk": "无音乐训练的玩家可能难以读懂节拍", "mitigation": "用缩放、发光和地面波纹提供同步的三重视觉预告"},
+        {"risk": "声波连锁可能造成过度粒子填充", "mitigation": "限制同时传播的波前并复用实例"}
+      ],
+      "scores": {"feasibility": 91, "coreFun": 82, "visualMemorability": 88, "onboardingClarity": 79, "scopeSafety": 89, "weightedTotal": 86.15},
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-folded-path",
+      "title": "折径",
+      "fantasy": "玩家操纵一座微缩空间的折叠方向，让漂流光点跨越原本断裂的路径抵达出口。",
+      "coreVerb": "fold",
+      "coreLoop": ["观察光点路径", "旋转选择折叠轴", "折叠局部空间接通断面", "在能量耗尽前完成三段航程"],
+      "controls": ["鼠标拖拽选择折叠方向", "鼠标左键确认折叠", "Space 暂停", "R 重开"],
+      "visualHook": "悬浮纸雕空间沿清晰折线翻转，断裂道路在一次干净的三维折叠中瞬间接合。",
+      "contentBudget": {"scene": 1, "interactiveTypes": 3, "proceduralMeshes": 8, "textureCountMax": 1, "audioCues": 4},
+      "graybox": "由方块与薄板组成三段断路，只允许绕预设 X/Z 轴做 90 度折叠；光球自动前进，错误连接消耗能量。",
+      "risks": [
+        {"risk": "三维折叠的空间判断可能带来认知负担", "mitigation": "限制候选轴并提供落点幽灵预览"},
+        {"risk": "层级变换容易产生坐标与碰撞错误", "mitigation": "使用离散预设变换和路径图，不引入实时物理"}
+      ],
+      "scores": {"feasibility": 80, "coreFun": 87, "visualMemorability": 93, "onboardingClarity": 73, "scopeSafety": 76, "weightedTotal": 82.9},
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-shadow-beacon",
+      "title": "影迹信标",
+      "fantasy": "玩家转动一束孤独的信标光，用投影出的影子桥为自动前行的微小旅者护航。",
+      "coreVerb": "aim",
+      "coreLoop": ["观察旅者与障碍", "转动信标改变影子", "用影子搭桥或遮蔽危险", "护送旅者抵达终点"],
+      "controls": ["鼠标移动旋转信标", "鼠标左键锁定短暂光束", "Space 暂停", "R 重开"],
+      "visualHook": "高对比舞台上，长影随聚光灯平滑扫动，实体与阴影构成会变化的几何剪影。",
+      "contentBudget": {"scene": 1, "interactiveTypes": 3, "proceduralMeshes": 7, "textureCountMax": 0, "audioCues": 5},
+      "graybox": "圆形舞台、一个可旋转方向光、六个障碍和沿样条自动移动的旅者；以解析投影区替代真实阴影碰撞。",
+      "risks": [
+        {"risk": "真实阴影与玩法判定可能不一致", "mitigation": "判定使用可视化解析投影区，渲染阴影只承担氛围"},
+        {"risk": "镜头角度会影响影子可读性", "mitigation": "固定斜俯视相机并限制灯光旋转范围"}
+      ],
+      "scores": {"feasibility": 86, "coreFun": 84, "visualMemorability": 91, "onboardingClarity": 85, "scopeSafety": 84, "weightedTotal": 86.15},
+      "eliminationReason": null
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"IterationEntry","type":"object","required":["id","issue","evidence","rootCause","change","verification","before","after","status","commit"],"properties":{"evidence":{"type":"array","minItems":1},"status":{"enum":["template","open","verified","failed","reverted"]}}}

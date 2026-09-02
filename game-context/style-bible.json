@@ -1,0 +1,21 @@
+{
+  "$schema": "../schemas/style-bible.schema.json",
+  "id": "style-bible-unset",
+  "version": 0,
+  "status": "blocked_by_gate1",
+  "approved": false,
+  "conceptId": null,
+  "keyframe": null,
+  "mood": {"keywords": [], "forbidden": []},
+  "worldRules": [],
+  "palette": {},
+  "shapeLanguages": [],
+  "materials": [],
+  "compositionRules": [],
+  "lighting": {},
+  "uiTokens": {},
+  "motion": {},
+  "promptPrefix": "",
+  "negativePrompt": "",
+  "note": "主题待 Gate 1 人工选择；此文件只定义占位状态，不构成视觉批准。"
+}

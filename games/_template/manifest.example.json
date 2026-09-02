@@ -1,0 +1,15 @@
+{
+  "$schema": "../../../schemas/game-manifest.schema.json",
+  "id": "game-slug",
+  "title": "游戏名称",
+  "status": "idea",
+  "gateState": {
+    "gate1": "not_started",
+    "gate2": "blocked",
+    "gate3": "blocked",
+    "gate4": "blocked"
+  },
+  "contextIndex": "games/game-slug/context/index.json",
+  "createdAt": "YYYY-MM-DDTHH:mm:ss+08:00",
+  "updatedAt": "YYYY-MM-DDTHH:mm:ss+08:00"
+}

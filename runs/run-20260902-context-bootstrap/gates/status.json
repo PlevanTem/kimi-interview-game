@@ -1,0 +1,6 @@
+{
+  "gate1": {"name":"Concept Lock","status":"pending","requires":"human concept selection"},
+  "gate2": {"name":"Fun Lock","status":"blocked","blockedBy":"gate1"},
+  "gate3": {"name":"Visual Lock","status":"blocked","blockedBy":"gate2"},
+  "gate4": {"name":"Release Candidate","status":"blocked","blockedBy":"gate3"}
+}

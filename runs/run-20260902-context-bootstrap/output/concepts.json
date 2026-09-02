@@ -1,0 +1,8 @@
+{
+  "source": "game-context/concepts.json",
+  "capturedAt": "2026-09-02T16:42:00+08:00",
+  "status": "awaiting_human_selection",
+  "candidateIds": ["concept-resonance-garden","concept-folded-path","concept-shadow-beacon"],
+  "candidateCount": 3,
+  "note": "详细概念包以 source 指向的版本为准；此运行快照确认生成集合与未选择状态。"
+}

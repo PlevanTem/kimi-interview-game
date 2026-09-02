@@ -1,0 +1,12 @@
+{
+  "$schema": "../schemas/game-library.schema.json",
+  "version": "1.0.0",
+  "updatedAt": "2026-09-02T19:30:00+08:00",
+  "activeGameId": null,
+  "productionPaused": true,
+  "games": [],
+  "notes": [
+    "当前只管理生产系统，不存在已登记的正式游戏工作区。",
+    "根级 game-context 与 runs 是框架启动验证证据，不属于未来游戏库。"
+  ]
+}

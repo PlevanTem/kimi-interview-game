@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"AssetRegistry","type":"object","required":["version","styleBibleVersion","assets"],"properties":{"version":{"type":"integer","minimum":1},"assets":{"type":"array","items":{"$ref":"asset-record.schema.json"}}}}

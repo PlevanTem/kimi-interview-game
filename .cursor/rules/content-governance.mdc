@@ -1,0 +1,15 @@
+---
+description: Enforce isolated, traceable workspaces for every game explored in this repository
+alwaysApply: true
+---
+
+# 多游戏内容治理
+
+- 根目录是生产系统控制面；具体游戏内容只进入 `games/<game-id>/`。
+- 新游戏必须先在 `games/registry.json` 登记，再从 `games/_template/` 建立工作区。
+- `game-id` 使用稳定的英文 kebab-case；目录名、manifest ID 与 registry ID 必须一致。
+- 每个游戏独立拥有 `manifest.json`、`context/`、`runs/`、`assets/`、`src/`、`tests/`、`docs/`。
+- 默认禁止跨游戏引用代码、资产、上下文和证据；需要复用时先提升到根级共享层并补测试、版本和使用者。
+- 资产 ID 使用 `game.<game-id>.<type>.<name>`；共享资产使用 `shared.<type>.<name>`。
+- 任何 Gate、状态、active game 或归档变化都同时更新 registry、manifest、CHANGELOG 和证据。
+- 不在根目录或聊天记录中存放未登记的创意真相；运行 `npm run validate:library` 拒绝游离目录与错误引用。
