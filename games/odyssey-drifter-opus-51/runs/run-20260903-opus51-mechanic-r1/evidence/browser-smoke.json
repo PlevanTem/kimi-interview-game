@@ -1,0 +1,275 @@
+{
+  "title": "光线之上：共织之城",
+  "api": "object",
+  "canvas": {
+    "css": [
+      1440,
+      901
+    ],
+    "pixels": [
+      1440,
+      901
+    ]
+  },
+  "checkpoints": [
+    {
+      "screen": "title",
+      "run": {
+        "room": 0,
+        "phase": 0,
+        "attempts": 0,
+        "interactions": 0,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": false,
+        "contrast": false,
+        "captions": true
+      },
+      "room": "awakening-winch",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 0,
+        "phase": 0,
+        "attempts": 0,
+        "interactions": 0,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "awakening-winch",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 1,
+        "phase": 0,
+        "attempts": 2,
+        "interactions": 1,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "split-tension",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 2,
+        "phase": 0,
+        "attempts": 3,
+        "interactions": 2,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "prism-order",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 3,
+        "phase": 0,
+        "attempts": 4,
+        "interactions": 4,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "aja-is-anchor",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 3,
+        "phase": 1,
+        "attempts": 5,
+        "interactions": 5,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "aja-is-anchor",
+      "phase": 1
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 4,
+        "phase": 0,
+        "attempts": 6,
+        "interactions": 6,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "city-heart",
+      "phase": 0
+    },
+    {
+      "screen": "play",
+      "run": {
+        "room": 4,
+        "phase": 1,
+        "attempts": 7,
+        "interactions": 7,
+        "solutions": [],
+        "complete": false
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "city-heart",
+      "phase": 1
+    },
+    {
+      "screen": "ending",
+      "run": {
+        "room": 4,
+        "phase": 1,
+        "attempts": 8,
+        "interactions": 10,
+        "solutions": [
+          "short"
+        ],
+        "complete": true
+      },
+      "settings": {
+        "master": 0.78,
+        "music": 0.5,
+        "sfx": 0.75,
+        "reduceMotion": true,
+        "contrast": false,
+        "captions": false
+      },
+      "room": "city-heart",
+      "phase": 1
+    }
+  ],
+  "browserErrors": [],
+  "helpVisible": true,
+  "settings": {
+    "master": 0.78,
+    "music": 0.5,
+    "sfx": 0.75,
+    "reduceMotion": true,
+    "contrast": false,
+    "captions": false
+  },
+  "pauseVisible": "pause",
+  "failure": {
+    "screen": "fail",
+    "reason": "还没有经过绞盘"
+  },
+  "directAccepted": false,
+  "pointerRoom0": {
+    "screen": "play",
+    "run": {
+      "room": 1,
+      "phase": 0,
+      "attempts": 2,
+      "interactions": 1,
+      "solutions": [],
+      "complete": false
+    },
+    "settings": {
+      "master": 0.78,
+      "music": 0.5,
+      "sfx": 0.75,
+      "reduceMotion": true,
+      "contrast": false,
+      "captions": false
+    },
+    "room": "split-tension",
+    "phase": 0
+  },
+  "final": {
+    "screen": "ending",
+    "run": {
+      "room": 4,
+      "phase": 1,
+      "attempts": 8,
+      "interactions": 10,
+      "solutions": [
+        "short"
+      ],
+      "complete": true
+    },
+    "settings": {
+      "master": 0.78,
+      "music": 0.5,
+      "sfx": 0.75,
+      "reduceMotion": true,
+      "contrast": false,
+      "captions": false
+    },
+    "room": "city-heart",
+    "phase": 1
+  },
+  "endingVisible": true,
+  "metrics": {
+    "samples": 485,
+    "medianMs": 16.699999999999818,
+    "p95Ms": 33.400000000000546,
+    "particles": 12
+  },
+  "passed": true
+}

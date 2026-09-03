@@ -1,0 +1,134 @@
+{
+  "$schema": "../../../schemas/technology-decision.schema.json",
+  "gameId": "odyssey-drifter-opus-51",
+  "status": "locked",
+  "requirements": {
+    "hard": [
+      "桌面浏览器直接可玩，不需要安装运行时、不需要构建步骤。",
+      "场景内容尽可能由代码生成：天空、城市、平台、角色、粒子、声音全部程序化。",
+      "支持按住—连续指向—随节拍松开的单一驭线输入，并提供点击切换的等价模式。",
+      "承重规则确定性且可解释：容量、负载与断裂位置在松开前即可见。",
+      "保留最近 10 秒模拟缓冲，可回溯到留有助跑余量的合法快照。",
+      "开始、教程、完整路线、暂停、继续、成功、失败、重开均可达。",
+      "状态反馈不依赖颜色，静音时仍可完成。"
+    ],
+    "preferences": [
+      "零第三方依赖，便于长期维护与审计。",
+      "逻辑与呈现分离，纯规则可在 Node 下单元测试。",
+      "视觉令牌集中，Gate 3 通过后可整体替换而不动玩法。"
+    ],
+    "unknowns": [
+      "低端集成显卡上的 p95 帧时间尚未在真实目标机型测量。",
+      "触控板玩家的长按疲劳程度未验证。",
+      "同步窗口 ±145ms 对不同玩家是否过宽或过窄，需要人工试玩反馈。"
+    ]
+  },
+  "criteria": {
+    "humanDirectiveFit": 0.35,
+    "mechanicDirectness": 0.25,
+    "proceduralContentFit": 0.2,
+    "zeroInstallDelivery": 0.15,
+    "reversibility": 0.05
+  },
+  "candidates": [
+    {
+      "id": "browser-canvas2d-vanilla",
+      "route": "浏览器原生 Canvas 2D + 经典脚本（无模块打包、无依赖）。所有场景由确定性哈希与噪声在运行时生成。",
+      "scores": {
+        "humanDirectiveFit": 96,
+        "mechanicDirectness": 94,
+        "proceduralContentFit": 95,
+        "zeroInstallDelivery": 98,
+        "reversibility": 80,
+        "weightedTotal": 93.6
+      },
+      "why": "驭线的核心是一条二维曲线的形状、张力与节拍；Canvas 2D 的路径 API 就是这套语义的原生表达。无构建步骤意味着双击 index.html 即可试玩，人工 Gate 2 的门槛降到最低。",
+      "risks": [
+        "大量描边叠加在低端 GPU 上可能吃满填充率；已用半分辨率辉光缓冲与三档画质缓解。",
+        "没有类型系统，靠单元测试与自动驾驶回归兜底。"
+      ]
+    },
+    {
+      "id": "browser-webgl-three",
+      "route": "Three.js / WebGL 自定义着色器实现发光曲线与体积雾。",
+      "scores": {
+        "humanDirectiveFit": 72,
+        "mechanicDirectness": 70,
+        "proceduralContentFit": 78,
+        "zeroInstallDelivery": 58,
+        "reversibility": 74,
+        "weightedTotal": 70.6
+      },
+      "why": "画面上限更高，但需要打包步骤与依赖，且曲线手感调试要经过着色器，迭代速度显著变慢。",
+      "risks": [
+        "为了一个二维手势系统引入 3D 管线，复杂度不对称。"
+      ]
+    },
+    {
+      "id": "godot-web-export",
+      "route": "沿用旧版 Godot 4.7.2 + GDScript，导出 Web。",
+      "scores": {
+        "humanDirectiveFit": 40,
+        "mechanicDirectness": 80,
+        "proceduralContentFit": 74,
+        "zeroInstallDelivery": 42,
+        "reversibility": 66,
+        "weightedTotal": 60.1
+      },
+      "why": "用户明确要求不受旧版约束；Web 导出体积大、首屏慢，且旧版直测已被退回，不宜作为本次重制的默认路线。",
+      "risks": [
+        "继承旧版包袱，与「重新设计」的指令冲突。"
+      ]
+    }
+  ],
+  "spikes": [
+    {
+      "id": "full-route-autopilot",
+      "scope": "用浏览器内自动驾驶跑完整条路线，验证驭线到承重到落点到停息到终局的链路每一跨都成立。",
+      "result": "PASS",
+      "evidence": {
+        "command": "tests/autoplay.js 在 http://localhost:5183/?dev=1 中执行",
+        "ok": true,
+        "reason": "reached-ending",
+        "spans": 23,
+        "rewinds": 1,
+        "stumbles": 3,
+        "syncs": 22,
+        "bestChain": 18,
+        "distanceMeters": 158,
+        "simSeconds": 174
+      },
+      "remaining": "手感、可读性与乐趣仍必须由用户本人试玩判断；自动驾驶只证明链路不卡死。"
+    },
+    {
+      "id": "deterministic-rules-unit-test",
+      "scope": "把承重规则抽成纯函数并覆盖张力、容量、负载、断裂位置与曲线几何。",
+      "result": "PASS",
+      "evidence": {
+        "command": "node --test games/odyssey-drifter-opus-51/tests/core.test.mjs",
+        "tests": 13,
+        "pass": 13,
+        "fail": 0
+      }
+    }
+  ],
+  "recommendation": "采用浏览器原生 Canvas 2D + 零依赖经典脚本。置信度中高：交付门槛与机制直达性的优势明确；画面上限低于 WebGL，但本作的视觉语言（剪影 + 发光曲线 + 大气透视）恰好落在 Canvas 2D 擅长的区间。",
+  "migrationBoundary": "承重规则（src/rules.js）、曲线几何（src/core.js）与关卡生成（src/world.js）不接触任何渲染 API，可整体迁移到别的运行时；渲染集中在 backdrop/fx/aga/lightline 的 draw 函数与 palette.js 的令牌里。",
+  "selected": "browser-canvas2d-vanilla",
+  "humanApproval": {
+    "runId": "run-20260903-opus51-build",
+    "decisionMaker": "human_user",
+    "result": "approved_by_directive",
+    "directive": "新建 games/odyssey-drifter-opus-51，参考《光线之上》立项报告重新设计，不受旧版 odyssey-drifter 约束；直接交付有审美的高质量、玩法完整的工作室级别游戏，场景内容尽可能使用代码生成。",
+    "scope": "用户批准的是：解除旧版 Godot 技术锁定、场景由代码生成、直接交付完整可体验版本。用户没有逐项指定运行时；浏览器原生 Canvas 2D 是在该指令下由 prototype 侧选定的，尚未经用户单独确认。",
+    "reopenCondition": "若用户希望回到 Godot 或改用 WebGL，本决策即刻重开；迁移边界见 migrationBoundary。",
+    "approvedAt": "2026-09-03T18:40:00+08:00"
+  },
+  "locked": true,
+  "verificationCommands": {
+    "dev": "node games/odyssey-drifter-opus-51/serve.mjs 5183",
+    "build": null,
+    "test": "node --test games/odyssey-drifter-opus-51/tests/core.test.mjs",
+    "quality": "npm run validate:library && node --test games/odyssey-drifter-opus-51/tests/core.test.mjs"
+  }
+}

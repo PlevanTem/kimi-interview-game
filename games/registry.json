@@ -1,8 +1,8 @@
 {
   "$schema": "../schemas/game-library.schema.json",
   "version": "1.0.0",
-  "updatedAt": "2026-09-03T09:27:38+08:00",
-  "activeGameId": "odyssey-drifter",
+  "updatedAt": "2026-09-03T17:10:55+08:00",
+  "activeGameId": "odyssey-drifter-opus-51",
   "productionPaused": false,
   "games": [
     {
@@ -11,13 +11,21 @@
       "status": "graybox",
       "path": "games/odyssey-drifter",
       "manifest": "games/odyssey-drifter/manifest.json"
+    },
+    {
+      "id": "odyssey-drifter-opus-51",
+      "title": "光线之上 · Opus 5.1 重制",
+      "status": "graybox",
+      "path": "games/odyssey-drifter-opus-51",
+      "manifest": "games/odyssey-drifter-opus-51/manifest.json"
     }
   ],
   "notes": [
-    "用户直测退回 Godot Demo v1：连线意义、通关规则和环境作用不可读；当前按固定正交 isometric 与功能环境语法重构 Gate 2 v2。",
-    "敏捷交付阶段不做自主体验评分或五人测试；只保留工程解析、启动和资产引用等最低事实检查。",
-    "旧《下一盏灯》的 Gate 1、技术锁定与灰盒证据保留为历史，不构成《光线之上》的有效验证。",
-    "技术栈由每个游戏在 Concept Lock 后通过 Tech Fit Review 独立决定；根级 Web 3D 仅为参考适配器。",
-    "根级 game-context 与 runs 是框架启动验证证据，不属于未来游戏库。"
+    "Opus 5.1 Gate 2 已被用户直测退回：玩法退化为连线等待，节拍引导、角色环境互动与完整产品流程均不达标；当前只进入玩法/交互重构提案，Gate 3 继续阻塞。",
+    "active game 切换为 odyssey-drifter-opus-51：用户要求在新工作区重新设计《光线之上》，不受旧版约束。",
+    "odyssey-drifter 保留为历史工作区，其 Gate 记录、Godot 技术锁定与灰盒证据不迁移到新工作区。",
+    "新工作区的技术决策是在用户指令下由 prototype 侧选定的浏览器 Canvas 2D；运行时本身尚未经用户逐项确认，见其 technology-decision.json 的 humanApproval.scope。",
+    "Gate 2 仍未通过：自动驾驶与单元测试只证明链路成立，乐趣与可读性必须由用户本人试玩判定。",
+    "根级 game-context 与 runs 是框架启动验证证据，不属于游戏库。"
   ]
 }

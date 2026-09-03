@@ -1,0 +1,177 @@
+{
+  "runId": "run-20260903-opus51-build",
+  "at": "2026-09-03T18:40:00+08:00",
+  "actor": "prototype-engineer",
+  "claim": "《光线之上》在 games/odyssey-drifter-opus-51 完成一次可完整体验的重制：开始 / 教程 / 完整路线 / 暂停 / 继续 / 失败与回溯 / 成功终局 / 重开 / 无尽回响均可达，场景 100% 程序化生成。另含三层上手路径：实机演示（六步，走真人同一条输入路径）、玩法说明（六个实时微演示）、场内教学。",
+  "notAClaim": "本记录不声称 Gate 2 通过。自动驾驶与单元测试只证明链路成立且规则确定，手感、可读性与乐趣必须由用户本人试玩判定。",
+  "verifications": [
+    {
+      "id": "unit-rules-and-geometry",
+      "command": "node --test games/odyssey-drifter-opus-51/tests/core.test.mjs",
+      "exitCode": 0,
+      "result": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0
+      },
+      "covers": [
+        "polyLength / resample / smoothPoly / makeTrack 的几何正确性与退化输入",
+        "makeRng 确定性",
+        "tension / capacity / load / breakAt 的单调性与边界",
+        "紧线比松线更容易过载",
+        "借一个锚点可以救回一条过载的长线",
+        "轻微过载必须跑过大半条线才断（否则玩家学不到原因）"
+      ]
+    },
+    {
+      "id": "library-validation",
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "validate-library: PASS"
+    },
+    {
+      "id": "full-route-autopilot",
+      "command": "在 http://localhost:5183/?dev=1 控制台执行 eval(await (await fetch('/tests/autoplay.js')).text()); autoplay({maxSpans:40})",
+      "result": {
+        "ok": true,
+        "reason": "reached-ending",
+        "spans": 23,
+        "distanceMeters": 158,
+        "syncs": 22,
+        "bestSyncChain": 18,
+        "anchorsBorrowed": 5,
+        "stumbles": 3,
+        "rewinds": 1,
+        "simSeconds": 174,
+        "finalMode": "ending"
+      },
+      "note": "自动驾驶用固定策略（按断口宽度取垂度、等一个脚步拍再松手）走完四个区并触发终局。它从不犹豫，因此 174 秒是下限；人类预计 4–6 分钟。"
+    },
+    {
+      "id": "failure-and-rewind",
+      "command": "手动画一条够不到对岸的短线",
+      "result": {
+        "fell": true,
+        "mode": "rewind -> play",
+        "recoveredTo": "平台中段（留有助跑余量），而不是断口边缘",
+        "stumbles": 1
+      }
+    },
+    {
+      "id": "onboarding-demo",
+      "command": "在 http://localhost:5183/?dev=1 控制台执行 lightline.startDemo() 后按固定步长推进模拟",
+      "result": {
+        "stepsCompleted": 6,
+        "transitions": [
+          "0:seek",
+          "0:drag",
+          "0:settle",
+          "0:travel",
+          "1:seek",
+          "1:drag",
+          "1:settle",
+          "1:travel",
+          "2:seek",
+          "2:drag",
+          "2:listen",
+          "2:travel",
+          "3:seek",
+          "3:drag",
+          "3:listen",
+          "3:travel",
+          "4:seek",
+          "4:drag",
+          "4:settle",
+          "4:travel",
+          "4:watch",
+          "5:farewell"
+        ],
+        "endReason": "演示走完",
+        "lineActuallyBroke": true,
+        "maxDraftLoad": 1.37,
+        "syncsEarned": 3,
+        "stumbles": 3,
+        "handoverState": "run",
+        "demoSeconds": 41
+      },
+      "note": "演示不是录像，也没有专用简化规则：它只决定指针位置与按下/松开时机，判定、承载、断裂与回溯全部由游戏本体给出。第五步刻意过载，并按实际 load 读数自适应拉长，确保真的断一次。"
+    }
+  ],
+  "evidence": {
+    "00-title": "runs/run-20260903-opus51-build/evidence/00-title.png",
+    "01-rift-first-bearing": "runs/run-20260903-opus51-build/evidence/01-rift-first-bearing.png",
+    "02-press-anchor-swing": "runs/run-20260903-opus51-build/evidence/02-press-anchor-swing.png",
+    "03-echo-branch": "runs/run-20260903-opus51-build/evidence/03-echo-branch.png",
+    "04-dawn-terminal": "runs/run-20260903-opus51-build/evidence/04-dawn-terminal.png",
+    "05-rewind": "runs/run-20260903-opus51-build/evidence/05-rewind.png",
+    "06-ending-daybreak": "runs/run-20260903-opus51-build/evidence/06-ending-daybreak.png",
+    "07-demo-drag": "runs/run-20260903-opus51-build/evidence/07-demo-drag.png",
+    "08-demo-overload": "runs/run-20260903-opus51-build/evidence/08-demo-overload.png"
+  },
+  "defectsFoundAndFixed": [
+    {
+      "problem": "站在自己平台的断口上时，findContinuation 会把当前平台判成「还有路」，预读、脚尖两拍与失衡窗口全部不触发，玩家永远拿不到同步。",
+      "evidence": "自动驾驶：prep 始终为 false，阿迦在断口处反复重新挂到同一块平台上。",
+      "rootCause": "world.platformAt 用 x 落在 [left-6, right+6] 判定，平台自身的右缘必然命中。",
+      "fix": "findContinuation / platformAt 增加 exclude 参数，排除正在离开的那一段。",
+      "verify": "自动驾驶连续 23 跨全部进入预读并拿到 22 次同步。"
+    },
+    {
+      "problem": "承重容量定得太紧：一个 300px 的普通断口在无锚点时 load 就接近 1，第一区就频繁断线。",
+      "evidence": "自动驾驶前 3 跨 load 1.36 / 1.86 / 1.42，全部过载。",
+      "rootCause": "BASE_CAPACITY = 560，而一条跨越 300px 断口的线弧长本来就有 350–420。",
+      "fix": "BASE_CAPACITY 提到 1000，ANCHOR_BONUS 420，SYNC_BONUS 240。",
+      "verify": "同一策略下 23 跨的 load 落在 0.23–0.67，只有刻意画紧才过载。"
+    },
+    {
+      "problem": "坠落后回溯把玩家丢回断口边缘，立刻再次坠落，形成无解循环。",
+      "evidence": "自动驾驶在第 2 跨后 stumbles 每轮 +2，dist 卡在 12m 不动。",
+      "rootCause": "findSafe 只要求快照「合法着地」，而最新的合法快照必然是离断口最近的那个。",
+      "fix": "恢复点必须同时满足合法、距坠落 ≥0.9s、剩余助跑 ≥1.1s；并加同一断口三次失稳退回上一处停息台的兜底。",
+      "verify": "手动制造坠落，恢复位置在平台中段；自动驾驶全程 3 次失稳均自行恢复。"
+    },
+    {
+      "problem": "过载的线几乎立刻断裂，玩家只看到「随机断」，学不到原因。",
+      "evidence": "单元测试：breakAt(1.05) 与 breakAt(1.6) 都被钳制到 0.14。",
+      "rootCause": "breakAt = clamp(1.18 - load, 0.14, 0.82)，load 超过 1.04 就触底。",
+      "fix": "改为 clamp(1.35 - load*0.55, 0.18, 0.8)，轻微过载能跑过约 79% 才断。",
+      "verify": "新增断言：轻微过载的断点必须 > 0.6；13/13 通过。"
+    },
+    {
+      "problem": "回声桥群的「慢路」平台会横向压住主路，把二选一变成唯一一条走不通的路；玩家在两块平台间来回震荡。",
+      "evidence": "自动驾驶出现 108/139/110/139 的循环断口，dist 停在 99m。",
+      "rootCause": "alt.bx = 断口起点 + 0.42×gap，宽度未受断口限制，可能越过下一块主平台的左缘。",
+      "fix": "只在 gap ≥ 400 时生成慢路，宽度 clamp(gap×0.44, 190, 270)，起点 0.24×gap，并在慢路与主路之间挂一个锚点。",
+      "verify": "同一种子下 23 跨无循环，直达终局。"
+    },
+    {
+      "problem": "高速落到短平台上后只剩不到半秒反应时间。",
+      "evidence": "自动驾驶落到慢路后来不及画下一条线就冲出边缘。",
+      "rootCause": "落地不吸收速度，且平台上的回稳系数与线上相同（1.05），需要数秒才回到基准速度。",
+      "fix": "落到平台时速度上限 248 px/s，平台回稳系数提到 2.4。",
+      "verify": "慢路可正常通过；节奏回到「平台是读取世界的地方」。"
+    },
+    {
+      "problem": "「过载会断」这一课演不出来：长直线顺路借到锚点，容量一涨 load 就掉回 1 以下，线不会断。",
+      "evidence": "首次脚本化演示 broke=false、stumbles=0，第五步直接顺利落地。",
+      "rootCause": "演示按固定垂度规划曲线，没有读实际 load；而借锚是自动发生的。",
+      "fix": "新增 stretch 阶段：拖完计划曲线后若 load < 1.14，沿原方向继续拉长直到真的过载（或触发预算/超时上限）。",
+      "verify": "broke=true，maxDraftLoad=1.37，第五步出现 watch 阶段（观看回溯）后才进入交接。"
+    },
+    {
+      "problem": "玩法说明面板里六个微演示画布全部叠在页面左上角。",
+      "evidence": "六个 canvas 的 getBoundingClientRect 都是 (0,0)。",
+      "rootCause": "基础样式里 canvas{position:absolute;inset:0} 本是给游戏主画布写的，却命中了页面上所有 canvas。",
+      "fix": "该规则收窄为 #c；说明面板的画布显式 position:static 并用 aspect-ratio 自适应卡片宽度。",
+      "verify": "六张卡片各自渲染出独立的实时微演示。"
+    }
+  ],
+  "knownUnverified": [
+    "低端集成显卡的 p95 帧时间未测量（目标 ≤20ms）。",
+    "触控板玩家的长按疲劳未验证。",
+    "同步窗口 ±145ms 是否过宽——自动驾驶 23 跨拿到 22 次同步，对人类可能意味着窗口失去意义。",
+    "回声桥群的慢路是否真的值得绕（有意义的选择是否成立）。",
+    "玩家究竟关注「线」还是「人」——立项报告要求这两类反馈分开记录，本版把两者绑得很紧，可能掩盖结论。",
+    "实机演示六步约 40 秒，是否偏长、以及故意演示失败是否会被误读，需要人的反馈。"
+  ]
+}

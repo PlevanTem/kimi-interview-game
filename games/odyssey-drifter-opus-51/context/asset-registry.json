@@ -1,0 +1,160 @@
+{
+  "$schema": "../../../schemas/asset-registry.schema.json",
+  "gameId": "odyssey-drifter-opus-51",
+  "policy": "Gate 3 未通过，因此不生产任何正式文件资产。全部视听内容为程序化生成，登记的是生成器而不是文件。",
+  "assets": [
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.sky",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "fog",
+        "gradient",
+        "atmospheric-perspective"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/backdrop.js#sky"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.city",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "silhouette",
+        "hard-orthogonal",
+        "five-layer-parallax"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/backdrop.js#cityLayer"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.odyssey-drifter-opus-51.procedural.sky"
+      ]
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.platform",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "broken-concrete",
+        "emissive-edge"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/world.js#drawPlatform"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.aga",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "silhouette",
+        "two-bone-ik",
+        "verlet-cloth",
+        "rim-light"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/aga.js#draw"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.lightline",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "handwritten-curve",
+        "additive-glow",
+        "strain-jitter"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/lightline.js#drawLine"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.audio",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "webaudio",
+        "footstep-beat",
+        "tension-drone",
+        "release-pulse",
+        "wind-breath"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/audio.js"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.palette",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "design-tokens",
+        "four-breath-phases",
+        "daybreak"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/palette.js"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": []
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.demo",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "ghost-pointer",
+        "six-step-onboarding",
+        "real-rules"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/demo.js"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.odyssey-drifter-opus-51.procedural.lightline"
+      ]
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.procedural.guide",
+      "kind": "procedural",
+      "license": "project-owned",
+      "styleTags": [
+        "micro-demo",
+        "live-diagram",
+        "shared-shape-language"
+      ],
+      "locator": {
+        "kind": "code",
+        "value": "src/guide.js"
+      },
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.odyssey-drifter-opus-51.procedural.palette"
+      ]
+    }
+  ],
+  "updatedAt": "2026-09-03T19:20:00+08:00"
+}

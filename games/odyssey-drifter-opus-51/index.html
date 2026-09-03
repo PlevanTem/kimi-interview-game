@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07131f">
+<title>光线之上：共织之城</title>
+<style>
+:root{--paper:#eef7f4;--mist:#a9bec2;--night:#07131f;--deep:#030910;--glass:rgba(9,25,36,.82);
+ --edge:rgba(198,231,225,.18);--cyan:#9ce9dc;--gold:#f2c66d;--rose:#e88384;--display:"STZhongsong","Songti SC","Noto Serif SC",Georgia,serif;
+ --ui:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;background:var(--deep);color:var(--paper);font-family:var(--ui)}
+button,input{font:inherit}button{color:inherit}.stage{position:fixed;inset:0;isolation:isolate}
+#game{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.grain{position:absolute;inset:-50%;pointer-events:none;opacity:.055;z-index:2;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");animation:grain .22s steps(2) infinite}
+@keyframes grain{0%{transform:translate(0)}25%{transform:translate(2%,-1%)}50%{transform:translate(-1%,2%)}75%{transform:translate(1%,1%)}}
+body.reduce-motion .grain{animation:none}
+.hud{position:absolute;inset:0;z-index:3;pointer-events:none;display:none}.hud.on{display:block}
+.topbar{position:absolute;left:clamp(18px,3vw,48px);right:clamp(18px,3vw,48px);top:clamp(16px,3vh,30px);display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+.chapter{display:flex;gap:14px;align-items:flex-start;text-shadow:0 2px 15px #02080d}
+.roman{font:400 13px/1 var(--display);letter-spacing:.18em;color:var(--gold);padding-top:4px}
+.chapter h1{font:400 clamp(18px,2.2vw,26px)/1.15 var(--display);letter-spacing:.18em;margin:0}
+.chapter p{font-size:11px;letter-spacing:.18em;color:var(--mist);margin:8px 0 0}
+.top-actions{display:flex;align-items:center;gap:12px;pointer-events:auto}
+.budget{width:min(220px,26vw)}.budget-label{display:flex;justify-content:space-between;font-size:9px;letter-spacing:.22em;color:var(--mist);margin-bottom:7px}
+.track{height:2px;background:rgba(255,255,255,.13);overflow:hidden}.fill{height:100%;width:100%;background:linear-gradient(90deg,var(--cyan),var(--gold));box-shadow:0 0 12px var(--cyan);transition:width .14s}
+.icon-btn{width:38px;height:38px;border:1px solid var(--edge);background:rgba(5,16,25,.45);border-radius:50%;cursor:pointer;display:grid;place-items:center;transition:.2s;backdrop-filter:blur(8px)}
+.icon-btn:hover,.icon-btn:focus-visible{border-color:var(--cyan);background:rgba(29,68,76,.5);outline:none;transform:translateY(-1px)}
+.goal{position:absolute;left:50%;bottom:clamp(24px,4vh,42px);transform:translateX(-50%);width:min(620px,calc(100% - 36px));text-align:center}
+.goal-card{display:inline-block;min-width:min(520px,100%);padding:13px 24px 15px;background:linear-gradient(90deg,transparent,rgba(5,18,28,.76) 18%,rgba(5,18,28,.76) 82%,transparent);text-shadow:0 2px 10px #000}
+.goal .eyebrow{font-size:9px;letter-spacing:.42em;color:var(--gold)}.goal .copy{font:400 14px/1.6 var(--display);letter-spacing:.1em;margin-top:5px}.goal .preview{font-size:10px;letter-spacing:.12em;color:var(--cyan);min-height:16px;margin-top:4px}
+.hint-btn{pointer-events:auto;margin-top:8px;border:0;background:transparent;color:rgba(223,240,237,.55);font-size:10px;letter-spacing:.2em;cursor:pointer}.hint-btn:hover{color:var(--paper)}
+.toast{position:absolute;left:50%;top:18%;transform:translate(-50%,-12px);opacity:0;padding:9px 18px;border:1px solid var(--edge);background:rgba(4,14,22,.84);font:400 12px/1.6 var(--display);letter-spacing:.1em;color:var(--cyan);transition:.3s;pointer-events:none}.toast.on{opacity:1;transform:translate(-50%,0)}
+.dialogue{position:absolute;left:clamp(18px,4vw,58px);bottom:clamp(100px,15vh,142px);display:none;max-width:420px;padding:14px 18px 14px 22px;background:linear-gradient(90deg,rgba(4,15,24,.86),transparent);border-left:2px solid var(--gold);pointer-events:none}.dialogue.on{display:block}
+.dialogue b{font:400 11px/1 var(--display);letter-spacing:.28em;color:var(--gold)}.dialogue p{font:400 13px/1.8 var(--display);letter-spacing:.08em;margin:6px 0 0;color:#e7f2ef}
+.overlay{position:absolute;inset:0;z-index:10;display:none;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 42%,rgba(13,42,52,.74),rgba(2,8,14,.96) 76%);padding:24px;overflow:auto}
+.overlay.on{display:flex}.menu{width:min(780px,94vw);text-align:center;padding:30px}
+.sigil{width:66px;height:66px;margin:0 auto 24px;position:relative;border:1px solid rgba(156,233,220,.35);border-radius:50%;box-shadow:0 0 35px rgba(156,233,220,.14),inset 0 0 28px rgba(156,233,220,.1)}
+.sigil:before,.sigil:after{content:"";position:absolute;inset:13px;border:1px solid var(--gold);transform:rotate(45deg)}.sigil:after{inset:25px;border-radius:50%;background:var(--cyan);border:0;box-shadow:0 0 18px var(--cyan)}
+.kicker{font-size:10px;letter-spacing:.62em;color:var(--gold);margin-left:.62em}.logo{font:400 clamp(42px,7.4vw,82px)/1 var(--display);letter-spacing:.18em;margin:16px 0 0 .18em;text-shadow:0 0 42px rgba(156,233,220,.23)}
+.en{font:400 10px/1 var(--display);letter-spacing:.54em;color:var(--mist);margin:14px 0 26px .54em}.pitch{font:400 15px/2 var(--display);letter-spacing:.08em;color:#bdcdce;margin:0 auto 28px;max-width:36em}
+.actions{display:flex;flex-direction:column;align-items:center;gap:9px}.btn{min-width:250px;border:1px solid var(--edge);background:rgba(9,28,39,.36);padding:12px 28px;letter-spacing:.25em;font-size:12px;cursor:pointer;transition:.2s}
+.btn:hover,.btn:focus-visible{outline:none;border-color:rgba(156,233,220,.65);background:rgba(31,73,80,.3);letter-spacing:.3em}.btn.primary{border-color:rgba(242,198,109,.55);background:linear-gradient(90deg,rgba(242,198,109,.08),rgba(156,233,220,.08))}
+.btn.text{border-color:transparent;background:transparent;color:var(--mist);padding:7px}.btn.danger{color:#e9a4a0}.fine{font-size:9px;letter-spacing:.16em;color:rgba(210,228,226,.42);margin-top:24px}
+.sheet{width:min(760px,94vw);max-height:min(84vh,760px);overflow:auto;border:1px solid var(--edge);background:rgba(5,17,27,.94);box-shadow:0 28px 90px #000;padding:clamp(24px,4vw,44px);text-align:left}
+.sheet h2{font:400 30px/1 var(--display);letter-spacing:.18em;margin:0 0 10px}.sheet .sub{font-size:10px;letter-spacing:.26em;color:var(--gold);margin-bottom:28px}
+.sheet h3{font:400 16px/1.4 var(--display);letter-spacing:.14em;margin:24px 0 8px;color:var(--cyan)}.sheet p,.sheet li{font-size:12px;line-height:1.9;color:#afc0c1}.sheet ol{padding-left:20px}.sheet .footer{display:flex;justify-content:center;gap:10px;margin-top:28px}
+.control{display:grid;grid-template-columns:140px 1fr 42px;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:11px;letter-spacing:.08em}.control input[type=range]{accent-color:var(--cyan);width:100%}
+.switch{justify-self:end;width:40px;height:22px;border-radius:11px;border:1px solid var(--edge);background:#0a1823;position:relative;cursor:pointer}.switch:after{content:"";position:absolute;width:14px;height:14px;left:3px;top:3px;border-radius:50%;background:#61767b;transition:.2s}.switch.on:after{left:21px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.fail-mark{font:400 11px/1 var(--display);letter-spacing:.4em;color:var(--rose)}.result-title{font:400 clamp(28px,5vw,52px)/1.2 var(--display);letter-spacing:.16em;margin:16px 0}.reason{font:400 14px/1.8 var(--display);color:#c4d2d2;margin-bottom:24px}
+.stats{display:flex;justify-content:center;gap:34px;margin:26px 0 30px}.stat strong{display:block;font:400 28px/1 var(--display);color:var(--gold)}.stat span{display:block;font-size:9px;letter-spacing:.2em;color:var(--mist);margin-top:7px}
+.intro{position:absolute;inset:0;z-index:8;display:none;pointer-events:none;background:#02070c}.intro.on{display:block}.intro-copy{position:absolute;left:10%;bottom:15%;max-width:520px;font:400 clamp(17px,2.4vw,25px)/2 var(--display);letter-spacing:.12em;text-shadow:0 3px 15px #000}.intro-copy span{color:var(--gold)}
+@media(max-width:650px){.budget{display:none}.chapter p{max-width:230px}.logo{font-size:46px}.sheet{padding:24px}.control{grid-template-columns:105px 1fr 42px}.stats{gap:18px}.goal{bottom:18px}.dialogue{bottom:110px}}
+body.high-contrast{--paper:#fff;--mist:#d7e6e6;--cyan:#7ffff0;--gold:#ffd26e;--edge:rgba(255,255,255,.38)}
+</style>
+</head>
+<body>
+<main class="stage">
+  <canvas id="game" aria-label="光线之上游戏画面"></canvas><div class="grain"></div>
+  <section id="hud" class="hud">
+    <div class="topbar">
+      <div class="chapter"><span id="roomRoman" class="roman">I</span><div><h1 id="roomTitle">风井初醒</h1><p id="roomBreath">让光成为力量</p></div></div>
+      <div class="top-actions"><div class="budget"><div class="budget-label"><span>余光</span><span id="budgetText">100%</span></div><div class="track"><div id="budgetFill" class="fill"></div></div></div><button id="pauseButton" class="icon-btn" aria-label="暂停">Ⅱ</button></div>
+    </div>
+    <div class="goal"><div class="goal-card"><div class="eyebrow" id="phaseText">目标</div><div id="goalText" class="copy"></div><div id="previewText" class="preview"></div><button id="hintButton" class="hint-btn">需要一点启发？</button></div></div>
+    <div id="toast" class="toast"></div><div id="dialogue" class="dialogue"><b>阿迦</b><p id="dialogueText"></p></div>
+  </section>
+  <section id="intro" class="intro"><div id="introCopy" class="intro-copy"></div></section>
+
+  <section id="title" class="overlay on"><div class="menu"><div class="sigil"></div><div class="kicker">一座失去呼吸的城市</div><h1 class="logo">光线之上</h1><div class="en">ABOVE THE LIGHTLINE · CO-WOVEN CITY</div><p class="pitch">你画的不是路，而是机关之间的因果。<br>让守灯人阿迦沿光而行，替你完成手够不到的那一半。</p><div class="actions"><button id="continueButton" class="btn primary" hidden>继续旅程</button><button id="newButton" class="btn primary">新的旅程</button><button data-open="how" class="btn text">玩法说明</button><button data-open="settings" class="btn text">设置</button><button data-open="credits" class="btn text">制作名单</button></div><div class="fine">单次约 8–12 分钟 · 鼠标 / 触控 · 自动保存</div></div></section>
+
+  <section id="pause" class="overlay"><div class="menu"><div class="kicker">城市在等待</div><h2 class="result-title">暂停</h2><div class="actions"><button id="resumeButton" class="btn primary">继续</button><button id="restartButton" class="btn">重开本室</button><button data-open="how" class="btn text">玩法说明</button><button data-open="settings" class="btn text">设置</button><button id="titleButton" class="btn text">回到标题</button></div></div></section>
+  <section id="fail" class="overlay"><div class="menu"><div class="fail-mark">因果断裂</div><h2 class="result-title">光没有抵达</h2><p id="failReason" class="reason"></p><div class="actions"><button id="retryButton" class="btn primary">再试一次</button><button id="failHintButton" class="btn text">给我提示</button><button id="failTitleButton" class="btn text">回到标题</button></div></div></section>
+  <section id="ending" class="overlay"><div class="menu"><div class="kicker">五室共鸣</div><h2 class="result-title">城市重新呼吸</h2><p class="pitch">阿迦把灯留在心室。你留下的每一道弧线，都成了清晨的一部分。</p><div class="stats"><div class="stat"><strong id="endTime">00:00</strong><span>用时</span></div><div class="stat"><strong id="endAttempts">0</strong><span>尝试</span></div><div class="stat"><strong id="endSolution">—</strong><span>终局选择</span></div></div><div class="actions"><button id="againButton" class="btn primary">再次点灯</button><button id="endingTitleButton" class="btn text">回到标题</button></div></div></section>
+
+  <section id="how" class="overlay"><div class="sheet"><h2>如何共织</h2><div class="sub">一条线 · 一串因果 · 一个会回应你的人</div><h3>唯一操作：拖动</h3><ol><li>从发光的起点按下，拖出一条连续光线。</li><li>让线依次经过场景中的机关；底部会实时显示你连接的顺序。</li><li>松开提交。阿迦会沿线行动，并亲手驱动绞盘、踏座与棱镜。</li></ol><h3>读懂场景</h3><p>铜色圆轮需要阿迦转动；彩色晶体改变光；地面踏座必须由他站住；黑色雾团会吞光。第二室还要求你用线的形状表达“前紧后松”。</p><h3>完整流程</h3><p>Esc 暂停，R 重开当前房间，H 显示提示。失败会冻结原因，不扣除进度。设置与当前房间均自动保存。</p><div class="footer"><button data-close class="btn primary">明白了</button></div></div></section>
+  <section id="settings" class="overlay"><div class="sheet"><h2>设置</h2><div class="sub">声音与可读性</div><div class="control"><span>主音量</span><input id="masterVolume" type="range" min="0" max="1" step=".05"><output id="masterOut"></output></div><div class="control"><span>音乐</span><input id="musicVolume" type="range" min="0" max="1" step=".05"><output id="musicOut"></output></div><div class="control"><span>音效</span><input id="sfxVolume" type="range" min="0" max="1" step=".05"><output id="sfxOut"></output></div><div class="control"><span>减少动态</span><span></span><button id="motionSwitch" class="switch" aria-label="减少动态"></button></div><div class="control"><span>高对比度</span><span></span><button id="contrastSwitch" class="switch" aria-label="高对比度"></button></div><div class="control"><span>字幕</span><span></span><button id="captionSwitch" class="switch" aria-label="字幕"></button></div><div class="footer"><button id="fullscreenButton" class="btn">全屏</button><button data-close class="btn primary">完成</button></div></div></section>
+  <section id="credits" class="overlay"><div class="sheet"><h2>制作名单</h2><div class="sub">一份程序化垂直切片</div><h3>设计与制作</h3><p>核心设计、系统、美术与声音：Odyssey Drifter Studio Prototype Team</p><h3>创作原则</h3><p>场景、角色、机关、光效、粒子与配乐全部由运行时代码生成；没有外部美术资产。当前版本是 Gate 2 可玩候选，美术语言会在人类确认“值得继续”后再正式锁定。</p><div class="footer"><button data-close class="btn primary">返回</button></div></div></section>
+</main>
+<script src="src/puzzle-v2.js"></script>
+<script src="src/studio-v2.js"></script>
+</body>
+</html>

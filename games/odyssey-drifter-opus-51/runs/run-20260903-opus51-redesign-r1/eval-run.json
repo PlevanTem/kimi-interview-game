@@ -1,0 +1,85 @@
+{
+  "evalId": "eval-opus51-human-gate2-r1",
+  "gameId": "odyssey-drifter-opus-51",
+  "runId": "run-20260903-opus51-redesign-r1",
+  "buildId": "run-20260903-opus51-build",
+  "environment": {
+    "source": "human_user_direct_playtest",
+    "viewport": "not_reported",
+    "device": "not_reported",
+    "seed": "not_reported"
+  },
+  "scoreType": "evidence-coverage-adjusted diagnostic; not a Gate 4 release score",
+  "score": {
+    "functionality": {"earned": 16, "max": 30, "reason": "自动证据显示主要状态可达，但用户确认说明、设置与完整流程不可理解或不充分。"},
+    "visuals": {"earned": 6, "max": 25, "reason": "用户评价风格简陋、资产设计不充分。"},
+    "interaction": {"earned": 4, "max": 20, "reason": "玩法近似连线等待，模式开关赘余，角色与环境缺少互动。"},
+    "performance": {"earned": 0, "max": 15, "reason": "本次未提供帧时间或 60 秒性能路径证据；按缺证计零，不代表已观察到性能低下。"},
+    "motionAndSound": {"earned": 3, "max": 10, "reason": "角色动作与节拍提示的对应关系未被用户感知；声音与动作节奏未单独验证。"},
+    "total": {"earned": 29, "max": 100}
+  },
+  "defects": [
+    {
+      "id": "G2-P1-01",
+      "priority": "P1",
+      "area": "gameplay",
+      "problem": "没有有意义的谜题决策。",
+      "evidence": ["用户直测：整体只是连线等待，关卡思考几乎为零。", "已有自动驾驶固定策略 23 跨到达结局。"],
+      "rootCause": "状态空间主要由落点、锚点和负载组成，缺少会互相改变的环境装置与顺序条件。",
+      "minimalChange": "砍掉随机长路线，制作五间由绞盘、棱镜、踏座组合的手工验证房。",
+      "retest": "固定直连策略通过率低于 20%；用户能解释每房至少一个因果关系。",
+      "owner": "experience-designer"
+    },
+    {
+      "id": "G2-P1-02",
+      "priority": "P1",
+      "area": "onboarding",
+      "problem": "‘保持片刻、看踏线’无法被理解。",
+      "evidence": ["用户直测明确指出文案与角色动作无关联。", "同步只是奖励，却同时出现在标题、实机演示、说明卡和 HUD。"],
+      "rootCause": "信息层级把非核心的 ±145ms 奖励当成主目标，身体提示与机关结果没有直接因果。",
+      "minimalChange": "删除节拍门槛；第一房用线拉动绞盘与阿迦抓握动作完成教学。",
+      "retest": "前 30 秒无需节拍文案，用户能说出线如何改变世界。",
+      "owner": "experience-designer"
+    },
+    {
+      "id": "G2-P1-03",
+      "priority": "P1",
+      "area": "world-interaction",
+      "problem": "阿迦与环境缺少互动。",
+      "evidence": ["用户直测反馈。", "源码对象主要是 platform、anchor、memory；memory 只显影，不改变谜题状态。"],
+      "rootCause": "角色状态与世界状态没有共享的可操作装置。",
+      "minimalChange": "加入绞盘、棱镜和阿迦踏座，并要求阿迦抓、推、压或携带。",
+      "retest": "五房内至少三次必须利用阿迦动作改变装置状态。",
+      "owner": "experience-designer"
+    },
+    {
+      "id": "G2-P1-04",
+      "priority": "P1",
+      "area": "product-ux",
+      "problem": "完整体验流程和设置不直观。",
+      "evidence": ["用户直测反馈。", "当前主要 screen 为 title、pause、ending；设置作为标题/暂停里的 toggle 散列，失败没有独立决策界面。"],
+      "rootCause": "此前把自动可达状态当成用户可理解流程，没有建立信息架构和状态责任。",
+      "minimalChange": "建立标题、玩法说明、独立设置、房间、暂停、失败、成功的明确状态机。",
+      "retest": "用户不看外部说明即可找到设置、重开本房、查看提示和回到标题。",
+      "owner": "experience-designer"
+    },
+    {
+      "id": "G2-P2-01",
+      "priority": "P2",
+      "area": "visual-assets",
+      "problem": "风格和资产设计不足。",
+      "evidence": ["用户直测反馈。"],
+      "rootCause": "Gate 3 未通过且当前程序化占位资产未形成充分的功能对象体系。",
+      "minimalChange": "先完成玩法功能对象清单；Gate 2 人工批准后再由 visual-director 建立 StyleBible。",
+      "retest": "Gate 3 前只验证功能轮廓与状态可读性，不声称视觉完成。",
+      "owner": "loop-engineer"
+    }
+  ],
+  "missingChecks": [
+    "目标设备、浏览器和 viewport",
+    "固定种子截图复核（本轮截图工具受 Windows sandbox helper 故障影响）",
+    "60 秒 p95 帧时间与低帧持续时间",
+    "静音、高对比、减少动态和失焦恢复 E2E"
+  ],
+  "gateRecommendation": "reject_gate2_and_redesign_mechanic_and_product_flow"
+}

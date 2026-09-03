@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "lightline-opus51",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "games/odyssey-drifter-opus-51/serve.mjs",
+        "5183"
+      ],
+      "port": 5183
+    }
+  ]
+}
