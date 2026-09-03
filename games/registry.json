@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/game-library.schema.json",
   "version": "1.0.0",
-  "updatedAt": "2026-09-03T17:10:55+08:00",
+  "updatedAt": "2026-09-03T18:29:37+08:00",
   "activeGameId": "odyssey-drifter-opus-51",
   "productionPaused": false,
   "games": [
@@ -21,6 +21,8 @@
     }
   ],
   "notes": [
+    "Opus 5.1 v2 提示已按用户要求改为直接显示当前阶段完整答案线，并完成七阶段与失败页入口回归。",
+    "Opus 5.1 v2 五房共织机关候选已实现并通过规则与真实浏览器自动验证；Gate 2 仍为 iterating，等待用户本人试玩确认乐趣与可读性。",
     "Opus 5.1 Gate 2 已被用户直测退回：玩法退化为连线等待，节拍引导、角色环境互动与完整产品流程均不达标；当前只进入玩法/交互重构提案，Gate 3 继续阻塞。",
     "active game 切换为 odyssey-drifter-opus-51：用户要求在新工作区重新设计《光线之上》，不受旧版约束。",
     "odyssey-drifter 保留为历史工作区，其 Gate 记录、Godot 技术锁定与灰盒证据不迁移到新工作区。",

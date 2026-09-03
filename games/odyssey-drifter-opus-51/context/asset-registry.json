@@ -1,160 +1,141 @@
 {
   "$schema": "../../../schemas/asset-registry.schema.json",
-  "gameId": "odyssey-drifter-opus-51",
-  "policy": "Gate 3 未通过，因此不生产任何正式文件资产。全部视听内容为程序化生成，登记的是生成器而不是文件。",
+  "version": 3,
+  "styleBibleVersion": 0,
   "assets": [
     {
       "id": "game.odyssey-drifter-opus-51.procedural.sky",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "fog",
-        "gradient",
-        "atmospheric-perspective"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/backdrop.js#sky"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "procedural-environment",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/backdrop.js", "symbol": "sky"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.city",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "silhouette",
-        "hard-orthogonal",
-        "five-layer-parallax"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/backdrop.js#cityLayer"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": [
-        "game.odyssey-drifter-opus-51.procedural.sky"
-      ]
+      "type": "procedural-environment",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/backdrop.js", "symbol": "cityLayer"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": ["game.odyssey-drifter-opus-51.procedural.sky"], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.platform",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "broken-concrete",
-        "emissive-edge"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/world.js#drawPlatform"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "procedural-environment",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/world.js", "symbol": "drawPlatform"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.aga",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "silhouette",
-        "two-bone-ik",
-        "verlet-cloth",
-        "rim-light"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/aga.js#draw"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "procedural-character",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/aga.js", "symbol": "draw"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.lightline",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "handwritten-curve",
-        "additive-glow",
-        "strain-jitter"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/lightline.js#drawLine"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "procedural-mechanic",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/lightline.js", "symbol": "drawLine"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.audio",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "webaudio",
-        "footstep-beat",
-        "tension-drone",
-        "release-pulse",
-        "wind-breath"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/audio.js"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "procedural-audio",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/audio.js"},
+      "version": "1.0.0", "source": "project-authored legacy v1 generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.palette",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "design-tokens",
-        "four-breath-phases",
-        "daybreak"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/palette.js"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": []
+      "type": "design-tokens",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/palette.js"},
+      "version": "1.0.0", "source": "project-authored legacy v1 tokens", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "style-unlocked"], "sizeBudgetBytes": 0, "dependencies": [], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.demo",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "ghost-pointer",
-        "six-step-onboarding",
-        "real-rules"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/demo.js"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": [
-        "game.odyssey-drifter-opus-51.procedural.lightline"
-      ]
+      "type": "procedural-tutorial",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/demo.js"},
+      "version": "1.0.0", "source": "project-authored legacy v1 tutorial", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "removed-click-mode"], "sizeBudgetBytes": 0, "dependencies": ["game.odyssey-drifter-opus-51.procedural.lightline"], "approval": "rejected"
     },
     {
       "id": "game.odyssey-drifter-opus-51.procedural.guide",
-      "kind": "procedural",
-      "license": "project-owned",
-      "styleTags": [
-        "micro-demo",
-        "live-diagram",
-        "shared-shape-language"
-      ],
-      "locator": {
-        "kind": "code",
-        "value": "src/guide.js"
-      },
-      "sizeBudgetBytes": 0,
-      "dependencies": [
-        "game.odyssey-drifter-opus-51.procedural.palette"
-      ]
+      "type": "procedural-tutorial",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/guide.js"},
+      "version": "1.0.0", "source": "project-authored legacy v1 guide", "license": "project-owned", "promptHash": null,
+      "styleTags": ["legacy-v1", "removed-duplicate-guide"], "sizeBudgetBytes": 0, "dependencies": ["game.odyssey-drifter-opus-51.procedural.palette"], "approval": "rejected"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.mechanic.puzzle-v2",
+      "type": "procedural-mechanic",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/puzzle-v2.js", "symbol": "ROOMS"},
+      "version": "2.0.0", "source": "project-authored deterministic five-room rules", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "five-room", "path-tension-order", "style-unlocked"], "sizeBudgetBytes": 32768, "dependencies": [], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.environment.co-woven-city-v2",
+      "type": "procedural-environment",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawBackdrop"},
+      "version": "2.0.0", "source": "project-authored deterministic Canvas generator", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "night-city", "atmospheric-depth", "style-unlocked"], "sizeBudgetBytes": 65536,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanic.puzzle-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.character.aja-v2",
+      "type": "procedural-character",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawAja"},
+      "version": "2.0.0", "source": "project-authored articulated Canvas character", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "action-readable", "lantern-keeper", "style-unlocked"], "sizeBudgetBytes": 16384,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanic.puzzle-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.mechanism.winch-v2",
+      "type": "procedural-prop",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawDevice:winch"},
+      "version": "2.0.0", "source": "project-authored functional mechanism", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "brass", "rotation-state", "style-unlocked"], "sizeBudgetBytes": 8192,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanic.puzzle-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.mechanism.prism-v2",
+      "type": "procedural-prop",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawDevice:prism"},
+      "version": "2.0.0", "source": "project-authored functional mechanism", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "glass", "light-order", "style-unlocked"], "sizeBudgetBytes": 8192,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanic.puzzle-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.mechanism.pedal-v2",
+      "type": "procedural-prop",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawDevice:pedal"},
+      "version": "2.0.0", "source": "project-authored functional mechanism", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "character-anchor", "pressure-state", "style-unlocked"], "sizeBudgetBytes": 8192,
+      "dependencies": ["game.odyssey-drifter-opus-51.character.aja-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.environment.shadow-hazard-v2",
+      "type": "procedural-environment",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "drawHazards"},
+      "version": "2.0.0", "source": "project-authored functional hazard", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "shadow", "threat-readable", "style-unlocked"], "sizeBudgetBytes": 8192,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanism.prism-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.ui.product-shell-v2",
+      "type": "built-in-ui",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/index.html"},
+      "version": "2.1.0", "source": "project-authored HTML/CSS/Canvas interface", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "complete-state-machine", "accessible-redundancy", "explicit-solution-line", "style-unlocked"], "sizeBudgetBytes": 65536,
+      "dependencies": ["game.odyssey-drifter-opus-51.environment.co-woven-city-v2"], "approval": "graybox-only"
+    },
+    {
+      "id": "game.odyssey-drifter-opus-51.audio.mechanism-v2",
+      "type": "procedural-audio",
+      "locator": {"kind": "procedural-entrypoint", "value": "games/odyssey-drifter-opus-51/src/studio-v2.js", "symbol": "Audio"},
+      "version": "2.0.0", "source": "project-authored WebAudio synthesis", "license": "project-owned", "promptHash": null,
+      "styleTags": ["gate2-functional", "procedural-audio", "device-specific", "style-unlocked"], "sizeBudgetBytes": 16384,
+      "dependencies": ["game.odyssey-drifter-opus-51.mechanism.winch-v2", "game.odyssey-drifter-opus-51.mechanism.prism-v2", "game.odyssey-drifter-opus-51.mechanism.pedal-v2"], "approval": "graybox-only"
     }
-  ],
-  "updatedAt": "2026-09-03T19:20:00+08:00"
+  ]
 }

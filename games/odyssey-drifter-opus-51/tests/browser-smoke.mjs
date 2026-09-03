@@ -63,6 +63,7 @@ const report = {
   api: await evaluate('typeof window.lightlineV2'),
   canvas: await evaluate('({css:[game.clientWidth,game.clientHeight],pixels:[game.width,game.height]})'),
   checkpoints: [],
+  hintChecks: [],
   browserErrors,
 };
 report.checkpoints.push(await evaluate('lightlineV2.getState()'));
@@ -81,6 +82,15 @@ await evaluate('document.getElementById("newButton").click(); lightlineV2.skipIn
 await wait(250);
 report.checkpoints.push(await evaluate('lightlineV2.getState()'));
 await shot('02-room-1');
+await evaluate('lightlineV2.resetMetrics()');
+await wait(1000);
+report.hintPerf = { baseline: await evaluate('lightlineV2.metrics()') };
+await evaluate('document.getElementById("hintButton").click()');
+await evaluate('lightlineV2.resetMetrics()');
+await wait(1000);
+report.hintPerf.visible = await evaluate('lightlineV2.metrics()');
+report.explicitHint = await evaluate('lightlineV2.getState()');
+await shot('02b-explicit-solution');
 await evaluate('document.getElementById("pauseButton").click()');
 report.pauseVisible = await evaluate('lightlineV2.getState().screen');
 await evaluate('document.getElementById("resumeButton").click()');
@@ -91,7 +101,9 @@ await wait(150);
 report.failure = await evaluate('({screen:lightlineV2.getState().screen,reason:document.getElementById("failReason").textContent})');
 report.directAccepted = report.failure.screen !== 'fail';
 await shot('03-readable-failure');
-await evaluate('document.getElementById("retryButton").click()');
+await evaluate('document.getElementById("failHintButton").click()');
+await wait(100);
+report.failureHint = await evaluate('lightlineV2.getState()');
 
 // First room is completed through actual browser pointer events.
 await drag([{x:150,y:500},{x:520,y:350},{x:1100,y:450}]);
@@ -103,6 +115,11 @@ report.checkpoints.push(report.pointerRoom0);
 let guard = 0;
 while (!(await evaluate('lightlineV2.getState().run.complete')) && guard++ < 10) {
   const before = await evaluate('lightlineV2.getState()');
+  await evaluate('document.getElementById("hintButton").click()');
+  await wait(60);
+  const hintState = await evaluate('lightlineV2.getState()');
+  if (!hintState.hintVisible || hintState.hintPoints < 2) throw new Error(`Hint line missing at ${before.room}/${before.phase}`);
+  report.hintChecks.push({room:before.room,phase:before.phase,points:hintState.hintPoints});
   const diagnostic = await evaluate('(()=>{const s=lightlineV2.getState(),p=lightlineV2.canonical(s.run.room,s.run.phase,"short");return{screen:s.screen,points:p,analysis:LL.puzzleV2.analyzeStroke(s.run.room,s.run.phase,p)}})()');
   const accepted = await evaluate('lightlineV2.solveCurrent("short")');
   if (!accepted) throw new Error(`Canonical solution rejected at ${before.room}/${before.phase}: ${JSON.stringify(diagnostic)}`);
@@ -122,6 +139,8 @@ report.endingVisible = await evaluate('document.getElementById("ending").classLi
 report.metrics = await evaluate('lightlineV2.metrics()');
 await shot('06-ending');
 report.passed = report.api === 'object' && report.helpVisible && report.pauseVisible === 'pause' &&
+  report.explicitHint.hintVisible && report.explicitHint.hintPoints >= 3 &&
+  report.failureHint.screen === 'play' && report.failureHint.hintVisible && report.hintChecks.length === 6 &&
   report.directAccepted === false && report.failure.screen === 'fail' && report.final.run.complete &&
   report.endingVisible && browserErrors.length === 0;
 

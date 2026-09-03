@@ -60,7 +60,47 @@
         "是否接受完全删除节拍判定与无尽模式？",
         "现有 Canvas 2D 路线是否能在最小机关 spike 后继续锁定？"
       ]
+    },
+    {
+      "runId": "run-20260903-opus51-mechanic-r1",
+      "at": "2026-09-03T17:53:19+08:00",
+      "actor": "loop-engineer-and-prototype-engineer",
+      "problem": "用户批准 v2 方向并要求直接生成高质量、设计精良、玩法完整、场景尽量代码生成的 studio 级游戏候选。",
+      "evidence": [
+        "此前用户直测的四项 P1 根因已记录在 run-20260903-opus51-redesign-r1/eval-run.json。",
+        "五房规格由用户在后续指令中批准进入实现。"
+      ],
+      "rootCause": "旧版的线只承担移动与等待，角色不是谜题执行者，产品状态也没有独立信息架构。",
+      "change": "用 puzzle-v2.js 建立五房确定性规则，用 studio-v2.js 与新 index.html 实现单一拖线、张力与光序、阿迦操作装置、自动保存、说明/设置/暂停/失败/结算，以及全程序化夜城、角色、机关、粒子和 WebAudio。",
+      "verification": "npm run validate:library；node --check src/studio-v2.js；node --test tests/*.test.mjs；Edge 1440×900 真实鼠标首关与完整七阶段浏览器冒烟。",
+      "before": "固定连线策略可跑完整条随机路线；点击/长按与节拍说明构成噪声；角色几乎不改变环境。",
+      "after": "直连终点策略通过率 0%；完整路线包含 10 次核心装置互动；标题到结局全状态可达；浏览器错误 0；中位帧耗时 16.7ms。",
+      "result": "gate2_candidate_ready_for_human_playtest",
+      "openQuestions": [
+        "首次玩家是否能不依赖文字理解第二室的前紧后松？",
+        "五房的难度曲线和 8–12 分钟目标是否成立？",
+        "用户是否确认值得进入 Gate 3 Visual Lock？"
+      ]
+    },
+    {
+      "runId": "run-20260903-opus51-mechanic-r1",
+      "at": "2026-09-03T18:29:37+08:00",
+      "actor": "loop-engineer-and-prototype-engineer",
+      "problem": "用户点击提示后只能得到文字关系，不能直接看到可通关的线条。",
+      "evidence": [
+        "用户明确要求点击提示时直接显性呈现通关线条。",
+        "修改前 showHint 只更新提示文字并设置 5 秒超时，没有场景路线状态。"
+      ],
+      "rootCause": "原规格为了保留发现感主动禁止完整答案，与用户最新的显性答案需求冲突。",
+      "change": "复用每阶段已通过规则测试的 canonical 路线，新增持续显示的金色虚线、行进箭头与真实机关序号；游戏内提示、H 键和失败页提示统一调用；阶段结束自动清理。",
+      "verification": "Edge 1440×900 真实点击首房提示并截图；首房、失败页入口和其余六阶段均验证 hintVisible 与 2–5 个答案点；完整路线到达结局，浏览器错误 0；同环境基线与答案线显示时中位帧耗时均为 33.3ms。",
+      "before": "提示只显示一句文字，5 秒后消失。",
+      "after": "玩家点击提示后可持续看到并描摹当前阶段完整合法答案线。",
+      "result": "verified",
+      "openQuestions": [
+        "是否还需要在终局同时展示短路与长路两种答案，而不是默认展示短路？"
+      ]
     }
   ],
-  "updatedAt": "2026-09-03T17:10:55+08:00"
+  "updatedAt": "2026-09-03T18:29:37+08:00"
 }

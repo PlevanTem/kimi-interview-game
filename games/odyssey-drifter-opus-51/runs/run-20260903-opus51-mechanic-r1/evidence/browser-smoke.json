@@ -31,7 +31,9 @@
         "captions": true
       },
       "room": "awakening-winch",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -52,7 +54,9 @@
         "captions": false
       },
       "room": "awakening-winch",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -73,7 +77,9 @@
         "captions": false
       },
       "room": "split-tension",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -94,7 +100,9 @@
         "captions": false
       },
       "room": "prism-order",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -115,7 +123,9 @@
         "captions": false
       },
       "room": "aja-is-anchor",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -136,7 +146,9 @@
         "captions": false
       },
       "room": "aja-is-anchor",
-      "phase": 1
+      "phase": 1,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -157,7 +169,9 @@
         "captions": false
       },
       "room": "city-heart",
-      "phase": 0
+      "phase": 0,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "play",
@@ -178,7 +192,9 @@
         "captions": false
       },
       "room": "city-heart",
-      "phase": 1
+      "phase": 1,
+      "hintVisible": false,
+      "hintPoints": 0
     },
     {
       "screen": "ending",
@@ -201,7 +217,41 @@
         "captions": false
       },
       "room": "city-heart",
-      "phase": 1
+      "phase": 1,
+      "hintVisible": false,
+      "hintPoints": 0
+    }
+  ],
+  "hintChecks": [
+    {
+      "room": "split-tension",
+      "phase": 0,
+      "points": 4
+    },
+    {
+      "room": "prism-order",
+      "phase": 0,
+      "points": 4
+    },
+    {
+      "room": "aja-is-anchor",
+      "phase": 0,
+      "points": 2
+    },
+    {
+      "room": "aja-is-anchor",
+      "phase": 1,
+      "points": 3
+    },
+    {
+      "room": "city-heart",
+      "phase": 0,
+      "points": 2
+    },
+    {
+      "room": "city-heart",
+      "phase": 1,
+      "points": 5
     }
   ],
   "browserErrors": [],
@@ -214,12 +264,72 @@
     "contrast": false,
     "captions": false
   },
+  "hintPerf": {
+    "baseline": {
+      "samples": 38,
+      "medianMs": 33.29999999999973,
+      "p95Ms": 33.40000000000009,
+      "particles": 0
+    },
+    "visible": {
+      "samples": 39,
+      "medianMs": 33.29999999999927,
+      "p95Ms": 33.400000000000546,
+      "particles": 0
+    }
+  },
+  "explicitHint": {
+    "screen": "play",
+    "run": {
+      "room": 0,
+      "phase": 0,
+      "attempts": 0,
+      "interactions": 0,
+      "solutions": [],
+      "complete": false
+    },
+    "settings": {
+      "master": 0.78,
+      "music": 0.5,
+      "sfx": 0.75,
+      "reduceMotion": true,
+      "contrast": false,
+      "captions": false
+    },
+    "room": "awakening-winch",
+    "phase": 0,
+    "hintVisible": true,
+    "hintPoints": 3
+  },
   "pauseVisible": "pause",
   "failure": {
     "screen": "fail",
     "reason": "还没有经过绞盘"
   },
   "directAccepted": false,
+  "failureHint": {
+    "screen": "play",
+    "run": {
+      "room": 0,
+      "phase": 0,
+      "attempts": 1,
+      "interactions": 0,
+      "solutions": [],
+      "complete": false
+    },
+    "settings": {
+      "master": 0.78,
+      "music": 0.5,
+      "sfx": 0.75,
+      "reduceMotion": true,
+      "contrast": false,
+      "captions": false
+    },
+    "room": "awakening-winch",
+    "phase": 0,
+    "hintVisible": true,
+    "hintPoints": 3
+  },
   "pointerRoom0": {
     "screen": "play",
     "run": {
@@ -239,7 +349,9 @@
       "captions": false
     },
     "room": "split-tension",
-    "phase": 0
+    "phase": 0,
+    "hintVisible": false,
+    "hintPoints": 0
   },
   "final": {
     "screen": "ending",
@@ -262,14 +374,16 @@
       "captions": false
     },
     "room": "city-heart",
-    "phase": 1
+    "phase": 1,
+    "hintVisible": false,
+    "hintPoints": 0
   },
   "endingVisible": true,
   "metrics": {
-    "samples": 485,
-    "medianMs": 16.699999999999818,
-    "p95Ms": 33.400000000000546,
-    "particles": 12
+    "samples": 453,
+    "medianMs": 33.29999999999927,
+    "p95Ms": 33.400000000001455,
+    "particles": 2
   },
   "passed": true
 }

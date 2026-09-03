@@ -18,7 +18,7 @@
   };
   const defaults = { master: .78, music: .5, sfx: .75, reduceMotion: false, contrast: false, captions: true };
   const state = {
-    screen: 'title', run: P.makeRun(), draft: [], drawing: false, activeLine: null,
+    screen: 'title', run: P.makeRun(), draft: [], drawing: false, activeLine: null, hintLine: null,
     solvedLines: {}, resolution: null, resolveStarted: 0, startedAt: 0, elapsedBefore: 0,
     roomEntered: 0, introStarted: 0, introStep: 0, returnOverlay: 'title',
     shake: 0, flash: 0, hintUntil: 0, toastUntil: 0, dialogueUntil: 0,
@@ -219,6 +219,20 @@
     path(pts);ctx.strokeStyle='#d9fff5';ctx.lineWidth=3.2;ctx.shadowBlur=12;ctx.stroke();
     const p=polyPoint(pts,(t*.00028)%1);ctx.fillStyle='#fff5c7';ctx.shadowColor='#f2c66d';ctx.shadowBlur=18;ctx.beginPath();ctx.arc(p.x,p.y,5,0,Math.PI*2);ctx.fill();ctx.restore();
   }
+  function drawHintLine(points,t,room) {
+    if(!points||points.length<2)return;
+    const pulse=.72+.14*Math.sin(t*.006);
+    const devices=P.phaseFor(room,state.run.phase).devices;let deviceOrder=0;
+    ctx.save();ctx.lineJoin='round';ctx.lineCap='round';
+    path(points);ctx.strokeStyle=`rgba(242,198,109,${.18*pulse})`;ctx.lineWidth=14;ctx.stroke();
+    path(points);ctx.setLineDash([12,10]);ctx.lineDashOffset=-(t*.035)%22;ctx.strokeStyle=`rgba(255,231,169,${pulse})`;ctx.lineWidth=3;ctx.stroke();ctx.setLineDash([]);
+    for(let i=1;i<points.length;i++){
+      const a=points[i-1],b=points[i],q=.52,x=lerp(a.x,b.x,q),y=lerp(a.y,b.y,q),ang=Math.atan2(b.y-a.y,b.x-a.x);
+      ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle='#ffe7a4';ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-7,-6);ctx.lineTo(-3,0);ctx.lineTo(-7,6);ctx.closePath();ctx.fill();ctx.restore();
+      const device=devices.find(d=>dist(d,b)<4);if(device){deviceOrder++;ctx.save();ctx.translate(b.x,b.y);ctx.fillStyle='rgba(5,17,27,.92)';ctx.strokeStyle='#ffe7a4';ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,-25,12,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.fillStyle='#fff4cd';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(String(deviceOrder),0,-25);ctx.restore();}
+    }
+    ctx.restore();
+  }
   function drawAja(pos,t,action) {
     const bob=state.settings.reduceMotion?0:Math.sin(t*.009)*2;
     ctx.save();ctx.translate(pos.x,pos.y+bob);if(action==='pedal')ctx.translate(0,5);if(action==='winch')ctx.rotate(Math.sin(t*.018)*.05);
@@ -256,9 +270,12 @@
     const v=viewportTransform();ctx.save();
     const shake=state.settings.reduceMotion?0:state.shake*Math.sin(now*.07);ctx.translate(shake,shake*.5);state.shake*=.9;
     const room=P.ROOMS[state.run.room]||P.ROOMS[0];drawBackdrop(now,room);drawPlatforms(room);drawHazards(room,now);
+    if(state.hintLine)drawHintLine(state.hintLine,now,room);
     const saved=state.solvedLines[state.run.room]||[];saved.forEach(line=>drawLight(line,now,.32,1));
     if(state.draft.length>1)drawLight(state.draft,now,.82,1);
-    if(state.activeLine)drawLight(state.activeLine,now,1,state.screen==='resolve'?state.resolveProgress:1);
+    // The player's submitted line exists immediately; only Aja and the pulse
+    // travel along it. This keeps the character from visually outrunning the path.
+    if(state.activeLine)drawLight(state.activeLine,now,1,1);
     allDevices(room).forEach(d=>drawDevice(d,now));drawSource(room,now);
     let aja=P.sourceFor(room,state.run.phase);
     if(state.screen==='resolve'&&state.activeLine){aja=polyPoint(state.activeLine,ease(state.resolveProgress));}
@@ -315,7 +332,7 @@
     Audio.ensure();state.run={...P.makeRun(),...state.savedRun,solutions:[...(state.savedRun.solutions||[])]};state.startedAt=performance.now();enterRoom(false);
   }
   function enterRoom(announce=true) {
-    state.activeLine=null;state.draft=[];state.resolution=null;state.resolved=false;state.resolveProgress=0;setScreen('play');updateHUD();persist();
+    state.activeLine=null;state.hintLine=null;state.draft=[];state.resolution=null;state.resolved=false;state.resolveProgress=0;$('hintButton').textContent='需要一点启发？';setScreen('play');updateHUD();persist();
     const r=P.ROOMS[state.run.room];if(announce)showToast(`${r.number} · ${r.title}`,1500);
     const words=['光能拉动比你更重的东西。','线的形状，也是一种力量。','让我看见机关醒来的顺序。','有些门，需要一个人留下来。','最后一次。把选择留在城市里。'];
     speak(words[state.run.room],2500);
@@ -335,13 +352,13 @@
     state.run=P.applyResult(state.run,result);persist();Audio.reject();state.shake=7;state.flash=.16;ui.failReason.textContent=result.reason;setScreen('fail');
   }
   function showEnding() {
-    setScreen('ending');const ms=state.elapsedBefore;$('endTime').textContent=formatTime(ms);$('endAttempts').textContent=state.run.attempts;
+    state.hintLine=null;setScreen('ending');const ms=state.elapsedBefore;$('endTime').textContent=formatTime(ms);$('endAttempts').textContent=state.run.attempts;
     const sol=state.run.solutions[state.run.solutions.length-1];$('endSolution').textContent=sol==='long'?'稳固长路':'锋利短路';
     Audio.accept();localStorage.removeItem(SAVE);$('continueButton').hidden=true;
   }
   function formatTime(ms){const s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
   function showHint() {
-    const r=P.ROOMS[state.run.room];ui.previewText.textContent=r.hint;state.hintUntil=performance.now()+5000;showToast('提示已展开',900);
+    const r=P.ROOMS[state.run.room];state.hintLine=canonical(state.run.room,state.run.phase,'short');ui.previewText.textContent='已显示当前阶段的通关路线 · 沿金色虚线描画';$('hintButton').textContent='答案路线已显示';showToast('通关路线已显形',1300);
   }
 
   canvas.addEventListener('pointerdown',e=>{
@@ -397,12 +414,13 @@
     if(roomIndex===1)pts.splice(2,0,{x:690,y:620});return pts;
   }
   window.lightlineV2={
-    getState:()=>JSON.parse(JSON.stringify({screen:state.screen,run:state.run,settings:state.settings,room:P.ROOMS[state.run.room]?.id,phase:state.run.phase})),
+    getState:()=>JSON.parse(JSON.stringify({screen:state.screen,run:state.run,settings:state.settings,room:P.ROOMS[state.run.room]?.id,phase:state.run.phase,hintVisible:!!state.hintLine,hintPoints:state.hintLine?.length||0})),
     start:startNew,continue:continueRun,restartRoom,
     submit(points){if(state.screen!=='play')return false;state.draft=points;state.drawing=true;release();return state.resolution?.valid||false;},
     solveCurrent(variant='short'){return this.submit(canonical(state.run.room,state.run.phase,variant));},
     canonical,
     skipIntro:()=>enterRoom(false),
+    resetMetrics:()=>{state.rafSamples=[];},
     metrics:()=>{const a=state.rafSamples.slice(-600).sort((x,y)=>x-y);return{samples:a.length,medianMs:a[Math.floor(a.length*.5)]||0,p95Ms:a[Math.floor(a.length*.95)]||0,particles:state.particles.length};},
     screenshot:async(name='shot')=>fetch('/_shot?name='+encodeURIComponent(name),{method:'POST',body:canvas.toDataURL('image/png')}).then(r=>r.text())
   };

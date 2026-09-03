@@ -6,9 +6,9 @@
     "hard": [
       "桌面浏览器直接可玩，不需要安装运行时、不需要构建步骤。",
       "场景内容尽可能由代码生成：天空、城市、平台、角色、粒子、声音全部程序化。",
-      "支持按住—连续指向—随节拍松开的单一驭线输入，并提供点击切换的等价模式。",
-      "承重规则确定性且可解释：容量、负载与断裂位置在松开前即可见。",
-      "保留最近 10 秒模拟缓冲，可回溯到留有助跑余量的合法快照。",
+      "只保留按下—拖动—松开的单一输入，不再提供点击模式或节拍判定。",
+      "同一条线必须同时表达路径、张力和机关顺序，规则确定且失败原因可解释。",
+      "五间手工验证房包含绞盘、棱镜、踏座与阴影，并要求阿迦直接操作环境。",
       "开始、教程、完整路线、暂停、继续、成功、失败、重开均可达。",
       "状态反馈不依赖颜色，静音时仍可完成。"
     ],
@@ -18,9 +18,9 @@
       "视觉令牌集中，Gate 3 通过后可整体替换而不动玩法。"
     ],
     "unknowns": [
-      "低端集成显卡上的 p95 帧时间尚未在真实目标机型测量。",
-      "触控板玩家的长按疲劳程度未验证。",
-      "同步窗口 ±145ms 对不同玩家是否过宽或过窄，需要人工试玩反馈。"
+      "低端集成显卡上的 60 秒 p95 帧时间尚未在真实目标机型测量。",
+      "第二室的张力窗口是否无需文字即可被首次玩家理解，仍需人工试玩。",
+      "五房难度曲线、平均 8–12 分钟目标和终局双解发现率仍需人工试玩。"
     ]
   },
   "criteria": {
@@ -83,6 +83,34 @@
   ],
   "spikes": [
     {
+      "id": "v2-mechanism-order-and-tension",
+      "scope": "验证一条折线能否确定识别机关顺序、危险穿越顺序、分段张力、双阶段来源和终局双解。",
+      "result": "PASS",
+      "evidence": {
+        "command": "node --test games/odyssey-drifter-opus-51/tests/puzzle-v2.test.mjs",
+        "tests": 8,
+        "pass": 8,
+        "fail": 0,
+        "directStrategyPassRate": 0
+      },
+      "remaining": "张力谜题的主观可读性仍由人类 Gate 2 试玩判定。"
+    },
+    {
+      "id": "v2-real-browser-complete-loop",
+      "scope": "在 Edge 1440×900 中验证产品壳、真实鼠标首关、失败恢复、七阶段、终局与运行时异常。",
+      "result": "PASS",
+      "evidence": {
+        "command": "node tests/browser-smoke.mjs http://localhost:5184/ 9224",
+        "complete": true,
+        "attempts": 8,
+        "interactions": 10,
+        "browserErrors": 0,
+        "medianFrameMs": 16.7,
+        "p95FrameMs": 33.4
+      },
+      "remaining": "无头浏览器性能数据不是目标低端机器的 60 秒性能认证。"
+    },
+    {
       "id": "full-route-autopilot",
       "scope": "用浏览器内自动驾驶跑完整条路线，验证驭线到承重到落点到停息到终局的链路每一跨都成立。",
       "result": "PASS",
@@ -113,22 +141,23 @@
     }
   ],
   "recommendation": "采用浏览器原生 Canvas 2D + 零依赖经典脚本。置信度中高：交付门槛与机制直达性的优势明确；画面上限低于 WebGL，但本作的视觉语言（剪影 + 发光曲线 + 大气透视）恰好落在 Canvas 2D 擅长的区间。",
-  "migrationBoundary": "承重规则（src/rules.js）、曲线几何（src/core.js）与关卡生成（src/world.js）不接触任何渲染 API，可整体迁移到别的运行时；渲染集中在 backdrop/fx/aga/lightline 的 draw 函数与 palette.js 的令牌里。",
+  "migrationBoundary": "新版五房数据与命中、顺序、危险、张力、预算规则集中在 src/puzzle-v2.js，不接触 DOM 或 Canvas；产品状态、输入、渲染、动画与声音集中在 src/studio-v2.js，可在不重写关卡规则的前提下迁移运行时。",
   "selected": "browser-canvas2d-vanilla",
   "humanApproval": {
-    "runId": "run-20260903-opus51-build",
+    "runId": "run-20260903-opus51-mechanic-r1",
     "decisionMaker": "human_user",
-    "result": "approved_by_directive",
-    "directive": "新建 games/odyssey-drifter-opus-51，参考《光线之上》立项报告重新设计，不受旧版 odyssey-drifter 约束；直接交付有审美的高质量、玩法完整的工作室级别游戏，场景内容尽可能使用代码生成。",
-    "scope": "用户批准的是：解除旧版 Godot 技术锁定、场景由代码生成、直接交付完整可体验版本。用户没有逐项指定运行时；浏览器原生 Canvas 2D 是在该指令下由 prototype 侧选定的，尚未经用户单独确认。",
+    "result": "v2_proposal_approved_for_implementation",
+    "directive": "在收到五房共织机关重构提案后，用户回复‘好的，直接生成一个有审美的高质量、设计精良、玩法完整的工作室 studio 级别的游戏，场景内容尽可能使用代码生成’。",
+    "scope": "批准实现 v2 提案并继续使用代码生成场景；不等同于通过 Gate 2，也不等同于批准正式 StyleBible 或 Gate 3 资产生产。Canvas 2D 继续沿用既有 Tech Fit Lock，并由本轮最小机制 spike 复验。",
     "reopenCondition": "若用户希望回到 Godot 或改用 WebGL，本决策即刻重开；迁移边界见 migrationBoundary。",
-    "approvedAt": "2026-09-03T18:40:00+08:00"
+    "approvedAt": "2026-09-03T17:53:19+08:00"
   },
   "locked": true,
   "verificationCommands": {
     "dev": "node games/odyssey-drifter-opus-51/serve.mjs 5183",
     "build": null,
-    "test": "node --test games/odyssey-drifter-opus-51/tests/core.test.mjs",
-    "quality": "npm run validate:library && node --test games/odyssey-drifter-opus-51/tests/core.test.mjs"
+    "test": "node --test games/odyssey-drifter-opus-51/tests/*.test.mjs",
+    "browser": "node games/odyssey-drifter-opus-51/tests/browser-smoke.mjs http://localhost:5184/ 9224",
+    "quality": "npm run validate:library && node --test games/odyssey-drifter-opus-51/tests/*.test.mjs"
   }
 }
