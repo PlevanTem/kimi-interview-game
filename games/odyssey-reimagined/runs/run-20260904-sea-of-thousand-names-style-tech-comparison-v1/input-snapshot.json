@@ -1,0 +1,25 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-style-tech-comparison-v1",
+  "capturedAt": "2026-09-04T01:00:29+08:00",
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "humanRequest": "做实验对比测试基于这些技术方案与参考风格物，应用在盐岬港场景和 Demo UI。",
+  "humanShortlist": [
+    {"styleId": "painterly-cinematic-3d", "technology": "Babylon.js"},
+    {"styleId": "abstract-relic-diorama", "technology": "Three.js + React Three Fiber"},
+    {"styleId": "living-manuscript", "technology": "Three.js + React Three Fiber"}
+  ],
+  "authoritativeInputs": {
+    "gameBrief": "games/odyssey-reimagined/context/game-brief-sea-of-thousand-names.json",
+    "gameplay": "games/odyssey-reimagined/context/gameplay-sea-of-thousand-names-v1.json",
+    "moodboardData": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-art-research-v1/moodboard-data.json",
+    "technologyDecisionBeforeExperiment": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v3.json"
+  },
+  "locksAtStart": {
+    "gate1": "locked",
+    "techFit": "unlocked",
+    "gate2": "blocked",
+    "gate3": "blocked"
+  },
+  "scopeStatement": "实验级实时场景和 UI，不是正式玩法实现、StyleBible 或 Gate 3 资产生产。"
+}

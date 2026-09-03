@@ -1,0 +1,240 @@
+{
+  "$schema": "../../../schemas/iteration-ledger.schema.json",
+  "runId": "run-20260904-sea-of-thousand-names-action-vertical-slice-v1",
+  "entries": [
+    {
+      "id": "iter-isolate-frozen-odyssey-v1",
+      "issue": "现有 odyssey-drifter 已有人工锁定 Gate 1 和开发内容，直接覆盖会破坏审计历史，也违反 game-concept-forge 不在已冻结 brief 上重新发散的边界。",
+      "evidence": [
+        "games/odyssey-drifter/manifest.json 标记 gate1=locked。",
+        "games/odyssey-drifter/context/game-brief-lightline.json 标记 frozen=true。",
+        "用户明确要求新建 worktree 并忽略既有开发内容。"
+      ],
+      "rootCause": "重新构思与继续迭代属于不同决策链，但仓库原先只有一个 active game。",
+      "change": "在 concept/odyssey-reimagined worktree 中登记新 game id，建立独立 manifest、context、runs、assets、src、tests 与 docs，并把旧游戏限定为历史。",
+      "verification": "npm.cmd run validate:library 与 games/odyssey-reimagined/tests/validate-concept.mjs 均通过；新 context 的 sources/readOrder 不跨游戏。",
+      "before": "若复用旧 id，会让新候选与已锁定 Gate、技术和资产混在同一事实源。",
+      "after": "新概念拥有独立、未冻结、等待人工选择的 Gate 1 上下文。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-awards-versus-talks-v1",
+      "issue": "TGA、金摇杆和 GDCA 主要是奖项活动，不能仅凭获奖页面提炼战斗、关卡、动画或 AI 的因果方法。",
+      "evidence": [
+        "TGA 与 GDCA 官方归档提供获奖结果，但不提供所列游戏机制的完整技术论证。",
+        "GDC Vault 与 BAFTA 原始活动/全文页面提供讲者、主题、摘要或幻灯。"
+      ],
+      "rootCause": "把行业认可信号与设计方法证据混为一类。",
+      "change": "将奖项只用于筛选案例；每个方法条目回溯 GDC、BAFTA、开发者幻灯或原典，并标记 A/B/C 证据等级。",
+      "verification": "source-audit.json 登记 28 条来源；validate-concept.mjs 验证来源数量、证据等级和 HTTPS 链接。",
+      "before": "奖项可能被误写成玩法有效的因果证据。",
+      "after": "获奖事实与设计推断分离，摘要之外的细节不冒充已核实演讲内容。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-vitest-nested-e2e-boundary-v1",
+      "issue": "仓库全量 npm test 会把 games/odyssey-drifter/tests/e2e/graybox.spec.ts 交给 Vitest，导致 Playwright 的 test.beforeEach 在错误 runner 中报错。",
+      "evidence": [
+        "npm.cmd test：17 个单元断言通过，但 graybox.spec.ts suite 报 Playwright Test did not expect test.beforeEach() to be called here，退出码 1。",
+        "vitest.config.ts 仅排除 tests/e2e/**，没有排除 games/*/tests/e2e/**。"
+      ],
+      "rootCause": "Vitest 的 exclude 只覆盖根级 e2e 路径，未覆盖多游戏目录中的嵌套 Playwright 测试。",
+      "change": "本轮不跨范围修改旧游戏或根级测试配置；验证命令显式排除 games/odyssey-drifter/tests/e2e/**，同时保留全量失败记录。",
+      "verification": "npx.cmd vitest run --exclude games/odyssey-drifter/tests/e2e/**：4 个文件、17 个断言全部通过，退出码 0；全量 npm test 仍待根级维护任务修复。",
+      "before": "全量单元入口错误收集 Playwright suite。",
+      "after": "本轮相关验证有独立通过证据；仓库级 runner 边界缺陷仍公开且未伪装为修复。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-demo-duration-not-product-scope-v2",
+      "issue": "3–5 分钟、单场景和单核心动词原本只适合作为某次 Demo 的可选边界，却被技能、代理提示词、GameBrief 和验证器共同固化为完整游戏概念的要求。",
+      "evidence": [
+        ".agents/skills/game-concept-forge/SKILL.md 将 3–5 minute duration 与 one-scene/one-verb 列为必填，并淘汰多场景/多动词需求。",
+        ".codex/agents/concept-director.toml 在主题发散前锁定 3–5 分钟、键鼠、程序化 3D、单场景与单动词。",
+        "brief-odyssey-reimagined-v1、IDEATION v1 和 validate-concept.mjs 都把 3–5 分钟当成硬通过条件。",
+        "旧 odyssey-drifter 的人工 Gate 记录已经放宽完整游戏 3–5 分钟限制，但共享技能与代理配置没有同步。"
+      ],
+      "rootCause": "数据模型只有 sessionMinutes 和 prototype scope，没有把完整产品愿景与局部验证切片分成两个决策对象；同一错误约束又被复制进提示词和测试，形成自证循环。",
+      "change": "新增项目级产品愿景/Demo 边界；更新 game-concept-forge、vertical-slice-design、concept-director 与 GameBrief schema；建立 v2 Brief 和 rescope run；旧三案及排名退出 active context，Gate 1 退回 not_started。",
+      "verification": "JSON 解析、npm.cmd run validate:library、npm.cmd run validate:context、npm.cmd run validate:skills、node games/odyssey-reimagined/tests/validate-concept.mjs、npm.cmd run lint、17 项 Vitest 与 npm.cmd run build 均通过；活跃规则残留扫描只允许否定旧硬约束或历史审计文本。skill-creator 的 Python quick_validate.py 因可用解释器缺少 PyYAML 未能运行，未计为通过。",
+      "before": "候选先按短 Demo 可实现性裁剪，再把裁剪结果误称为完整游戏推荐。",
+      "after": "完整游戏潜力先独立评估；Demo 只负责取得最高风险假设的局部证据，无统一分钟、场景或动词上限。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-ideation-v2-full-game-first",
+      "issue": "旧 IDEATION 先用短 Demo 的单场景、单动词和固定时长裁剪候选，无法回答哪种《奥德赛》完整游戏真正值得做。",
+      "evidence": [
+        "用户明确选择按新规则完全重做 IDEATION，不保留旧三案作为候选种子。",
+        "本轮从原典的身份、款待、归乡、船员、认识与延迟后果出发，独立发散 12 种玩法架构。",
+        "22 条原典、作者官方页与 GDC 官方资料被登记到 research-audit.json；来源事实与设计推断分开标注。"
+      ],
+      "rootCause": "产品愿景和 Demo 验证曾使用同一个范围模型与总分，导致可快速实现被误当成产品价值，创意在评分前已被缩小。",
+      "change": "建立 IDEATION v2 与全新三候选；仅按产品潜力排序，并把 Demo 可验证性作为独立风险限定。完整游戏允许多场景、多系统与长期结构，Demo 只验证每案最高风险假设。",
+      "verification": "JSON 解析 7 个活动文件通过；validate-odyssey-ideation-v2 验证恰好 3 个候选、22 条来源、两套评分算术、旧方案隔离、Gate 1 未开始与无固定 sessionMinutes；npm.cmd run validate:library、validate:context、validate:skills、lint、17 项 Vitest、npm.cmd run build 和 git diff --check 均以退出码 0 通过。",
+      "before": "三个小型单场景概念围绕短时通关可行性竞争，奥德赛主题主要成为包装。",
+      "after": "《千名之海》《众神记得》《两岸之间》分别以身份传播、神话记忆与双岸因果构成完整产品；Gate 1 仍为 not_started，等待 DEFINE 后的人类选择。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-gate1-lock-and-design-v1",
+      "issue": "用户要求进入高品质 Demo 制作，但活动上下文仍无人工 Concept Lock、冻结 Brief、玩法状态机和技术能力需求；直接编码会让现有工具反向决定玩法。",
+      "evidence": [
+        "用户明确回复‘锁定《千名之海》（推荐）’。",
+        "Gate 1 前 concepts-v2.json 仍为 draft/selection=null，manifest.gate1=not_started。",
+        "vertical-slice-design 要求先读取冻结 Brief 与人工 Gate 1 决策，并在技术选择前完成引擎无关规格。"
+      ],
+      "rootCause": "IDEATION 只说明产品方向和风险切片，尚未把身份、证据、权限、NPC 记忆、教程、失败和重置变成可实现契约。",
+      "change": "记录人工 Gate 1；冻结《千名之海》Brief；建立盐岬港玩法规格、状态转换、信息反馈、确定性钩子、验收问题和参考语料库；明确可编辑插槽与不可漂移母版锚点。",
+      "verification": "JSON 解析 10 个活动文件通过；validate-sea-of-thousand-names-design-v1 验证人工 Gate 1、冻结 Brief、恰好三个原始候选、12 条带复用边界的参考来源、状态机、教程、反馈和确定性证据；validate:library、validate:context、validate:skills、lint、17 项 Vitest、build 与 git diff --check 均以退出码 0 通过。",
+      "before": "概念已推荐但未锁定，身份机制仍是叙述，没有实现边界。",
+      "after": "Gate 1 已锁定；DESIGN v1 可供 Tech Fit 比较，但平台、镜头和技术仍未获人工锁定，代码生产继续受阻。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-browser-tech-fit-v1",
+      "issue": "浏览器可玩链接已被设为交付优先级，但项目尚未比较技术路线，也没有证明身份、权限与见证者记忆能以确定性状态驱动浏览器 3D 呈现。",
+      "evidence": [
+        "用户明确选择‘浏览器可玩链接优先’，但没有锁定引擎。",
+        "Three.js/R3F 独立 spike 的 4 项状态测试通过，Vite 静态构建与 HTTP 200 通过。",
+        "构建产物首个 JavaScript chunk 为 1065.93 kB，gzip 296.19 kB，并触发 500 kB 警告。",
+        "浏览器运行时没有任何已连接浏览器，无法取得画面、交互或控制台证据。"
+      ],
+      "rootCause": "平台优先级、引擎选择、玩法状态和渲染层尚未拆成可单独验证与回退的决策；如果直接进入正式源代码，仓库现有依赖会被误当成技术批准。",
+      "change": "比较 Three.js/R3F、Babylon.js 与 Godot 4 Web 三条路线；把身份/事实/权限/伊翁记忆放入纯 TypeScript 状态模型，使用一次性 R3F 场景验证编译和状态驱动；登记迁移边界、失败信号、包体警告与浏览器证据缺口。",
+      "verification": "4/4 spike 单元测试通过；49 模块 Vite 构建通过；本地服务 HTTP 200；technology-decision 保持 locked=false、humanApproval=null，等待人工 Tech Fit Lock。视觉交互仍为 blocked_environment，不计为验证通过。",
+      "before": "只有浏览器优先目标，没有技术候选评分、决策型 spike 或明确回退点。",
+      "after": "推荐 Three.js/R3F，但 manifest.technologyDecision 仍为 null；正式灰盒继续受人工 Tech Fit Lock 阻挡。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-visual-quality-tech-fit-v2",
+      "issue": "首版 Tech Fit 将浏览器交付、确定性测试和可逆性置于高权重，但用户随后明确要求技术方案优先支撑高质量与美学效果；沿用旧权重会低估美术作者工具与视觉管线成本。",
+      "evidence": [
+        "用户明确新增‘demo 追求高质量和美学效果’作为技术选型要求。",
+        "Babylon 官方能力清单包含 PBR、HDR/EXR、软/级联阴影、体积光、后处理、反射、Node Material、Node Render Graph、动画重定向、glTF 与 Inspector。",
+        "Three WebGPU 后处理文档证明其具备节点后处理、MRT、tone mapping 与 LUT 调色能力，视觉上限并不构成淘汰理由。",
+        "Godot 官方架构文档说明 Web 所用 Compatibility 渲染路径缺少 SDFGI 与体积雾/雾体积等高端能力。",
+        "当前浏览器控制面仍无已连接浏览器，无法取得同场景画面对比。"
+      ],
+      "rootCause": "旧评分把技术架构风险作为主要未知，但新增目标把‘美术意图能否高效转化为稳定浏览器画面’提升为新的决策型未知。",
+      "change": "建立 Tech Fit v2，增加美学上限与美术作者效率权重；Babylon 暂定第一、Three 第二、Godot 第三；设定小于 2 分必须视觉 bake-off 或人工接受风险的规则；保留 WebGL2 基线、纯 TypeScript 规则层与 Blender/glTF 迁移边界。",
+      "verification": "v2 权重合计 1；三个候选算术可验证；Babylon 92.80、Three 91.55、Godot 84.30；technology 仍 locked=false、humanApproval=null。视觉 bake-off 尚未执行，因此本条保持 open。",
+      "before": "Three/R3F 因可逆性与已完成状态 spike 暂定领先，但没有把作者工具和目标帧一致性作为主要指标。",
+      "after": "Babylon 因综合视觉生产效率暂定领先 1.25 分；证据差距不足以自动锁定，正式实现继续受阻。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-three-route-aesthetic-experiment-v3",
+      "issue": "v2 的技术能力评分仍然是预测性判断；用户要求先比较 Three/R3F、Babylon.js 与 Godot 4 Web 的实际美学输出，再决定最终技术。",
+      "evidence": [
+        "用户明确要求设计三方案实验、按维度评分并基于实验结果决策。",
+        "把引擎名称写进三个图像生成提示词只会测量图像模型的品牌联想，不会运行对应渲染器。",
+        "已使用同一无引擎品牌提示生成 1672×941 盐岬港目标帧，文件 SHA-256 为 cc2b0c8b8c172928a6ec8c1089faa5195e23a6cf9d0afc68cd62dbd8a54d0095。",
+        "环境检查显示 Three/R3F 可用，@babylonjs/core、Godot、Blender 未安装；此前浏览器发现为空。",
+        "隔离安装 @babylonjs/core@9.23.0 的网络授权被用户拒绝，未产生包或锁文件。",
+        "用户指出 Godot 已有两处；只读核对确认两份均为 4.7.2.stable.official.ed1daf0bf，编辑器 SHA-256 同为 ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424。",
+        "主仓库共享 Godot 为 self-contained，但 editor_data/export_templates 当前没有文件。",
+        "用户批准补齐依赖后，@babylonjs/core@9.23.0 已在隔离实验目录安装并由 npm list 验证。",
+        "Godot 官方 export templates 下载进行到 953,465,816 字节；用户质疑重复安装后立即取消并删除未完成归档。两份现有 Godot 未被改动。"
+      ],
+      "rootCause": "技术能力、图像生成审美和实际实时渲染效果是三类不同证据；v2 没有执行相同输入下的可比渲染。",
+      "change": "撤回暂定赢家，创建三路线受控实验；生成引擎无关目标帧并登记来源/Prompt/哈希；锁定几何、镜头、颜色、WebGL2、交互和评分规则；美学占 60%，生产证据占 40%，增加最低分、盲评与权重敏感性测试。",
+      "verification": "目标帧存在且在 3 MiB 实验预算内；实验资产 ID 唯一、无运行时消费者；三个候选结果、推荐和最终技术保持 null；Godot 版本/重复哈希/模板下载取消与清理、Babylon 隔离安装和浏览器证据缺口均被显式标记。",
+      "before": "Babylon 依据能力清单暂定领先 1.25 分，可能把预测误当成画面结果。",
+      "after": "最终选型重新置为未决定；只有完成三条路线的真实捕获、评分与敏感性检查后才能请求 Tech Fit Lock。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-art-direction-divergence-research-v1",
+      "issue": "首轮三张美术图虽然分别命名为盐蚀青铜、活壁画和暮潮剧场，但共享写实地中海港口、相近广角构图、相近人体比例以及石材/海水资产语法，实际差异主要是调色与表面材质。",
+      "evidence": [
+        "用户明确判断三案差异太小，并要求先研究获奖作品、经典作品与 Awwwards 案例，再整理 moodboard。",
+        "三张图都以港口广场、前景人物、拱门/台阶、远海为核心空间骨架，没有改变媒介、空间模型或角色表演模型。",
+        "研究审计登记 16 条奖项机构、开发者官方或开发者署名来源；没有复制远程素材，也没有生成新的《千名之海》场景概念图。"
+      ],
+      "rootCause": "上一轮把气氛关键词误当成艺术方向，固定同一空间骨架和写实资产语法后，只允许灯光、调色与表面风化发生变化。",
+      "change": "将上一轮三案标记为因差异不足被否决；用媒介、空间组织、角色表演和机制显影四层定义八种艺术生产范式；创建自包含 CSS 风格指纹 moodboard，明确 Awwwards 只证明浏览器呈现先例，不证明长时系统玩法。",
+      "verification": "JSON 解析通过；项目验证器验证恰好八个未选择方向、16 条 HTTPS 来源、零复制素材、零新场景概念图、StyleBible/正式资产注册表仍为空，以及上一轮否决记录存在；validate:library、validate:context 与 git diff --check 均以退出码 0 通过。Playwright 在 1440px 视口完成全页渲染，截图经人工检查无溢出、遮挡或缺卡。",
+      "before": "一个写实地中海方向的三种渲染预设被误当成三种美术提案。",
+      "after": "八种候选至少在媒介、空间模型或角色表演模型上结构性分离；等待人类缩选，未提前混搭、生成场景图或锁定视觉。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-reference-images-and-arcane-v2",
+      "issue": "第一版 HTML 用原创 CSS 图形指纹代替真实参考图，无法让人类直接检查每项结论是否确实来自作品画面；同时缺少用户关注的 Arcane 绘画性 3D 路线。",
+      "evidence": [
+        "用户明确要求 HTML 对比真实作品图像，并从具体图像总结特征后再选择。",
+        "第一版 HTML 的八张主图均为 CSS 抽象图形，虽避免版权复制，但证据链对视觉决策过弱。",
+        "Netflix 官方制作解析提供 Arcane 的氛围、场景与角色开发图，并披露约 450 名艺术家高峰团队和单设计 20 轮、三周至三个月的制作量级。"
+      ],
+      "rootCause": "上一版过度优化了版权与独立性边界，把真实图像证据也一并移除；这让特征总结难以被人类反证。",
+      "change": "HTML 改为远程引用 14 张作品方、平台方或 Awwwards 图像并逐张标注来源；每个方向新增可观察特征；加入第九项 Arcane 对应的绘画性电影 3D，并明确与 Hades 型肖像方案的结构差异及浏览器缩减策略。",
+      "verification": "JSON 解析通过；Playwright 实测 14/14 张远程参考图 naturalWidth 大于 0、无加载失败；1440px 全页截图经人工检查，九张卡片、署名、观察结论和 Arcane 横向重点卡均无溢出或遮挡；项目验证器、validate:library、validate:context、ESLint 与 git diff --check 均以退出码 0 通过。",
+      "before": "人类只能根据抽象 CSS 风格指纹和文字选择，Arcane 未纳入比较。",
+      "after": "人类可直接对照真实作品图像、来源、图中可观察特征、迁移规则和成本风险；Arcane 作为独立生产范式参与比较。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-action-vertical-slice-and-previsual-v1",
+      "issue": "DESIGN v1 把完整战斗列为 omitted system，实际切片集中在身份选择，无法证明用户要求的动作冒险核心玩法，也没有可用的主角动作、角色阵容、装备环境拆件、教程 UI 与传播网络入口。",
+      "evidence": [
+        "用户明确要求按重构计划实施，并要求第三人称动作冒险、关键 UI、剧情 storyboard、主角动作 spritesheet、拆件资产和操作指引。",
+        "gameplay-sea-of-thousand-names-v1.json 的 omittedSystems 包含完整战斗，cannotProve 包含战斗平衡。",
+        "浏览器实测首轮教学招架窗口与攻击落点不匹配；扩大窗口后能稳定产生名线并进入首领战。",
+        "浏览器实际完成标题、观察、身份、守卫、首领、三线拆名、公开誓名、传播预览与离港成功。"
+      ],
+      "rootCause": "前一版把身份系统的最高风险验证误写成整个早期关卡，并延后动作系统；视觉参考也没有进入可审计的资产插槽。",
+      "change": "建立 Brief/GamePlay/DESIGN v2；锁定 Three.js + R3F；实现纯 reducer 战斗状态、两种身份修正、守卫和首领、可招架/不可招架预兆、三条名线、三种胜后处置、第三人称移动镜头、暂停/失败/成功/重开、教程和交互式传播预览；生成并登记五张 previsual reference；将主角、誓卫、港口和船拆成可替换代码部件。",
+      "verification": "game-local Vitest 7/7 通过；TypeScript 与 Vite build 通过；浏览器手动实测完整船长路线并显示 DEMO COMPLETE。Playwright 自动完整路径与项目级验证在同一 run 中执行并记录。",
+      "before": "Demo 只能说明身份权限、事实与见证者概念，战斗和对应剧情不在实现范围。",
+      "after": "早期关卡拥有可正常体验的动作叙事循环；正式视觉仍受 Gate 2 与 Gate 3 阻挡，所有生成图和代码模型只标记 graybox-only。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-hero-action-sheet-chibi-v2",
+      "issue": "旧动作表使用成年写实比例且包含未实现的跳跃、攀越，不能作为当前 Q 版主角或当前代码状态的可信动画依据。",
+      "evidence": [
+        "用户提供当前 4.5 头身低多边形 Q 版角色参考，并要求保持一致性生成 9:16 动作 spritesheet。",
+        "gameState.ts 只有 idle、observe、light、heavy、dodge、parry、namebreak、hit 八个动作状态；GameScene.tsx 有移动和锁定，但没有独立 walk/run/combat-idle 状态。",
+        "Models.tsx 仅为轻击、重击、闪避、招架和受击提供程序化姿态；观察、拆名、战斗待机和完整移动循环缺失。",
+        "DESIGN v2 声称三段轻击，但 reducer 没有 comboIndex 或输入缓存，不能把三段连击标为已实现。"
+      ],
+      "rootCause": "设计动作清单、规则状态和程序化表现没有逐项对齐，旧图又把未来移动能力和当前核心战斗动作混为一张未审计清单。",
+      "change": "新增动作系统事实表与 CSV；以当前 Q 版角色为唯一身份锚点生成 3x4 十二关键姿势；用战斗待机、观察、受击和拆名覆盖当前切片需要，并把奔跑与轻击二明确标为未实现或仅设计状态。原始输出保留，交付图仅中心裁切为精确 936x1664。",
+      "verification": "936x1664 满足精确 9:16；原始与交付图哈希已登记；JSON 解析、audit:assets 与 git diff --check 退出码均为 0；validate:library 在生产前通过，最终上下文验证写入同一 run 结果。",
+      "before": "动作图角色比例与当前角色不一致，且无法区分代码事实、设计承诺和未来动画需求。",
+      "after": "动作表与 12 格关键姿势可一一对应；仍明确不是 rig、clip、root motion 或 Gate 3 正式资产。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-github-candidate-precommit-audit-v1",
+      "issue": "准备同步 GitHub 分支时，fresh E2E 暴露角色实验室入口未接线、图形测试并发时序失真，以及证据截图写入重复嵌套路径三个问题。",
+      "evidence": [
+        "独占服务器 E2E 无法找到‘角色动作实验室’，证明组件存在但 App 未路由。",
+        "两名 Chromium worker 并行时，招架断言在青色预兆之后得到‘错过招架窗口’；单 worker 临时对照证明按钮和键盘都能正确写入第 1 条名线。",
+        "Playwright 从游戏包目录运行，但截图路径以仓库根开头，生成 games/odyssey-reimagined/games/odyssey-reimagined。"
+      ],
+      "rootCause": "角色实验室在主 App 之后实现却未集成；GPU 密集型 WebGL 测试错误并行；测试没有明确工作目录契约。",
+      "change": "通过顶层 query route 接入 CharacterLab；Playwright 使用独占端口、单 worker；已确认预兆可见后的时机按钮跳过冗余稳定性等待；截图改为游戏包相对 runs 路径；删除错误嵌套目录。",
+      "verification": "npm.cmd exec playwright test：角色实验室与完整船长路线 2/2 通过，共 22.8 秒；两张截图存在于正确 run；治理、资产、lint、规则单测和两套构建全部通过。",
+      "before": "已有组件不可访问，图形 E2E 可因资源竞争误报，证据目录结构被污染。",
+      "after": "主 Demo 与角色实验室均有稳定入口；E2E 串行且证据落位；候选分支可独立评审，但 Gate 2/3 仍 blocked。",
+      "status": "verified",
+      "commit": "pending feat/sea-of-thousand-names-action-demo-v1"
+    }
+  ]
+}

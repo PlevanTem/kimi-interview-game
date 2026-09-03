@@ -1,0 +1,229 @@
+{
+  "$schema": "../../../schemas/concept-candidates.schema.json",
+  "briefId": "brief-odyssey-reimagined-v1",
+  "runId": "run-20260903-odyssey-reimagined-discovery",
+  "status": "superseded_by_rescope",
+  "selection": null,
+  "supersededBy": "run-20260903-odyssey-reimagined-rescope",
+  "supersededReason": "候选与排序把 3–5 分钟、单场景和单核心动词同时当成完整游戏边界，不能用于新的 Gate 1 决策。",
+  "scoring": {
+    "formula": "0.30 * feasibility + 0.25 * coreFun + 0.20 * visualMemorability + 0.15 * onboardingClarity + 0.10 * scopeSafety",
+    "weights": {
+      "feasibility": 0.3,
+      "coreFun": 0.25,
+      "visualMemorability": 0.2,
+      "onboardingClarity": 0.15,
+      "scopeSafety": 0.1
+    },
+    "scoreNature": "Concept-stage expert estimate; not player-test evidence and not an automatic Gate 1 decision."
+  },
+  "candidates": [
+    {
+      "id": "concept-nobody-echo",
+      "title": "无人呼救",
+      "rank": 1,
+      "fantasy": "你无法杀死独眼巨人，只能把自己的声音投到洞穴表面，让更强的敌人按你的谎言行动，并亲手撞开你的归路。",
+      "coreVerb": "投声",
+      "pitch": "把声音扔到墙上，诱导独眼巨人撞毁洞门的 3D 诱导型 Boss 谜题。",
+      "coreLoopSeconds": {
+        "min": 20,
+        "max": 35
+      },
+      "coreLoop": [
+        "观察巨人进入聆听姿态，并看清当前可利用石柱与冲撞线。",
+        "按住以积聚声音，指向洞壁或柱后，松开投出一枚可见回声。",
+        "巨人锁定最后一个有效回声并承诺冲撞；玩家用基础移动离开冲撞线。",
+        "巨人撞中结构、空撞或抓到玩家，世界立即给出不同结果。",
+        "利用新打开的空间进入下一轮；三次有效撞击后洞门开启并完成逃脱。"
+      ],
+      "controls": [
+        "方向输入：在单一洞穴平面内移动；移动只服务于站位，不构成第二套解谜系统。",
+        "按住—指向—松开：积聚、定位并投出声音；全程只有这一项核心动作。",
+        "暂停/重开：系统级控制，不参与核心循环。"
+      ],
+      "visualHook": "黑陶红绘般的洞穴剪影中，回声以明亮同心弧贴着岩壁传播；独眼巨人的身体像一座会转向、蓄势、崩落的山。",
+      "contentBudget": {
+        "scenes": 1,
+        "primaryNpc": 1,
+        "interactiveStructures": 3,
+        "bossStates": ["listen", "turn", "charge", "impact", "recover"],
+        "playerStates": ["move", "cast", "hit", "escape"],
+        "audioFamilies": 4,
+        "targetSessionMinutes": "3–5",
+        "formalAssetsBeforeGate3": 0
+      },
+      "graybox": {
+        "geometry": "一个封闭矩形洞穴、一个胶囊体巨人、三个盒体结构、一个出口、回声圆环与冲撞线。",
+        "proofQuestion": "玩家是否会主动把回声放到结构后，并在不看文字说明时预测巨人的冲撞结果？",
+        "passCriteria": [
+          "玩家 30 秒内完成首次有效投声。",
+          "第二轮前能指出巨人将冲向哪个回声。",
+          "3–5 分钟内完成三次有效诱导或明确解释失败原因。"
+        ],
+        "failureSignals": [
+          "玩家把投声理解为伤害弹丸。",
+          "玩家最优策略是在远处等待。",
+          "巨人转向或冲撞结果无法由预兆预测。"
+        ]
+      },
+      "risks": [
+        "投声可能被误读为攻击；必须让伤害为零、结构后果极强。",
+        "若回声落点太自由，巨人导航会变复杂；灰盒先限制到少量可投声表面。",
+        "冲撞镜头若看不见落点，玩家会把失败归因于相机。"
+      ],
+      "scopeGuards": [
+        "不加杂兵、武器、血条或战利品。",
+        "不用 GOAP、动态寻路网重建或语音识别。",
+        "洞穴外逃脱只作为结算画面，不做第二场景。"
+      ],
+      "scores": {
+        "feasibility": 90,
+        "coreFun": 88,
+        "visualMemorability": 90,
+        "onboardingClarity": 86,
+        "scopeSafety": 90,
+        "weightedTotal": 88.9,
+        "arithmetic": "0.30*90 + 0.25*88 + 0.20*90 + 0.15*86 + 0.10*90 = 27 + 22 + 18 + 12.9 + 9 = 88.9"
+      },
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-six-lights",
+      "title": "六盏灯",
+      "rank": 2,
+      "fantasy": "你知道斯库拉不可战胜，也知道漩涡可能吞掉所有人；作为舵手，你必须公开承担每次偏航会让谁活、让谁暴露。",
+      "coreVerb": "偏航",
+      "pitch": "在斯库拉与卡律布狄斯之间，用一次次承诺航线换取归途的风险航行动作。",
+      "coreLoopSeconds": {
+        "min": 25,
+        "max": 40
+      },
+      "coreLoop": [
+        "自动前进的船进入一个海峡短句；水面提前显示漩涡吸入区与斯库拉下一次扑击扇区。",
+        "拖动舵向并松开，承诺一条有惯性的偏航弧；承诺后只能做小幅修正。",
+        "靠近斯库拉可稳定通过但暴露一盏船员灯；挑战漩涡边缘可保灯，但失误会扩大为全船风险。",
+        "结果立即发生：灯被夺、船体失衡、或穿过安全窗；镜头和音色保留损失痕迹。",
+        "船进入下一短句，风险组合发生一次明确变化；通过四段后抵达出口。"
+      ],
+      "controls": [
+        "按住—拖动—松开：设置并承诺偏航弧，是唯一核心动作。",
+        "方向键或等价输入：作为同一偏航轴的无障碍替代，不增加玩法能力。",
+        "暂停/重开：系统级控制。"
+      ],
+      "visualHook": "固定高位视角下，一艘极小的黑船夹在白色吞海漩涡与六条长颈阴影之间；船员不是 UI 数字，而是甲板上六盏有位置与节奏的暖灯。",
+      "contentBudget": {
+        "scenes": 1,
+        "hazardPhrases": 4,
+        "crewRepresentations": 6,
+        "scyllaAttackPatterns": 3,
+        "whirlpoolStates": ["telegraph", "pull", "release"],
+        "shipStates": ["auto_advance", "commit_arc", "recover", "sink", "exit"],
+        "targetSessionMinutes": "3–5",
+        "formalAssetsBeforeGate3": 0
+      },
+      "graybox": {
+        "geometry": "一条窄长平面、一个船体三角形、六个灯点、两侧危险体积、四组预制时间曲线；不模拟真实水体。",
+        "proofQuestion": "玩家是否会把航线理解为可知情选择的代价，而不是在两个随机死亡区间里猜答案？",
+        "passCriteria": [
+          "玩家 10 秒内指出出口和两类危险。",
+          "首轮后能说明靠哪一侧分别承担什么风险。",
+          "至少一次在看见代价后主动改变偏航策略。"
+        ],
+        "failureSignals": [
+          "玩家持续追逐不存在的完全安全线。",
+          "船员损失发生在画外或被读成普通生命值。",
+          "惯性造成的失败多于判断造成的失败。"
+        ]
+      },
+      "risks": [
+        "强制损失可能被读成不公平；预兆与目标必须先声明允许带伤通关。",
+        "若存在稳定无损路线，主题会退化成普通躲障碍。",
+        "六名船员若被扩成独立 AI，会立刻超出范围；只保留位置化状态表现。"
+      ],
+      "scopeGuards": [
+        "不做开放海域、岛屿选择、资源经济或船只升级。",
+        "不做真实流体、绳索或布帆物理。",
+        "不为六盏灯制作六套导航、战斗或对白系统。"
+      ],
+      "scores": {
+        "feasibility": 84,
+        "coreFun": 90,
+        "visualMemorability": 94,
+        "onboardingClarity": 82,
+        "scopeSafety": 80,
+        "weightedTotal": 86.8,
+        "arithmetic": "0.30*84 + 0.25*90 + 0.20*94 + 0.15*82 + 0.10*80 = 25.2 + 22.5 + 18.8 + 12.3 + 8 = 86.8"
+      },
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-night-weave",
+      "title": "夜织伊萨卡",
+      "rank": 3,
+      "fantasy": "你不是远航的英雄，而是守住归处的佩涅洛佩；每晚抽掉一根自己白天织成的线，让逼近内室的求婚者走向错误的宫殿。",
+      "coreVerb": "抽线",
+      "pitch": "从立体织物宫殿中抽走路径，以记忆完整度换取时间的空间防守谜题。",
+      "coreLoopSeconds": {
+        "min": 25,
+        "max": 40
+      },
+      "coreLoop": [
+        "求婚者剪影沿织成的宫殿路径自动前进；玩家预览每根可抽线对应的地面、门槛与记忆图案。",
+        "按住一根线并拖出织机，承诺抽线；相关路径从 3D 宫殿连续退回平面织物。",
+        "求婚者按明确优先级改道、停顿或争抢；内室获得时间，但某个家庭记忆图案也可能被擦除。",
+        "夜晚结束，结构线按预制次序部分复织，已失去的记忆和求婚者位置保留。",
+        "守过四个夜晚且至少保住两枚记忆即成功；内室被进入或记忆全失则失败。"
+      ],
+      "controls": [
+        "悬停/指向：预览一根线影响的全部空间，不改变状态。",
+        "按住—拖出—松开：抽走整根线，是唯一核心动作。",
+        "暂停/重开：系统级控制。"
+      ],
+      "visualHook": "桌面织机上的红、黑、金三色线向上折成立体宫殿；抽线时墙、道路与人物影子像回卷的海浪一样坍回织物，留下无法复原的空白图案。",
+      "contentBudget": {
+        "scenes": 1,
+        "nights": 4,
+        "pullableThreads": 6,
+        "suitorArchetypes": 2,
+        "memoryEmblems": 4,
+        "pathRules": 3,
+        "targetSessionMinutes": "3–5",
+        "formalAssetsBeforeGate3": 0
+      },
+      "graybox": {
+        "geometry": "一张 5x5 节点图、六条彩色样条、四个自动移动圆柱、一个内室目标和四个记忆标记；抽线只切换预制边集合。",
+        "proofQuestion": "玩家能否在抽线前预测哪些路径会消失，并把记忆损失理解为自己争取时间的代价？",
+        "passCriteria": [
+          "玩家 30 秒内完成第一次有意图的抽线。",
+          "第二夜前能口述一根线、宫殿路径与求婚者改道的关系。",
+          "至少一次为保留记忆而选择更危险的路径布局。"
+        ],
+        "failureSignals": [
+          "玩家只能靠逐根试错理解映射。",
+          "自动复织被误读成撤销或随机重置。",
+          "视觉坍缩遮挡求婚者下一步。"
+        ]
+      },
+      "risks": [
+        "二维线到三维路径的映射可能认知过载；必须用同色、同运动方向和全程高亮维持对应。",
+        "自动复织容易构成第二机制；玩家不操作复织，只把它作为每轮确定性环境变化。",
+        "主题依赖佩涅洛佩背景知识；规则本身必须在无文本时仍成立。"
+      ],
+      "scopeGuards": [
+        "不做自由织造、布料模拟或关卡编辑器。",
+        "不做社交对白、求婚者关系网或随机事件。",
+        "路径只在预制图边集合间切换，不做通用动态世界重建。"
+      ],
+      "scores": {
+        "feasibility": 78,
+        "coreFun": 82,
+        "visualMemorability": 95,
+        "onboardingClarity": 72,
+        "scopeSafety": 76,
+        "weightedTotal": 81.3,
+        "arithmetic": "0.30*78 + 0.25*82 + 0.20*95 + 0.15*72 + 0.10*76 = 23.4 + 20.5 + 19 + 10.8 + 7.6 = 81.3"
+      },
+      "eliminationReason": null
+    }
+  ]
+}

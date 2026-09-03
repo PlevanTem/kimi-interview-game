@@ -1,0 +1,15 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3",
+  "capturedAt": "2026-09-03T21:42:00+08:00",
+  "decisionMaker": "human_user",
+  "input": {
+    "instruction": "设计实验，先对比三个技术方案生成的美学效果，进行维度评分并给出推理理由，基于实验结果再决策最终选型方案。",
+    "conceptId": "concept-sea-of-thousand-names",
+    "candidateIds": [
+      "web-native-three-r3f",
+      "web-native-babylonjs",
+      "godot-4-gdscript-web"
+    ],
+    "decisionPolicy": "no_final_technology_selection_before_comparable_visual_evidence"
+  }
+}

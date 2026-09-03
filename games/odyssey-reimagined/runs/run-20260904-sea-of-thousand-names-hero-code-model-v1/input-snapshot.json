@@ -1,0 +1,30 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
+  "capturedAt": "2026-09-04T07:13:08+08:00",
+  "decisionMaker": "human_user",
+  "instruction": "参考当前角色四视图与动作 spritesheet，以 Three.js + React Three Fiber 程序化建模还原角色，并接入网站提供可交互调试。",
+  "authority": {
+    "conceptLock": "approved: 千名之海",
+    "technologyLock": "approved: Three.js 0.180.0 + React Three Fiber 9.3.0",
+    "gate2": "blocked pending human Fun Lock",
+    "gate3": "blocked; implementation remains graybox/previsual"
+  },
+  "references": [
+    {
+      "assetId": "game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3",
+      "role": "identity, proportion, costume, material and front/side/back silhouette anchor"
+    },
+    {
+      "assetId": "game.odyssey-reimagined.previsual.hero-action-spritesheet-chibi-v2",
+      "role": "twelve action semantics and line-of-action anchor"
+    }
+  ],
+  "implementationBoundary": {
+    "route": "?lab=character",
+    "model": "procedural R3F component with replaceable part groups and lightweight pose rig",
+    "debugControls": ["orbit", "four camera presets", "twelve actions", "auto-cycle", "pause", "wireframe", "rig markers", "weapon trail", "render statistics", "reference comparison"],
+    "mainGameIntegration": "reuse the same HeroCharacterModel behind the existing HeroModel contract",
+    "excluded": ["production topology", "UV textures", "skinning weights", "GLB export", "collision mesh", "Gate 3 approval"]
+  }
+}
+

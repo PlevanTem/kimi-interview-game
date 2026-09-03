@@ -1,0 +1,59 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-v1",
+  "spikeId": "spike-web-native-r3f-social-state-v1",
+  "executedAt": "2026-09-03T21:11:30+08:00",
+  "scope": "Disposable technical proof under runs; not formal game source or a Gate 2 graybox.",
+  "hypothesis": "A renderer-independent deterministic social-state model can drive a browser-native 3D representation of identity permissions and witness memory.",
+  "commands": [
+    {
+      "command": "npx.cmd vitest run games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spikes/web-native-r3f/src/model.test.ts",
+      "exitCode": 0,
+      "result": "1 file, 4 tests passed"
+    },
+    {
+      "command": "npx.cmd vite build --config games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spikes/web-native-r3f/vite.config.ts",
+      "exitCode": 0,
+      "result": "49 modules transformed; JS 1065.93 kB, gzip 296.19 kB; Vite chunk-size warning emitted"
+    },
+    {
+      "command": "npx.cmd vite --config games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spikes/web-native-r3f/vite.config.ts --host 127.0.0.1 --port 4176",
+      "exitCode": 0,
+      "result": "Vite 6.4.3 ready; local server responded at http://127.0.0.1:4176/"
+    },
+    {
+      "command": "Invoke-WebRequest http://127.0.0.1:4176/",
+      "exitCode": 0,
+      "result": "HTTP 200, text/html, expected root element present, 566-byte document"
+    }
+  ],
+  "automatedEvidence": {
+    "passed": [
+      "Captain and pilgrim claims derive different spatial permissions and liabilities.",
+      "Observation is required before claiming and repeated claims do not mutate state.",
+      "Ion records only public facts before departure and locks memory after phase 3.",
+      "The baseline snapshot is deterministic.",
+      "The static browser build compiles and the development endpoint serves successfully."
+    ],
+    "warning": "The first production chunk exceeds Vite's 500 kB warning threshold; route-level splitting and a measured asset/bundle budget are required before release candidacy."
+  },
+  "browserEvidence": {
+    "status": "blocked_environment",
+    "attempted": true,
+    "discoveryResult": "No browser is available; connected browser list was empty.",
+    "verified": ["HTTP delivery"],
+    "notVerified": [
+      "WebGL canvas renders without visual defects",
+      "Buttons update the visible 3D state",
+      "Layout remains usable at target viewport sizes",
+      "Console is free of runtime warnings or errors",
+      "Keyboard, pointer and accessibility behavior"
+    ],
+    "impact": "The spike supports a Tech Fit recommendation but cannot count as a Gate 2 playable or visual acceptance artifact."
+  },
+  "conclusion": {
+    "result": "partially_proven",
+    "proves": "State architecture, deterministic behavior, compilation and static HTTP delivery.",
+    "doesNotProve": "Camera choice, social cue readability, 3D navigation feel, performance on target browsers, final asset quality or full gameplay fun."
+  },
+  "rollback": "Delete only this run's spikes/web-native-r3f directory; no formal game source, asset registry or engine-specific GameBrief field depends on it."
+}

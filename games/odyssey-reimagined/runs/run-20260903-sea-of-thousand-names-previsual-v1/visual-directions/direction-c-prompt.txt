@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: previsualization keyframe for a stylized 3D game environment, Direction C — "Dusk-Tide Theatre"
+Input image 1 role: structural composition reference only; preserve the harbor threshold, descending route to the ship, traveler in foreground, witness ahead, and layered playable depth. Replace its generic photorealistic rendering.
+Primary request: redesign Salt Cape Harbor from an Odyssey-inspired systemic role-playing game as a sculptural theatrical world at the moment before sunset, where social roles feel staged, every doorway is a contested threshold, and rumor travels physically toward the sea.
+Scene/backdrop: compact terraced Aegean harbor at blue-gold dusk, white stone gate, black-hulled homecoming ship waiting below, distant island compressed like a stage backdrop.
+Subject: a dark-cloaked traveler stands at the edge of a long shadow; singer-witness crosses a lit strip toward the ship; a large incomplete bronze ring marks civic permission.
+Style/medium: original stylized real-time 3D stagecraft, carved simplified figures, architectural planes like a monumental theatre set, painterly edge wear, premium game keyframe, feasible with modular meshes and authored lighting; not photorealistic.
+Composition/framing: wide 16:9 third-person planning view with strong proscenium framing; alternating bands of light and shadow reveal safe/public versus hidden/contested space; ship remains visible as objective; character silhouettes readable at distance and close view.
+Lighting/mood: low amber sun from the harbor mouth against saturated deep-blue ambient sea light; long deliberate shadows, soft volumetric-like cards rather than expensive fog, warm faces remain readable; tense, intimate, elegiac, not horror.
+Color palette: midnight Aegean blue dominant shadow; salt ivory architecture; aged bronze thresholds; a single ember-coral accent reserved for witness and rumor. No purple neon, no rainbow accents.
+Shape language: tall vertical slabs for law and hosts, incomplete circles for vows and permission, long diagonal light bands and sails for travel/consequence. Maximum three families.
+Materials/textures: matte carved stone, dark waxed wood, patinated bronze. Maximum three families; cloth treated as broad graphic planes.
+Mechanic readability: amber-lit areas mean publicly witnessed actions, blue shadow means uncertain or hidden knowledge, the witness carries one coral cord that leads toward the ship, and permission thresholds are incomplete rings; no literal UI and no supernatural glow.
+Motion implication: characters hold expressive theatrical poses then transition with measured weight; cloth banners breathe slowly; sea reflections pulse at a calmer rhythm; a distant bell motion foreshadows departure.
+Constraints: original design; no text; no HUD; no logos; no watermark; no photorealism; no ornate fantasy filigree; no temple-column spectacle; no giant statues; no magical particles; no cyberpunk light; no extra characters; no crushed black shadows; preserve navigable route clarity, human scale, facial readability and realistic browser production scope.

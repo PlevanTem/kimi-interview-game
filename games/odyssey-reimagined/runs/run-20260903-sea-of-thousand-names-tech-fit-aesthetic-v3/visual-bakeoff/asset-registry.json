@@ -1,0 +1,76 @@
+{
+  "gameId": "odyssey-reimagined",
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3",
+  "scope": "experiment_only_not_runtime_assets",
+  "records": [
+    {
+      "id": "game.odyssey-reimagined.reference.saltcape-target-frame",
+      "type": "visual_reference",
+      "version": "1.0.0",
+      "path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/reference/saltcape-target-frame-v1.png",
+      "sha256": "cc2b0c8b8c172928a6ec8c1089faa5195e23a6cf9d0afc68cd62dbd8a54d0095",
+      "bytes": 2798629,
+      "dimensions": {"width": 1672, "height": 941},
+      "source": {
+        "kind": "ai_generated",
+        "generator": "OpenAI built-in image_gen tool",
+        "modelIdentifier": "not_exposed_by_tool",
+        "inputImages": [],
+        "promptPath": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/reference/target-frame-prompt-v1.txt",
+        "promptSha256": "b7bff278dd04ea678003adf5a8cb1665a409fd4b7e326e0448ca19c10e2bec7a"
+      },
+      "rights": {
+        "externalThirdPartyAsset": false,
+        "note": "Generated in the current project session without input images; downstream rights were not independently audited."
+      },
+      "styleTags": [
+        "salt_whitened_stone",
+        "oxidized_bronze",
+        "late_afternoon",
+        "warm_cool_separation",
+        "restrained_sea_haze",
+        "stylized_realtime_3d"
+      ],
+      "sizeBudgetBytes": 3145728,
+      "dependencies": [],
+      "consumers": [
+        "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/experiment-plan.json"
+      ],
+      "approval": "experiment_reference_only_not_style_locked",
+      "fallbackId": null
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.saltcape-godot-scene",
+      "type": "procedural_scene",
+      "version": "1.0.0",
+      "entrypoint": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/godot/main.tscn",
+      "sourceHashes": [
+        {"path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/godot/project.godot", "sha256": "a0fe9ed6fb35dadf791f21d4ea0c83ef3927cf8a4f537f974dcb645ac0125541"},
+        {"path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/godot/main.tscn", "sha256": "7cb1ddff8aa4680eee36d408ebafda5558fb154fb0aae0f1d3142cbc0d398120"},
+        {"path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/godot/main.gd", "sha256": "2ce3c55bda55ca51b8450da76fb3d9c36d63872a8bc4102e4bff807514faed26"}
+      ],
+      "source": {
+        "kind": "procedural_code",
+        "author": "OpenAI Codex in current project run",
+        "engine": "Godot 4.7.2 Compatibility"
+      },
+      "rights": {
+        "externalThirdPartyAsset": false,
+        "note": "Original procedural experiment source; engine licensing remains governed separately."
+      },
+      "styleTags": ["controlled_primitives", "shared_palette", "webgl2_compatibility_intent"],
+      "dependencies": ["game.odyssey-reimagined.reference.saltcape-target-frame"],
+      "consumers": [],
+      "approval": "experiment_only_not_runtime_approved",
+      "output": null,
+      "fallbackId": null
+    }
+  ],
+  "audit": {
+    "duplicateIds": 0,
+    "missingTargets": 0,
+    "unresolvedDependencies": 0,
+    "directRuntimeConsumers": 0,
+    "formalAssetRegistryChanged": false
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "experimentId": "saltcape-three-route-aesthetic-bakeoff-v1",
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3",
+  "status": "godot_source_verified_template_download_cancelled",
+  "decisionQuestion": "Which route most reliably converts the same Saltcape art intent into a coherent, readable and performant browser-playable scene at acceptable authoring cost?",
+  "hypotheses": [
+    {
+      "id": "h-three",
+      "candidateId": "web-native-three-r3f",
+      "prediction": "Highest custom look control and lowest rules/UI integration risk, but more bespoke scene and look-development tooling."
+    },
+    {
+      "id": "h-babylon",
+      "candidateId": "web-native-babylonjs",
+      "prediction": "Best balance of integrated PBR/post/inspection tooling and browser delivery, with moderate architecture migration cost."
+    },
+    {
+      "id": "h-godot",
+      "candidateId": "godot-4-gdscript-web",
+      "prediction": "Fastest visual authoring in-editor, but the Compatibility renderer and Web export impose the largest delivery and high-end-effect constraints."
+    }
+  ],
+  "controlledInputs": {
+    "referenceAssetId": "game.odyssey-reimagined.reference.saltcape-target-frame",
+    "geometry": [
+      "One gate made from the same primitive dimensions",
+      "One circular bronze seal with the same silhouette",
+      "One cloth banner plane",
+      "One water plane",
+      "Two capsule characters",
+      "One simplified ship silhouette"
+    ],
+    "camera": {
+      "overview": "35 mm-equivalent oblique composition matching the target frame",
+      "close": "50 mm-equivalent threshold-and-character readability view",
+      "path": "15-second deterministic overview-to-close-to-overview route"
+    },
+    "palette": {
+      "saltIvory": "#d8c9a7",
+      "bronze": "#557b68",
+      "indigo": "#171d33",
+      "seaTeal": "#2f7d83",
+      "rumorCoral": "#a75a4d",
+      "shadowViolet": "#29243c"
+    },
+    "rendering": {
+      "baseline": "WebGL2",
+      "resolution": ["1920x1080", "1440x900"],
+      "qualityIntent": "Filmic tone mapping, warm directional key, cool ambient fill, readable soft shadows, restrained fog and bloom",
+      "webgpu": "Optional separate appendix only"
+    },
+    "interaction": "The same identity switch changes one gate permission color and the witness accent without changing geometry."
+  },
+  "routeRules": [
+    "No downloaded art assets, HDRIs or textures; procedural colors/noise only so the engine is measured rather than asset quality.",
+    "No route-specific scene content or extra effects.",
+    "Each route may use its standard stable rendering features but must disclose every enabled effect.",
+    "A missing feature must be shown as a limitation, not approximated offline.",
+    "Capture labels are hidden during blind aesthetic scoring.",
+    "Implementation time is measured from first route-specific file to passing capture build."
+  ],
+  "measurement": {
+    "aestheticRubric": {
+      "totalWeight": 0.6,
+      "dimensions": [
+        {"id": "composition_and_depth", "weight": 0.12, "question": "Does the gate frame the sea, ship and two characters with clear depth and navigable paths?"},
+        {"id": "material_separation", "weight": 0.12, "question": "Are stone, bronze, cloth, wood and water distinguishable without texture noise?"},
+        {"id": "lighting_and_color", "weight": 0.12, "question": "Do warm key, cool fill and filmic contrast remain coherent without crushed shadows or clipping?"},
+        {"id": "atmosphere_and_water", "weight": 0.08, "question": "Do haze and water establish the sea while preserving threshold readability?"},
+        {"id": "character_and_interaction_readability", "weight": 0.1, "question": "Are the traveler, witness, permission change and rumor accent legible at both cameras?"},
+        {"id": "motion_coherence", "weight": 0.06, "question": "Do cloth, water, camera and witness motion share a restrained rhythm without visual noise?"}
+      ]
+    },
+    "productionRubric": {
+      "totalWeight": 0.4,
+      "dimensions": [
+        {"id": "browser_performance", "weight": 0.15, "metrics": ["median_frame_ms", "p99_frame_ms", "draw_calls", "triangles", "shader_stall_ms"]},
+        {"id": "delivery", "weight": 0.08, "metrics": ["compressed_initial_code_bytes", "total_transfer_bytes", "first_meaningful_frame_ms"]},
+        {"id": "authoring_cost", "weight": 0.1, "metrics": ["implementation_minutes", "route_specific_loc", "visual_adjustment_steps"]},
+        {"id": "reproducibility", "weight": 0.07, "metrics": ["clean_build_exit", "deterministic_capture_hash_or_tolerance", "documented_effects", "rollback_steps"]}
+      ]
+    },
+    "scoreScale": {
+      "range": "0-100",
+      "anchors": {
+        "90": "Target intent is immediately recognizable, coherent and shippable after focused refinement.",
+        "75": "Intent is clear with visible but bounded defects.",
+        "60": "Technically present but generic, inconsistent or hard to read.",
+        "40": "Multiple core visual relationships fail.",
+        "0": "No comparable output or route cannot run."
+      }
+    }
+  },
+  "scoringProcess": [
+    "Capture overview, close view and 15-second path for each route under the same device/browser conditions.",
+    "Randomize route labels to A/B/C before aesthetic review.",
+    "Score each aesthetic dimension with one observable sentence and one defect sentence.",
+    "Normalize objective metrics against declared budgets; do not reward a route for omitting required effects.",
+    "Compute weighted total only after every required evidence field exists.",
+    "Run sensitivity at aesthetic weights 50%, 60% and 70%; reject a winner that flips under a 10-point weight change unless the human explicitly chooses that tradeoff."
+  ],
+  "decisionRule": {
+    "minimums": {
+      "aestheticSubtotal": 75,
+      "characterAndInteractionReadability": 75,
+      "browserPerformance": 70,
+      "reproducibility": 75
+    },
+    "winner": "Highest weighted total that clears every minimum and does not change under the 50/60/70 aesthetic sensitivity check.",
+    "tie": "If top routes differ by less than 2 points, choose Three/R3F for reversibility unless the human explicitly prioritizes editor tooling.",
+    "noDecision": "If captures are not comparable, a route cannot run, or no route clears minimums, do not lock technology."
+  },
+  "currentEnvironment": {
+    "threeR3f": "available_in_repository",
+    "babylonCore": "installed_9.23.0_in_isolated_experiment_directory",
+    "godot": {
+      "status": "available_existing_shared_tool",
+      "selectedPath": "D:/AI Workspace/kimi-interview-game/.tools/godot-4.7.2/Godot_v4.7.2-stable_win64_console.exe",
+      "version": "4.7.2.stable.official.ed1daf0bf",
+      "editorSha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424",
+      "duplicatePath": "D:/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64.exe",
+      "duplicateHashMatch": true,
+      "webExportTemplates": "missing_download_cancelled_by_user"
+    },
+    "blender": "not_installed_not_required_for_procedural_geometry",
+    "connectedBrowser": "unavailable_in_previous_discovery",
+    "implication": "The existing Godot Compatibility renderer can still produce a native comparison capture without any further Godot download. Web export remains unmeasured. The partial template archive was cancelled and removed; do not download it again without a new explicit request. Babylon 9.23.0 is now installed in the isolated experiment directory. No route has an aesthetic score yet."
+  }
+}

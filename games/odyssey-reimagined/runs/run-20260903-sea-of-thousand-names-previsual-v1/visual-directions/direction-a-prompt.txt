@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: previsualization keyframe for a stylized 3D game environment, Direction A — "Salt-Worn Bronze"
+Input image 1 role: structural composition reference only; preserve the harbor threshold, descending route to the ship, traveler in foreground, witness ahead, and readable spatial depth. Do not preserve its generic photorealistic rendering.
+Primary request: redesign Salt Cape Harbor from an Odyssey-inspired systemic role-playing game into an original, studio-quality real-time 3D art direction where identity, permission, witness, and rumor are visible through environmental language.
+Scene/backdrop: a compact Aegean harbor threshold at late-afternoon daylight, limestone gateway, harbor terraces, moored black-hulled homecoming ship, distant island and calm sea.
+Subject: a dark-cloaked returning traveler pauses before crossing a civic threshold; a singer-witness walks toward the harbor; a monumental circular bronze threshold seal marks controlled passage.
+Style/medium: art-directed stylized real-time 3D, monumental simplified silhouettes, sculpted planes, selective hand-painted weathering, premium game keyframe, clearly buildable from modular geometry; not photorealistic.
+Composition/framing: wide 16:9 third-person planning view, strong foreground gateway framing, ship as secondary goal, witness readable at middle distance, three clear depth layers, generous uncluttered paths for gameplay.
+Lighting/mood: lucid salt-bright sun, warm stone key light, cool sea fill, restrained filmic contrast, readable faces and thresholds, atmosphere without fogging interaction routes.
+Color palette: chalk limestone and bone white dominant; oxidized bronze and deep sea-teal semantic structures; one restrained madder-red accent reserved for witnessed/public facts; charcoal navy for the traveler.
+Shape language: blocky civic stone masses for authority, circles and rings for vows/permission, triangular sails and cloth cuts for uncertain identities. Maximum three shape families.
+Materials/textures: chalky limestone, beaten patinated bronze, salt-stiff woven linen. Maximum three material families. Broad readable material blocks, not micro-detail.
+Mechanic readability: the public threshold is a bronze ring embedded in architecture; the witness carries a single red woven cord that subtly continues toward the departing ship; no glowing magic, no literal UI, no floating icons.
+Motion implication: cloth and sea share slow restrained rhythms; the witness has a purposeful forward lean; traveler is still and assessing.
+Constraints: original design; no text; no HUD; no logos; no watermark; no Greek temple cliché forest; no excessive columns; no ornate fantasy filigree; no photorealistic asset-store look; no giant statues; no weapons as focal point; no magical particles; no extra characters; preserve gameplay route clarity and human scale.

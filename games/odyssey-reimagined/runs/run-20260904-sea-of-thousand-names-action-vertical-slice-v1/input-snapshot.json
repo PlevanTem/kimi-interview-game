@@ -1,0 +1,16 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-action-vertical-slice-v1",
+  "capturedAt": "2026-09-04T10:00:00+08:00",
+  "decisionMaker": "human_user",
+  "instruction": "按照重构计划实施：以 WebGL storybook diorama、色域朝圣和浏览器原生图形舞台为技术美术方向；提前生成 UI、storyboard、主角动作 spritesheet 与拆件参考；用 Three.js + R3F 实现带战斗、剧情、引导和操作说明的第三人称动作冒险 Demo。禁止使用上一轮误传图片。",
+  "lockedDecisions": {
+    "concept": "千名之海",
+    "technology": "Three.js 0.180.0 + React Three Fiber 9.3.0",
+    "delivery": "browser-first, GitHub Pages target",
+    "camera": "wide third-person exploration with closer combat framing",
+    "combat": "夺名决斗",
+    "visualDirection": "breathable web-native storybook diorama"
+  },
+  "assetPolicy": "Generated images in this run are original previsual references. The mistakenly uploaded image from the previous turn is excluded from all prompts and inputs.",
+  "gatePolicy": "Tech Fit may be locked from the explicit human decision. Gate 2 and Gate 3 remain human decisions; previsual assets are not production-approved assets."
+}

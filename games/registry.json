@@ -1,8 +1,8 @@
 {
   "$schema": "../schemas/game-library.schema.json",
   "version": "1.0.0",
-  "updatedAt": "2026-09-03T09:27:38+08:00",
-  "activeGameId": "odyssey-drifter",
+  "updatedAt": "2026-09-04T10:40:00+08:00",
+  "activeGameId": "odyssey-reimagined",
   "productionPaused": false,
   "games": [
     {
@@ -11,9 +11,19 @@
       "status": "graybox",
       "path": "games/odyssey-drifter",
       "manifest": "games/odyssey-drifter/manifest.json"
+    },
+    {
+      "id": "odyssey-reimagined",
+      "title": "奥德赛：新构思",
+      "status": "graybox",
+      "path": "games/odyssey-reimagined",
+      "manifest": "games/odyssey-reimagined/manifest.json"
     }
   ],
   "notes": [
+    "odyssey-reimagined 已由用户锁定《千名之海》和 Three.js + R3F；当前实现盐岬港动作早期关卡。五张生成图只作为 previsual reference，Gate 2 与 Visual Lock 均未通过。",
+    "完整游戏不设统一时长、场景或系统上限；Demo 只作为最高风险假设的局部证据切片，边界与时长由验证需要决定。",
+    "odyssey-reimagined 是隔离的重新构思分支：只继承主题与治理约束，不继承 odyssey-drifter 的玩法、关卡、美术、资产或技术决策。",
     "用户直测退回 Godot Demo v1：连线意义、通关规则和环境作用不可读；当前按固定正交 isometric 与功能环境语法重构 Gate 2 v2。",
     "敏捷交付阶段不做自主体验评分或五人测试；只保留工程解析、启动和资产引用等最低事实检查。",
     "旧《下一盏灯》的 Gate 1、技术锁定与灰盒证据保留为历史，不构成《光线之上》的有效验证。",

@@ -1,0 +1,280 @@
+{
+  "$schema": "../../../schemas/concept-candidates.schema.json",
+  "briefId": "brief-odyssey-reimagined-v2",
+  "runId": "run-20260903-odyssey-reimagined-ideation-v2",
+  "status": "selected",
+  "selection": {
+    "conceptId": "concept-sea-of-thousand-names",
+    "title": "千名之海",
+    "decisionMaker": "human_user",
+    "result": "approved",
+    "reason": "用户明确回复‘锁定《千名之海》（推荐）’。",
+    "runId": "run-20260903-sea-of-thousand-names-gate1-design-v1",
+    "decidedAt": "2026-09-03T20:22:24+08:00"
+  },
+  "evaluationModel": {
+    "productPotential": {
+      "formula": "0.25 * thematicDistinctiveness + 0.25 * systemicDepthVariety + 0.20 * playerFantasy + 0.15 * worldEmotionalPotential + 0.15 * audienceClarity",
+      "weights": {
+        "thematicDistinctiveness": 0.25,
+        "systemicDepthVariety": 0.25,
+        "playerFantasy": 0.2,
+        "worldEmotionalPotential": 0.15,
+        "audienceClarity": 0.15
+      },
+      "rankRule": "IDEATION recommendation ranks product potential only; scores are expert estimates, not market or playtest evidence."
+    },
+    "demoTractability": {
+      "formula": "0.35 * hypothesisClarity + 0.25 * isolationFeasibility + 0.25 * evidenceQuality + 0.15 * implementationEconomy",
+      "weights": {
+        "hypothesisClarity": 0.35,
+        "isolationFeasibility": 0.25,
+        "evidenceQuality": 0.25,
+        "implementationEconomy": 0.15
+      },
+      "rankRule": "Reported as a delivery-risk qualifier and never added to product potential."
+    }
+  },
+  "candidates": [
+    {
+      "id": "concept-sea-of-thousand-names",
+      "title": "千名之海",
+      "rank": 1,
+      "fantasy": "你不是靠等级碾压群岛，而是以船长、乞丐、英雄、罪人或无名者等身份进入不同社会；每个谎言、款待与背誓都会先替你抵达下一座岛。",
+      "systemicStructure": "由多个高密度岛屿规则箱组成的航海沉浸式模拟 RPG；身份、款待契约、传闻、船员关系与神祇债务跨岛传播。",
+      "visualHook": "酒色海面像巨大的黑陶釉面；每座岛由门槛、宴席和面具构成独特社会几何，玩家说出的名字化为沿航线先行扩散的金色铭文。",
+      "gameplayPillars": [
+        "读懂规则：从建筑、仪式、NPC 日程与禁忌推断当地的款待秩序。",
+        "选择身份：声明名字、来历、目的和随行者，换取不同权限，也承担被识破的证据链。",
+        "系统解题：通过交涉、赠礼、潜行、布置、战斗或挑拨解决岛屿冲突，不要求所有路径等价。",
+        "承担传播：见证者、船员和歌者把行为带到后续地点，旧谎言会打开或关闭新关系。"
+      ],
+      "coreLoop": [
+        "在海上读取风向、传闻与神祇征兆，决定下一座岛和准备的身份。",
+        "登陆后观察当地谁有资格做主人、客人、证人和越界者。",
+        "以选定身份进入规则箱，利用环境、关系与行动改变局势。",
+        "取得补给、盟友、知识或航路，同时留下债务、敌意、证据和故事。",
+        "离岛后观察传闻如何沿其他航线传播，并调整下一次自我叙述。"
+      ],
+      "fullGameVision": {
+        "macroLoop": "规划航线 → 选择身份与船员 → 进入岛屿规则箱 → 解决冲突并留下社会事实 → 传闻先行 → 在后续岛屿处理身份碰撞 → 逼近伊萨卡。",
+        "progression": "获得的不是通用攻击力，而是身份履历、可兑现的誓约、船员专长、已知仪式、航海知识和少量物质工具；越强的身份也拥有越多可被验证的弱点。",
+        "contentStructure": "路线式群岛而非无缝开放海；每座岛拥有一种款待秩序、一组相互冲突的角色目标和多种可组合解决手段。关键传闻与人物在岛间重组，减少纯分支内容浪费。",
+        "worldCharacterArc": "玩家从用名字换取生存，逐渐面对名字造成的伤害；最终回到伊萨卡时，必须用行动、记忆与关系证明自己，而不是从菜单选择真实身份。",
+        "longTermValue": "不同身份、航线、证人存活状态与债务组合产生新的进入条件和后果；重玩价值来自因果重组，而不是随机掉落。",
+        "scopeVariants": [
+          "紧凑产品：6 个高密度岛屿、3 类身份压力、一个伊萨卡终局。",
+          "标准产品：10–12 个岛屿规则箱、可重访航线、持续船员与传闻系统。",
+          "扩展产品：新增区域时只增加能与既有身份/款待规则交互的岛屿，不做填充型地图。"
+        ]
+      },
+      "audienceFit": "适合喜欢《Dishonored》式系统解题、《Heaven's Vault》式非线性发现和角色扮演后果，但不要求传统数值刷装的玩家。",
+      "demoValidationSlice": {
+        "hypothesis": "玩家能否把身份视为可操作且有后果的系统，而不是对话树中的钥匙颜色？",
+        "playableSubset": "一个港口规则箱：三方争夺一艘被扣船只，两种可声明身份、四项会被 NPC 交叉验证的事实、一个会离港传播消息的见证者，以及交涉/潜行/挑拨三类解决动作。",
+        "observableBehaviors": [
+          "玩家在声明身份前主动观察证据和角色关系。",
+          "玩家因担心后续验证而修改说法或处理见证者。",
+          "至少两种解决路径来自系统组合，而不是预写选项的明显正误。"
+        ],
+        "passEvidence": [
+          "玩家能解释一个谎言带来的即时权限与延迟风险。",
+          "完成后愿意以另一身份重试，并预期不同的社会反馈。",
+          "失败可追溯到可见证据或关系，而非隐藏分支条件。"
+        ],
+        "failureSignals": [
+          "玩家只寻找正确对话选项。",
+          "不同身份只改变台词，不改变可行动空间。",
+          "见证与传闻链无法在无日志说明时理解。"
+        ],
+        "omissions": ["海上航行", "完整战斗", "多岛传播网络", "长期船员成长", "伊萨卡终局"],
+        "doesNotProve": "不能证明群岛内容的长期耐久度、战斗与社交系统的平衡，也不能证明跨十余小时的身份连续性。",
+        "effortEstimate": "M；需状态化 NPC、证据关系和一个可重置规则箱，具体人日待 Tech Fit 后估算。"
+      },
+      "productPotential": {
+        "thematicDistinctiveness": 96,
+        "systemicDepthVariety": 94,
+        "playerFantasy": 91,
+        "worldEmotionalPotential": 90,
+        "audienceClarity": 84,
+        "weightedTotal": 91.8,
+        "arithmetic": "0.25*96 + 0.25*94 + 0.20*91 + 0.15*90 + 0.15*84 = 24 + 23.5 + 18.2 + 13.5 + 12.6 = 91.8"
+      },
+      "demoTractability": {
+        "hypothesisClarity": 88,
+        "isolationFeasibility": 82,
+        "evidenceQuality": 86,
+        "implementationEconomy": 72,
+        "weightedTotal": 83.6,
+        "arithmetic": "0.35*88 + 0.25*82 + 0.25*86 + 0.15*72 = 30.8 + 20.5 + 21.5 + 10.8 = 83.6"
+      },
+      "risks": [
+        "身份系统若退化为标签门锁，产品会变成带换装的对话 RPG。",
+        "跨岛传闻可能造成状态组合爆炸；需要限制传播事实类型并采用重汇合结构。",
+        "沉浸式模拟、叙事和 NPC 日程同时扩张会迅速抬高内容与测试成本。",
+        "战斗若成为最稳定解，款待和机智会被玩家理性淘汰。"
+      ],
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-gods-remember",
+      "title": "众神记得",
+      "rank": 2,
+      "fantasy": "每次归航失败都会被歌者改写成新的奥德修斯版本；你主动培养或压下某个称号，而众神、怪物和船员会在下一次航程中按这个故事对待你。",
+      "systemicStructure": "神话记忆 Roguelite 与船员策略冒险；行为被压缩成少量可读称号，称号改变后续世界规则而非只提供数值加成。",
+      "visualHook": "世界是一只不断重绘的黑陶巨瓮：每次失败后，红绘人物被歌者刮除、补画并赋予新称号；下一轮群岛直接从新图案中升起。",
+      "gameplayPillars": [
+        "做出会被看见的选择：杀死、欺骗、牺牲、守誓或逃离都需要见证者。",
+        "争夺叙事权：在一次航程节点结束时决定宣扬、隐瞒或反驳哪段事迹。",
+        "适应神话反馈：神祇、怪物、港口和船员按现有称号改变行为、价格、挑战与信任。",
+        "在归乡与声名间取舍：更传奇的故事可能让航程更危险，更无名的回归可能失去帮助。"
+      ],
+      "coreLoop": [
+        "选择航线与当前希望维持或洗掉的称号。",
+        "进入遭遇，在有限信息下决定战斗、欺骗、牺牲、守誓或撤退。",
+        "见证者把行动转成候选事迹，船员对解释产生支持或异议。",
+        "在歌唱/祭祀节点确认一个主称号并压下一段事实。",
+        "后续地点按称号改变规则；归航失败或完成章节后，下一版本继承神话而非完整物品栏。"
+      ],
+      "fullGameVision": {
+        "macroLoop": "尝试归航 → 产生被见证的事迹 → 形成称号 → 世界按称号反应 → 选择利用或推翻自己的传说 → 逐轮接近真实归乡。",
+        "progression": "永久进展来自海图知识、称号词库、与神祇的解释权和对故事规则的理解；称号同时给机会与麻烦，不构成单向技能树。",
+        "contentStructure": "手工关键岛屿与模块化航程遭遇混合；每轮只激活少量相互作用的称号，避免无限组合。固定角色记得跨轮情感事实，普通遭遇只读取公开称号。",
+        "worldCharacterArc": "玩家逐渐发现自己并非在重置同一历史，而是在塑造后人相信的史诗版本；终局要求决定要回到真实的家，还是成为无法回家的完美英雄。",
+        "longTermValue": "不同称号组合改变敌人行为、神祇干预和船员信任；玩家会为希望下一轮出现的世界规则而有意表演当前行为。",
+        "scopeVariants": [
+          "紧凑产品：4 个航区、12 个称号、少量固定船员与三种终局。",
+          "标准产品：手工主岛加模块化支线、称号冲突、跨轮角色记忆。",
+          "扩展产品：增加能读取既有称号语法的新神祇与岛屿，不无限增加独立数值系统。"
+        ]
+      },
+      "audienceFit": "适合喜欢重复挑战、构筑适应和叙事后果的玩家；比纯叙事冒险更系统化，比纯 Roguelite 更强调身份与世界记忆。",
+      "demoValidationSlice": {
+        "hypothesis": "玩家是否会为了塑造下一轮的称号而改变当前行为，并理解称号既是能力也是债务？",
+        "playableSubset": "两次相邻的短航程版本：第一次包含三个有见证者的遭遇并生成二选一称号；第二次让同一港口、怪物和船员分别读取该称号，产生一项优势与一项新风险。",
+        "observableBehaviors": [
+          "玩家在第一次遭遇中询问或推断谁会记住行为。",
+          "第二轮能把世界变化归因于所选称号。",
+          "重试时为追求另一种世界反应而主动改变行为。"
+        ],
+        "passEvidence": [
+          "多数玩家能说清称号的收益、代价与来源。",
+          "称号选择不是显然的善恶或强弱排序。",
+          "第二轮决策发生变化，而不是只看新增数值奖励。"
+        ],
+        "failureSignals": [
+          "玩家把称号理解为被动职业或普通 Buff。",
+          "跨轮变化太弱，无法影响策略。",
+          "跨轮变化太多，玩家无法追溯原因。"
+        ],
+        "omissions": ["完整程序化地图", "长期资源经济", "大量称号组合", "完整船员弧", "最终归乡结局"],
+        "doesNotProve": "不能证明数十轮重复的新鲜度、完整内容生成成本或长期叙事连贯性。",
+        "effortEstimate": "M；需两个可重置遭遇序列、称号生成规则和第二轮反馈，具体人日待 Tech Fit 后估算。"
+      },
+      "productPotential": {
+        "thematicDistinctiveness": 98,
+        "systemicDepthVariety": 92,
+        "playerFantasy": 88,
+        "worldEmotionalPotential": 91,
+        "audienceClarity": 83,
+        "weightedTotal": 91.2,
+        "arithmetic": "0.25*98 + 0.25*92 + 0.20*88 + 0.15*91 + 0.15*83 = 24.5 + 23 + 17.6 + 13.65 + 12.45 = 91.2"
+      },
+      "demoTractability": {
+        "hypothesisClarity": 84,
+        "isolationFeasibility": 80,
+        "evidenceQuality": 88,
+        "implementationEconomy": 76,
+        "weightedTotal": 82.8,
+        "arithmetic": "0.35*84 + 0.25*80 + 0.25*88 + 0.15*76 = 29.4 + 20 + 22 + 11.4 = 82.8"
+      },
+      "risks": [
+        "若称号只是换皮词条，会被视为 Hades、Returnal 或常规 Roguelite 的希腊皮肤。",
+        "将复杂行为压成少量称号会丢失玩家认为重要的细节，破坏信任。",
+        "每个称号都要求足够多的世界响应，内容乘法可能失控。",
+        "失败循环若比归乡目标更有奖励，主题会从 nostos 滑向刷取。"
+      ],
+      "eliminationReason": null
+    },
+    {
+      "id": "concept-two-shores",
+      "title": "两岸之间",
+      "rank": 3,
+      "fantasy": "你同时承担远航者与守家者的有限时间：奥德修斯在海上留下的誓言会变成伊萨卡的政治武器，佩涅洛佩和忒勒马科斯在家中的选择也会决定归来者还能被谁承认。",
+      "systemicStructure": "双岸并行的系统叙事策略冒险；海上探索与伊萨卡社会压力共享传闻、信物、誓约、时间和合法性状态，因果延迟抵达另一条线。",
+      "visualHook": "画面由同一条不断偏移的地平线切成酒色海与石白庭院；船帆上的裂口会在另一岸成为家族旗帜缺失的图案，信物与传闻像候鸟越过画面接缝。",
+      "gameplayPillars": [
+        "分配有限时间：每个阶段只能推进海上或家中部分目标，未处理事件会继续发展。",
+        "制造跨岸因果：派出信物、传闻、盟友或誓约，但结果延迟且可能被中间人改写。",
+        "维护两套合法性：海上要让船员相信值得继续，家中要让盟友相信归来仍可能且值得。",
+        "用认识而非数值收束：终局的身份确认读取双方共同保存的行动、物件和秘密。"
+      ],
+      "coreLoop": [
+        "查看同一时间窗口内海上与伊萨卡正在恶化的事件。",
+        "选择一岸行动，以探索、交涉、布置、保护或牺牲改变局部关系。",
+        "把一项传闻、信物、盟约或资源送向另一岸，并预估延迟和失真。",
+        "时间推进，未选择的一岸由 NPC 目标继续运行。",
+        "另一岸收到结果后改变新的行动空间；玩家重新判断该救哪条关系链。"
+      ],
+      "fullGameVision": {
+        "macroLoop": "双岸危机并列 → 选择投入有限时间 → 产生跨岸信息/物件 → 延迟抵达并改写另一岸 → 两条关系网共同逼近归乡与承认终局。",
+        "progression": "进展体现为关系、合法性、已确认事实、可传递信物和双方掌握的共同秘密；玩家不能在一次流程中保存所有人或看见全部事件。",
+        "contentStructure": "章节式并行时间，每章包含一组海上规则箱和一组伊萨卡社会事件；采用重汇合节点控制分支成本，但保留角色存亡、忠诚与证据状态。",
+        "worldCharacterArc": "奥德修斯逐渐发现归乡不是个人抵达，佩涅洛佩与忒勒马科斯也不是等待者；三人的选择共同决定伊萨卡还是否是原来的家。",
+        "longTermValue": "不同时间分配、跨岸传递和角色存活状态改变可见事件与身份终局；重玩价值来自不可同时拥有的视角和关系。",
+        "scopeVariants": [
+          "紧凑产品：6 个双岸章节、固定重汇合节点、少量持续角色状态。",
+          "标准产品：海上与家中各有多条可跳过事件链，三位主角共享终局证据。",
+          "扩展产品：增加跨岸角色与事件时，只复用既有传闻/誓约/信物语法，避免独立小游戏堆积。"
+        ]
+      },
+      "audienceFit": "适合偏好角色关系、有限时间决策和多视角叙事的玩家；动作强度可以变化，但核心卖点不是连招或纯航海模拟。",
+      "demoValidationSlice": {
+        "hypothesis": "玩家能否理解一次局部选择如何延迟改写另一岸，并把两条线都视为自己的行动空间，而不是把其中一条当过场？",
+        "playableSubset": "一个双岸章节：海上与伊萨卡各三个可发展事件、三种可跨岸传递的状态，以及一次必须放弃一侧即时收益的时间选择；终点进行一项读取双方证据的认识检验。",
+        "observableBehaviors": [
+          "玩家在行动前主动查看另一岸状态。",
+          "玩家能预测至少一种跨岸传递的方向和延迟。",
+          "重试时愿意牺牲本岸收益以改变另一岸结果。"
+        ],
+        "passEvidence": [
+          "玩家能画出或口述两次跨岸因果。",
+          "切换主角被视为策略选择，而非叙事打断。",
+          "终局认识结果能追溯到双方具体行动。"
+        ],
+        "failureSignals": [
+          "玩家只关心海上行动，把伊萨卡视为菜单。",
+          "延迟反馈使因果无法归因。",
+          "为读懂双线必须持续查看日志或解释文本。"
+        ],
+        "omissions": ["完整航海", "完整宫廷关系网", "多章节成长", "大规模战斗", "全部结局"],
+        "doesNotProve": "不能证明长篇双线节奏、角色内容量和整部游戏的分支成本是否可控。",
+        "effortEstimate": "M–L；需两套可运行状态、共享变量与清晰跨岸反馈，是三案中技术与叙事协同风险最高的切片。"
+      },
+      "productPotential": {
+        "thematicDistinctiveness": 96,
+        "systemicDepthVariety": 88,
+        "playerFantasy": 87,
+        "worldEmotionalPotential": 98,
+        "audienceClarity": 79,
+        "weightedTotal": 89.95,
+        "arithmetic": "0.25*96 + 0.25*88 + 0.20*87 + 0.15*98 + 0.15*79 = 24 + 22 + 17.4 + 14.7 + 11.85 = 89.95"
+      },
+      "demoTractability": {
+        "hypothesisClarity": 82,
+        "isolationFeasibility": 74,
+        "evidenceQuality": 82,
+        "implementationEconomy": 65,
+        "weightedTotal": 77.45,
+        "arithmetic": "0.35*82 + 0.25*74 + 0.25*82 + 0.15*65 = 28.7 + 18.5 + 20.5 + 9.75 = 77.45"
+      },
+      "risks": [
+        "双线结构可能让玩家持续偏爱一侧，另一侧退化为义务。",
+        "延迟因果难以同时做到惊喜与可理解。",
+        "角色、事件和状态交叉会形成高昂叙事测试矩阵。",
+        "若两条线使用完全不同的操作语法，产品会像两个游戏拼接。"
+      ],
+      "eliminationReason": null
+    }
+  ]
+}

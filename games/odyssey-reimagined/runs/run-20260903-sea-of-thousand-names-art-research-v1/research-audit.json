@@ -1,0 +1,306 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-art-research-v1",
+  "capturedAt": "2026-09-03T22:18:00+08:00",
+  "scope": "award_winning_classic_games_and_browser_interactive_presentation_precedents",
+  "policy": {
+    "reuse": "reference_only_no_assets_or_compositions_copied",
+    "evidenceBoundary": "Awards verify recognition; official pages verify declared medium or interaction. Visual-language deductions are explicitly marked as analysis.",
+    "awwwardsBoundary": "Awwwards cases support browser presentation, camera and interaction precedents only; they do not prove sustained systemic gameplay or production feasibility.",
+    "generationBoundary": "No Sea of Thousand Names scene concept image is generated in this run."
+  },
+  "sources": [
+    {
+      "id": "bafta-artistic-achievement-archive",
+      "title": "BAFTA Games - Artistic Achievement",
+      "url": "https://www.bafta.org/awards/games/artistic-achievement/",
+      "authority": "award_body",
+      "verified": "The archive lists Journey (2013), Lumino City (2015), Return of the Obra Dinn (2019), Hades (2021), TUNIC (2023) as winners and Harold Halibut (2025) as a nominee.",
+      "reuse": "award_signal_only"
+    },
+    {
+      "id": "obra-dinn-official",
+      "title": "Return of the Obra Dinn",
+      "url": "https://obradinn.com/",
+      "authority": "developer_official",
+      "verified": "The official page describes the game as an insurance adventure with minimal colour and lists major art and game awards.",
+      "reuse": "medium_and_positioning_reference_only"
+    },
+    {
+      "id": "obra-dinn-art-process",
+      "title": "Lucas Pope on Return of the Obra Dinn's art style",
+      "url": "https://blog.playstation.com/archive/2019/10/17/lucas-pope-on-return-of-the-obra-dinns-art-style/",
+      "authority": "developer_interview_on_platform_official",
+      "verified": "Lucas Pope discusses the one-bit, two-colour presentation, 800 by 450 working image, geometric outlines and controlled dithering for legibility.",
+      "reuse": "production_principle_only"
+    },
+    {
+      "id": "pentiment-official",
+      "title": "Pentiment",
+      "url": "https://pentiment.obsidian.net/",
+      "authority": "developer_official",
+      "verified": "The official page describes a living illustrated world inspired by illuminated manuscripts and woodcuts.",
+      "reuse": "medium_and_narrative_alignment_reference_only"
+    },
+    {
+      "id": "pentiment-art-deep-dive",
+      "title": "Deep Dive: The art of Pentiment",
+      "url": "https://www.gamedeveloper.com/art/deep-dive-the-art-of-pentiment",
+      "authority": "developer_authored_industry_article",
+      "verified": "Art director Hannah Kennedy explains that historical art was tied to the game's identity and that the team changed an initially revision-heavy hand-drawn pipeline.",
+      "reuse": "pipeline_lesson_only"
+    },
+    {
+      "id": "journey-art-director",
+      "title": "Journey - Matt Nava",
+      "url": "https://mattnava.com/Journey-1",
+      "authority": "art_director_portfolio",
+      "verified": "Matt Nava documents visual design, texture painting, lighting and colour scripting work on Journey.",
+      "reuse": "composition_and_colour_script_reference_only"
+    },
+    {
+      "id": "sable-creative-director",
+      "title": "Awaken your wanderlust with open-world adventure Sable",
+      "url": "https://blog.playstation.com/2022/11/29/awaken-your-wanderlust-with-open-world-adventure-sable-out-today-on-ps5/",
+      "authority": "creative_director_on_platform_official",
+      "verified": "Creative director Gregorios Kythreotis connects masks, exploration and self-discovery; the page provides official visual examples.",
+      "reuse": "identity_and_silhouette_reference_only"
+    },
+    {
+      "id": "okami-official-manual",
+      "title": "Okami Wii Manual",
+      "url": "https://static.capcom.com/okami/manuals/Wii_Okami_Manual.pdf",
+      "authority": "publisher_official",
+      "verified": "The manual describes a watercolour-ink presentation and the Celestial Brush as a way to alter the world.",
+      "reuse": "medium_as_mechanic_principle_only"
+    },
+    {
+      "id": "harold-halibut-press-kit",
+      "title": "Harold Halibut Press Kit",
+      "url": "https://press.slow-bros.com/harold_halibut/",
+      "authority": "developer_official",
+      "verified": "The press kit documents physically handmade sets and puppets using metal, textiles, wood and clay, and lists visual-art award recognition.",
+      "reuse": "tactility_and_character_performance_reference_only"
+    },
+    {
+      "id": "lumino-city-bafta",
+      "title": "British Academy Games Awards 2015 winners release",
+      "url": "https://static.bafta.org/uploads_pre_202411/baftagames1415winnersrelease.pdf",
+      "authority": "award_body",
+      "verified": "BAFTA identifies Lumino City as a puzzle adventure handmade in card and paper and the 2015 Artistic Achievement winner.",
+      "reuse": "award_and_medium_signal_only"
+    },
+    {
+      "id": "tunic-official",
+      "title": "TUNIC",
+      "url": "https://tunicgame.com/",
+      "authority": "developer_official",
+      "verified": "The official site describes an isometric action game about exploring lost legends and ancient powers.",
+      "reuse": "isometric_readability_reference_only"
+    },
+    {
+      "id": "supergiant-team",
+      "title": "Supergiant Games Team",
+      "url": "https://www.supergiantgames.com/team/",
+      "authority": "developer_official",
+      "verified": "The official team page identifies Jen Zee and the studio's visual-art contributors.",
+      "reuse": "character_art_authorship_reference_only"
+    },
+    {
+      "id": "awwwards-bruno-simon",
+      "title": "Bruno Simon Portfolio",
+      "url": "https://www.awwwards.com/sites/bruno-simon-portfolio",
+      "authority": "award_body",
+      "verified": "Awwwards lists the portfolio as Site of the Day, records a Developer Award score, identifies Three.js, and highlights its 3D game project navigation.",
+      "reuse": "browser_navigation_and_interaction_reference_only"
+    },
+    {
+      "id": "awwwards-storybook",
+      "title": "My Little Storybook",
+      "url": "https://www.awwwards.com/sites/my-little-storybook",
+      "authority": "award_body",
+      "verified": "Awwwards lists the project as Site of the Day and identifies WebGL, Three.js, GSAP, Lottie and Blender among its technologies.",
+      "reuse": "browser_storytelling_reference_only"
+    },
+    {
+      "id": "awwwards-short-journey",
+      "title": "A Short Journey",
+      "url": "https://www.awwwards.com/sites/a-short-journey",
+      "authority": "award_body",
+      "verified": "Awwwards lists the project as Site of the Day and tags it for WebGL, art, illustration, music and animation.",
+      "reuse": "limited_palette_web_presentation_reference_only"
+    },
+    {
+      "id": "awwwards-acnpl-wgl",
+      "title": "ACNPL\\WGL",
+      "url": "https://www.awwwards.com/sites/acnpl-wgl",
+      "authority": "award_body",
+      "verified": "Awwwards lists the real-time Canvas/WebGL graphic playground as Site of the Day.",
+      "reuse": "realtime_graphic_stage_reference_only"
+    },
+    {
+      "id": "arcane-netflix-making-of",
+      "title": "Step into ARCANE's Immersive World with This Guide to the Making of Season Two",
+      "url": "https://www.netflix.com/tudum/features/arcane-season-two-behind-the-scenes",
+      "authority": "publisher_official_developer_interviews",
+      "verified": "Netflix interviews Fortiche leads, documents concept-to-final iteration, environment and character design, matte painting, FX, texture and compositing work, and reports a peak creative team of about 450 artists.",
+      "reuse": "production_and_visual_language_reference_only"
+    },
+    {
+      "id": "arcane-netflix-official",
+      "title": "Arcane",
+      "url": "https://www.netflix.com/tudum/arcane",
+      "authority": "publisher_official",
+      "verified": "Netflix provides official series stills, trailers and behind-the-scenes links for visual comparison.",
+      "reuse": "official_still_reference_only"
+    }
+  ],
+  "imageDisplayPolicy": {
+    "mode": "remote_hotlink_reference_only",
+    "downloadedIntoRepository": 0,
+    "attributionRequired": true,
+    "fallback": "Every image links to its source page; the written analysis remains usable if a remote host blocks embedding.",
+    "copyrightBoundary": "Images are shown only as attributed research references. No image is an approved game asset or a composition template."
+  },
+  "imageReferences": [
+    {
+      "id": "img-obra-dinn-ship",
+      "directionId": "monochrome-evidence-engraving",
+      "work": "Return of the Obra Dinn",
+      "imageUrl": "https://obradinn.com/img/shots/Ship-01.png",
+      "sourcePage": "https://obradinn.com/",
+      "credit": "3909 LLC / Lucas Pope",
+      "observation": "Two-colour value structure, silhouette-first staging and controlled dithering preserve spatial evidence without material realism."
+    },
+    {
+      "id": "img-pentiment-hero",
+      "directionId": "living-manuscript",
+      "work": "Pentiment",
+      "imageUrl": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/08/pentiment-hero-image-066503df3b9cb9cab1da.jpg",
+      "sourcePage": "https://news.xbox.com/en-us/2022/11/15/pentiment-available-now/",
+      "credit": "Obsidian Entertainment / Xbox Game Studios",
+      "observation": "Flattened depth, manuscript framing, deliberate contour language and typography make history and social identity visible."
+    },
+    {
+      "id": "img-okami-world",
+      "directionId": "pigment-as-action",
+      "work": "Okami HD",
+      "imageUrl": "https://us-store.captown.capcom.com/cdn/shop/files/Okami_HD_Remaster_SS_1_US_d889ab0c-8ef8-469b-9941-321157a8048f.jpg?v=1775401498&width=1445",
+      "sourcePage": "https://us-store.captown.capcom.com/products/227415-us",
+      "credit": "CAPCOM",
+      "observation": "Ink contour, paper-like space and colour restoration are part of the world transformation rather than surface decoration."
+    },
+    {
+      "id": "img-sable-identity",
+      "directionId": "colour-field-pilgrimage",
+      "work": "Sable",
+      "imageUrl": "https://blog.playstation.com/tachyon/2022/11/abfacc73ce1cfbb50c135ee96579a4f6253427a2.jpg?crop_strategy=smart&resize=1088%2C612",
+      "sourcePage": "https://blog.playstation.com/2022/11/29/awaken-your-wanderlust-with-open-world-adventure-sable-out-today-on-ps5/",
+      "credit": "Shedworks / Raw Fury / PlayStation Blog",
+      "observation": "Clean silhouettes, outlined forms and broad colour fields keep a masked figure readable against monumental distance."
+    },
+    {
+      "id": "img-journey-key-art",
+      "directionId": "colour-field-pilgrimage",
+      "work": "Journey",
+      "imageUrl": "https://image.api.playstation.com/vulcan/img/rnd/202011/0204/XrjdVwRXf9tzEaLQpmIanpzq.png",
+      "sourcePage": "https://www.playstation.com/en-us/games/journey/",
+      "credit": "thatgamecompany / Sony Interactive Entertainment",
+      "observation": "A tiny high-contrast traveler, a dominant destination and large quiet colour masses create pilgrimage scale with minimal clutter."
+    },
+    {
+      "id": "img-harold-halibut-header",
+      "directionId": "handmade-miniature-theatre",
+      "work": "Harold Halibut",
+      "imageUrl": "https://press.slow-bros.com/harold_halibut/images/header.png",
+      "sourcePage": "https://press.slow-bros.com/harold_halibut/",
+      "credit": "Slow Bros.",
+      "observation": "Clay faces, textile clothing, imperfect surfaces and photographed miniature lighting make characters feel physically present."
+    },
+    {
+      "id": "img-lumino-gatehouse",
+      "directionId": "handmade-miniature-theatre",
+      "work": "Lumino City",
+      "imageUrl": "https://images.squarespace-cdn.com/content/v1/57b5d1f0d482e93404415213/1492516755466-57KCCUO0MWXMI54R71CZ/Screenshot_GatehouseON.jpg",
+      "sourcePage": "https://www.stateofplaygames.com/luminocity",
+      "credit": "State of Play Games",
+      "observation": "Paper construction, practical light and depth-of-field turn the level into a legible physical diorama."
+    },
+    {
+      "id": "img-hades-cover",
+      "directionId": "graphic-myth-portrait-theatre",
+      "work": "Hades",
+      "imageUrl": "https://images.ctfassets.net/5owu3y35gz1g/221gU3J0H5urRoHsNbYDpf/0b197a0eabe1070d7cb4bd48747ec1af/Hades_Cover_Website.png?q=100&w=1200",
+      "sourcePage": "https://www.supergiantgames.com/games/hades/",
+      "credit": "Supergiant Games",
+      "observation": "Graphic character silhouettes, controlled accents and portrait-scale expression carry mythic identity more than environmental realism."
+    },
+    {
+      "id": "img-tunic-diorama",
+      "directionId": "abstract-relic-diorama",
+      "work": "TUNIC",
+      "imageUrl": "https://gmedia.playstation.com/is/image/SIEPDC/tunic-screenshot-04-en-17jun22?$1600px$=",
+      "sourcePage": "https://www.playstation.com/en-us/games/tunic/",
+      "credit": "Isometricorp Games / Finji",
+      "observation": "Fixed isometric composition, compact landmarks and restrained geometry make routes and interactable thresholds readable."
+    },
+    {
+      "id": "img-bruno-simon",
+      "directionId": "web-native-graphic-stage",
+      "work": "Bruno Simon Portfolio",
+      "imageUrl": "https://assets.awwwards.com/awards/sites_of_the_day/2019/11/bruno-simon-portfolio.jpg",
+      "sourcePage": "https://www.awwwards.com/sites/bruno-simon-portfolio",
+      "credit": "Bruno Simon / Awwwards",
+      "observation": "A single toy-like navigation metaphor replaces conventional web navigation and makes interaction immediately visible."
+    },
+    {
+      "id": "img-storybook",
+      "directionId": "web-native-graphic-stage",
+      "work": "My Little Storybook",
+      "imageUrl": "https://assets.awwwards.com/awards/sites_of_the_day/2021/11/My-Little-Storybook-1.jpg",
+      "sourcePage": "https://www.awwwards.com/sites/my-little-storybook",
+      "credit": "Lusion / Awwwards",
+      "observation": "Illustration, shallow 3D and interface motion are composed as one browser-native storytelling surface."
+    },
+    {
+      "id": "img-short-journey",
+      "directionId": "web-native-graphic-stage",
+      "work": "A Short Journey",
+      "imageUrl": "https://assets.awwwards.com/awards/sites_of_the_day/2016/02/a-short-journey-website-design.jpg",
+      "sourcePage": "https://www.awwwards.com/sites/a-short-journey",
+      "credit": "Benoit Challand / Awwwards",
+      "observation": "A narrow palette and screen-space illustration keep the visual premise readable during a short interactive sequence."
+    },
+    {
+      "id": "img-arcane-atmosphere",
+      "directionId": "painterly-cinematic-3d",
+      "work": "Arcane",
+      "imageUrl": "https://dnm.nflximg.net/api/v6/2DuQlx0fM4wd1nzqm5BFBi6ILa8/AAAAQZC4PyB3Owqy_ZweXcfUqAN420OIvmz_84M9oAXXbjRTmw82b60Uh_c0Iyu_RmenxHhFtRryP99wu1glPnV8dbbwYwax3LAPiy_E4SXWtQ1ZteP2uC36hIFzOhD4xCe8_1iBSYz6-FlFgU_MEwJ76MnnLfA.jpg?r=d0e",
+      "sourcePage": "https://www.netflix.com/tudum/features/arcane-season-two-behind-the-scenes",
+      "credit": "Netflix / Riot Games / Fortiche Production; source page credits the individual artists",
+      "observation": "Painterly value grouping, selective hard edges and atmosphere create cinematic depth without photoreal surface uniformity."
+    },
+    {
+      "id": "img-arcane-commune",
+      "directionId": "painterly-cinematic-3d",
+      "work": "Arcane",
+      "imageUrl": "https://dnm.nflximg.net/api/v6/2DuQlx0fM4wd1nzqm5BFBi6ILa8/AAAAQUVKnacoVJ6DiJ8rkTQuSkftIjnp0d44Wn1zicG---AuL53JFZ6YLWZIOJ4ExNzXoBH8Hc2kVFMM8SeZwnwlL9Ihy1JaVUjoskp5o6mFhlZ3bhrHK8ie7gHynadZAemDtmTqiH0bqj-d5rJpMv6fq2TtaGY.jpg?r=d0b",
+      "sourcePage": "https://www.netflix.com/tudum/features/arcane-season-two-behind-the-scenes",
+      "credit": "Netflix / Riot Games / Fortiche Production; source page credits the individual artists",
+      "observation": "A location-specific shape and colour system carries narrative meaning across architecture, costume, FX and composition."
+    }
+  ],
+  "audit": {
+    "sourceCount": 18,
+    "awardBodySources": 6,
+    "officialOrDeveloperSources": 12,
+    "remoteAssetsCopied": 0,
+    "remoteReferenceImages": 14,
+    "sceneConceptImagesGenerated": 0,
+    "renderEvidence": {
+      "path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-art-research-v1/moodboard-desktop.png",
+      "viewport": "1440x1200_full_page",
+      "sha256": "93c197d49e315f5d34ba0d3e4292af8233c636cb22da814625a6c23e0799c9f0",
+      "result": "visually_inspected_pass"
+    }
+  }
+}

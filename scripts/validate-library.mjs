@@ -67,4 +67,16 @@ for (const schema of ['game-library', 'game-manifest', 'technology-decision']) {
   if (!(await exists(`schemas/${schema}.schema.json`))) fail(errors, `缺少 schema: ${schema}`);
 }
 
+try {
+  const gameBriefSchema = await json('schemas/game-brief.schema.json');
+  if ((gameBriefSchema.required ?? []).includes('sessionMinutes')) {
+    fail(errors, 'GameBrief schema 不得把 sessionMinutes 设为项目级必填字段');
+  }
+  if ((gameBriefSchema.required ?? []).includes('coreVerb')) {
+    fail(errors, 'GameBrief schema 不得把单一 coreVerb 设为所有完整游戏的必填字段');
+  }
+} catch (error) {
+  fail(errors, `无法解析 GameBrief schema: ${error.message}`);
+}
+
 finish(errors, 'validate-library');

@@ -1,0 +1,135 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "version": "1.0.0",
+  "capturedAt": "2026-09-03T20:22:24+08:00",
+  "policy": {
+    "purpose": "把公开参考资料转成可核查的玩法、空间、交互和视觉分析，不把其内容当成可复制设计或可复用资产。",
+    "wikiBoundary": "Wiki 与攻略是二级观察资料；隐藏实现、因果主张和制作方法必须由官方手册、开发者分享或实机验证交叉核对。",
+    "assetBoundary": "所有参考图像、视频、文本、模型、声音和商标默认 reference_only；只有独立确认许可证并登记资产记录后才可进入项目。",
+    "editableSlots": [
+      "角色目标与日程数据",
+      "身份声明、证据和传闻条目",
+      "遭遇配置与数值",
+      "登记后的模型、材质、声音和字体资产 ID",
+      "StyleBible 锁定后的语义颜色、材质和动效令牌"
+    ],
+    "masterAnchors": [
+      "核心状态机与事件契约",
+      "权限、证据、见证与传闻的有限事实语法",
+      "相机尺度、交互距离和空间层级",
+      "资产解析器与许可证记录",
+      "固定种子、黄金检查点和 Gate 验收场景"
+    ]
+  },
+  "sources": [
+    {
+      "id": "REF-DIS-WIKI-ROOT",
+      "title": "Dishonored Wiki — Dishonored",
+      "url": "https://dishonored.fandom.com/wiki/Dishonored",
+      "sourceClass": "community_wiki",
+      "use": ["世界与派系索引", "Chaos 状态的玩家可见结果", "任务与能力词汇"],
+      "slotsInformed": ["状态词典", "关卡参考索引"],
+      "reuse": "reference_only"
+    },
+    {
+      "id": "REF-DIS-WALKTHROUGH",
+      "title": "Dishonored Wiki — Walkthroughs",
+      "url": "https://dishonored.fandom.com/wiki/Category%3AWalkthroughs",
+      "sourceClass": "community_wiki_video_index",
+      "use": ["多路径任务观察", "守卫与空间节奏", "玩家路线对照"],
+      "slotsInformed": ["验收场景", "路线审查清单"],
+      "reuse": "reference_only"
+    },
+    {
+      "id": "REF-DIS-CONCEPT-ART",
+      "title": "Dishonored Wiki — Concept Art",
+      "url": "https://dishonored.fandom.com/wiki/Category%3AConcept_Art",
+      "sourceClass": "community_wiki_image_index",
+      "use": ["形状语言分析", "构图与材质对比"],
+      "slotsInformed": ["视觉反例与差异化清单"],
+      "reuse": "no_asset_reuse_without_separate_license"
+    },
+    {
+      "id": "REF-DIS-MANUAL",
+      "title": "Dishonored GFW Manual v15",
+      "url": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/205100/manuals/dishonored-gfw-manual-v15.pdf?t=1750785977",
+      "sourceClass": "publisher_manual",
+      "use": ["输入与能力操作事实", "HUD 和装备基线"],
+      "slotsInformed": ["交互审计", "控制对照"],
+      "reuse": "reference_only"
+    },
+    {
+      "id": "REF-ARK-GDC-AGENCY",
+      "title": "Empowering the Player in a Story-Rich World: Co-Directing Dishonored",
+      "url": "https://www.gdcvault.com/play/1019078/Empowering-the-Player-in-a",
+      "sourceClass": "official_developer_talk",
+      "use": ["一致系统", "玩家即兴方案", "系统与叙事共同产生戏剧性"],
+      "slotsInformed": ["设计原则", "系统组合验收"],
+      "reuse": "ideas_only_with_attribution"
+    },
+    {
+      "id": "REF-ARK-ENV-STORY",
+      "title": "What Happened Here? Environmental Storytelling",
+      "url": "https://www.gdcvault.com/play/1012647/What-Happened-Here-Environmental",
+      "sourceClass": "official_developer_talk",
+      "use": ["玩家主动推断", "环境反应体现行动后果"],
+      "slotsInformed": ["环境证据语法", "无文本反馈验收"],
+      "reuse": "ideas_only_with_attribution"
+    },
+    {
+      "id": "REF-ARK-LEVELS",
+      "title": "Designing an Arkane Game Level",
+      "url": "https://bethesda.net/en-US/news/designing-an-arkane-game-level",
+      "sourceClass": "publisher_developer_article",
+      "use": ["可信空间", "NPC 路径与生活来源", "系统碰撞"],
+      "slotsInformed": ["盐岬港空间审查", "NPC 日程模板"],
+      "reuse": "ideas_only_with_attribution"
+    },
+    {
+      "id": "REF-OW-WIKI",
+      "title": "Official Outer Wilds Wiki",
+      "url": "https://outerwilds.fandom.com/wiki/Outer_Wilds_Wiki",
+      "sourceClass": "community_wiki",
+      "use": ["地点与线索索引", "知识进度", "剧透标记"],
+      "slotsInformed": ["事实日志信息层级", "知识发现结构"],
+      "reuse": "reference_only"
+    },
+    {
+      "id": "REF-OW-SIGNALSCOPE",
+      "title": "Outer Wilds Wiki — Signalscope",
+      "url": "https://outerwilds.fandom.com/wiki/Signalscope",
+      "sourceClass": "community_wiki_mechanic_page",
+      "use": ["工具、声音、HUD 和地点发现的统一交互"],
+      "slotsInformed": ["观察工具反馈", "传闻方向提示"],
+      "reuse": "reference_only"
+    },
+    {
+      "id": "REF-HV-GDC",
+      "title": "Heaven's Vault: Creating a Dynamic Detective Story",
+      "url": "https://www.gdcvault.com/play/1025149/-Heaven-s-Vault-Creating",
+      "sourceClass": "official_developer_talk",
+      "use": ["动态线索链", "错过内容后继续", "减少硬瓶颈"],
+      "slotsInformed": ["证据图", "失败恢复规则"],
+      "reuse": "ideas_only_with_attribution"
+    },
+    {
+      "id": "REF-HOM-BOOK9",
+      "title": "Homer, Odyssey, Book 9",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D9%3Acard%3D360",
+      "sourceClass": "primary_text",
+      "use": ["无人身份", "款待破坏", "吹嘘造成延迟神祇后果"],
+      "slotsInformed": ["身份与风险语法", "叙事主题锚点"],
+      "reuse": "public_domain_text_reference_translation_must_be_checked"
+    },
+    {
+      "id": "REF-HOM-BOOK19",
+      "title": "Homer, Odyssey, Book 19",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D19",
+      "sourceClass": "primary_text",
+      "use": ["虚假传记", "盘问", "伤疤作为身份事实"],
+      "slotsInformed": ["交叉验证机制", "认识终局"],
+      "reuse": "public_domain_text_reference_translation_must_be_checked"
+    }
+  ]
+}

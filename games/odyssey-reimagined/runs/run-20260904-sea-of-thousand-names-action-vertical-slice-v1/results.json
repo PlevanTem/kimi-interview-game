@@ -1,0 +1,55 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-action-vertical-slice-v1",
+  "gameId": "odyssey-reimagined",
+  "completedAt": "2026-09-04T11:00:00+08:00",
+  "status": "validated_graybox_awaiting_human_gate2",
+  "outcome": {
+    "playableLoop": "title -> observe -> identity -> guard tutorial -> warden -> name resolution -> rumor preview -> departure -> success",
+    "technology": "Three.js 0.180.0 + React Three Fiber 9.3.0 + React 19.1.1 + Vite",
+    "delivery": "browser-first local static build",
+    "gate2": "blocked_pending_human_fun_lock",
+    "gate3": "blocked_no_formal_style_bible_or_production_asset_approval"
+  },
+  "verification": [
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "2 files, 9 rule and character-contract tests passed"},
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run build", "exitCode": 0, "result": "57 modules transformed; static build complete"},
+    {"command": "npm.cmd exec playwright test", "exitCode": 0, "result": "2/2 Chromium tests passed serially: character lab and full captain route"},
+    {"command": "npm.cmd run validate:library", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run validate:context", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run lint", "exitCode": 0, "result": "PASS after removing one unused type import"},
+    {"command": "npm.cmd run build", "exitCode": 0, "result": "root adapter build PASS"},
+    {"command": "git diff --check", "exitCode": 0, "result": "PASS; only existing line-ending warnings"}
+  ],
+  "browserEvidence": {
+    "manual": "Codex in-app browser completed the captain route and visibly reached DEMO COMPLETE.",
+    "automatedScreenshot": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-action-vertical-slice-v1/success-screen.png",
+    "localUrl": "http://127.0.0.1:5173/"
+  },
+  "performanceSnapshot": {
+    "javascriptMinifiedBytesApprox": 1097920,
+    "javascriptGzipBytesApprox": 305830,
+    "previsualImageBytes": 11764279,
+    "warning": "Vite reports a JavaScript chunk above 500 kB. The previsual gallery contains five 2.0-2.7 MB PNGs. This is acceptable for Gate 2 evidence but fails a release-candidate performance bar until code-splitting and AVIF/WebP derivatives are added."
+  },
+  "rootCauseIteration": {
+    "issue": "Parry and enemy impact were initially resolved by competing browser timers, producing load-dependent misses in automation.",
+    "minimalChange": "During a visible cyan telegraph, parry input is now resolved immediately by the deterministic reducer; ring dodge uses the same rule. Timers remain presentation-only.",
+    "before": "Manual timing could pass while headless runs intermittently missed and failed.",
+    "after": "Reducer tests pass and the complete Chromium route passes once with state-transition assertions."
+  },
+  "preCommitAudit": {
+    "issue": "The character lab route was not integrated, graphical tests competed for WebGL resources, and screenshots used repository-root paths from a game-package working directory.",
+    "evidence": "The first fresh E2E run failed to find the lab heading; parallel combat missed a telegraph; successful runs created a duplicated nested games directory.",
+    "rootCause": "Late integration omitted the App route, Playwright used two workers for GPU-heavy pages, and screenshot paths assumed the wrong current working directory.",
+    "minimalChange": "Wire the query route, reserve a unique E2E port, run one worker, skip redundant actionability delay only after cues are visible, and make screenshot paths game-relative.",
+    "verification": "Fresh Playwright run: 2/2 passed in 22.8 seconds; both PNGs exist in indexed run directories; malformed nested directory removed."
+  },
+  "knownLimits": [
+    "Procedural hero, oath-warden, harbor and boat are detailed graybox code models, not production topology, UV, rig, collision or LOD assets.",
+    "The generated storyboard visually reads as a previsual beat sheet rather than a locked eight-panel final storyboard; it must be redrawn after Gate 3.",
+    "Only the captain route is automated end-to-end; pilgrim mechanics and all three rumor branches are covered at reducer level but need separate browser paths.",
+    "No production audio, controller mapping, touch controls or mobile performance validation yet.",
+    "No public deployment was performed; the current playable URL is local."
+  ]
+}

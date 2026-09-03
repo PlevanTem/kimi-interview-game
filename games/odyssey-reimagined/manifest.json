@@ -1,0 +1,16 @@
+{
+  "$schema": "../../../schemas/game-manifest.schema.json",
+  "id": "odyssey-reimagined",
+  "title": "奥德赛：新构思",
+  "status": "graybox",
+  "gateState": {
+    "gate1": "locked",
+    "gate2": "blocked",
+    "gate3": "blocked",
+    "gate4": "blocked"
+  },
+  "contextIndex": "games/odyssey-reimagined/context/index.json",
+  "technologyDecision": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v4.json",
+  "createdAt": "2026-09-03T19:05:06+08:00",
+  "updatedAt": "2026-09-04T07:27:51+08:00"
+}

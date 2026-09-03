@@ -1,0 +1,107 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "briefId": "brief-sea-of-thousand-names-v2",
+  "version": "2.0.0",
+  "status": "implementation_ready_graybox",
+  "slice": {
+    "name": "盐岬港：潮门誓战",
+    "playerGoal": "穿过盐滩与客门，击败潮门誓卫，取得船印并让归潮号离港。",
+    "estimatedFirstRun": "12–20 分钟，仅为早期关卡估算，不是完整游戏上限。",
+    "beats": [
+      {"id": "sail_in", "mode": "title_stage", "proof": "浏览器原生进入、航行输入和目标可读性"},
+      {"id": "shore_read", "mode": "exploration", "proof": "移动、镜头、观察与事实收集"},
+      {"id": "guest_gate", "mode": "identity_claim", "proof": "身份权限和风险并列显示"},
+      {"id": "guard_lesson", "mode": "combat_tutorial", "proof": "锁定、闪避、攻击、招架、名线"},
+      {"id": "tide_warden", "mode": "boss_combat", "proof": "三段节奏、破架、拆名"},
+      {"id": "rumor_choice", "mode": "consequence", "proof": "公开/绑定/斩断映射到传播网络"},
+      {"id": "departure", "mode": "success", "proof": "完整成功、重试和多岛预览"}
+    ]
+  },
+  "playerKit": {
+    "move": "相机相对八方向移动；加速与减速平滑；战斗锁定时面向目标。",
+    "camera": "探索为宽距跟随，战斗自动收近并保留敌我脚下空间；鼠标拖拽只调构图，不改变规则。",
+    "observe": "短距离脉冲高亮事实载体；观察断裂客符后才允许选择身份。",
+    "light": "三段轻击，低承诺、削减一格守势；第三击略向前推进。",
+    "heavy": "有明显蓄力，高承诺、削减两格守势；若敌人正攻击则容易受创。",
+    "dodge": "短距离无敌位移，消耗一格呼吸；主要用于躲开不可招架的金色环击。",
+    "parry": "短窗口姿态；命中可招架攻击时免伤、使敌人硬直并释放一条名线。",
+    "nameBreak": "敌人守势为零且至少三条名线时可用；冻结动作并进入处置选择。",
+    "identityModifier": {
+      "returning_captain": "重击额外削减守势；招架失败时见证者记录‘武力索船’。",
+      "storm_pilgrim": "闪避呼吸恢复更快；主动轻击会破坏‘无武朝圣’可信度。"
+    }
+  },
+  "combat": {
+    "resources": {
+      "vitality": {"playerMax": 4, "meaning": "承受攻击的次数"},
+      "breath": {"max": 3, "regen": "未攻击或闪避时逐格恢复"},
+      "enemyPoise": {"guard": 3, "warden": 6, "meaning": "破架进度"},
+      "nameThreads": {"max": 3, "meaning": "由精准招架暴露的誓名层"}
+    },
+    "enemyLanguage": [
+      {"signal": "cyan_inhale", "response": "可招架；命中释放名线"},
+      {"signal": "gold_ring", "response": "不可招架；闪避或离开范围"},
+      {"signal": "cloth_pull", "response": "布锚将改变安全区，先切断锚或换位"}
+    ],
+    "bossPhases": [
+      {"phase": 1, "name": "守门", "change": "单击与慢速可招架突刺"},
+      {"phase": 2, "name": "守誓", "change": "加入金色环击与布锚扇区"},
+      {"phase": 3, "name": "守名", "change": "守势恢复，必须连续招架暴露剩余名线"}
+    ],
+    "victoryChoices": [
+      {"id": "reveal", "label": "公开誓名", "rumor": "盐岬港知道执政官违背客礼", "nextPermission": "证人欢迎", "nextRisk": "权势家族敌视"},
+      {"id": "bind", "label": "绑定誓名", "rumor": "潮门誓卫欠归乡者一次通行", "nextPermission": "守卫债务", "nextRisk": "债务必须兑现"},
+      {"id": "sever", "label": "斩断誓名", "rumor": "无人能确认是谁打开潮门", "nextPermission": "隐匿抵达", "nextRisk": "失去公开客权"}
+    ]
+  },
+  "actors": [
+    {"id": "hero", "role": "归乡者", "runtime": "player_controller", "asset": "game.odyssey-reimagined.character.hero"},
+    {"id": "thaleia", "role": "港口歌者与证人", "runtime": "witness_fsm", "asset": "game.odyssey-reimagined.character.thaleia"},
+    {"id": "ion", "role": "潮讯少年", "runtime": "rumor_courier_preview", "asset": "game.odyssey-reimagined.character.ion"},
+    {"id": "doro", "role": "船匠", "runtime": "relationship_preview", "asset": "game.odyssey-reimagined.character.doro"},
+    {"id": "oath_guard", "role": "教学敌人", "runtime": "enemy_fsm", "asset": "game.odyssey-reimagined.character.oath_guard"},
+    {"id": "oath_warden", "role": "潮门首领", "runtime": "boss_fsm", "asset": "game.odyssey-reimagined.character.oath_warden"}
+  ],
+  "stateMachine": {
+    "states": ["TITLE", "SHORE", "IDENTITY", "GUARD_TUTORIAL", "WARDEN_FIGHT", "NAME_RESOLUTION", "RUMOR_PREVIEW", "SUCCESS", "FAILURE", "PAUSED"],
+    "criticalPath": [
+      "TITLE --start--> SHORE",
+      "SHORE --observe_guest_token--> IDENTITY",
+      "IDENTITY --claim--> GUARD_TUTORIAL",
+      "GUARD_TUTORIAL --guard_broken_and_thread_revealed--> WARDEN_FIGHT",
+      "WARDEN_FIGHT --poise_zero_and_three_threads--> NAME_RESOLUTION",
+      "NAME_RESOLUTION --reveal|bind|sever--> RUMOR_PREVIEW",
+      "RUMOR_PREVIEW --depart--> SUCCESS"
+    ],
+    "failure": "任意战斗中 vitality=0 进入 FAILURE；反馈保留最后攻击类型和缺失的响应。",
+    "pause": "保存 previousState，冻结固定步模拟、敌人计时、动画驱动和教程推进。",
+    "restart": "恢复 seed=saltcape_action_v1、TITLE、生命4、呼吸3、名线0、无身份、空传闻。"
+  },
+  "tutorial": [
+    {"when": "SHORE first frame", "intent": "先读懂港口，再说出名字", "prompt": "WASD 移动 · 拖动鼠标环视 · F 观察发光痕迹"},
+    {"when": "IDENTITY", "intent": "身份是权限，也是会被核对的债务", "prompt": "选择船长或朝圣者；界面同时显示收益和风险"},
+    {"when": "GUARD_TUTORIAL", "intent": "先看吸气，再决定闪避或招架", "prompt": "Q 锁定 · 左键轻击 · Shift 闪避 · 右键招架"},
+    {"when": "first_parry", "intent": "招架会从敌人的誓约中拉出名字", "prompt": "集齐三条名线并破尽守势后按 R 拆名"},
+    {"when": "NAME_RESOLUTION", "intent": "你如何结束战斗，决定世界如何传播它", "prompt": "公开、绑定或斩断；可预览下一岛权限与风险"}
+  ],
+  "ui": {
+    "alwaysVisible": ["目标短句", "生命盐片", "呼吸结", "敌人守势", "名线计数", "当前身份徽记"],
+    "contextual": ["观察提示", "敌人预兆", "拆名可用", "胜后处置", "教程动作卡"],
+    "panels": ["操作指引", "身份履历", "人物关系", "传播网络", "预视觉画册", "暂停/重开"],
+    "accessibility": ["可关闭镜头摇动", "高对比预兆", "按键与鼠标等价按钮", "不依赖颜色单独传达可招架性"]
+  },
+  "interactionReservations": {
+    "identityResume": "可点击的两条履历槽，显示证据来源、公开度和矛盾风险。",
+    "islandRelations": "三座下一岛节点及角色连线可展开查看，但 Demo 不运行远端模拟。",
+    "propagationNetwork": "显示 Thaleia、Ion、Doro 已知事实与传播方向；仅记录当前关卡真实事件。"
+  },
+  "acceptance": [
+    "完整开始、游玩、暂停、继续、失败、成功与确定性重开。",
+    "至少一次正常守卫战和一次正常首领战，不通过跳过按钮伪造完成。",
+    "轻击、重击、闪避、招架与拆名均有状态效果和视听反馈。",
+    "两种身份至少改变一个战斗参数与一个传播结果。",
+    "三种胜后处置分别写入可见 rumor packet。",
+    "键鼠操作在界面中可回看，按钮入口支持无需熟记按键的体验。"
+  ]
+}

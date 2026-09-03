@@ -1,0 +1,189 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "briefId": "brief-sea-of-thousand-names-v1",
+  "version": "1.0.0",
+  "status": "design_complete_awaiting_tech_fit",
+  "fullGameToSlice": {
+    "fullGamePromise": "身份既是权限也是可被验证的债务；社会事实跨地点传播并改变后续行动空间。",
+    "slice": "盐岬港：被扣的归潮号",
+    "highestRiskHypothesis": "玩家会主动观察、构造并维护身份事实，而不是把身份当成正确对话选项。",
+    "realSystems": [
+      "身份声明与派生权限",
+      "证据的发现、持有、公开与隐藏",
+      "NPC 信任/怀疑和有限日程",
+      "见证者记忆与离港传闻包",
+      "空间通行、潜行、赠礼和社会交涉",
+      "可追溯成功/失败与确定性重置"
+    ],
+    "simulatedSystems": [
+      "港外航海由开场和结尾状态卡模拟",
+      "船员只实现两名关键见证者，不做完整关系网",
+      "神祇压力只作为一条潮位规则，不做完整神祇系统"
+    ],
+    "omittedSystems": ["完整战斗", "多岛传播", "长期成长", "经济循环", "伊萨卡终局"],
+    "cannotProve": ["完整产品内容耐久度", "多岛状态规模", "战斗平衡", "长篇角色弧", "商业可行性"]
+  },
+  "scenario": {
+    "premise": "盐岬港执政官扣押了玩家的船‘归潮号’。日落前，歌者兼信使伊翁将搭商船离港，把他相信的版本带往下一座岛。",
+    "goal": "在伊翁离港前取得船印、打开潮门并登上归潮号，同时决定让哪一版身份随他离开。",
+    "identities": [
+      {
+        "id": "returning_captain",
+        "label": "特洛伊归来的船长",
+        "immediatePermission": "可进入执政厅外院、正式申诉船只并命令己方船员。",
+        "liability": "必须解释缺失的王印、船员口供不一致和献给波塞冬的货物。"
+      },
+      {
+        "id": "storm_pilgrim",
+        "label": "风暴后的无名朝圣者",
+        "immediatePermission": "可进入海神庙、接受净礼并接近潮门地下水道。",
+        "liability": "不得携带武器或贵重信物；若被发现指挥船员或持有船印会构成矛盾。"
+      }
+    ],
+    "factions": [
+      {"id": "harbor_house", "goal": "保住扣船收益并维持合法主人形象"},
+      {"id": "poseidon_temple", "goal": "追回失踪祭礼并扩大对潮门的控制"},
+      {"id": "dock_clan", "goal": "让港口重新开放并削弱执政官垄断"}
+    ],
+    "keyActors": [
+      {"id": "archon_melanthios", "role": "主人/扣船者", "schedule": "执政厅宴席—码头验货—日落封印"},
+      {"id": "priestess_thaleia", "role": "仪式守门人", "schedule": "海神庙—潮门祝祷—日落收祭"},
+      {"id": "forewoman_doro", "role": "码头工头/潜在盟友", "schedule": "修船台—仓库争执—潮门罢工"},
+      {"id": "ion_the_singer", "role": "移动见证者", "schedule": "集市听闻—酒馆求证—日落登船离港"},
+      {"id": "crewman_phemius", "role": "不可靠己方证人", "schedule": "被看守—可获释—寻找酒水"}
+    ],
+    "verifiableFacts": [
+      {"id": "scar_of_oar", "carriers": ["player", "crewman_phemius"], "meaning": "支持老船长身份，也暴露与海战有关"},
+      {"id": "broken_guest_token", "carriers": ["archon_melanthios", "harbor_archive"], "meaning": "证明执政官家族欠玩家一份旧款待债"},
+      {"id": "temple_salt", "carriers": ["storm_pilgrim_robe", "priestess_thaleia"], "meaning": "支持朝圣者身份，但可被洗去或伪造"},
+      {"id": "hidden_ship_seal", "carriers": ["confiscated_cargo", "ion_the_singer"], "meaning": "能开潮门并证明玩家与归潮号的关系"}
+    ],
+    "successCompositions": [
+      "以船长身份发现旧款待债，公开迫使执政官交还船印，再说服伊翁传播合法归还。",
+      "以朝圣者身份进入海神庙和水道，借潮位打开侧门，潜入仓库取印，并让伊翁只记住净礼身份。",
+      "挑拨码头工与神庙围绕失踪祭礼冲突，制造公开罢工，使执政官移交潮门控制；随后用任一身份承担相应传闻。"
+    ],
+    "failureConditions": [
+      "身份可信度降至破裂且玩家没有合法客权、安全退路或可兑现关系。",
+      "日落时潮门仍关闭或船印未取得。",
+      "玩家被拘押，且没有 NPC 因款待债或关系介入。"
+    ]
+  },
+  "interactionModel": {
+    "intent": "观察事实—声明身份—利用权限—处理矛盾—改变见证—离港承担后果。",
+    "requiredAffordances": [
+      "连续空间移动与视角控制",
+      "指向并检查人物、门槛、物件和环境痕迹",
+      "从少量上下文行动中选择说、给、取、藏、使用、等待或离开",
+      "查看当前公开身份、已知事实、谁知道什么及日落进度",
+      "暂停、继续、重开和可访问的替代输入"
+    ],
+    "prohibitions": [
+      "不显示全局正确答案或善恶值",
+      "不把信任压成无来源百分比",
+      "不让同一身份只改变台词",
+      "不使用不可追溯的大模型输出决定成功与失败"
+    ],
+    "cameraRequirement": "必须同时支持近距人物阅读与多入口空间规划；第一人称、近距第三人称和斜俯视的最终选择留给 Tech Fit 可读性 spike。"
+  },
+  "stateMachine": {
+    "states": [
+      "BOOT", "OPENING", "ARRIVAL_OBSERVE", "THRESHOLD_CLAIM", "FREE_PLAY",
+      "CHALLENGED", "RESOLUTION", "RUMOR_DEPARTURE", "SUCCESS", "FAILURE",
+      "PAUSED", "RESETTING"
+    ],
+    "transitions": [
+      {"from": "BOOT", "event": "load_complete", "guard": "registry_resolved", "to": "OPENING", "effect": "seed_world"},
+      {"from": "OPENING", "event": "accept_goal", "guard": "none", "to": "ARRIVAL_OBSERVE", "effect": "start_sunset_clock_paused_until_first_move"},
+      {"from": "ARRIVAL_OBSERVE", "event": "cross_threshold", "guard": "at_least_one_fact_observed", "to": "THRESHOLD_CLAIM", "effect": "present_two_claims_with_known_risks"},
+      {"from": "THRESHOLD_CLAIM", "event": "declare_identity", "guard": "identity_available", "to": "FREE_PLAY", "effect": "derive_permissions_and_liabilities"},
+      {"from": "FREE_PLAY", "event": "contradiction_observed", "guard": "witness_can_compare_facts", "to": "CHALLENGED", "effect": "freeze_actor_schedule_only_during_exchange"},
+      {"from": "CHALLENGED", "event": "answer_or_act", "guard": "action_has_evidence_or_relationship_support", "to": "FREE_PLAY", "effect": "update_belief_and_memory"},
+      {"from": "CHALLENGED", "event": "claim_breaks", "guard": "no_support_and_no_exit", "to": "FAILURE", "effect": "show_specific_contradiction"},
+      {"from": "FREE_PLAY", "event": "ship_ready", "guard": "ship_seal_owned_and_tide_gate_open", "to": "RESOLUTION", "effect": "lock_final_rumor_sources"},
+      {"from": "RESOLUTION", "event": "ion_departs", "guard": "sunset_or_player_departure", "to": "RUMOR_DEPARTURE", "effect": "compose_readable_rumor_packet"},
+      {"from": "RUMOR_DEPARTURE", "event": "board_ship", "guard": "player_not_detained", "to": "SUCCESS", "effect": "show_next_island_permission_and_risk_preview"},
+      {"from": "FREE_PLAY", "event": "sunset", "guard": "ship_not_ready", "to": "FAILURE", "effect": "show_unmet_ship_condition"},
+      {"from": "*", "event": "pause", "guard": "not_terminal", "to": "PAUSED", "effect": "suspend_simulation"},
+      {"from": "PAUSED", "event": "resume", "guard": "snapshot_valid", "to": "previous_state", "effect": "resume_simulation"},
+      {"from": "SUCCESS|FAILURE|PAUSED", "event": "restart", "guard": "none", "to": "RESETTING", "effect": "clear_runtime_state"},
+      {"from": "RESETTING", "event": "reset_complete", "guard": "seed_verified", "to": "OPENING", "effect": "restore_baseline"}
+    ],
+    "illegalEventBehavior": "忽略不会改变状态的非法事件，发出可测试诊断码；禁止静默写入事实、权限或时间。"
+  },
+  "tutorial": [
+    {"beat": 1, "lesson": "环境中有可验证事实", "method": "安全观察断裂客符和被扣船，不运行日落时钟"},
+    {"beat": 2, "lesson": "身份同时给权限和弱点", "method": "越过港门前从两种声明中选择；界面并列显示一项已知权限和一项已知风险"},
+    {"beat": 3, "lesson": "NPC 会比较事实", "method": "第一个守门人只核对一项玩家已经看到的事实，允许撤回而不立即失败"},
+    {"beat": 4, "lesson": "见证者会移动并传播", "method": "伊翁在玩家视野中从集市走向酒馆，事实日志显示他新听到的一条内容"},
+    {"beat": 5, "lesson": "系统可以组合", "method": "首次开放一个可由赠礼、潜行或关系转移解决的仓库入口，不标出推荐解"}
+  ],
+  "informationHierarchy": [
+    "当前物理目标：船印、潮门、归潮号。",
+    "当前公开身份及即时权限。",
+    "眼前 NPC 正在核对的具体事实。",
+    "伊翁的位置、离港阶段和他将传播的有限事实。",
+    "日落阶段；只在阶段变化时强化，不持续显示精确倒计时。",
+    "完整事实日志按人物和来源展开，默认收起。"
+  ],
+  "feedbackMatrix": [
+    {"event": "permission_granted", "world": "门槛守卫让路并改变站位", "ui": "短暂显示权限来源", "audioMotion": "一次向内让开的动作与低音确认"},
+    {"event": "contradiction_detected", "world": "核对者看向证据载体而非盯着玩家", "ui": "并列显示冲突的两项事实", "audioMotion": "环境声收窄，证据间出现方向脉冲"},
+    {"event": "witness_learns_fact", "world": "伊翁复述关键词并改变下一目的地", "ui": "人物日志新增带来源的事实", "audioMotion": "短弦音沿其行进方向传播"},
+    {"event": "rumor_locked", "world": "伊翁登船，远处帆面出现身份纹章", "ui": "下一岛将相信/怀疑各一项", "audioMotion": "港口人声变成可辨识的重复短句"},
+    {"event": "failure", "world": "导致失败的人、门或潮门保持焦点", "ui": "只显示一条原因和一个可尝试方向", "audioMotion": "不使用通用红闪；来源物体执行拒绝动作"}
+  ],
+  "deterministicHooks": {
+    "seed": "saltcape_v1",
+    "clock": "four_discrete_sunset_phases",
+    "npcSchedules": "data_driven_waypoints_with_event_interrupts",
+    "snapshot": "state, facts, permissions, beliefs, memories, inventory, actor_phase, sunset_phase",
+    "checkpoints": ["arrival", "post_claim", "first_challenge", "ship_ready", "success", "failure"],
+    "telemetry": ["facts_observed_before_claim", "permission_changes", "contradictions_triggered", "witness_memory_changes", "solution_actions", "restart_identity"]
+  },
+  "capabilityRequirements": {
+    "hard": [
+      "风格化 3D 场景与可导航的多入口港口",
+      "5 个关键 NPC 的有限状态、日程、感知和可中断交互",
+      "数据驱动身份、事实、权限、关系与传闻规则",
+      "可检查、序列化和确定性重置的玩法状态",
+      "上下文交互、潜行可见性和基础导航阻挡",
+      "可替换资产 ID、来源与许可证解析",
+      "自动状态测试、固定检查点截图和运行日志"
+    ],
+    "preferences": [
+      "不依赖后端、账户、联网或运行时生成式 AI",
+      "支持键鼠和控制器映射，但不在设计层写死具体按键",
+      "对话、规则和遭遇可由结构化数据编辑",
+      "视觉层允许在 Fun Lock 后替换模型、材质、灯光、字体、声音与动画而不改规则"
+    ],
+    "unknowns": [
+      "Windows 下载版、浏览器链接或两者同时作为交付目标",
+      "第一人称、近距第三人称与斜俯视哪个最能兼顾社会线索和制作成本",
+      "目标设备性能和包体预算",
+      "团队规模、交付日期和可接受的外部资产许可成本"
+    ]
+  },
+  "acceptanceScenarios": [
+    "新玩家在声明前观察事实，声明后能指出一项新权限和一项新增风险。",
+    "同一固定种子下，以两种身份分别取得船只，至少改变一处通行拓扑和一条伊翁传闻。",
+    "玩家通过环境与关系组合解决入口，不依赖唯一正确对话。",
+    "每次身份破裂都显示核对者、冲突事实及其来源。",
+    "暂停/继续不推进日落和 NPC 日程；重开恢复完全相同基线。",
+    "缺失可选资产时使用登记 fallback，不破坏核心循环。"
+  ],
+  "gate2Evidence": {
+    "humanQuestions": [
+      "身份是否真的改变了你能做什么，而不只是别人怎么称呼你？",
+      "你是否在说出身份前主动寻找了证据？为什么？",
+      "你知道伊翁会把什么带走吗？你能改变它吗？",
+      "失败时是否知道是哪两项事实冲突？",
+      "你是否愿意立即以另一身份重试？",
+      "这个规则箱是否产生了一个你认为是自己想出来的方案？"
+    ],
+    "pass": "用户能无提示解释身份的权限/风险与一条见证传播因果，并通过另一身份形成不同系统组合；状态证据、重置和失败归因全部通过。",
+    "iterate": "核心因果成立但权限拓扑、反馈或教程不可读时，只迭代机制和信息层级。",
+    "reject": "玩家仍只寻找正确对话，或两种身份不改变行动空间，则退回身份模型，不进入视觉生产。"
+  }
+}

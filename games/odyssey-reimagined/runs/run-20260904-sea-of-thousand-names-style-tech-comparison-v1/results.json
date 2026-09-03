@@ -1,0 +1,106 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-style-tech-comparison-v1",
+  "status": "experiment_complete_awaiting_human_decision",
+  "completedAt": "2026-09-04T01:00:29+08:00",
+  "scale": "0_to_10_directional_evaluation_not_user_rating",
+  "weights": {
+    "style_translation": 0.25,
+    "spatial_and_mechanic_readability": 0.2,
+    "ui_world_coherence": 0.2,
+    "character_presence": 0.15,
+    "browser_delivery": 0.1,
+    "iteration_and_reversibility": 0.1
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "id": "relic-r3f",
+      "score": 8.33,
+      "scores": {
+        "style_translation": 8.4,
+        "spatial_and_mechanic_readability": 9.1,
+        "ui_world_coherence": 9.0,
+        "character_presence": 5.6,
+        "browser_delivery": 8.7,
+        "iteration_and_reversibility": 9.0
+      },
+      "oneLine": "当前最适合先验证《千名之海》身份、权限、门槛和见证者路径的 Demo 基线。",
+      "failureRisk": "人物情感和道德重量被压成棋盘 token；后续必须补近景对话表演，而不是继续增加图标。"
+    },
+    {
+      "rank": 2,
+      "id": "manuscript-r3f",
+      "score": 8.21,
+      "scores": {
+        "style_translation": 8.8,
+        "spatial_and_mechanic_readability": 7.2,
+        "ui_world_coherence": 9.2,
+        "character_presence": 6.5,
+        "browser_delivery": 8.8,
+        "iteration_and_reversibility": 8.7
+      },
+      "oneLine": "身份与事实最能成为媒介行为，原创识别度高于另外两项，但潜行距离和多入口规划较弱。",
+      "failureRisk": "若完整游戏坚持连续空间潜行，折页舞台需要证明深度、遮挡和路线不会退化成菜单。"
+    },
+    {
+      "rank": 3,
+      "id": "painterly-babylon",
+      "score": 6.9,
+      "scores": {
+        "style_translation": 6.8,
+        "spatial_and_mechanic_readability": 6.2,
+        "ui_world_coherence": 7.4,
+        "character_presence": 8.5,
+        "browser_delivery": 5.8,
+        "iteration_and_reversibility": 6.2
+      },
+      "oneLine": "角色肖像和电影 UI 明显领先，但程序化场景的精度追不上人物资产，当前形成高低精度断裂。",
+      "failureRisk": "继续追求该路线会把主要成本转移到角色、环境模型、动画、贴图和镜头资产，而不是 Babylon 代码。"
+    }
+  ],
+  "engineeringEvidence": {
+    "build": {
+      "command": "npm.cmd run build",
+      "exitCode": 0,
+      "modulesTransformed": 725,
+      "durationSeconds": 28.66,
+      "chunks": {
+        "sharedReactShell": {"rawKb": 192.18, "gzipKb": 61.45},
+        "r3fShared": {"rawKb": 857.7, "gzipKb": 231.05},
+        "relicScene": {"rawKb": 6.46, "gzipKb": 2.33},
+        "manuscriptScene": {"rawKb": 6.15, "gzipKb": 2.2},
+        "babylonSceneAndEngine": {"rawKb": 1448.61, "gzipKb": 351.35},
+        "painterlyPortraitPng": {"rawKb": 2184.29}
+      },
+      "warning": "Babylon and R3F engine chunks exceed Vite's 500 kB raw warning threshold; routes are lazy-loaded to prevent both engines loading together."
+    },
+    "unit": {"command": "npm.cmd test", "exitCode": 0, "tests": 2, "passed": 2},
+    "dependencyAudit": {
+      "initial": "2 high and 1 critical in Playwright 1.55.0 and Vitest 3.2.4",
+      "change": "Upgraded Playwright to 1.62.1 and Vitest to 3.2.7 without force.",
+      "final": "npm install reported 0 vulnerabilities"
+    },
+    "browser": {
+      "surface": "Codex in-app browser",
+      "consoleErrors": 0,
+      "consoleWarnings": 0,
+      "sharedStateCheck": {"factVisibleAfterRouteSwitch": true, "rumorVisibleAfterRouteSwitch": true, "sunsetAdvancedFrom": "1/4", "sunsetAdvancedTo": "2/4"},
+      "pageRafCallbackRates": {"painterly": 169, "relic": 170, "manuscript": 170},
+      "rafCaution": "Environment-specific callback rate, not a display refresh or GPU benchmark; used only to detect obvious throttling."
+    },
+    "playwrightCli": {
+      "command": "npx.cmd playwright test --reporter=line",
+      "exitCode": 1,
+      "status": "blocked_environment",
+      "reason": "Playwright Chromium headless shell is not installed. No browser download was performed because the in-app browser already produced real runtime, screenshot and console evidence."
+    }
+  },
+  "recommendation": {
+    "forImmediateMechanicDemo": "relic-r3f",
+    "forDistinctiveLongTermArtDirection": "manuscript-r3f_requires_spatial_depth_spike",
+    "forHighestCharacterEmotion": "painterly-babylon_requires_external_or_generated_asset_pipeline",
+    "technologyLock": null,
+    "visualLock": null,
+    "humanDecisionRequired": "Choose one route, request a targeted second iteration, or explicitly keep two routes for one more decision spike."
+  }
+}

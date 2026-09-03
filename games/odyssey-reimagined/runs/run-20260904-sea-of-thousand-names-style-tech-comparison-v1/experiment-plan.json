@@ -1,0 +1,44 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-style-tech-comparison-v1",
+  "status": "executed_awaiting_human_decision",
+  "question": "三种技术与艺术方向组合中，哪一种能在盐岬港场景中同时建立空间可读性、身份 UI 语法和可扩展的浏览器制作路径？",
+  "controlledContent": {
+    "location": "盐岬港",
+    "goal": "日落前取回船印、打开潮门，并控制伊翁带走的说法。",
+    "actors": ["玩家", "塔勒娅", "伊翁"],
+    "facts": ["断裂客符", "旧款待债", "隐藏船印"],
+    "identities": ["特洛伊归来的船长", "风暴后的无名朝圣者"],
+    "actions": ["观察客符", "声明身份", "推进日落", "重置共同状态"]
+  },
+  "independentVariables": ["renderer", "spatial_model", "material_language", "camera", "ui_language", "motion_language"],
+  "routes": [
+    {
+      "id": "painterly-babylon",
+      "style": "painterly-cinematic-3d",
+      "technology": "Babylon.js 9.23.0",
+      "visualHypothesis": "低机位完整 3D、绘画性动态纹理、暖冷电影灯光和高密度角色肖像能强化 NPC 的人格与社会压力。"
+    },
+    {
+      "id": "relic-r3f",
+      "style": "abstract-relic-diorama",
+      "technology": "Three.js 0.180.0 + React Three Fiber 9.3.0",
+      "visualHypothesis": "等距遗物箱庭与同构 UI token 能把门、权限、见证路径和事实载体变成一眼可读的社会棋盘。"
+    },
+    {
+      "id": "manuscript-r3f",
+      "style": "living-manuscript",
+      "technology": "Three.js 0.180.0 + React Three Fiber 9.3.0",
+      "visualHypothesis": "浅 3D 折页舞台、边注、刮写和蜡封可以让身份与事实改写直接成为媒介行为。"
+    }
+  ],
+  "weights": {
+    "style_translation": 0.25,
+    "spatial_and_mechanic_readability": 0.2,
+    "ui_world_coherence": 0.2,
+    "character_presence": 0.15,
+    "browser_delivery": 0.1,
+    "iteration_and_reversibility": 0.1
+  },
+  "evidencePolicy": "预测性技术能力不计为实验结果；必须有真实浏览器截图、共享状态交互、控制台日志、构建输出和资产审计。",
+  "decisionPolicy": "Codex 评分只形成推荐；人类仍需明确选择技术和艺术方向，才能记录 Tech Fit Lock。"
+}

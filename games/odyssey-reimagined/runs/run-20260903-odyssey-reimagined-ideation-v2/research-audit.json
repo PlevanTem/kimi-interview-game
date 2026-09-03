@@ -1,0 +1,184 @@
+{
+  "runId": "run-20260903-odyssey-reimagined-ideation-v2",
+  "capturedAt": "2026-09-03T19:51:47+08:00",
+  "scope": "支持完整游戏 IDEATION 的原典结构、长期循环、系统叙事、知识探索、角色记忆与选择设计。",
+  "claimBoundary": "原典事实与 GDC 官方摘要属于可验证来源；候选机制及产品潜力评分是本轮设计推断，不是来源已经证明的商业结论。",
+  "sources": [
+    {
+      "id": "HOM-01",
+      "title": "Homer, Odyssey, Book 1",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D1",
+      "evidenceLevel": "A",
+      "usedFor": ["Telemachus", "suitor occupation", "xenia violation", "nostos and kleos tension"]
+    },
+    {
+      "id": "HOM-02",
+      "title": "Homer, Odyssey, Book 9",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D9%3Acard%3D360",
+      "evidenceLevel": "A",
+      "usedFor": ["Cyclops", "Nobody identity trick", "boast creates long-term divine consequence"]
+    },
+    {
+      "id": "HOM-03",
+      "title": "Homer, Odyssey, Book 12",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D12",
+      "evidenceLevel": "A",
+      "usedFor": ["Sirens", "Scylla and Charybdis", "crew obedience", "unavoidable cost"]
+    },
+    {
+      "id": "HOM-04",
+      "title": "Homer, Odyssey, Book 13",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D13",
+      "evidenceLevel": "A",
+      "usedFor": ["Ithaca return", "Athena disguise", "cunning as enduring identity"]
+    },
+    {
+      "id": "HOM-05",
+      "title": "Homer, Odyssey, Book 19",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D19",
+      "evidenceLevel": "A",
+      "usedFor": ["false biography", "scar recognition", "Penelope interrogation", "identity as evidence"]
+    },
+    {
+      "id": "HOM-06",
+      "title": "Homer, Odyssey, Book 21",
+      "kind": "primary_text",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D21",
+      "evidenceLevel": "A",
+      "usedFor": ["bow contest", "recognition through action", "household climax"]
+    },
+    {
+      "id": "SCH-01",
+      "title": "Disguise and Recognition in the Odyssey",
+      "kind": "academic_primary_page",
+      "url": "https://www-current.chs.harvard.edu/sheila-murnaghan-disguise-and-recognition-in-the-odyssey-preface/",
+      "evidenceLevel": "A",
+      "usedFor": ["disguise structure", "recognition process", "identity is negotiated rather than a static label"]
+    },
+    {
+      "id": "DES-01",
+      "title": "The Art of Game Design — Jesse Schell",
+      "kind": "author_official",
+      "url": "https://schellgames.com/art-of-game-design?trk=public_post_comment-text",
+      "evidenceLevel": "B",
+      "usedFor": ["essential experience lens", "multiple design lenses", "prototype questions"]
+    },
+    {
+      "id": "DES-02",
+      "title": "Interesting Decisions — Sid Meier",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1016165/Interesting",
+      "evidenceLevel": "B",
+      "usedFor": ["decision categories", "pacing", "information and feedback"]
+    },
+    {
+      "id": "DES-03",
+      "title": "Theme is Not Meaning — Soren Johnson",
+      "kind": "official_session_abstract",
+      "url": "https://gdcvault.com/play/1012670/Theme-is-Not",
+      "evidenceLevel": "B",
+      "usedFor": ["rules create meaning", "theme-rule alignment", "reward and punishment audit"]
+    },
+    {
+      "id": "REF-01",
+      "title": "Sparking Curiosity-Driven Exploration Through Narrative in Outer Wilds",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1027368/Independent-Games-Summit-Sparking-Curiosity",
+      "evidenceLevel": "B",
+      "usedFor": ["diegetic direction", "knowledge progression", "nonlinear exploration"]
+    },
+    {
+      "id": "REF-02",
+      "title": "80 DAYS Post-mortem: Letting the Game Tell the Story",
+      "kind": "official_session_abstract",
+      "url": "https://gdcvault.com/play/1021717/80-DAYS-Post-mortem-Letting",
+      "evidenceLevel": "B",
+      "usedFor": ["journey board game", "economy and narrative interaction", "flexible authored content"]
+    },
+    {
+      "id": "REF-03",
+      "title": "Heaven's Vault: Creating a Dynamic Detective Story",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1025149/-Heaven-s-Vault-Creating",
+      "evidenceLevel": "B",
+      "usedFor": ["dynamic lead chain", "few bottlenecks", "progress despite missed content"]
+    },
+    {
+      "id": "REF-04",
+      "title": "Breaking the Cycle: The Making of Returnal",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1027877/Breaking-the-Cycle-The-Making",
+      "evidenceLevel": "B",
+      "usedFor": ["roguelite world", "layered narrative", "production risk of unfamiliar systems"]
+    },
+    {
+      "id": "REF-05",
+      "title": "Rules of the Game: The Nemesis System",
+      "kind": "official_slides",
+      "url": "https://media.gdcvault.com/gdc2016/Presentations/Rouse_Richard_RulesOfTheGame.pdf",
+      "evidenceLevel": "A",
+      "usedFor": ["social hierarchy as story mechanic", "persistent enemy memory", "player intervention creates stories"]
+    },
+    {
+      "id": "REF-06",
+      "title": "The Secret Lives of NPCs: Wayward Strand",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1029194/Independent-Games-Summit-The-Secret",
+      "evidenceLevel": "B",
+      "usedFor": ["simultaneous NPC stories", "NPC schedules independent of player", "living social place"]
+    },
+    {
+      "id": "REF-07",
+      "title": "FTL: Faster Than Light Postmortem",
+      "kind": "official_session_abstract",
+      "url": "https://gdcvault.com/play/1017060/FTL-Faster-Than-Light",
+      "evidenceLevel": "B",
+      "usedFor": ["captain fantasy", "crew and ship decisions", "travel structure"]
+    },
+    {
+      "id": "REF-08",
+      "title": "Getting Players Emotionally Invested in Procedural Characters in Wildermyth",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1027924/Independent-Games-Summit-Session-Getting",
+      "evidenceLevel": "B",
+      "usedFor": ["procedural character attachment", "behavioral consistency", "trust failure"]
+    },
+    {
+      "id": "REF-09",
+      "title": "Choice, Consequence and Complicity",
+      "kind": "official_session_abstract",
+      "url": "https://gdcvault.com/play/1023346/Choice-Consequence-and",
+      "evidenceLevel": "B",
+      "usedFor": ["finite consequence budget", "player self-expression", "expectation and surprise"]
+    },
+    {
+      "id": "REF-10",
+      "title": "Breathing Life into Greek Myth: The Dialogue of Hades",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1026975/Breathing-Life-into-Greek-Myth",
+      "evidenceLevel": "B",
+      "usedFor": ["mythic character voice", "state-aware dialogue", "narrative production scale warning"]
+    },
+    {
+      "id": "REF-11",
+      "title": "Making Linear Story Playable: The Narrative Design of Alan Wake 2",
+      "kind": "official_session_abstract",
+      "url": "https://gdcvault.com/play/1034328/Making-Linear-Story-Playable-The",
+      "evidenceLevel": "B",
+      "usedFor": ["dual protagonists", "agency versus authored role", "narrative mechanics"]
+    },
+    {
+      "id": "REF-12",
+      "title": "Finding the Right Branching Narrative Structure for Your RPG",
+      "kind": "official_session_abstract",
+      "url": "https://www.gdcvault.com/play/1023386/Finding-the-Right-Branching-Narrative",
+      "evidenceLevel": "B",
+      "usedFor": ["repeating diamond structure", "branching production cost", "parallel paths"]
+    }
+  ]
+}

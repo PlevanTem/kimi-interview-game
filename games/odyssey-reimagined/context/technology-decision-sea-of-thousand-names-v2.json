@@ -1,0 +1,185 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-visual-v2",
+  "version": "2.0.0",
+  "status": "superseded_by_three_route_aesthetic_experiment",
+  "locked": false,
+  "selectedCandidateId": null,
+  "humanApproval": null,
+  "supersedes": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v1.json",
+  "decisionChange": "Visual quality, aesthetic coherence and authoring throughput are now primary criteria while browser-link delivery remains a hard requirement.",
+  "hardRequirements": [
+    "Static-hostable browser build with WebGL2 fallback and no player installation",
+    "A coherent stylized art direction with controlled lighting, materials, color and post-processing",
+    "glTF-centered replaceable asset pipeline with stable asset IDs and provenance",
+    "Animation, camera and environment iteration that does not entangle authoritative gameplay state",
+    "Deterministic and serializable identity/fact/witness rules testable without rendering",
+    "Quality presets and measured frame, memory, draw-call, texture and download budgets"
+  ],
+  "visualQualityModel": {
+    "principle": "Judge a repeatable authored target frame at playable performance, not feature count or a single offline-looking screenshot.",
+    "targetFrameIngredients": [
+      "Salt-whitened stone and oxidized bronze material family",
+      "Late-afternoon directional light with readable threshold shadows",
+      "Sea haze and restrained atmospheric depth",
+      "Character silhouettes readable against port architecture",
+      "A controlled warm-stone / cold-sea palette with one rumor accent",
+      "Filmic tone mapping and restrained bloom without destroying UI or evidence legibility"
+    ],
+    "antiGoals": [
+      "Generic marketplace-asset collage",
+      "Effect-heavy image with unreadable interaction thresholds",
+      "WebGPU-only showcase that fails the baseline browser route",
+      "Visual polish embedded directly in game-state code"
+    ]
+  },
+  "evaluationModel": {
+    "scale": "0-100",
+    "weights": {
+      "aestheticCeilingAndControl": 0.3,
+      "artAuthoringIteration": 0.2,
+      "browserDeliveryAndPerformance": 0.2,
+      "gameplaySystemTestability": 0.15,
+      "assetPipeline": 0.1,
+      "migrationReversibility": 0.05
+    },
+    "rule": "weightedTotal = sum(score * weight); differences below 2 points require a decision-driving visual bake-off or explicit human risk acceptance"
+  },
+  "candidates": [
+    {
+      "id": "web-native-babylonjs",
+      "label": "Babylon.js + TypeScript + Blender/glTF",
+      "scores": {
+        "aestheticCeilingAndControl": 95,
+        "artAuthoringIteration": 94,
+        "browserDeliveryAndPerformance": 94,
+        "gameplaySystemTestability": 88,
+        "assetPipeline": 96,
+        "migrationReversibility": 78
+      },
+      "weightedTotal": 92.8,
+      "qualityCase": [
+        "Integrated PBR, HDR/EXR image-based lighting, soft and cascaded shadows, volumetric lighting, post-processing, reflection probes and screen-space effects reduce bespoke renderer assembly.",
+        "Node Material, Node Render Graph, particle and GUI editors plus Inspector improve look-development iteration.",
+        "glTF import/export and animation retargeting fit a Blender-centered authored asset pipeline."
+      ],
+      "constraints": [
+        "Use stable PBRMaterial for the first slice; do not make newer OpenPBR behavior a release dependency without a focused compatibility check.",
+        "Keep WebGL2 as the baseline and treat WebGPU as progressive enhancement.",
+        "The deterministic domain model remains plain TypeScript and cannot depend on Babylon scene nodes."
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "web-native-three-r3f",
+      "label": "Three.js + React Three Fiber + TypeScript + Blender/glTF",
+      "scores": {
+        "aestheticCeilingAndControl": 96,
+        "artAuthoringIteration": 78,
+        "browserDeliveryAndPerformance": 96,
+        "gameplaySystemTestability": 95,
+        "assetPipeline": 90,
+        "migrationReversibility": 94
+      },
+      "weightedTotal": 91.55,
+      "qualityCase": [
+        "Very high shader, node-material, tone-mapping, color-grading and post-processing control.",
+        "React/DOM information design and deterministic TypeScript state integration are already proven in the spike.",
+        "The WebGPU renderer offers a modern node-based post-processing path while WebGL2 can remain the baseline."
+      ],
+      "constraints": [
+        "Scene inspection, animation authoring, navigation and material tooling require more custom assembly.",
+        "The current spike already triggers a large-chunk warning before real assets are added.",
+        "High artistic ceiling is irrelevant if bespoke tools consume the demo schedule."
+      ],
+      "confidence": "medium_high_on_architecture_low_on_visual_result"
+    },
+    {
+      "id": "godot-4-gdscript-web",
+      "label": "Godot 4 GDScript Compatibility Web + Blender/glTF",
+      "scores": {
+        "aestheticCeilingAndControl": 82,
+        "artAuthoringIteration": 97,
+        "browserDeliveryAndPerformance": 72,
+        "gameplaySystemTestability": 86,
+        "assetPipeline": 94,
+        "migrationReversibility": 72
+      },
+      "weightedTotal": 84.3,
+      "qualityCase": [
+        "Best integrated scene, animation, material and camera authoring workflow of the three candidates.",
+        "Strong glTF/Blender import and live scene inspection."
+      ],
+      "constraints": [
+        "Browser export uses the least advanced Compatibility renderer rather than Forward+.",
+        "Compatibility rendering does not provide some high-end effects such as SDFGI and volumetric fog/fog volumes.",
+        "WASM/PCK delivery and browser threading constraints weaken the link-first objective."
+      ],
+      "confidence": "medium_high"
+    }
+  ],
+  "provisionalRecommendation": {
+    "candidateId": "web-native-babylonjs",
+    "confidence": "medium",
+    "marginOverSecond": 1.25,
+    "oneSentence": "Babylon.js now ranks first because its integrated rendering and authoring tools are more likely to convert art direction into a polished browser scene without spending the demo budget on custom engine tooling.",
+    "notEnoughToLock": "The 1.25-point lead is below the two-point evidence threshold and no comparable target-frame browser evidence exists."
+  },
+  "decisionDrivingVisualBakeoff": {
+    "status": "proposed_not_executed",
+    "routes": ["web-native-babylonjs", "web-native-three-r3f"],
+    "sameInputs": [
+      "One procedural salt-stone gate, bronze seal, cloth banner and water plane",
+      "One fixed oblique camera and one close character-reading camera",
+      "One fixed HDR-like lighting intent and shared palette values",
+      "Same 1920x1080 and 1440x900 browser viewports",
+      "Same WebGL2 baseline; WebGPU results reported separately, never substituted"
+    ],
+    "measures": [
+      "Target-frame coherence judged blind from paired screenshots",
+      "Time and code required to adjust light, material, fog, shadow and color grade",
+      "Cold-load transfer size and first meaningful rendered frame",
+      "Median and 1% low frame time during a fixed camera path",
+      "Draw calls, texture memory and shader compilation stalls",
+      "Whether interaction thresholds and evidence cues remain readable"
+    ],
+    "passRule": "Lock the route that reaches the approved target-frame intent within budget and without compromising evidence legibility; if results tie, choose the more reversible Three/R3F route.",
+    "blocker": "The current session has no connected browser, so comparable screenshots and runtime frame evidence cannot yet be produced through the required browser-control surface."
+  },
+  "runtimeVisualContractAfterLock": {
+    "baseline": "WebGL2",
+    "progressiveEnhancement": "WebGPU may improve effects on supported browsers but cannot contain unique required gameplay cues.",
+    "authoring": "Blender to glTF 2.0; textures with explicit color-space roles; stable asset IDs; no direct remote-Wiki asset copying.",
+    "qualityBudgetsToSetBeforeFormalAssets": [
+      "Initial JavaScript transfer",
+      "Initial scene and total downloadable asset transfer",
+      "Peak decoded texture memory",
+      "Draw calls and visible triangle count",
+      "Median and 1% low frame time on the named reference device",
+      "Shader compilation and first meaningful frame"
+    ]
+  },
+  "sources": [
+    {
+      "title": "Babylon.js Specifications",
+      "url": "https://www.babylonjs.com/specifications/",
+      "use": "PBR, HDR, lighting, shadows, post-processing, glTF and authoring-tool capability evidence"
+    },
+    {
+      "title": "Three.js WebGPU Post-Processing",
+      "url": "https://threejs.org/manual/en/webgpu-postprocessing.html",
+      "use": "Node-based post-processing, MRT, tone mapping and LUT color-grading evidence"
+    },
+    {
+      "title": "Godot 4.7 Internal Rendering Architecture",
+      "url": "https://docs.godotengine.org/en/4.7/engine_details/architecture/internal_rendering_architecture.html",
+      "use": "Compatibility-renderer visual limitations"
+    },
+    {
+      "title": "Godot 4.7 Exporting for the Web",
+      "url": "https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_web.html",
+      "use": "Browser export constraints"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3",
+  "version": "3.0.0",
+  "status": "aesthetic_experiment_template_download_cancelled_no_final_result",
+  "locked": false,
+  "selectedCandidateId": null,
+  "humanApproval": null,
+  "supersedes": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v2.json",
+  "humanDecisionPolicy": "No final technology selection until the three-route experiment has comparable evidence and weighted results, unless the human explicitly accepts the missing evidence.",
+  "experiment": {
+    "plan": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/experiment-plan.json",
+    "assetRegistry": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/asset-registry.json",
+    "setupEvidence": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/setup-evidence.json",
+    "targetFrame": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/reference/saltcape-target-frame-v1.png",
+    "results": null,
+    "recommendation": null
+  },
+  "candidates": [
+    {"id": "web-native-three-r3f", "result": null},
+    {"id": "web-native-babylonjs", "result": null},
+    {"id": "godot-4-gdscript-web", "result": null}
+  ],
+  "priorScores": {
+    "status": "informational_only_not_experimental_results",
+    "source": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v2.json",
+    "values": {
+      "web-native-babylonjs": 92.8,
+      "web-native-three-r3f": 91.55,
+      "godot-4-gdscript-web": 84.3
+    }
+  },
+  "exactHumanApprovalStillRequired": "After experiment results are recorded, the human must name one candidate and approve Tech Fit Lock."
+}

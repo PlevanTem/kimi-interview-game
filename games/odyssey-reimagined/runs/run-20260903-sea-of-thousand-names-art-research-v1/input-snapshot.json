@@ -1,0 +1,18 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-art-research-v1",
+  "capturedAt": "2026-09-03T22:18:00+08:00",
+  "decisionMaker": "human_user",
+  "input": {
+    "instruction": "上一轮差异太小。先调研同类获奖作品、经典作品与 Awwwards 案例，整理完全不同的美术风格 moodboard；由人类决策后，才基于提案场景生成图片概念。",
+    "conceptId": "concept-sea-of-thousand-names",
+    "rejectedRunId": "run-20260903-sea-of-thousand-names-previsual-v1",
+    "decisionPolicy": "research_and_moodboard_only_no_scene_concept_generation_before_human_selection"
+  },
+  "followUps": [
+    {
+      "capturedAt": "2026-09-04T00:12:01+08:00",
+      "instruction": "HTML 必须展示具体真实参考图像并从图像总结特征；加入《Arcane / 双城之战》进行分析对比。",
+      "decisionPolicy": "remote_reference_images_with_attribution_no_download_no_style_lock"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-hero-action-sheet-v2",
+  "capturedAt": "2026-09-04T07:02:01+08:00",
+  "decisionMaker": "human_user",
+  "instruction": "梳理当前角色动作系统为表格，并以用户提供的当前 Q 版低多边形角色参考图为一致性锚点，生成 9:16 动作 spritesheet。",
+  "reference": {
+    "role": "character identity and costume reference only",
+    "pathAtGeneration": "C:/Users/Administrator/AppData/Local/Temp/codex-clipboard-37031a38-109d-46bc-87a0-2b062aeb4ff7.png",
+    "sha256": "f081c6d7fcbda6af13333dc334c5c624fa9455afdc91ee8afad1d4132f4e0bb2",
+    "canonicalProjectAsset": "game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3"
+  },
+  "scope": {
+    "table": "current reducer, movement and procedural presentation states, with gaps explicitly separated",
+    "image": "twelve semantic key poses in a 3x4 portrait sheet",
+    "exclusions": ["playable frame animation", "rigging", "root motion", "Gate 3 approval"]
+  },
+  "gatePolicy": "Gate 2 and Gate 3 remain blocked. New files are graybox/previsual references only."
+}

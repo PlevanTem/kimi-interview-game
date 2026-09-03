@@ -1,0 +1,15 @@
+Use case: stylized-concept
+Asset type: previsualization keyframe for a stylized 3D game environment, Direction B — "The Living Fresco"
+Input image 1 role: structural composition reference only; preserve the harbor threshold, descending route to the ship, traveler in foreground, witness ahead, and navigable spatial depth. Completely replace the generic photorealistic finish.
+Primary request: redesign Salt Cape Harbor from an Odyssey-inspired systemic role-playing game as an original living fresco rendered in real-time 3D, where identity is layered pigment, permission is framed negative space, and witnessed facts leave restrained woven marks.
+Scene/backdrop: compact Aegean harbor threshold, limestone terraces, black-hulled homecoming ship, calm patterned sea, distant island; all forms reduced into bold readable planes.
+Subject: dark-cloaked traveler observes from the foreground; singer-witness moves toward the departing ship; the controlled threshold is an incomplete circular frame whose missing segment visually implies contested permission.
+Style/medium: painterly stylized real-time 3D resembling hand-plastered walls, mineral pigment, cut-paper silhouettes and low-relief ceramic figures; graphic but spatial, premium authored game keyframe; absolutely not a direct copy of any historical vase or modern game.
+Composition/framing: wide 16:9 oblique third-person planning view, slightly flattened perspective but still three traversable depth layers; large quiet shapes, deliberate negative space, clean silhouettes; ship and witness remain readable.
+Lighting/mood: sun-bleached noon expressed through broad value blocks, almost no glossy highlights; soft cobalt sea fill, warm ochre bounce, deep painted shadow shapes.
+Color palette: limewash ivory dominant, iron-oxide terracotta for public/witnessed facts, mineral ultramarine for hidden/unknown space, carbon-black traveler and hull. No other accent colors.
+Shape language: rectangular plaster fields for institutions, broken circles for permission and oaths, long tapered triangles for travel and unstable identities. Maximum three families.
+Materials/textures: rough lime plaster, matte painted ceramic, coarse woven cloth. Maximum three families; visible brush and scrape marks at large scale.
+Mechanic readability: the witness’s terracotta cord crosses only spaces where a claim has become public; the broken circular threshold closes visually when permission is granted; use environmental motifs, no literal interface.
+Motion implication: cloth panels move as two-frame graphic shapes, sea ripples as repeating painted bands, character gestures are clear held poses separated by deliberate transitions.
+Constraints: original design; no text; no HUD; no logos; no watermark; no photorealism; no realistic PBR microtexture; no ornate temple columns; no giant statues; no magical glow; no particles; no extra characters; no dense clutter; no direct imitation of Greek black-figure pottery; retain human scale, route clarity and a feasible modular 3D construction.

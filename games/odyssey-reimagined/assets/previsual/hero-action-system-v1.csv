@@ -1,0 +1,14 @@
+slot,action_id,action_cn,trigger,rule_status,current_visual_status,sheet_role,production_dependency
+01,idle_neutral,中立待机,无输入,implemented,graybox_partial,key_pose,rig_and_loop_validation
+02,idle_combat,战斗待机,Q锁定,partial,missing,key_pose,separate_lockon_animation_state
+03,locomotion_walk,行走,WASD或方向键,implemented,graybox_placeholder,key_pose,velocity_driven_animation_state
+04,locomotion_run,奔跑,未分配独立输入,not_implemented,missing,future_key_pose,run_rule_or_remove
+05,observe,观察,F且处于岸边客符阶段,implemented,missing,key_pose,one_shot_clip_and_fact_reveal_sync
+06,light_1,轻击一,左键或J,implemented,graybox_partial,key_pose,attack_timeline_and_hit_event
+07,light_2,轻击二,第二次轻击,design_only,missing,key_pose,combo_index_and_input_buffer
+08,heavy,重击,E或K,implemented,graybox_partial,key_pose,charge_contact_recovery_timeline
+09,dodge,侧闪,Shift或Space,implemented,graybox_partial,key_pose,root_motion_and_iframe_sync
+10,parry,精准招架,右键或L且青色预兆,implemented,graybox_partial,key_pose,contact_event_and_hitstop_sync
+11,hit,受击,敌击结算失败,implemented,graybox_partial,key_pose,stagger_and_failure_transition
+12,namebreak,拆名,R且守势为0名线为3,implemented,missing,key_pose,three_thread_ritual_clip
+

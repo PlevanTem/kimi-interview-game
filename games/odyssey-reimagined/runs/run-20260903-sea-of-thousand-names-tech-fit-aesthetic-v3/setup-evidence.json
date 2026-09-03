@@ -1,0 +1,76 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3",
+  "capturedAt": "2026-09-03T22:05:00+08:00",
+  "godotDiscovery": {
+    "copies": [
+      {
+        "path": "D:/AI Workspace/kimi-interview-game/.tools/godot-4.7.2/Godot_v4.7.2-stable_win64.exe",
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424",
+        "selected": true,
+        "reason": "Shared self-contained tool already associated with the repository; no copy or install required."
+      },
+      {
+        "path": "D:/Godot_v4.7.2-stable_win64.exe/Godot_v4.7.2-stable_win64.exe",
+        "version": "4.7.2.stable.official.ed1daf0bf",
+        "sha256": "ab1824f85bfd8e0e4128182c000c4003a3e042245b2967848d089b2a04b22424",
+        "selected": false,
+        "reason": "Byte-identical duplicate; preserve untouched."
+      }
+    ],
+    "webExportTemplateFiles": 0
+  },
+  "godotScene": {
+    "status": "source_and_headless_runtime_verified_visual_capture_not_authorized",
+    "renderer": "gl_compatibility",
+    "source": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/visual-bakeoff/godot",
+    "checks": [
+      {
+        "command": "Godot_v4.7.2-stable_win64_console.exe --headless --editor --path <godot-spike> --quit",
+        "exitCode": 0,
+        "result": "Project imported and editor scan completed; no GDScript parse error."
+      },
+      {
+        "command": "Godot_v4.7.2-stable_win64_console.exe --headless --path <godot-spike> --log-file godot-headless.log --quit-after 2",
+        "exitCode": 0,
+        "result": "Scene constructed and ran after fixing camera initialization; only root certificate-store warning remained."
+      }
+    ],
+    "nonDecisionWarnings": [
+      "Windows root certificate store could not be read inside the sandbox; the experiment uses no network content."
+    ],
+    "visualCapture": {
+      "status": "permission_rejected",
+      "requestedCommand": "Godot graphical run with --capture and automatic quit",
+      "output": null,
+      "score": null
+    },
+    "webExport": {
+      "status": "templates_missing_download_cancelled_by_user",
+      "output": null,
+      "score": null
+    },
+    "templateDownloadAttempt": {
+      "source": "Godot 4.7.2 official export templates release archive",
+      "purpose": "Web export capability, not editor installation",
+      "status": "cancelled",
+      "partialBytesRemoved": 953465816,
+      "partialFileRemoved": true,
+      "recoverable": false,
+      "existingEditorsModified": false,
+      "policy": "Do not download Godot templates again unless the user explicitly requests Web export evidence after this clarification."
+    }
+  },
+  "babylonSetup": {
+    "status": "installed_and_verified",
+    "requestedPackage": "@babylonjs/core@9.23.0",
+    "installed": true,
+    "scope": "isolated_experiment_directory",
+    "verification": "npm list reported @babylonjs/core@9.23.0 with exit code 0",
+    "warning": "The install process emitted a Miniconda requests dependency warning unrelated to the installed JavaScript package."
+  },
+  "threeSetup": {
+    "status": "available_not_yet_reproduced_against_target_frame"
+  },
+  "decisionImpact": "Godot aesthetic capture can still use the existing Compatibility renderer; Godot browser-export metrics remain unverified. No technology can be selected yet."
+}

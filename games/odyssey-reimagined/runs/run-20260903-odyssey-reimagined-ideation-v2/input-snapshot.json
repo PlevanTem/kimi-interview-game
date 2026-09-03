@@ -1,0 +1,25 @@
+{
+  "runId": "run-20260903-odyssey-reimagined-ideation-v2",
+  "capturedAt": "2026-09-03T19:51:47+08:00",
+  "decisionMaker": "human_user",
+  "input": {
+    "instruction": "按新规则完全重做 IDEATION。",
+    "theme": "奥德赛",
+    "scope": "完整游戏玩法类型发散、研究映射、产品潜力排序、恰好三个候选种子及各自 Demo 验证切片。",
+    "explicitChoice": "完全重做，不保留旧三案作为候选种子。"
+  },
+  "constraints": {
+    "fullGameDuration": "open",
+    "fullGameScenesAndSystems": "open",
+    "demoDuration": "evidence_driven_no_fixed_minutes",
+    "demoRole": "partial_risk_evidence_slice",
+    "gate1CandidateCount": 3,
+    "technologyLocked": false
+  },
+  "sourcePolicy": "原典、官方 GDC/BAFTA/开发者资料用于事实和方法；旧三案、旧排名与旧范围转译不作为创意输入。",
+  "humanDecisionsStillRequired": [
+    "确认 IDEATION 的三个候选种子是否进入 DEFINE。",
+    "DEFINE 完成后才进行 Gate 1 选择或退回。",
+    "Gate 1 后再确定首个 Demo 的技术和具体证据预算。"
+  ]
+}

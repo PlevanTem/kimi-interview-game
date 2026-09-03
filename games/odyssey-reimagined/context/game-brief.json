@@ -1,0 +1,63 @@
+{
+  "$schema": "../../../schemas/game-brief.schema.json",
+  "id": "brief-odyssey-reimagined-v2",
+  "version": 2,
+  "status": "draft",
+  "frozen": false,
+  "audience": "偏好系统性选择、神话冒险与可读行动反馈的单人游戏玩家；目标平台、年龄、单次游玩时长与完整产品体量尚待概念阶段验证。",
+  "experiencePromise": "玩家以机智、伪装、诱导与代价管理穿越一段可扩展的神话归途；世界持续记住玩家如何归来，而不是只统计击败了多少敌人。",
+  "coreVerb": null,
+  "coreVerbs": null,
+  "fullGameVision": {
+    "durationPolicy": "open_until_concept_lock_and_scope_estimation",
+    "structurePolicy": "允许多场景、多章节、多核心系统、长期成长或重复游玩；是否采用取决于概念价值，不由 Demo 时长反向规定。",
+    "requiredQuestions": [
+      "完整游戏中玩家为何愿意在第十次、第百次循环后继续？",
+      "核心系统如何跨地点、角色、敌人或旅程阶段产生变化？",
+      "归乡、机智、诱惑、身份与代价如何在宏观进程中留下持续后果？",
+      "内容规模、制作路径与受众承诺是否相互匹配？"
+    ]
+  },
+  "demoValidation": {
+    "role": "risk_evidence_slice_not_complete_game",
+    "durationPolicy": "evidence_driven_no_fixed_minutes",
+    "coveragePolicy": "可以只实现一个遭遇、一段关卡、一个系统组合或一项被隔离的机制，不要求覆盖完整游戏弧。",
+    "completionBoundary": "Demo 自身须具备可重复测试、可判定结果与可靠重置；这不等于完整游戏已经有完整开始、结局、成长或内容量。",
+    "requiredEvidence": [
+      "明确写出本次切片要证伪的最高风险假设。",
+      "记录玩家可观察行为、通过阈值、失败信号与下一步决策。",
+      "列明 Demo 未实现的系统以及因此不能支持的结论。"
+    ]
+  },
+  "scope": {
+    "theme": "荷马《奥德赛》中的归乡、机智、诱惑、身份与代价；不是对既有游戏实现的翻修。",
+    "productFormat": "未锁定；允许章节冒险、系统叙事、长线航程、策略、动作、潜行、角色扮演或混合类型参与候选比较。",
+    "prototypeFormat": "Gate 1 后只实现足以验证最高风险假设的最小证据切片；不设统一分钟数、场景数或核心动词数。",
+    "presentation": "当前目标仍为可验证的 3D 游戏设计；平台、相机、引擎、渲染和输入设备在 Concept Lock 前不锁定。",
+    "contentBoundary": "正式资产、完整叙事和全量内容不是首个 Demo 的前置条件，但完整产品愿景必须说明它们如何扩展。"
+  },
+  "constraints": [
+    "Gate 1 最终提交恰好三个候选，且玩家幻想、系统结构与视觉/世界母题均有实质差异。",
+    "每个候选必须分别描述完整游戏愿景与 Demo 验证切片，不能用切片体量代替产品范围。",
+    "多场景、多核心系统、复杂模拟、成长、联网或运行时 AI 不构成自动淘汰理由；必须公开其必要性、成本、风险与可验证路径。",
+    "概念不得继承 odyssey-drifter 的玩法、关卡、美术、资产或技术方案。",
+    "TGA、金摇杆、GDCA 与 BAFTA 奖项只作为案例筛选信号；机制结论必须回到 GDC、BAFTA 或开发者原始分享核实。",
+    "Gate 1 前不得锁定平台、输入、引擎、渲染、物理、联网、AI 或资产管线。"
+  ],
+  "successCriteria": [
+    "每个候选说明核心循环、宏观循环、进程变化、内容结构、世界或角色弧，以及长期重复价值。",
+    "每个候选明确一个最高风险假设及其最小 Demo，列出该 Demo 能证明与不能证明的内容。",
+    "完整游戏潜力与 Demo 可验证性分开评估，易制作不能自动获得更高产品推荐。",
+    "三个候选的事实依据、设计判断与未知项分开标记，并给出淘汰信号。",
+    "只有用户可在 Gate 1 选择、退回或冻结概念。"
+  ],
+  "assumptionsRequiringHumanConfirmation": [
+    "奥德赛指荷马史诗及其核心母题，不限定复述某一章节。",
+    "目标是先形成完整游戏方向，再用局部 Demo 取得玩法证据。",
+    "完整产品时长、商业模式、目标平台与制作团队规模目前未知，不应被补写成事实。"
+  ],
+  "supersedes": "brief-odyssey-reimagined-v1",
+  "supersedeReason": "v1 错误地把 3–5 分钟 Demo 预算写成完整体验承诺和候选淘汰条件。",
+  "freezeRequires": "human_gate1_approval",
+  "freezeEvidence": null
+}

@@ -1,0 +1,53 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "runId": "run-20260904-sea-of-thousand-names-action-vertical-slice-v1",
+  "version": "4.0.0",
+  "status": "locked",
+  "locked": true,
+  "selectedCandidateId": "web-native-three-r3f",
+  "selectedStack": {
+    "runtime": "browser",
+    "language": "TypeScript",
+    "ui": "React 19.1.1",
+    "scene": "React Three Fiber 9.3.0",
+    "renderer": "Three.js 0.180.0 WebGL2",
+    "build": "Vite",
+    "simulation": "pure reducer plus fixed-step action simulation",
+    "deployment": "static GitHub Pages target"
+  },
+  "humanApproval": {
+    "decisionMaker": "human_user",
+    "result": "approved",
+    "evidence": [
+      "用户在规划阶段明确选择‘锁定 Three + R3F（推荐）’。",
+      "用户随后要求‘按照重构计划实施’并再次要求以三个 Web 3D 参考方向生成游戏。"
+    ],
+    "decidedAt": "2026-09-04T10:00:00+08:00"
+  },
+  "evidence": {
+    "comparisonResults": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/results.json",
+    "result": "R3F routes ranked first and second for browser delivery, UI/world coherence and iteration; the new direction combines their strengths with a wider third-person spatial model."
+  },
+  "hardRequirements": [
+    "browser-first static delivery",
+    "third-person continuous 3D movement and combat",
+    "deterministic identity, fact, witness and combat state",
+    "event-driven DOM UI sharing semantic tokens with the 3D world",
+    "procedural environment plus registered replaceable hero assets"
+  ],
+  "rejectedAlternatives": [
+    {"id": "web-native-babylonjs", "reason": "strong character presentation but weaker result in the completed comparison for browser delivery and UI/world coherence"},
+    {"id": "godot-4-gdscript-web", "reason": "no decision-driving advantage for the selected Web-native interaction language and browser-first delivery"}
+  ],
+  "rollbackBoundary": "Gameplay domain state and content JSON remain renderer-independent; the rollback boundary is the R3F presentation, camera, materials and asset adapters.",
+  "verificationCommands": [
+    "npm.cmd run validate:library",
+    "npm.cmd run validate:context",
+    "npm.cmd run lint",
+    "npm.cmd run test",
+    "npm.cmd run build",
+    "npm.cmd run test:e2e"
+  ],
+  "supersedes": "games/odyssey-reimagined/context/technology-decision-sea-of-thousand-names-v3.json"
+}

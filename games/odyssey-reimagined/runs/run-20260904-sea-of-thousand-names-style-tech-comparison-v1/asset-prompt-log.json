@@ -1,0 +1,25 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-style-tech-comparison-v1",
+  "assetId": "game.odyssey-reimagined.experiment.portrait.thaleia-painterly",
+  "generator": "OpenAI built-in image_gen tool",
+  "useCase": "stylized-concept then precise-object-edit",
+  "attempts": [
+    {
+      "id": "portrait-v1",
+      "result": "rejected_checkerboard_baked_into_rgb",
+      "prompt": "Original three-quarter bust portrait of Thaleia, an Aegean tide-gate priestess, using painterly cinematic 3D animation principles, hand-painted texture variation, angular planes, restrained edge lines, indigo, salt ivory, oxidized copper and muted teal. No resemblance to an existing character or studio style. Requested transparent background."
+    },
+    {
+      "id": "portrait-alpha-repair",
+      "result": "rejected_alpha_still_opaque",
+      "prompt": "Remove only the visible gray-and-white checkerboard and replace it with genuine alpha transparency while preserving the character. Pixel inspection still returned alpha 255 and Format24bppRgb."
+    },
+    {
+      "id": "portrait-v2",
+      "result": "selected_experiment_asset",
+      "prompt": "Replace only the checkerboard with a seamless dark cinematic harbor backdrop: deep blue-black edges, muted teal haze behind the head and subtle amber rim glow. Preserve the woman, pose, expression, hair, clothing, jewelry, paint strokes, crop, colors and lighting; no text, logos or watermark."
+    }
+  ],
+  "selectedOutput": "src/assets/thaleia-painterly-v2.png",
+  "approval": "experiment_only_not_style_locked"
+}

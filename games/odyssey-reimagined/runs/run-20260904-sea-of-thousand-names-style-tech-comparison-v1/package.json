@@ -1,0 +1,25 @@
+{
+  "name": "sea-of-thousand-names-style-tech-comparison",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "vitest run src",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@babylonjs/core": "9.23.0",
+    "@react-three/fiber": "9.3.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "@vitejs/plugin-react": "4.7.0",
+    "vite": "6.4.3",
+    "vitest": "3.2.7"
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "gameId": "odyssey-reimagined",
+  "runId": "run-20260904-sea-of-thousand-names-style-tech-comparison-v1",
+  "scope": "experiment_only_not_formal_runtime_assets",
+  "resolver": {
+    "path": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/src/assets/registry.js",
+    "sha256": "987c3f260f6fe4a680abb34963a5078ea11026fcf5c180ccab630b0e0bfe4bd0",
+    "policy": "File-based scene assets must be requested by stable game asset ID; unknown IDs fail closed."
+  },
+  "records": [
+    {
+      "id": "game.odyssey-reimagined.experiment.portrait.thaleia-painterly",
+      "type": "character_portrait",
+      "version": "2.0.0",
+      "path": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/src/assets/thaleia-painterly-v2.png",
+      "sha256": "21ce2d299f9f87342b691f989e8134b4a1bfb87a45537ea78f23a328f6348556",
+      "bytes": 2184287,
+      "dimensions": {"width": 1122, "height": 1402},
+      "source": {
+        "kind": "ai_generated_and_edited",
+        "generator": "OpenAI built-in image_gen tool",
+        "promptLog": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/asset-prompt-log.json",
+        "promptLogSha256": "d5bb034ebfd798803e23ed6034f04e548be614905c7584b8b91852cfef4b595e",
+        "inputImages": ["rejected project-session portrait-v1"]
+      },
+      "rights": {
+        "externalThirdPartyAsset": false,
+        "license": "project-session generated experiment asset",
+        "note": "No reference image from another work was supplied; downstream rights were not independently audited."
+      },
+      "styleTags": ["painterly_cinematic_3d", "salt_pigment", "indigo_cloth", "oxidized_bronze", "warm_cool_rim_light"],
+      "sizeBudgetBytes": 2621440,
+      "dependencies": [],
+      "consumers": ["game.odyssey-reimagined.experiment.scene.painterly-babylon"],
+      "approval": "experiment_only_not_style_locked",
+      "fallbackId": null
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.scene.painterly-babylon",
+      "type": "procedural_scene",
+      "version": "1.0.0",
+      "entrypoint": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/src/scenes/BabylonPainterly.jsx",
+      "sha256": "2fa3686e3ad82b9160a1e9ca028d23d097bd3ca8dc83d4fffcee4812138686e0",
+      "source": {"kind": "original_procedural_code", "engine": "Babylon.js 9.23.0"},
+      "rights": {"externalThirdPartyAsset": false, "license": "project code"},
+      "styleTags": ["painterly_cinematic_3d", "low_camera", "dynamic_brush_texture", "warm_cool_lighting"],
+      "dependencies": ["game.odyssey-reimagined.experiment.portrait.thaleia-painterly"],
+      "consumers": ["game.odyssey-reimagined.experiment.capture.painterly-babylon"],
+      "approval": "experiment_only_not_runtime_approved"
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.scene.relic-r3f",
+      "type": "procedural_scene",
+      "version": "1.0.0",
+      "entrypoint": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/src/scenes/RelicDiorama.jsx",
+      "sha256": "4126f1017e147bdcc819f10ab3309fb7e23ec01452a5f9de4662216e8972b5cd",
+      "source": {"kind": "original_procedural_code", "engine": "Three.js 0.180.0 + React Three Fiber 9.3.0"},
+      "rights": {"externalThirdPartyAsset": false, "license": "project code"},
+      "styleTags": ["abstract_relic_diorama", "isometric", "permission_topology", "flat_shaded"],
+      "dependencies": [],
+      "consumers": ["game.odyssey-reimagined.experiment.capture.relic-r3f"],
+      "approval": "experiment_only_not_runtime_approved"
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.scene.manuscript-r3f",
+      "type": "procedural_scene",
+      "version": "1.0.0",
+      "entrypoint": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/src/scenes/LivingManuscript.jsx",
+      "sha256": "afc08066bf5fd6cd411cb248b5fb61506cb6c0eef40ff762bfba9fbcad7fbc11",
+      "source": {"kind": "original_procedural_code", "engine": "Three.js 0.180.0 + React Three Fiber 9.3.0"},
+      "rights": {"externalThirdPartyAsset": false, "license": "project code"},
+      "styleTags": ["living_manuscript", "shallow_3d_folio", "wax_seal_identity", "marginalia"],
+      "dependencies": [],
+      "consumers": ["game.odyssey-reimagined.experiment.capture.manuscript-r3f"],
+      "approval": "experiment_only_not_runtime_approved"
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.capture.painterly-babylon",
+      "type": "browser_capture",
+      "version": "1.0.0",
+      "path": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/evidence/painterly-babylon-browser.png",
+      "sha256": "8367738fc2a165e9d8b7b889f411767cee03cf112a399f2a733b4b073b075aee",
+      "bytes": 61514,
+      "dimensions": {"width": 1265, "height": 831},
+      "dependencies": ["game.odyssey-reimagined.experiment.scene.painterly-babylon"],
+      "approval": "evidence_only"
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.capture.relic-r3f",
+      "type": "browser_capture",
+      "version": "1.0.0",
+      "path": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/evidence/relic-r3f-browser.png",
+      "sha256": "e77c26462fcce4c704d33bd79acc66294bdde753fecf1e81667220585acc6bbc",
+      "bytes": 75912,
+      "dimensions": {"width": 1265, "height": 831},
+      "dependencies": ["game.odyssey-reimagined.experiment.scene.relic-r3f"],
+      "approval": "evidence_only"
+    },
+    {
+      "id": "game.odyssey-reimagined.experiment.capture.manuscript-r3f",
+      "type": "browser_capture",
+      "version": "1.0.0",
+      "path": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-style-tech-comparison-v1/evidence/manuscript-r3f-browser.png",
+      "sha256": "6ca1075837c98712aa8b69dc6c8ce12b83c80657bfe638d1c9640b41020b7715",
+      "bytes": 66919,
+      "dimensions": {"width": 1265, "height": 831},
+      "dependencies": ["game.odyssey-reimagined.experiment.scene.manuscript-r3f"],
+      "approval": "evidence_only"
+    }
+  ],
+  "audit": {
+    "duplicateIds": 0,
+    "missingTargets": 0,
+    "unresolvedDependencies": 0,
+    "directFileBasedSceneReferences": 0,
+    "unapprovedRuntimeAssets": 0,
+    "formalAssetRegistryChanged": false
+  }
+}

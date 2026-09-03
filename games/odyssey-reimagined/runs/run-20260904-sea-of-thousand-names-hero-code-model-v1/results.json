@@ -1,0 +1,46 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
+  "gameId": "odyssey-reimagined",
+  "completedAt": "2026-09-04T07:27:51+08:00",
+  "status": "validated_graybox_character_lab_awaiting_human_gates",
+  "deliverables": {
+    "route": "?lab=character",
+    "component": "games/odyssey-reimagined/src/HeroCharacterModel.tsx",
+    "lab": "games/odyssey-reimagined/src/CharacterLab.tsx",
+    "browserEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab.png"
+  },
+  "verification": [
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "9/9 rule and character-contract tests passed"},
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run build", "exitCode": 0, "result": "57 modules transformed; production build passed"},
+    {"command": "npm.cmd exec playwright test", "exitCode": 0, "result": "2/2 browser tests passed serially, including character lab and full captain route"},
+    {"command": "npm.cmd run lint", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run validate:context", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS"}
+  ],
+  "defectsClosed": [
+    {
+      "issue": "The implemented character lab had no route from App.",
+      "rootCause": "CharacterLab was produced after the initial App composition and never added to the query-route switch.",
+      "change": "App now selects CharacterLab for ?lab=character without conditionally invoking hooks.",
+      "evidence": "Playwright locates the heading, 12 action buttons, camera presets and debug toggles."
+    },
+    {
+      "issue": "Parallel WebGL E2E intermittently missed combat timing assertions.",
+      "rootCause": "Two Chromium workers competed for software WebGL and delayed actionability checks beyond the combat telegraph.",
+      "change": "Graphical E2E runs with one worker; timing-critical clicks skip redundant stability waiting after the cue is already asserted visible.",
+      "evidence": "Both browser paths pass in 22.8 seconds."
+    },
+    {
+      "issue": "Screenshots were written into a duplicated nested games path.",
+      "rootCause": "Screenshot paths assumed repository-root CWD while Playwright runs from the game package.",
+      "change": "Evidence paths are now relative to the game package runs directory; the malformed nested directory was removed.",
+      "evidence": "Both expected PNG evidence files exist in their indexed run directories."
+    }
+  ],
+  "truthBoundary": {
+    "gate2": "blocked_pending_human_fun_lock",
+    "gate3": "blocked_no_formal_style_bible_or_production_asset_approval",
+    "isProductionCharacter": false,
+    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision."
+  }
+}

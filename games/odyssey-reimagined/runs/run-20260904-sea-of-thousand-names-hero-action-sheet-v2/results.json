@@ -1,0 +1,48 @@
+{
+  "runId": "run-20260904-sea-of-thousand-names-hero-action-sheet-v2",
+  "gameId": "odyssey-reimagined",
+  "completedAt": "2026-09-04T07:02:01+08:00",
+  "status": "validated_previsual_awaiting_animation_implementation_and_human_gates",
+  "deliverables": {
+    "actionSystem": "games/odyssey-reimagined/docs/CHARACTER-ACTION-SYSTEM-v1.md",
+    "actionTable": "games/odyssey-reimagined/assets/previsual/hero-action-system-v1.csv",
+    "keyPoseSheet": "games/odyssey-reimagined/assets/previsual/hero-action-spritesheet-chibi-v2.png",
+    "rawGeneration": "games/odyssey-reimagined/assets/previsual/hero-action-spritesheet-chibi-v2-source.png",
+    "prompt": "games/odyssey-reimagined/assets/previsual/hero-action-spritesheet-chibi-v2.prompt.md"
+  },
+  "imageEvidence": {
+    "finalDimensions": "936x1664",
+    "exactAspectCheck": "936*16 == 1664*9",
+    "finalSha256": "83dda74b1b63061accd297429be309d699c9a73b6187308d372e347f7331c116",
+    "rawDimensions": "941x1672",
+    "rawSha256": "7dcdee3e6f420e95975b423684c83036c5459608fe088158dee4c25d164e4657",
+    "referenceSha256": "f081c6d7fcbda6af13333dc334c5c624fa9455afdc91ee8afad1d4132f4e0bb2",
+    "normalization": "Center crop only; 2 px left, 3 px right, 4 px top and 4 px bottom removed; no resampling.",
+    "visualInspection": [
+      "Exactly twelve distinct full-body poses are visible in a 3x4 portrait layout.",
+      "Hero face, black faceted hair, teal-and-ochre cloak, ivory tunic, dark trousers, bracers, boots and paddle-blade remain recognizably consistent.",
+      "No cell clips the body or weapon after normalization; no text, labels, borders, scenery or extra characters are present.",
+      "Pose order matches the action table: idle neutral, combat idle, walk, run, observe, light 1, light 2, heavy, dodge, parry, hit, namebreak."
+    ]
+  },
+  "verification": [
+    {"command": "npm.cmd run validate:library", "exitCode": 0, "result": "PASS before asset production"},
+    {"command": "PowerShell JSON parse for five modified JSON files", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run validate:context", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS"},
+    {"command": "PowerShell image dimension and aspect assertion", "exitCode": 0, "result": "PASS: 936x1664 exact 9:16"},
+    {"command": "git diff --check", "exitCode": 0, "result": "PASS; existing line-ending warnings only"}
+  ],
+  "truthBoundary": {
+    "isKeyPoseReference": true,
+    "isPlayableAnimation": false,
+    "gate2": "blocked_pending_human_fun_lock",
+    "gate3": "blocked_no_formal_style_bible_or_production_asset_approval",
+    "knownGaps": [
+      "The generated sheet does not prove frame timing, rig quality, skinning, root motion, foot locking or weapon collision.",
+      "The second light attack is a visual proposal; the current reducer has no combo index or input buffer.",
+      "Run is a future locomotion pose; the current build has movement but no distinct run state.",
+      "Neutral gray includes soft studio falloff and contact shadows, so it is not a pixel-uniform segmentation background."
+    ]
+  }
+}

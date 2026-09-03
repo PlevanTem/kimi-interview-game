@@ -1,0 +1,300 @@
+{
+  "runId": "run-20260903-odyssey-reimagined-discovery",
+  "capturedAt": "2026-09-03T19:05:06+08:00",
+  "method": {
+    "awardUse": "TGA, Golden Joystick, GDCA and BAFTA award pages were used only to identify recognized cases.",
+    "designEvidence": "Mechanic and production claims were taken from Homer/CHS primary scholarship, GDC Vault session pages, official slide decks, or BAFTA original event/transcript pages.",
+    "inferenceRule": "Project-specific recommendations are labeled as design translations, not speaker claims.",
+    "limitations": "Items marked B were checked against official abstracts but not full talk transcripts. Award status does not establish causal design quality."
+  },
+  "sources": [
+    {
+      "id": "SRC-SCHELL-LENSES",
+      "title": "The Art of Game Design",
+      "publisher": "Schell Games",
+      "speaker": "Jesse Schell",
+      "kind": "official_method_overview",
+      "evidenceLevel": "A",
+      "url": "https://schellgames.com/art-of-game-design?trk=public_post_comment-text",
+      "claimsUsed": ["design lenses as perspective filters for evaluating player motivations, mechanics and experience"]
+    },
+    {
+      "id": "SRC-ODYSSEY-09",
+      "title": "Homer, Odyssey, Book 9, lines 360–460",
+      "publisher": "Perseus Digital Library, Tufts University",
+      "kind": "primary_text",
+      "evidenceLevel": "A",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D9%3Acard%3D360",
+      "claimsUsed": ["Noman name trick", "Cyclops asks peers for help", "escape under sheep"]
+    },
+    {
+      "id": "SRC-ODYSSEY-12",
+      "title": "Homer, Odyssey, Book 12",
+      "publisher": "Perseus Digital Library, Tufts University",
+      "kind": "primary_text",
+      "evidenceLevel": "A",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D12",
+      "claimsUsed": ["self-binding against Sirens", "Scylla cannot be fought", "six-person loss versus all-ship risk"]
+    },
+    {
+      "id": "SRC-ODYSSEY-21",
+      "title": "Homer, Odyssey, Book 21",
+      "publisher": "Perseus Digital Library, Tufts University",
+      "kind": "primary_text",
+      "evidenceLevel": "A",
+      "url": "https://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.01.0136%3Abook%3D21",
+      "claimsUsed": ["bow stringing", "arrow through twelve axe heads", "identity demonstrated through action"]
+    },
+    {
+      "id": "SRC-CHS-IDENTITY",
+      "title": "Disguise and Recognition in the Odyssey: Preface",
+      "publisher": "Center for Hellenic Studies, Harvard University",
+      "kind": "scholarly_primary_page",
+      "evidenceLevel": "A",
+      "url": "https://www-current.chs.harvard.edu/sheila-murnaghan-disguise-and-recognition-in-the-odyssey-preface/",
+      "claimsUsed": ["identity and recognition are recurring Odyssey structures"]
+    },
+    {
+      "id": "SRC-GDC-DOOM-COMBAT",
+      "title": "Embracing Push Forward Combat in DOOM",
+      "publisher": "GDC Vault",
+      "speaker": "Kurt Loudy; Jake Campbell",
+      "year": 2018,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1024940/Embracing-Push-Forward-",
+      "claimsUsed": ["aggression and speed as combat identity", "taking resources from adversaries"]
+    },
+    {
+      "id": "SRC-GDC-GOW-COMBAT",
+      "title": "Evolving Combat in God of War for a New Perspective",
+      "publisher": "GDC Vault / Sony Santa Monica Studio",
+      "speaker": "Mihir Sheth",
+      "year": 2019,
+      "kind": "official_slides_and_session",
+      "evidenceLevel": "A",
+      "url": "https://media.gdcvault.com/gdc2019/presentations/Sheth_Mihir_EvolvingCombat.pdf",
+      "sessionUrl": "https://www.gdcvault.com/play/1026423/Evolving-Combat-in-God-of",
+      "claimsUsed": ["camera governs combat redesign", "tracking-targeting-engaging", "aggression token approach", "control friction suppressed confident play"]
+    },
+    {
+      "id": "SRC-GDC-ITB",
+      "title": "Into the Breach Design Postmortem",
+      "publisher": "GDC Vault / Subset Games",
+      "speaker": "Matthew Davis",
+      "year": 2019,
+      "kind": "official_slides_and_session",
+      "evidenceLevel": "A",
+      "url": "https://media.gdcvault.com/gdc2019/presentations/Into%20the%20Breach%20Postmortem%20Final.pdf",
+      "sessionUrl": "https://www.gdcvault.com/play/1025772/-Into-the-Breach-Design",
+      "claimsUsed": ["telegraphed attacks", "deterministic player turns", "manipulation over killing", "least-bad option", "designing with constraints"]
+    },
+    {
+      "id": "SRC-GDC-HOLISTIC-LD",
+      "title": "Level Design Workshop: An Approach to Holistic Level Design",
+      "publisher": "GDC Vault",
+      "speaker": "Steve Lee",
+      "year": 2017,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1024301/Level-Design-Workshop-An-Approach",
+      "claimsUsed": ["gameplay-presentation-story relationship", "affordances", "intentionality", "world building"]
+    },
+    {
+      "id": "SRC-GDC-CELESTE",
+      "title": "Level Design Workshop: Designing Celeste",
+      "publisher": "GDC Vault",
+      "speaker": "Matt Thorson",
+      "year": 2017,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1024307/Level-Design-Workshop-Designing-Celeste",
+      "claimsUsed": ["300 plus stages", "area-map arrangement", "story elements woven into game world"]
+    },
+    {
+      "id": "SRC-GDC-SHORT-HIKE",
+      "title": "Crafting A Tiny Open World: A Short Hike Postmortem",
+      "publisher": "GDC Vault",
+      "speaker": "Adam Robinson-Yu",
+      "year": 2020,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1026613/",
+      "claimsUsed": ["four-month initial release", "scope strategy across visual style, level design and writing", "setting player expectations"]
+    },
+    {
+      "id": "SRC-GDC-TLOU2-MM",
+      "title": "Motion Matching in The Last of Us Part II",
+      "publisher": "GDC Vault / Naughty Dog",
+      "speaker": "Michal Mach; Maksym Zhuravlov",
+      "year": 2021,
+      "kind": "official_slides_and_session",
+      "evidenceLevel": "A",
+      "url": "https://media.gdcvault.com/GDC%2B2021/Motion_Matching_In_TLOU2.pdf",
+      "sessionUrl": "https://gdcvault.com/play/1027378/Motion-Matching-in-The-Last",
+      "claimsUsed": ["experimental production risk", "pose-speed-input consideration for animation exit"]
+    },
+    {
+      "id": "SRC-GDC-GOW-ANIM",
+      "title": "Animation Bootcamp: God of War — Breathing New Life into a Hardened Spartan",
+      "publisher": "GDC Vault",
+      "speaker": "Bruno Velazquez",
+      "year": 2019,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1025836/Animation-Bootcamp-God-of-War",
+      "claimsUsed": ["character reframing required animation pipeline rethink"]
+    },
+    {
+      "id": "SRC-GDC-DOOM-AI-ANIM",
+      "title": "Bringing Hell to Life: AI and Full Body Animation in DOOM",
+      "publisher": "GDC Vault",
+      "speaker": "Jake Campbell",
+      "year": 2017,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1024186/Bringing-Hell-to-Life-AI",
+      "claimsUsed": ["stylized enemy readability depends on animation", "straightforward full-body animation needs robust AI controls"]
+    },
+    {
+      "id": "SRC-GDC-ALIEN",
+      "title": "Building Fear in Alien: Isolation",
+      "publisher": "GDC Vault",
+      "speaker": "Alistair Hope",
+      "year": 2015,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1021852/Building-Fear-in-Aliens",
+      "claimsUsed": ["one creature as meaningful encounter", "creature senses", "underpowered player"]
+    },
+    {
+      "id": "SRC-BAFTA-ALIEN",
+      "title": "Alien: Isolation Design Team Confirmed for BAFTA Crew Games",
+      "publisher": "BAFTA",
+      "year": 2014,
+      "kind": "official_event_page",
+      "evidenceLevel": "B",
+      "url": "https://www.bafta.org/stories/alien-isolation-design-team-confirmed-for-bafta-crew-games-second-livestream-event",
+      "claimsUsed": ["BAFTA design-focused team livestream and speakers"]
+    },
+    {
+      "id": "SRC-GDC-ACOD-GOAP",
+      "title": "AI Action Planning on Assassin's Creed Odyssey and Immortals Fenyx Rising",
+      "publisher": "GDC Vault / Ubisoft",
+      "speaker": "Simon Girard",
+      "year": 2021,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1027357/AI-Action-Planning-on-Assassin",
+      "claimsUsed": ["open-world freedom drove move from scripts to GOAP"]
+    },
+    {
+      "id": "SRC-GDC-RDR2-HORSES",
+      "title": "Making the Believable Horses of Red Dead Redemption II",
+      "publisher": "GDC Vault / Rockstar Games",
+      "speaker": "Tobias Kleanthous",
+      "year": 2021,
+      "kind": "official_slides_and_session",
+      "evidenceLevel": "A",
+      "url": "https://media.gdcvault.com/GDC%2B2021/making_horses_gdc2021.pdf",
+      "sessionUrl": "https://www.gdcvault.com/play/1027113/AI-Summit-Making-the-Believable",
+      "claimsUsed": ["behavior and movement support believability and relationship"]
+    },
+    {
+      "id": "SRC-GDC-TLOU2-ALLIES",
+      "title": "Bringing Allies to Life in The Last of Us Part II",
+      "publisher": "GDC Vault / Naughty Dog",
+      "speaker": "Bryan Collinsworth; Asher Einhorn; Michal Mach",
+      "year": 2021,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1027207/Bringing-Allies-to-Life-in",
+      "claimsUsed": ["allies engaged in moment-to-moment exploration, performance and combat"]
+    },
+    {
+      "id": "SRC-GDC-HADES-DIALOGUE",
+      "title": "Breathing Life into Greek Myth: The Dialogue of Hades",
+      "publisher": "GDC Vault / Supergiant Games",
+      "speaker": "Greg Kasavin; Darren Korb",
+      "year": 2021,
+      "kind": "official_session_abstract",
+      "evidenceLevel": "B",
+      "url": "https://www.gdcvault.com/play/1026975/Breathing-Life-into-Greek-Myth",
+      "claimsUsed": ["more than 22000 voiced lines", "character voice process", "Early Access benefited narrative"]
+    },
+    {
+      "id": "SRC-BAFTA-DAN-HAY",
+      "title": "Dan Hay: BAFTA Games Lecture",
+      "publisher": "BAFTA",
+      "speaker": "Dan Hay",
+      "year": 2017,
+      "kind": "official_full_transcript",
+      "evidenceLevel": "A",
+      "url": "https://www.bafta.org/media-centre/press-releases/dan-hay-bafta-games-lecture/",
+      "claimsUsed": ["simple pitch", "iteration and feedback", "do not prescribe player behavior", "systems allow player-authored anecdotes"]
+    },
+    {
+      "id": "SRC-TGA-2016",
+      "title": "The Game Awards 2016 Rewind",
+      "publisher": "The Game Awards",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://thegameawards.com/rewind/year-2016",
+      "claimsUsed": ["DOOM Best Action", "Dishonored 2 Best Action/Adventure"]
+    },
+    {
+      "id": "SRC-TGA-2018",
+      "title": "The Game Awards 2018 Rewind",
+      "publisher": "The Game Awards",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://thegameawards.com/rewind/year-2018",
+      "claimsUsed": ["God of War GOTY and Direction", "Celeste Best Independent", "Into the Breach Best Strategy"]
+    },
+    {
+      "id": "SRC-TGA-2020",
+      "title": "The Game Awards 2020 Rewind",
+      "publisher": "The Game Awards",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://thegameawards.com/rewind/year-2020",
+      "claimsUsed": ["Hades Best Action and Best Indie", "The Last of Us Part II GOTY"]
+    },
+    {
+      "id": "SRC-GJA-HADES",
+      "title": "Hades wins Best Indie Game at the Golden Joystick Awards 2020",
+      "publisher": "GamesRadar / Golden Joystick Awards",
+      "kind": "official_award_coverage",
+      "evidenceLevel": "C",
+      "url": "https://www.gamesradar.com/hades-wins-the-best-indie-game-award-at-this-years-golden-joystick-awards/",
+      "claimsUsed": ["Hades Best Indie Game"]
+    },
+    {
+      "id": "SRC-GDCA-HADES",
+      "title": "21st Annual Game Developers Choice Awards Archive",
+      "publisher": "Game Developers Choice Awards",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://gamechoiceawards.com/archive-gdca-2021/",
+      "claimsUsed": ["Hades Game of the Year"]
+    },
+    {
+      "id": "SRC-BAFTA-2019",
+      "title": "British Academy Games Awards 2019 Results",
+      "publisher": "BAFTA",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://www.bafta.org/awards/games/?award-year=2019",
+      "claimsUsed": ["God of War Best Game", "Return of the Obra Dinn Game Design", "Assassin's Creed Odyssey nomination"]
+    },
+    {
+      "id": "SRC-BAFTA-2021",
+      "title": "British Academy Games Awards 2021 Results",
+      "publisher": "BAFTA",
+      "kind": "official_award_archive",
+      "evidenceLevel": "C",
+      "url": "https://www.bafta.org/awards/games/?award-year=2021",
+      "claimsUsed": ["Hades Best Game and Game Design", "The Last of Us Part II Animation"]
+    }
+  ]
+}

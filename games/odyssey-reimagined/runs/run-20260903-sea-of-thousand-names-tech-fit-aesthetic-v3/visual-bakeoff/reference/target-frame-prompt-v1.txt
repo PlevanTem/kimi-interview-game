@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: engine-neutral visual benchmark target for a browser-playable 3D game technology bake-off, experimental only
+Primary request: Create one studio-quality keyframe of Saltcape Harbor from an original Odyssey-inspired game called “Sea of a Thousand Names”. The frame must serve as a reproducible real-time 3D target, not impossible offline concept art.
+Scene/backdrop: a compact ancient Mediterranean harbor threshold at late afternoon; a salt-whitened limestone gate frames a glimpse of cold teal sea; oxidized bronze ship seal on a low stone plinth; one weathered linen banner; a small moored dark-wood ship beyond; restrained sea haze; functional paths clearly readable
+Subject: an anonymous returning traveler in a dark indigo travel cloak stands just before the threshold while a turquoise-accented singer/witness walks toward the dock; faces are not the focus
+Style/medium: original stylized real-time 3D keyframe, sculptural simplified forms, painterly but physically plausible materials, high-end independent game art direction, no resemblance to a named franchise or living artist
+Composition/framing: 16:9 landscape, fixed oblique camera around 35mm equivalent; strong foreground threshold, middle-ground figures, distant sea; clear silhouettes and navigable entrances; enough negative space for an unobtrusive UI overlay later
+Lighting/mood: low warm sun grazing stone and bronze, cool ambient sea fill, readable soft shadow shapes, slight atmospheric perspective, restrained bloom, filmic contrast without crushed blacks
+Color palette: salt ivory, oxidized bronze green, deep indigo, cool teal sea, one muted coral-red rumor accent
+Materials/textures: chipped salt-encrusted limestone, worn hammered bronze, sun-bleached linen, dark oiled wood, low-frequency water reflections; plausible texture density for a browser game
+Constraints: reproducible with WebGL2-era real-time rendering; prioritize coherent art direction, composition, material separation, interaction readability and performance realism; no text, no logo, no watermark; no armies, no giant statues, no fantasy spectacle, no photorealism; do not obscure the gate or characters with fog; do not use excessive particles, lens flare, bloom or depth of field

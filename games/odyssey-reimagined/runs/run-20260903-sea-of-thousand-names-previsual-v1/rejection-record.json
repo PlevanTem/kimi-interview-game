@@ -1,0 +1,19 @@
+{
+  "runId": "run-20260903-sea-of-thousand-names-previsual-v1",
+  "recordedAt": "2026-09-03T22:18:00+08:00",
+  "decisionMaker": "human_user",
+  "result": "rejected_insufficient_art_direction_divergence",
+  "scope": [
+    "direction-a-salt-worn-bronze.png",
+    "direction-b-living-fresco.png",
+    "direction-c-dusk-tide-theatre.png"
+  ],
+  "reason": "三张图共享写实地中海港口、近似构图、相近人物比例与材质语法，差别主要停留在调色和表面处理，未形成不同媒介与空间范式。",
+  "rootCause": [
+    "固定了同一盐岬港空间骨架和相近镜头，导致构图差异不足。",
+    "三案都保留写实 3D 人体、石材建筑、海港资产语法，媒介差异没有进入形体与动画层。",
+    "以气氛关键词替代可检验的形状、材质、角色表演与空间组织规则。"
+  ],
+  "reusePolicy": "retained_for_audit_only_not_a_candidate_not_a_style_reference",
+  "supersededBy": "run-20260903-sea-of-thousand-names-art-research-v1"
+}

@@ -1,0 +1,17 @@
+{
+  "gate": "Gate 1 — Concept Lock",
+  "gameId": "odyssey-reimagined",
+  "runId": "run-20260903-sea-of-thousand-names-gate1-design-v1",
+  "inputVersion": "brief-odyssey-reimagined-v2 + concepts-v2",
+  "decisionMaker": "human_user",
+  "result": "approved",
+  "selectedConceptId": "concept-sea-of-thousand-names",
+  "selectedTitle": "千名之海",
+  "reason": "用户在三个完整产品候选中明确回复‘锁定《千名之海》（推荐）’。",
+  "decidedAt": "2026-09-03T20:22:24+08:00",
+  "lockedPromise": "玩家以声明身份进入不同的款待秩序，用观察、交涉、潜行、布置或冲突解决问题；谎言、誓约、见证和声名跨岛传播，并在归乡时共同验证玩家是谁。",
+  "prototypeBoundary": "首个 Demo 是一个港口社会规则箱，只验证身份作为可操作系统及其证据/见证后果；不证明完整航海、战斗平衡、长期内容耐久度或最终归乡。",
+  "technologyAuthority": "none_until_human_tech_fit_lock",
+  "nextGate": "Tech Fit Lock after engine-agnostic DESIGN",
+  "supersedes": "games/odyssey-reimagined/runs/run-20260903-odyssey-reimagined-discovery/gate1-review.md"
+}

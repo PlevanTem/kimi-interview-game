@@ -1,0 +1,205 @@
+{
+  "gameId": "odyssey-reimagined",
+  "conceptId": "concept-sea-of-thousand-names",
+  "runId": "run-20260903-sea-of-thousand-names-tech-fit-v1",
+  "version": "1.0.0",
+  "status": "superseded_by_visual_quality_priority",
+  "locked": false,
+  "selectedCandidateId": null,
+  "humanApproval": null,
+  "platformDecision": {
+    "priority": "browser_playable_link_first",
+    "minimumTarget": [
+      "current_desktop_chrome",
+      "current_desktop_edge",
+      "current_desktop_firefox"
+    ],
+    "notYetClaimed": ["safari", "mobile_browsers", "offline_install", "accessibility_complete"],
+    "hostingShape": "HTTPS static hosting without an application backend"
+  },
+  "requirements": {
+    "hard": [
+      "A static-hostable browser build with no install step for the player",
+      "A deterministic and serializable social-state model testable without rendering",
+      "A stylized 3D port with readable thresholds, characters, schedules, picking and occlusion",
+      "Structured-data editing for identities, facts, permissions, memories and encounters",
+      "glTF-compatible replaceable assets behind stable asset IDs",
+      "Automated state tests, fixed checkpoints, build evidence and restart diagnostics"
+    ],
+    "deferred": [
+      "Runtime generative AI",
+      "Network multiplayer",
+      "Large-scale combat and physics simulation",
+      "Full mobile and Safari support",
+      "WebGPU-only rendering"
+    ],
+    "highestRiskUnknown": "Whether identity-derived permissions and witness memory remain readable while navigating a 3D social space",
+    "cameraUnknown": "First-person, close third-person and oblique overview remain candidates; the spike only uses an oblique overview and does not lock the camera."
+  },
+  "evaluationModel": {
+    "scale": "0-100",
+    "weights": {
+      "browserDelivery": 0.25,
+      "deterministicSystemTestability": 0.25,
+      "sceneNpcToolFit": 0.2,
+      "assetVisualPipeline": 0.15,
+      "iterationReversibility": 0.15
+    },
+    "rule": "weightedTotal = sum(score * weight); recommendation is evidence, not a human lock"
+  },
+  "candidates": [
+    {
+      "id": "web-native-three-r3f",
+      "label": "Three.js + React Three Fiber + TypeScript",
+      "route": {
+        "renderer": "Three.js WebGLRenderer with WebGL2 baseline",
+        "ui": "React 19",
+        "binding": "React Three Fiber 9",
+        "build": "Vite 6 + TypeScript 5",
+        "domain": "Pure TypeScript deterministic model",
+        "deployment": "Static HTTPS hosting"
+      },
+      "scores": {
+        "browserDelivery": 96,
+        "deterministicSystemTestability": 95,
+        "sceneNpcToolFit": 80,
+        "assetVisualPipeline": 90,
+        "iterationReversibility": 96
+      },
+      "weightedTotal": 91.65,
+      "evidence": [
+        "The isolated spike compiled 49 modules and produced a deployable static build.",
+        "Four deterministic model tests passed without mounting React or a renderer.",
+        "The development server returned HTTP 200 with the expected root document.",
+        "The existing repository toolchain contains the pinned packages, reducing setup uncertainty without making precedent the deciding criterion."
+      ],
+      "costsAndRisks": [
+        "NPC schedules, navigation and editor tooling must be assembled rather than supplied as one integrated engine workflow.",
+        "The spike's initial JavaScript chunk is 1065.93 kB uncompressed / 296.19 kB gzip and triggers Vite's 500 kB warning.",
+        "No connected browser was available for visual or interactive verification in this run."
+      ],
+      "rejectionSignal": "Reject if the next camera-and-threshold spike cannot keep the current claim, permission source and witness state readable without a bespoke editor-sized UI burden."
+    },
+    {
+      "id": "web-native-babylonjs",
+      "label": "Babylon.js + TypeScript",
+      "route": {
+        "renderer": "Babylon.js WebGL2 with optional WebGPU path",
+        "ui": "Babylon GUI or DOM overlay",
+        "binding": "Direct engine scene graph",
+        "build": "Vite + TypeScript",
+        "domain": "Pure TypeScript deterministic model",
+        "deployment": "Static HTTPS hosting"
+      },
+      "scores": {
+        "browserDelivery": 94,
+        "deterministicSystemTestability": 88,
+        "sceneNpcToolFit": 95,
+        "assetVisualPipeline": 94,
+        "iterationReversibility": 80
+      },
+      "weightedTotal": 90.6,
+      "evidence": [
+        "Official specifications cover scene graphs, animation, collisions, picking, GUI, navigation/crowds, glTF and debugging tools.",
+        "The engine is browser-native and supports both WebGL and WebGPU routes."
+      ],
+      "costsAndRisks": [
+        "This repository does not currently pin or validate the Babylon package route.",
+        "Switching adds a new rendering and interaction architecture before its bundle and deterministic integration have been spiked.",
+        "Its integrated capabilities could invite premature navigation, animation and editor scope."
+      ],
+      "reconsiderWhen": "Prefer this route if the graybox proves that integrated NPC navigation, animation state machines and scene inspection outweigh the migration cost."
+    },
+    {
+      "id": "godot-4-gdscript-web",
+      "label": "Godot 4 GDScript Web export",
+      "route": {
+        "renderer": "Godot Compatibility renderer / WebGL2",
+        "ui": "Godot Control nodes",
+        "binding": "Godot scene and node model",
+        "build": "Godot Web export",
+        "domain": "GDScript resources and deterministic state services",
+        "deployment": "WASM/PCK static hosting with required headers as configured"
+      },
+      "scores": {
+        "browserDelivery": 74,
+        "deterministicSystemTestability": 86,
+        "sceneNpcToolFit": 96,
+        "assetVisualPipeline": 92,
+        "iterationReversibility": 74
+      },
+      "weightedTotal": 84.1,
+      "evidence": [
+        "The scene editor, animation system, navigation and resource model fit a authored 3D social space.",
+        "Official Web export documentation supports browser delivery through the Compatibility renderer."
+      ],
+      "costsAndRisks": [
+        "Godot 4 Web export is limited to the Compatibility renderer rather than Forward+ or Mobile renderers.",
+        "Threaded export requires cross-origin isolation; single-thread export improves compatibility but has performance tradeoffs.",
+        "The engine adds WASM/PCK delivery and a separate editor/runtime toolchain, making small code and UI iterations less reversible in this repository."
+      ],
+      "reconsiderWhen": "Prefer this route if authored scene density, animation tooling and non-browser builds become more important than link-first iteration."
+    }
+  ],
+  "recommendation": {
+    "candidateId": "web-native-three-r3f",
+    "confidence": "medium_high",
+    "oneSentence": "Use a browser-native Three.js/R3F presentation over a pure TypeScript rules model because it proves the highest-risk architecture with the lowest migration cost while preserving an engine exit before visual production.",
+    "whyNotLocked": "Only the human can grant Tech Fit Lock.",
+    "initialExclusions": [
+      "No physics package until a mechanic requires it",
+      "No runtime generative AI in authoritative game state",
+      "No WebGPU dependency for the first playable link",
+      "No formal art assets before Fun Lock and Visual Lock"
+    ]
+  },
+  "spike": {
+    "path": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spikes/web-native-r3f",
+    "report": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spike-report.json",
+    "decisionDrivingClaim": "The authoritative identity/fact/witness model can remain renderer-independent and deterministic while a browser-native 3D layer reacts to derived permissions.",
+    "result": "partially_proven",
+    "remainingRisk": "Visual legibility and interaction were not observed in a connected browser."
+  },
+  "migrationBoundary": {
+    "portable": [
+      "Pure TypeScript domain model and tests",
+      "Structured JSON content for identities, facts, permissions and schedules",
+      "glTF asset interchange",
+      "Stable asset IDs and provenance records"
+    ],
+    "replaceable": [
+      "React view components",
+      "React Three Fiber scene bindings",
+      "Camera and input adapter",
+      "Renderer-specific materials and post-processing"
+    ],
+    "lastCheapExit": "Before Gate 3 asset production and before renderer-specific NPC/navigation code expands beyond the next graybox."
+  },
+  "sources": [
+    {
+      "title": "Three.js WebGLRenderer",
+      "url": "https://threejs.org/docs/pages/WebGLRenderer.html",
+      "use": "WebGL2 renderer baseline and renderer diagnostics"
+    },
+    {
+      "title": "Three.js WebGPURenderer",
+      "url": "https://threejs.org/docs/pages/WebGPURenderer.html",
+      "use": "Optional WebGPU route and WebGL2 fallback; not a first-build dependency"
+    },
+    {
+      "title": "React Three Fiber: Loading models",
+      "url": "https://r3f.docs.pmnd.rs/tutorials/loading-models",
+      "use": "glTF integration path"
+    },
+    {
+      "title": "Babylon.js specifications",
+      "url": "https://www.babylonjs.com/specifications/",
+      "use": "Integrated engine capabilities comparison"
+    },
+    {
+      "title": "Godot 4.7: Exporting for the Web",
+      "url": "https://docs.godotengine.org/en/4.7/tutorials/export/exporting_for_web.html",
+      "use": "Web renderer, threading and hosting constraints"
+    }
+  ]
+}

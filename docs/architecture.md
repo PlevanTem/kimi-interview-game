@@ -116,15 +116,15 @@ flowchart TD
 
 | 契约 | 责任 | 主要生产者 | 主要消费者 |
 | --- | --- | --- | --- |
-| `GameBrief` | 受众、体验承诺、范围、核心动词、成功标准、冻结状态 | Loop Engineer / Human | 所有专家 |
-| `ConceptCandidate` | 幻想、循环、操作、视觉钩子、预算、风险、评分 | concept-director | Human / experience-designer |
+| `GameBrief` | 受众、完整游戏体验承诺、产品范围、Demo 验证策略、成功标准、冻结状态 | Loop Engineer / Human | 所有专家 |
+| `ConceptCandidate` | 完整游戏幻想、核心/宏观循环、进程与内容结构、世界/角色弧、产品潜力，以及独立的 Demo 验证切片与可验证性 | concept-director | Human / experience-designer |
 | `TechnologyDecision` | 玩法能力需求、候选、权重、风险 Spike、选型、人工批准和验证命令 | prototype-engineer / Human | 实现者 / quality-auditor |
 | `StyleBible` | 色板、形状、材质、构图、灯光、UI、动态、prompts、禁用规则 | visual-director | prototype-engineer / quality-auditor |
 | `AssetRecord` | 稳定 ID、定位器、版本、来源、许可、风格、预算、依赖、审批 | prototype-engineer / Loop Engineer | resolver / 资产审计 |
 | `EvalRun` | 构建环境、自动检查、分类得分、缺陷、证据、放行结论 | quality-auditor | Loop Engineer / Human |
 | `IterationEntry` | 问题、证据、根因、修改、验证、前后结果、状态 | 缺陷所有者 | 所有后续迭代 |
 
-每类数据均有对应 JSON Schema。`scripts/validate-context.mjs` 验证结构和跨文件 Gate 约束，不允许用一份语法正确但相互矛盾的 JSON 冒充有效上下文。
+每类数据均有对应 JSON Schema。`GameBrief.sessionMinutes` 只允许作为某个游戏明确选择的目标或历史字段，不是项目级必填项；完整游戏时长与 Demo 时长必须分开记录。候选的产品潜力与 Demo 可验证性也必须分开评估。`scripts/validate-context.mjs` 验证结构和跨文件 Gate 约束，不允许用一份语法正确但相互矛盾的 JSON 冒充有效上下文。
 
 ## 6. 资产引用链
 

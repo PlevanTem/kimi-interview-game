@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-04T07:02:01+08:00",
+  "policy": "All outputs are previsual_reference only. The previously uploaded image was explicitly excluded from every prompt and was not supplied as a reference image.",
+  "generator": "OpenAI image generation tool",
+  "items": [
+    {
+      "id": "game.odyssey-reimagined.previsual.ui-keyframes-v1",
+      "file": "ui-keyframes-v1.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-790b3b42-5954-4889-bced-52ec3fb0a7ff.png",
+      "prompt": "Use case: ui-mockup. Original browser action-adventure board with three 16:9 keyframes: sail-in title stage, salt harbor traversal, and hero parrying an oath-warden with three luminous name threads. Elegant stylized 3D WebGL diorama, soft storybook forms, matte shading, deep teal and salt gold. No text, logos, existing game composition, or prior uploaded image."
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.storyboard-saltcape-v1",
+      "file": "storyboard-saltcape-v1.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-7e9b149d-4a8e-4ed8-a838-1e4ccd11bc5d.png",
+      "prompt": "Use case: illustration-story. Eight-beat original cinematic storyboard: storm arrival, shore path, broken guest token, identity gate, guard challenge, precise parry, tide-gate warden, rumor departure. Stylized 3D paintover with storybook diorama proportions. No text, logos, copied scenes, photorealism, or prior uploaded image."
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.hero-action-sheet-v1",
+      "file": "hero-action-sheet-v1.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-72e93007-7b37-40ca-82e1-5c39d3e330a2.png",
+      "prompt": "Use case: stylized-concept. A 4x3 action sheet of one original mythic sailor hero: idle, alert, walk, run, jump, mantle, dodge, two light strikes, heavy strike, parry, and name-thread finisher. Same teal sail cloak, ivory tunic, ochre sash and wrapped oar blade in every cell. No text, duplicate poses, cropped equipment, copied character, or prior uploaded image."
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.modular-asset-breakdown-v1",
+      "file": "modular-asset-breakdown-v1.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-f6aebf89-2280-481b-adf6-f8f246b8191b.png",
+      "prompt": "Use case: asset-reference. Original exploded orthographic groups for an oar blade, broken guest token, ship seal, oath-warden mask, cloth anchor, modular salt harbor kit and small sailboat, plus unlabeled material swatches. Premium stylized 3D turntable renders. No text, logos, existing assets, characters, or prior uploaded image."
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.main-character-lineup-v1",
+      "file": "main-character-lineup-v1.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-864d4f7a-8b94-423a-a08a-f317453dae16.png",
+      "prompt": "Use case: stylized-concept. Exactly six original full-body characters: hero, older singer Thaleia, tide-runner Ion, shipwright Doro, masked oath-guard and oath-warden boss. One coherent island culture with distinct silhouettes and equipment. No text, duplicates, cropped bodies, copied characters, or prior uploaded image."
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3",
+      "file": "hero-turnaround-chibi-v3.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-7eefd91d-dada-4bbf-9de1-2f65cd53f93e.png",
+      "promptFile": "games/odyssey-reimagined/assets/previsual/hero-turnaround-chibi-v3.prompt.md",
+      "prompt": "Style-transfer Image 1 character sheet into a 4.5-head-tall simplified low-poly chibi model sheet; preserve identity, costume, palette, weapon and four-view layout; use Image 2 only for chunky beveled forms, broad color blocks and reduced texture dependence.",
+      "references": [
+        {"role": "edit-target", "sha256": "e0d9d7565f81df7e083e388df867c58683ee8d26a938689666226e812e2c29bc"},
+        {"role": "style-reference-only", "sha256": "1bb5cee419acdc48761ba76c2a2e61ec674b9a5b72c1eb869b1f805a3c3e3158"}
+      ]
+    },
+    {
+      "id": "game.odyssey-reimagined.previsual.hero-action-spritesheet-chibi-v2",
+      "file": "hero-action-spritesheet-chibi-v2.png",
+      "source": "C:/Users/Administrator/.codex/generated_images/01a0690c-2710-7723-8bd0-882e5c5d0b80/exec-4a40910c-0519-4969-aff8-d9beb6a9e504.png",
+      "sourceFile": "hero-action-spritesheet-chibi-v2-source.png",
+      "promptFile": "games/odyssey-reimagined/assets/previsual/hero-action-spritesheet-chibi-v2.prompt.md",
+      "prompt": "Identity-preserve the approved chibi hero in a portrait 3x4 sheet of twelve action key poses: neutral idle, combat idle, walk, run, observe, two light strikes, heavy, dodge, parry, hit and namebreak; keep costume, proportions, paddle-blade, neutral gray background and full-body safety margins invariant.",
+      "references": [
+        {"role": "character-identity-reference", "sha256": "f081c6d7fcbda6af13333dc334c5c624fa9455afdc91ee8afad1d4132f4e0bb2", "note": "User-supplied reattachment of the current chibi turnaround"}
+      ],
+      "normalization": {
+        "sourceDimensions": "941x1672",
+        "finalDimensions": "936x1664",
+        "operation": "center crop only",
+        "finalRatio": "9:16"
+      }
+    }
+  ]
+}

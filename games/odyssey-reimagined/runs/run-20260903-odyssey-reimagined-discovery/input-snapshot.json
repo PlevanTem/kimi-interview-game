@@ -1,0 +1,21 @@
+{
+  "runId": "run-20260903-odyssey-reimagined-discovery",
+  "capturedAt": "2026-09-03T19:05:06+08:00",
+  "decisionMaker": "human_user",
+  "input": {
+    "theme": "奥德赛",
+    "instruction": "新建 worktree，忽略之前文件内已开发内容，依次完成 IDEATION、DISCOVER、DEFINE。",
+    "researchScope": ["玩法类型", "战斗", "关卡", "动画", "AI", "专业奖项与会议原始出处"],
+    "expectedOutput": "充分调研后的多个 brief 提案、推荐理由和排序"
+  },
+  "isolationRules": [
+    "不读取旧玩法内容作为创意输入。",
+    "不迁移旧 Gate、技术或资产结论。",
+    "只复用仓库 schema、模板与验证命令。"
+  ],
+  "humanDecisionsStillRequired": [
+    "确认或修改受众假设",
+    "在恰好三个候选中做 Gate 1 决策",
+    "概念锁定后再决定技术路线"
+  ]
+}
