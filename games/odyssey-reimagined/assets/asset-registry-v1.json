@@ -116,14 +116,14 @@
     {
       "id": "game.odyssey-reimagined.character.hero",
       "type": "procedural-3d-code",
-      "locator": {"kind": "module-export", "value": "games/odyssey-reimagined/src/Models.tsx#HeroModel"},
-      "version": "0.2.0",
-      "source": {"kind": "project-authored-code", "parts": ["head", "hood", "torso", "cloak", "left-arm", "right-arm", "left-leg", "right-leg", "oar-shaft", "oar-blade", "thread-wrap"]},
+      "locator": {"kind": "module-export", "value": "games/odyssey-reimagined/src/HeroCharacterModel.tsx#HeroCharacterModel"},
+      "version": "0.3.0",
+      "source": {"kind": "project-authored-code", "adapter": "games/odyssey-reimagined/src/Models.tsx#HeroModel", "parts": ["faceted-face", "eyes-and-brows", "layered-hair", "open-front-mantle", "tunic-and-runes", "belt-and-pouch", "left-arm", "right-arm", "left-leg", "right-leg", "three-panel-cloak", "continuous-gold-tail", "oar-shaft", "oar-blade", "timed-weapon-trail", "observation-crystal", "name-threads"]},
       "license": "project-original",
       "promptHash": "not-applicable-code-authored",
-      "styleTags": ["replaceable-parts", "animated-pivots", "storybook-low-mid-poly"],
+      "styleTags": ["chibi-4.5-heads", "replaceable-parts", "animated-pivots", "storybook-low-poly", "twelve-key-poses"],
       "sizeBudgetBytes": 50000,
-      "dependencies": ["game.odyssey-reimagined.previsual.hero-action-sheet-v1"],
+      "dependencies": ["game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3", "game.odyssey-reimagined.previsual.hero-action-spritesheet-chibi-v2"],
       "approval": "graybox-only"
     },
     {
