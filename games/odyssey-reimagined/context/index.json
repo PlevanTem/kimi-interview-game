@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/context-index.schema.json",
   "contextVersion": "4.0.0",
-  "updatedAt": "2026-09-04T07:27:51+08:00",
+  "updatedAt": "2026-09-04T07:42:45+08:00",
   "activeRunId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
   "productionState": "procedural_character_lab_integrated_and_browser_validated_awaiting_gate2_and_gate3",
   "gateState": {
@@ -43,6 +43,11 @@
     "githubBranchReview": "games/odyssey-reimagined/docs/GITHUB-BRANCH-REVIEW-v1.md",
     "implementation": "games/odyssey-reimagined/src/App.tsx",
     "implementationModels": "games/odyssey-reimagined/src/Models.tsx",
+    "implementationHeroCharacter": "games/odyssey-reimagined/src/HeroCharacterModel.tsx",
+    "characterLab": "games/odyssey-reimagined/src/CharacterLab.tsx",
+    "heroCodeModelDoc": "games/odyssey-reimagined/docs/HERO-CODE-MODEL-v1.md",
+    "heroCodeModelEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab.png",
+    "heroCodeModelWireframeEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab-wireframe.png",
     "techFitReport": "games/odyssey-reimagined/docs/TECH-FIT-AESTHETIC-EXPERIMENT-v3.md",
     "techFitEvidence": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-v1/spike-report.json",
     "techFitAestheticExperiment": "games/odyssey-reimagined/runs/run-20260903-sea-of-thousand-names-tech-fit-aesthetic-v3/experiment-plan.json",
@@ -60,6 +65,7 @@
   "readOrder": [
     "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/input-snapshot.json",
     "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/results.json",
+    "games/odyssey-reimagined/docs/HERO-CODE-MODEL-v1.md",
     "games/odyssey-reimagined/docs/GITHUB-BRANCH-REVIEW-v1.md",
     "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-action-sheet-v2/input-snapshot.json",
     "games/odyssey-reimagined/docs/CHARACTER-ACTION-SYSTEM-v1.md",

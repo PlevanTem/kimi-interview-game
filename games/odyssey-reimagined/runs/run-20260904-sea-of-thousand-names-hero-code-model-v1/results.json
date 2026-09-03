@@ -1,7 +1,7 @@
 {
   "runId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
   "gameId": "odyssey-reimagined",
-  "completedAt": "2026-09-04T07:27:51+08:00",
+  "completedAt": "2026-09-04T07:42:45+08:00",
   "status": "validated_graybox_character_lab_awaiting_human_gates",
   "deliverables": {
     "route": "?lab=character",
@@ -12,9 +12,9 @@
   },
   "verification": [
     {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "9/9 rule and character-contract tests passed"},
-    {"command": "npm.cmd --prefix games/odyssey-reimagined run build", "exitCode": 0, "result": "57 modules transformed; production build passed"},
-    {"command": "npm.cmd exec playwright test", "exitCode": 0, "result": "2/2 browser tests passed serially, including character lab and full captain route"},
-    {"command": "npm.cmd run lint", "exitCode": 0, "result": "PASS"},
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run build", "exitCode": 0, "result": "63 modules transformed; production build passed; CharacterLab remains a lazy chunk"},
+    {"command": "npx.cmd playwright test", "exitCode": 0, "result": "2/2 browser tests passed serially in 23.9 seconds, including character lab and full captain route"},
+    {"command": "npx.cmd eslint games/odyssey-reimagined/src games/odyssey-reimagined/tests/heroCharacterModel.test.ts games/odyssey-reimagined/tests/e2e/character-lab.spec.ts", "exitCode": 0, "result": "PASS"},
     {"command": "npm.cmd run validate:context", "exitCode": 0, "result": "PASS"},
     {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS"}
   ],
@@ -36,13 +36,32 @@
       "rootCause": "Screenshot paths assumed repository-root CWD while Playwright runs from the game package.",
       "change": "Evidence paths are now relative to the game package runs directory; the malformed nested directory was removed.",
       "evidence": "Both expected PNG evidence files exist in their indexed run directories."
+    },
+    {
+      "issue": "The solid rear-hair mass occluded the face, while long fringe pieces hid both eyes.",
+      "rootCause": "The hair cap extended in front of the face shell and the front cones reached below the eye line.",
+      "change": "Moved and flattened the rear hair volume, shortened the fringe, added a narrow central bang and layered warm iris/pupil geometry.",
+      "evidence": "Fresh front and three-quarter browser inspection shows both eyes, brows, nose and mouth readable without losing the black faceted-hair silhouette."
+    },
+    {
+      "issue": "The ochre cloak tail read as two detached spearheads and attack trails remained visible after the swing window.",
+      "rootCause": "The tail used separated octahedra and trail visibility depended only on the selected action id.",
+      "change": "Replaced the tail with one continuous extruded ribbon and bounded trail visibility to each action's active presentation window.",
+      "evidence": "Fresh material capture shows a continuous shoulder-to-tail ribbon; the trail appears during the heavy key pose and clears after its timed window."
+    },
+    {
+      "issue": "Raised weapon poses approached the viewport edge.",
+      "rootCause": "Camera presets were framed only against the neutral 3.2-unit standing silhouette.",
+      "change": "Moved all four presets back and raised their target slightly to reserve action-safe headroom.",
+      "evidence": "The fresh heavy-action screenshot keeps character, raised shaft and complete cyan arc inside the stage."
     }
   ],
   "truthBoundary": {
     "gate2": "blocked_pending_human_fun_lock",
     "gate3": "blocked_no_formal_style_bible_or_production_asset_approval",
     "isProductionCharacter": false,
-    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision.",
-    "visualInspection": "Hero 3/4 and side wireframe captures keep hair, weapon and raised mantle inside the viewport without visible waist-level mantle collapse; this remains graybox evidence, not Gate 3 approval."
+    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision. The reference contains front, left and back full-body views plus a face close-up; unseen right-side construction remains a symmetric inference.",
+    "performanceEvidence": "A separate 60-second Playwright run under Chromium SwiftShader software rendering measured about 27.62 average FPS. This is below release thresholds but does not establish player-GPU performance; a hardware-accelerated capture is still required.",
+    "visualInspection": "Fresh 1600x900 material and wireframe captures show readable eyes, open-front mantle, continuous ochre ribbon, full raised-weapon silhouette and action-safe framing. This remains graybox evidence, not Gate 3 approval."
   }
 }
