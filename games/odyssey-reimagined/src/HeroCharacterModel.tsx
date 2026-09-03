@@ -175,6 +175,7 @@ const HAIR_SPIKES: ReadonlyArray<{ position: Vec3; rotation: Vec3; scale: Vec3 }
   { position: [0.29, 0.2, 0.17], rotation: [0.05, 0.18, -2.52], scale: [1.05, 1.04, 1] },
   { position: [-0.31, 0.04, 0.27], rotation: [0, -0.16, 2.84], scale: [0.7, 0.78, 0.72] },
   { position: [-0.11, 0.2, 0.34], rotation: [0.02, -0.08, Math.PI], scale: [0.56, 0.68, 0.62] },
+  { position: [0, 0.23, 0.38], rotation: [0.02, 0, Math.PI], scale: [0.32, 0.82, 0.55] },
   { position: [0.08, 0.2, 0.35], rotation: [0.02, 0.02, Math.PI], scale: [0.56, 0.7, 0.62] },
   { position: [0.29, 0.05, 0.3], rotation: [0.02, 0.14, -2.78], scale: [0.7, 0.8, 0.72] },
   { position: [-0.42, 0.05, -0.01], rotation: [0.22, 0.28, 1.92], scale: [0.9, 1.0, 0.94] },
@@ -293,23 +294,23 @@ function Mantle({ wireframe, accent }: { wireframe: boolean; accent: string }) {
   return (
     <group>
       {/* The mantle wraps the back and shoulders but leaves the tunic readable at the front. */}
-      <mesh position={[0, -0.02, -0.015]} scale={[1, 0.88, 0.78]} castShadow>
+      <mesh position={[0, 0.26, -0.015]} scale={[1, 0.88, 0.78]} castShadow>
         <coneGeometry args={[0.72, 0.68, 12, 1, true, 0.76, Math.PI * 2 - 1.52]} />
         <Surface color={COLORS.teal} wireframe={wireframe} roughness={0.95} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[0, 0.29, -0.04]} rotation={[Math.PI / 2, 0, 0]} scale={[1.05, 0.82, 1]}>
+      <mesh position={[0, 0.55, -0.04]} rotation={[Math.PI / 2, 0, 0]} scale={[1.05, 0.82, 1]}>
         <torusGeometry args={[0.35, 0.095, 5, 12]} />
         <Surface color={COLORS.tealDeep} wireframe={wireframe} roughness={0.95} />
       </mesh>
-      <mesh position={[-0.33, -0.12, 0.31]} rotation={[0, 0, -0.71]} scale={[0.34, 0.035, 0.03]}>
+      <mesh position={[-0.33, 0.16, 0.31]} rotation={[0, 0, -0.71]} scale={[0.34, 0.035, 0.03]}>
         <boxGeometry />
         <Surface color={accent} wireframe={wireframe} metalness={0.1} roughness={0.67} />
       </mesh>
-      <mesh position={[0.33, -0.12, 0.31]} rotation={[0, 0, 0.71]} scale={[0.34, 0.035, 0.03]}>
+      <mesh position={[0.33, 0.16, 0.31]} rotation={[0, 0, 0.71]} scale={[0.34, 0.035, 0.03]}>
         <boxGeometry />
         <Surface color={accent} wireframe={wireframe} metalness={0.1} roughness={0.67} />
       </mesh>
-      <group position={[0, 0.14, 0.39]}>
+      <group position={[0, 0.42, 0.39]}>
         <Buckle wireframe={wireframe} accent={accent} />
       </group>
     </group>
@@ -408,8 +409,59 @@ function Leg({
   );
 }
 
-function OarWeapon({ wireframe, accent, showTrail, attack }: { wireframe: boolean; accent: string; showTrail: boolean; attack: HeroLabAction }) {
-  const trailVisible = showTrail && ["light_1", "light_2", "heavy", "parry"].includes(attack);
+function WeaponTrail({
+  visible,
+  attack,
+  actionSerial,
+}: {
+  visible: boolean;
+  attack: HeroLabAction;
+  actionSerial: number;
+}) {
+  const trail = useRef<THREE.Group>(null);
+  const startedAt = useRef<number | null>(null);
+
+  useEffect(() => {
+    startedAt.current = null;
+    if (trail.current) trail.current.visible = false;
+  }, [attack, actionSerial]);
+
+  useFrame(({ clock }) => {
+    if (!trail.current) return;
+    if (startedAt.current === null) startedAt.current = clock.elapsedTime;
+    const elapsed = clock.elapsedTime - startedAt.current;
+    const attackSupportsTrail = ["light_1", "light_2", "heavy", "parry"].includes(attack);
+    const end = attack === "heavy" ? 0.82 : 0.6;
+    trail.current.visible = visible && attackSupportsTrail && elapsed >= 0.1 && elapsed <= end;
+  });
+
+  return (
+    <group ref={trail} position={[0.12, -0.58, -0.03]} rotation={[0, 0, -0.45]} visible={false}>
+      <mesh>
+        <torusGeometry args={[0.78, 0.035, 6, 40, Math.PI * 0.82]} />
+        <meshBasicMaterial color={COLORS.cyan} transparent opacity={0.56} depthWrite={false} toneMapped={false} />
+      </mesh>
+      <mesh position={[0, 0, -0.012]} scale={0.92}>
+        <torusGeometry args={[0.78, 0.018, 5, 40, Math.PI * 0.82]} />
+        <meshBasicMaterial color="#d7fffb" transparent opacity={0.74} depthWrite={false} toneMapped={false} />
+      </mesh>
+    </group>
+  );
+}
+
+function OarWeapon({
+  wireframe,
+  accent,
+  showTrail,
+  attack,
+  actionSerial,
+}: {
+  wireframe: boolean;
+  accent: string;
+  showTrail: boolean;
+  attack: HeroLabAction;
+  actionSerial: number;
+}) {
   return (
     <group position={[0, 0.45, 0.02]}>
       <mesh position={[0, -0.38, 0]} castShadow>
@@ -435,18 +487,7 @@ function OarWeapon({ wireframe, accent, showTrail, attack }: { wireframe: boolea
         <meshBasicMaterial color={accent} toneMapped={false} wireframe={wireframe} />
       </mesh>
 
-      {trailVisible && !wireframe && (
-        <group position={[0.12, -0.58, -0.03]} rotation={[0, 0, -0.45]}>
-          <mesh rotation={[0, 0, 0]}>
-            <torusGeometry args={[0.78, 0.035, 6, 40, Math.PI * 0.82]} />
-            <meshBasicMaterial color={COLORS.cyan} transparent opacity={0.56} depthWrite={false} toneMapped={false} />
-          </mesh>
-          <mesh position={[0, 0, -0.012]} scale={0.92}>
-            <torusGeometry args={[0.78, 0.018, 5, 40, Math.PI * 0.82]} />
-            <meshBasicMaterial color="#d7fffb" transparent opacity={0.74} depthWrite={false} toneMapped={false} />
-          </mesh>
-        </group>
-      )}
+      <WeaponTrail visible={showTrail && !wireframe} attack={attack} actionSerial={actionSerial} />
     </group>
   );
 }
@@ -471,17 +512,25 @@ function CapePanel({ wireframe, accent, offset = 0 }: { wireframe: boolean; acce
 }
 
 function GoldenTail({ wireframe, accent }: { wireframe: boolean; accent: string }) {
+  const ribbonShape = useMemo(() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(-0.05, 0.16);
+    shape.bezierCurveTo(0.2, 0.11, 0.4, -0.08, 0.59, -0.28);
+    shape.bezierCurveTo(0.72, -0.42, 0.88, -0.48, 1.03, -0.45);
+    shape.lineTo(0.88, -0.64);
+    shape.bezierCurveTo(0.7, -0.62, 0.56, -0.52, 0.43, -0.38);
+    shape.bezierCurveTo(0.25, -0.18, 0.11, -0.05, -0.08, 0);
+    shape.closePath();
+    return shape;
+  }, []);
+
   return (
     <group>
-      <mesh position={[0.35, -0.12, 0]} rotation={[0, 0, -1.02]} scale={[0.16, 0.58, 0.06]} castShadow>
-        <octahedronGeometry args={[0.78, 0]} />
+      <mesh position={[0, 0, -0.025]} castShadow>
+        <extrudeGeometry args={[ribbonShape, { depth: 0.05, bevelEnabled: false, steps: 1 }]} />
         <Surface color={COLORS.ochre} wireframe={wireframe} roughness={0.9} />
       </mesh>
-      <mesh position={[0.76, -0.42, 0]} rotation={[0, 0, -0.82]} scale={[0.17, 0.52, 0.055]} castShadow>
-        <octahedronGeometry args={[0.78, 0]} />
-        <Surface color={COLORS.ochre} wireframe={wireframe} roughness={0.9} />
-      </mesh>
-      <mesh position={[0.72, -0.37, 0.065]} rotation={[0, 0, Math.PI / 4]} scale={[0.075, 0.075, 0.025]}>
+      <mesh position={[0.56, -0.3, 0.052]} rotation={[0, 0, Math.PI / 4]} scale={[0.065, 0.065, 0.025]}>
         <boxGeometry />
         <Surface color={accent} wireframe={wireframe} roughness={0.72} />
       </mesh>
@@ -867,7 +916,13 @@ export function HeroCharacterModel({
               forearmRef={rightForearm}
               weapon={
                 <group ref={weapon} position={[0, -0.49, 0.015]}>
-                  <OarWeapon wireframe={wireframe} accent={accent} showTrail={showWeaponTrail} attack={action} />
+                  <OarWeapon
+                    wireframe={wireframe}
+                    accent={accent}
+                    showTrail={showWeaponTrail}
+                    attack={action}
+                    actionSerial={actionSerial}
+                  />
                 </group>
               }
             />

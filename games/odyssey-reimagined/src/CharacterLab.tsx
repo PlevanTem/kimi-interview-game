@@ -19,10 +19,10 @@ type RenderMetrics = {
 };
 
 const CAMERA_PRESETS: Record<CameraPreset, { label: string; short: string; position: [number, number, number] }> = {
-  front: { label: "正面 0°", short: "正", position: [0, 2.15, 6.1] },
-  left: { label: "左侧 90°", short: "侧", position: [-6.1, 2.15, 0] },
-  back: { label: "背面 180°", short: "背", position: [0, 2.15, -6.1] },
-  "three-quarter": { label: "英雄 3/4", short: "¾", position: [4.55, 2.65, 4.55] },
+  front: { label: "正面 0°", short: "正", position: [0, 2.28, 6.8] },
+  left: { label: "左侧 90°", short: "侧", position: [-6.8, 2.28, 0] },
+  back: { label: "背面 180°", short: "背", position: [0, 2.28, -6.8] },
+  "three-quarter": { label: "英雄 3/4", short: "¾", position: [5.1, 2.82, 5.1] },
 };
 
 const DEFAULT_ACTION = HERO_LAB_ACTIONS[0]?.id ?? ("idle_neutral" as HeroLabAction);
@@ -31,7 +31,7 @@ function LabCamera({ preset, revision }: { preset: CameraPreset; revision: numbe
   const { camera, gl } = useThree();
   const controlsRef = useRef<OrbitControls | null>(null);
   const goalPosition = useRef(new THREE.Vector3(...CAMERA_PRESETS[preset].position));
-  const goalTarget = useRef(new THREE.Vector3(0, 1.55, 0));
+  const goalTarget = useRef(new THREE.Vector3(0, 1.62, 0));
   const transitioning = useRef(true);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function LabCamera({ preset, revision }: { preset: CameraPreset; revision: numbe
     controls.dampingFactor = 0.075;
     controls.enablePan = true;
     controls.screenSpacePanning = true;
-    controls.minDistance = 3.7;
+    controls.minDistance = 4.1;
     controls.maxDistance = 10;
     controls.minPolarAngle = Math.PI * 0.16;
     controls.maxPolarAngle = Math.PI * 0.82;
@@ -55,7 +55,7 @@ function LabCamera({ preset, revision }: { preset: CameraPreset; revision: numbe
 
   useEffect(() => {
     goalPosition.current.set(...CAMERA_PRESETS[preset].position);
-    goalTarget.current.set(0, 1.55, 0);
+    goalTarget.current.set(0, 1.62, 0);
     transitioning.current = true;
   }, [preset, revision]);
 

@@ -7,7 +7,8 @@
     "route": "?lab=character",
     "component": "games/odyssey-reimagined/src/HeroCharacterModel.tsx",
     "lab": "games/odyssey-reimagined/src/CharacterLab.tsx",
-    "browserEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab.png"
+    "browserEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab.png",
+    "wireframeEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab-wireframe.png"
   },
   "verification": [
     {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "9/9 rule and character-contract tests passed"},
@@ -41,6 +42,7 @@
     "gate2": "blocked_pending_human_fun_lock",
     "gate3": "blocked_no_formal_style_bible_or_production_asset_approval",
     "isProductionCharacter": false,
-    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision."
+    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision.",
+    "visualInspection": "Hero 3/4 and side wireframe captures keep hair, weapon and raised mantle inside the viewport without visible waist-level mantle collapse; this remains graybox evidence, not Gate 3 approval."
   }
 }
