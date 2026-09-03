@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>Lantern path mechanic spike</title>
+  </head>
+  <body>
+    <main>
+      <h1>路径机制 Spike</h1>
+      <p id="instructions">从圆形起点铺向方形目标。路径必须在走廊内且不超预算。</p>
+      <div id="stage" aria-label="铺设路径的三维测试场景"></div>
+      <p id="status" role="status" aria-live="polite">等待从起点开始铺设。</p>
+      <p id="result">尚未提交。</p>
+      <button id="reset" type="button">重置路径</button>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

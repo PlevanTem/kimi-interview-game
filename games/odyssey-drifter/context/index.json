@@ -1,0 +1,50 @@
+{
+  "$schema": "../../../schemas/context-index.schema.json",
+  "contextVersion": "2.0.0",
+  "updatedAt": "2026-09-03T09:27:38+08:00",
+  "activeRunId": "run-20260903-lightline-godot-r2",
+  "productionState": "gate2_redesign_isometric",
+  "gateState": {
+    "gate1": "locked",
+    "gate2": "iterating",
+    "gate3": "blocked",
+    "gate4": "blocked"
+  },
+  "sources": {
+    "gameBrief": "games/odyssey-drifter/context/game-brief-lightline.json",
+    "concepts": "games/odyssey-drifter/context/concepts-lightline.json",
+    "gate1Decision": "games/odyssey-drifter/runs/run-20260903-lightline-reframe/gate1-decision.json",
+    "gameplaySpec": "games/odyssey-drifter/context/gameplay-spec-lightline-v2.md",
+    "projectReport": "games/odyssey-drifter/docs/GAME_PROJECT_REPORT_LIGHTLINE.md",
+    "technologyReview": "games/odyssey-drifter/context/technology-decision-lightline.json",
+    "techFitDecision": "games/odyssey-drifter/runs/run-20260903-lightline-godot/tech-fit-decision.json",
+    "assetPlan": "games/odyssey-drifter/context/asset-plan-lightline-godot-v2.md",
+    "demoDelivery": "games/odyssey-drifter/runs/run-20260903-lightline-godot/demo-delivery.json",
+    "latestGate2Decision": "games/odyssey-drifter/runs/run-20260903-lightline-godot-r2/gate2-decision.json",
+    "styleBible": null,
+    "styleBibleState": "blocked_by_gate2",
+    "assetRegistry": "games/odyssey-drifter/context/asset-registry.json",
+    "iterationLedger": "games/odyssey-drifter/context/iterations-lightline.json",
+    "selectedConceptArt": "games/odyssey-drifter/assets/concepts/reframe-c-action-v1.png",
+    "historicalGameBrief": "games/odyssey-drifter/context/game-brief.json",
+    "historicalConcepts": "games/odyssey-drifter/context/concepts.json",
+    "historicalTechnologyDecision": "games/odyssey-drifter/context/technology-decision.json",
+    "historicalGate2Evidence": "games/odyssey-drifter/runs/run-20260902-odyssey-graybox/gate2-evidence.json",
+    "historicalIterationLedger": "games/odyssey-drifter/context/iterations.json"
+  },
+  "readOrder": [
+    "games/odyssey-drifter/runs/run-20260903-lightline-reframe/gate1-decision.json",
+    "games/odyssey-drifter/context/game-brief-lightline.json",
+    "games/odyssey-drifter/context/concepts-lightline.json",
+    "games/odyssey-drifter/runs/run-20260903-lightline-godot-r2/gate2-decision.json",
+    "games/odyssey-drifter/context/gameplay-spec-lightline-v2.md",
+    "games/odyssey-drifter/docs/GAME_PROJECT_REPORT_LIGHTLINE.md",
+    "games/odyssey-drifter/context/technology-decision-lightline.json",
+    "games/odyssey-drifter/runs/run-20260903-lightline-godot/tech-fit-decision.json",
+    "games/odyssey-drifter/context/asset-plan-lightline-godot-v2.md",
+    "games/odyssey-drifter/runs/run-20260903-lightline-godot/demo-delivery.json",
+    "games/odyssey-drifter/context/asset-registry.json",
+    "games/odyssey-drifter/context/iterations-lightline.json"
+  ],
+  "historyPolicy": "旧《下一盏灯》文件保持原位，仅供审计；不得作为当前概念、技术或 Gate 证据。"
+}

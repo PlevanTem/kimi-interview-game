@@ -1,0 +1,14 @@
+{
+  "runId": "run-20260902-odyssey-graybox",
+  "capturedAt": "2026-09-02T22:28:49+08:00",
+  "request": "A",
+  "preconditions": {
+    "gate1": "locked",
+    "techFit": "locked",
+    "selectedTechnology": "browser-native-three",
+    "gate2": "pending",
+    "styleBible": "blocked_by_gate1"
+  },
+  "scope": "实现完整开始、教程、游玩、暂停、重开、成功、失败闭环的八段桌面浏览器灰盒；只使用已登记的程序化 graybox-only 资产。",
+  "requiredStatusReporting": true
+}

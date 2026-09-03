@@ -1,0 +1,108 @@
+{
+  "$schema": "../../../schemas/technology-decision.schema.json",
+  "gameId": "odyssey-drifter",
+  "status": "locked",
+  "requirements": {
+    "hard": [
+      "桌面 Chromium 浏览器中的单场景 3D 灰盒；无后端、联网或运行时 AI",
+      "连续指向输入、取消、确认、暂停、重开；不得依赖双击或长按精度",
+      "可读的有效、超预算、未抵达、越出铺设带预览",
+      "固定种子与相同输入路径必须重放出相同规范化路径、状态迁移与结果",
+      "本地事件轨迹、单元状态测试与浏览器 E2E",
+      "纯灰盒，使用几何与 DOM UI，不需要正式视觉资产"
+    ],
+    "preferences": [
+      "可离线静态部署、桌面 1080p 下低交付摩擦",
+      "DOM 可访问 UI、快速迭代、渲染层与领域逻辑可替换",
+      "目标为 60 FPS，但当前没有实测证据"
+    ],
+    "unknowns": [
+      "鼠标轨迹投射并量化到世界平面后，是否感觉连续且无明显延迟",
+      "走廊与目标预览能否在不只依赖颜色时被首次玩家理解",
+      "不同指针采样频率能否得到字节等价的规范化路径和重放日志",
+      "目标机器上的浏览器帧时间与输入到可视反馈延迟"
+    ]
+  },
+  "criteria": {
+    "mechanicDirectness": 0.2,
+    "determinismAndTestability": 0.2,
+    "scopeCostAndReversibility": 0.2,
+    "inputAndRenderControl": 0.15,
+    "deliveryRuntimeFriction": 0.15,
+    "domAccessibilityAndStateUi": 0.1
+  },
+  "candidates": [
+    {
+      "id": "browser-native-three",
+      "route": "Vite + TypeScript + 原生 Three.js + DOM UI；纯 TypeScript 领域内核不依赖渲染器",
+      "scores": {"mechanicDirectness": 92, "determinismAndTestability": 92, "scopeCostAndReversibility": 95, "inputAndRenderControl": 93, "deliveryRuntimeFriction": 90, "domAccessibilityAndStateUi": 83, "weightedTotal": 91.55},
+      "decision": "条件性推荐",
+      "risks": ["需自行维护 DOM/Canvas 边界", "输入与帧时间证据来自本机 headless Chrome，仍需真人试玩验证可读性"]
+    },
+    {
+      "id": "browser-react-r3f",
+      "route": "Vite + React + React Three Fiber + Three.js + DOM UI",
+      "scores": {"mechanicDirectness": 89, "determinismAndTestability": 86, "scopeCostAndReversibility": 80, "inputAndRenderControl": 87, "deliveryRuntimeFriction": 84, "domAccessibilityAndStateUi": 92, "weightedTotal": 85.85},
+      "decision": "保留备选",
+      "risks": ["Canvas 与 DOM 双状态边界增加重放与输入诊断复杂度", "现有参考夹具不构成机制证据", "本机依赖同样缺失"]
+    },
+    {
+      "id": "browser-babylon",
+      "route": "Vite + TypeScript + Babylon.js + DOM UI",
+      "scores": {"mechanicDirectness": 85, "determinismAndTestability": 88, "scopeCostAndReversibility": 70, "inputAndRenderControl": 85, "deliveryRuntimeFriction": 75, "domAccessibilityAndStateUi": 77, "weightedTotal": 80.3},
+      "decision": "淘汰",
+      "risks": ["新增大型依赖与锁文件变更", "需要许可证、版本与安全复核", "本作不需要其物理与场景能力"]
+    }
+  ],
+  "spikes": [
+    {
+      "id": "path-rules-v1",
+      "scope": "零依赖领域规则：路径规范化、长度、走廊、目标接受区和确定性重放；不含浏览器渲染。",
+      "command": "node games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/path-rules-spike.mjs",
+      "result": "PASS",
+      "evidence": {"deterministicReplay": true, "validLength": 10.1, "checkedFailures": ["outside_corridor", "target_miss", "over_budget", "start_anchor"]},
+      "remaining": "必须在桌面 Chromium 中验证鼠标射线投射、实时线带预览、30/60/144Hz 采样归一化、p95 输入反馈和帧时间。"
+    },
+    {
+      "id": "browser-native-three-v1",
+      "scope": "桌面 Chrome 最小 3D 场景：鼠标射线投射、实时线带、走廊与目标预览、固定采样重放和输入到下一帧反馈；不含正式美术或完整八段内容。",
+      "commands": [
+        "npx vite build --config games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/vite.config.ts",
+        "node games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/browser-spike-test.mjs"
+      ],
+      "result": "PASS",
+      "evidence": {"canvas": [960, 640], "validPointerPath": true, "replayByteEquivalentAtHz": [30, 60, 144], "inputToRenderP95MsLatest": 0.7, "inputToRenderP95MsObservedRange": [0.7, 0.9], "screenshot": "games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/evidence/valid-path.png"},
+      "remaining": "未验证 5 名新手的首次理解、完整八段节奏和真人设备覆盖；这些属于 Gate 2，而非本技术 spike。"
+    }
+  ],
+  "recommendation": "浏览器机制 spike 已通过；建议选择 browser-native-three，并将路径判定、状态机和重放保持为不导入 Three/DOM 的纯 TypeScript 内核。此建议置信度中，不能替代人类 Tech Fit Lock。",
+  "migrationBoundary": "domain 层禁止 import Three、React 或 DOM；种子与 replay fixture 使用 JSON。替换渲染路线时只重写 adapter 与渲染层，不改状态机、判定或测试向量。",
+  "environment": {
+    "command": "npm ls --depth=0",
+    "previousExitCode": 1,
+    "resolution": "用户授权后运行 npm ci；安装 288 个包，审计 289 个包，报告 0 个漏洞。",
+    "resolvedAt": "2026-09-02T22:25:00+08:00"
+  },
+  "lockedVersions": {
+    "vite": "6.4.3",
+    "typescript": "5.8.3",
+    "three": "0.180.0",
+    "playwright": "1.62.1"
+  },
+  "selected": "browser-native-three",
+  "humanApproval": {
+    "runId": "run-20260902-odyssey-tech-fit",
+    "inputVersion": "technology-decision-review-v1",
+    "decisionMaker": "human_user",
+    "result": "approved",
+    "reason": "用户明确回复：A。",
+    "approvedAt": "2026-09-02T22:28:49+08:00"
+  },
+  "locked": true,
+  "verificationCommands": {
+    "dev": "npx vite --config games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/vite.config.ts --host 127.0.0.1 --port 4173",
+    "build": "npx vite build --config games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/vite.config.ts",
+    "test": "node games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/path-rules-spike.mjs && node games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/browser-spike-test.mjs",
+    "quality": "npm run validate:library"
+  }
+}

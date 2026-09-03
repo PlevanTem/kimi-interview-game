@@ -1,0 +1,13 @@
+{
+  "gate": "Tech Fit Lock",
+  "gameId": "odyssey-drifter",
+  "runId": "run-20260903-lightline-godot",
+  "inputVersion": "lightline-godot-strategy-v1",
+  "decisionMaker": "human_user",
+  "result": "approved",
+  "selected": "godot-4-gdscript-compatibility",
+  "reason": "用户直接指定 Godot；采用 GDScript、Compatibility renderer、Windows 预览并保留桌面浏览器目标。",
+  "decidedAt": "2026-09-03T08:55:36+08:00",
+  "verificationBoundary": "用户取消自主体验评分与五人测试，但工程解析和可启动性仍是可玩交付的最低事实检查。",
+  "supersedes": "games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/tech-fit-decision.json"
+}

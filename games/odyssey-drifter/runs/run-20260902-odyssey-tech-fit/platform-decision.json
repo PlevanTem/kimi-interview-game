@@ -1,0 +1,10 @@
+{
+  "decisionType": "graybox_platform",
+  "runId": "run-20260902-odyssey-tech-fit",
+  "inputVersion": "gameplay-spec-v1",
+  "decisionMaker": "human_user",
+  "result": "desktop_browser",
+  "scope": "首个灰盒的主验证平台；不锁定渲染框架、应用框架、输入映射或正式发布平台。",
+  "reason": "用户明确指示：灰盒先按桌面浏览器做。",
+  "decidedAt": "2026-09-02T21:50:00+08:00"
+}

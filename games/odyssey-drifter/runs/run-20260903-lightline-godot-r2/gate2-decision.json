@@ -1,0 +1,24 @@
+{
+  "gate": "Gate 2 — Fun Lock",
+  "gameId": "odyssey-drifter",
+  "runId": "run-20260903-lightline-godot-r2",
+  "inputVersion": "godot-demo-v1",
+  "decisionMaker": "human_user",
+  "result": "rejected",
+  "reason": [
+    "连线的意义不可读。",
+    "通关目标和规则不可读。",
+    "体验感很差，灰盒完成度不足。",
+    "当前 3D 视角不符合要求，应改为 isometric。",
+    "周边环境没有可理解的玩法作用。"
+  ],
+  "decidedAt": "2026-09-03T09:23:22+08:00",
+  "rootCauseStatus": "design_rework_in_progress",
+  "requiredBeforeResubmission": [
+    "一句话可说明通关目标",
+    "首轮先证明连线是可行走的桥，不同时要求理解张力和节拍",
+    "固定正交 isometric 镜头展示起点、锚点、危险与终点关系",
+    "每个环境物体都必须有可见玩法功能和状态变化",
+    "失败反馈指向具体物体、规则和修正动作"
+  ]
+}

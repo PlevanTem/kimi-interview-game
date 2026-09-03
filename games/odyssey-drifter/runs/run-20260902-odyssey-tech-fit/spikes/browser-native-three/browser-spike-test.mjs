@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { chromium } from 'playwright';
+
+const chrome = process.env.CHROME_PATH ?? 'C:/Program Files/Google/Chrome/Application/chrome.exe';
+const browser = await chromium.launch({ executablePath: chrome, headless: true });
+const page = await browser.newPage({ viewport: { width: 1200, height: 900 } });
+page.on('pageerror', (error) => console.error(`PAGE_ERROR ${error.message}`));
+page.on('console', (message) => { if (message.type() === 'error') console.error(`CONSOLE_ERROR ${message.text()}`); });
+await page.goto('http://127.0.0.1:4173', { waitUntil: 'networkidle' });
+await page.waitForFunction(() => Boolean(window.__lanternSpike));
+const box = await page.locator('#canvas').boundingBox();
+assert.ok(box, 'canvas not rendered');
+const point = ([x, y]) => ({ x: box.x + ((x + 1) / 12) * box.width, y: box.y + ((4 - y) / 8) * box.height });
+const path = [[0, 0], [2, 0.25], [5, -0.25], [8, 0.2], [10, 0]];
+await page.mouse.move(point(path[0]).x, point(path[0]).y);
+await page.mouse.down();
+for (const item of path.slice(1)) await page.mouse.move(point(item).x, point(item).y, { steps: 4 });
+await page.mouse.up();
+const submission = await page.locator('#result').textContent();
+assert.match(submission, /有效路径/);
+const replay = await page.evaluate(() => {
+  const pointsAtRate = (rate) => Array.from({ length: rate + 1 }, (_, index) => [index * (10 / rate), 0]);
+  return [30, 60, 144].map((rate) => JSON.stringify(window.__lanternSpike.validate(pointsAtRate(rate))));
+});
+assert.ok(replay.every((item) => item === replay[0]), 'sample frequency must not change canonical replay');
+await page.waitForTimeout(100);
+const metrics = await page.evaluate(() => window.__lanternSpike.inputMetrics());
+assert.ok(metrics.samples > 0, 'input-to-render metric missing');
+assert.ok(metrics.p95 <= 50, `input p95 exceeds threshold: ${metrics.p95}`);
+await page.screenshot({ path: 'games/odyssey-drifter/runs/run-20260902-odyssey-tech-fit/spikes/browser-native-three/evidence/valid-path.png' });
+console.log(JSON.stringify({ result: 'PASS', canvas: [box.width, box.height], replayByteEquivalent: true, inputToRenderP95Ms: metrics.p95 }));
+await browser.close();

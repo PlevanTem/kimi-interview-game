@@ -1,0 +1,21 @@
+{
+  "$schema": "../../../schemas/technology-decision.schema.json",
+  "gameId": "game-slug",
+  "status": "not_started",
+  "requirements": {
+    "hard": [],
+    "preferences": [],
+    "unknowns": []
+  },
+  "candidates": [],
+  "spikes": [],
+  "selected": null,
+  "humanApproval": null,
+  "locked": false,
+  "verificationCommands": {
+    "dev": null,
+    "build": null,
+    "test": null,
+    "quality": null
+  }
+}

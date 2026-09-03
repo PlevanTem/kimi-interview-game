@@ -1,0 +1,75 @@
+{
+  "$schema": "../../../schemas/iteration-ledger.schema.json",
+  "runId": "run-20260903-lightline-reframe",
+  "entries": [
+    {
+      "id": "iter-lightline-single-gesture-v1",
+      "issue": "早期方案把挥线与放光描述成两个输入，存在多个主动作和认知过载风险。",
+      "evidence": [
+        "体验设计复核指出：若锚定、调张力或放光需要独立玩法按键，‘驭线’就不是单一连续动作。",
+        "当前 Gate 2 成功标准要求首次玩家在 30 秒内理解核心动作并能解释失败；多输入会引入额外失败归因。"
+      ],
+      "rootCause": "概念层按表现阶段命名机制，却没有把阶段收束为同一输入语法。",
+      "change": "统一为按住—移动—松开：轨迹自动借锚，弧度产生张力，松开同时提交路径并发送脉冲；增加点击开始/再次点击的等价无障碍模式。",
+      "verification": "由用户本人直接试玩，确认能独立完成按住—移动—松开并把它感知为一个连续动作；在用户确认前不得标记 verified。",
+      "before": "连续画线与独立节拍释放，可能被理解为两套玩法。",
+      "after": "设计文档只保留一次连续驭线输入；实际手感仍待 Tech Fit spike 和玩家测试。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-godot-smoke-instance-type-v1",
+      "issue": "Godot smoke 脚本无法推断主场景实例变量类型，测试在执行前解析失败。",
+      "evidence": ["Godot 首轮 smoke 退出码 1：Cannot infer the type of instance variable at tests/smoke_test.gd:76。"],
+      "rootCause": "PackedScene.instantiate() 的局部结果没有显式 Node 类型，严格类型推断无法确定。",
+      "change": "为场景实例变量添加 Node 类型声明。",
+      "verification": "重新运行 Godot smoke；resolver、model、snapshots、states 和 main scene 全部解析，退出码 0。",
+      "before": "smoke 解析失败，主场景未实例化。",
+      "after": "SMOKE PASS，退出码 0。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-godot-camera-tree-order-v1",
+      "issue": "实际场景启动时相机在加入场景树前调用 look_at。",
+      "evidence": ["首次主场景启动报告：Node not inside tree. Use look_at_from_position() instead. at main.gd:191。"],
+      "rootCause": "相机初始化顺序先设置树相关朝向，后 add_child。",
+      "change": "先把 Camera3D 加入场景树，再调用 look_at。",
+      "verification": "headless 主场景运行 300 帧，退出码 0，无项目脚本错误。",
+      "before": "启动阶段出现 Camera3D 场景树错误。",
+      "after": "300 帧运行无项目脚本错误；仅保留沙箱 AppData 与证书环境输出。",
+      "status": "verified",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-godot-live-line-adjustment-v1",
+      "issue": "初稿在光线接通后只能等待释放，无法兑现‘旅者行进时现场调势’。",
+      "evidence": ["逻辑复核发现接线后进入 TRAVERSE，指针移动不再改变前方线段。"],
+      "rootCause": "输入处理把 connect_line 误当作整次驭线结束，而规格要求松开才结束。",
+      "change": "在 TRAVERSE 且未释放时继续用同一手势编辑阿迦前方线段，同时保持起点、终点和锚结稳定。",
+      "verification": "用户窗口试玩确认接线后仍能调势，并判断这种控制是否有节奏；在此之前不得标记 verified。",
+      "before": "接通后只等待节拍，互动退化为预先画路。",
+      "after": "代码支持行进中调势；实际手感待用户 Gate 2。",
+      "status": "open",
+      "commit": "uncommitted"
+    },
+    {
+      "id": "iter-godot-gate2-world-rules-v2",
+      "issue": "用户直测无法理解连线意义、通关目标、规则和周边环境作用，且要求采用 isometric 视角。",
+      "evidence": [
+        "用户反馈：体验感很差，连线的意义、怎么通关、规则看不明白。",
+        "当前相机从正面观察统一 XY 平面，不是 isometric。",
+        "14 个背景城市方块只有呼吸动画，没有碰撞、目标或规则作用。",
+        "五轮重置同一起点；关卡差异主要藏在 ratio/timing 阈值和长说明文字里。",
+        "第三轮锚点必需，第四和第五轮可见锚却不是必需，环境信号不一致。"
+      ],
+      "rootCause": "目标、环境因果和判定规则没有进入世界表现；第一轮同时教授路线、张力和节拍，结果反馈又被长等待延迟。",
+      "change": "v2 改为正交 isometric、连续五站与常驻终灯进度；第一轮只证明光线会变桥，之后依次教危险区、必经锚、第二拍和综合路线选择；删除无功能背景、隐藏 ratio、无用锚和接通后的长时间强制按住。",
+      "verification": "由用户本人第二轮直测：10 秒内指出终点，不看长文能指出起点和下一亮台，并能从具体环境物体解释每次失败。",
+      "before": "世界是侧视舞台，规则依赖文字和隐藏数值，环境主要为装饰。",
+      "after": "设计规格已建立 isometric 功能环境语法；Godot 实现和用户复测仍待完成。",
+      "status": "open",
+      "commit": "uncommitted"
+    }
+  ]
+}

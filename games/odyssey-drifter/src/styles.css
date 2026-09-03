@@ -1,0 +1,24 @@
+:root { color: #f8fafc; background: #0d1118; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 1280px; }
+button { border: 1px solid #94a3b8; background: #f8fafc; color: #0f172a; padding: 9px 14px; font: inherit; cursor: pointer; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+main { width: 1240px; margin: 18px auto; position: relative; }
+header { display: flex; align-items: end; justify-content: space-between; margin-bottom: 12px; }
+h1 { margin: 2px 0 0; font-size: 28px; }
+.eyebrow { color: #94a3b8; font-size: 12px; letter-spacing: .14em; }
+.controls { display: flex; gap: 8px; }
+.layout { display: grid; grid-template-columns: 960px 256px; gap: 20px; }
+#stage { width: 960px; height: 720px; border: 1px solid #64748b; overflow: hidden; }
+canvas { display: block; width: 960px; height: 720px; touch-action: none; }
+aside { border: 1px solid #334155; padding: 18px; background: #121824; }
+.metric { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #334155; }
+.metric span { color: #94a3b8; }
+#segment-label { margin-top: 28px; font-weight: 700; }
+#status { min-height: 52px; line-height: 1.5; }
+#error-detail { color: #fbbf24; min-height: 48px; }
+.overlay { position: absolute; inset: 74px 280px 0 0; display: grid; place-items: center; background: rgba(8, 12, 18, .78); }
+.overlay[hidden] { display: none; }
+.panel { width: 480px; padding: 34px; border: 1px solid #94a3b8; background: #121824; }
+.panel h2 { font-size: 30px; margin: 8px 0; }
+.panel p { line-height: 1.6; color: #cbd5e1; }

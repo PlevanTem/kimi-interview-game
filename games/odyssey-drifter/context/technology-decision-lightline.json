@@ -1,0 +1,95 @@
+{
+  "$schema": "../../../schemas/technology-decision.schema.json",
+  "gameId": "odyssey-drifter",
+  "status": "locked",
+  "requirements": {
+    "hard": [
+      "使用 Godot 4.x 与 GDScript 实现；用户已直接锁定技术方向，不再比较其他引擎。",
+      "开发预览支持 Windows 桌面直接运行；目标发行仍保留桌面浏览器 Web 导出。",
+      "使用 Compatibility renderer，避免把 Forward+ 专有能力写入核心玩法。",
+      "支持按住—连续指向—随节拍松开的单一驭线输入，以及点击切换的等价模式。",
+      "动态光线必须支持借锚、松弛、稳定、紧绷、过载和沿线脉冲的可读表现。",
+      "阿迦、关卡规则和光线状态与呈现分离，可记录最近 8 秒合法检查点并回溯。",
+      "开始、教程、五轮游玩、暂停、继续、成功、失败和重开均可达。",
+      "Demo 只使用程序化或项目自有资产；未经 Visual Lock 不生产正式资产。"
+    ],
+    "preferences": [
+      "以场景和资源边界支持 visual-director 后续替换几何、材质、字体、声音与动画。",
+      "无需后端、联网、账户或运行时 AI。",
+      "状态反馈不只依赖颜色，静音时仍可完成。",
+      "在常见桌面设备保持流畅；本轮不以自主性能评分替代用户体验。"
+    ],
+    "unknowns": [
+      "Godot Web 导出在目标浏览器中的曲线更新和输入延迟。",
+      "持续拖动对触控板玩家的疲劳程度。",
+      "程序化几何身体提示能否让用户读懂阿迦的意图。",
+      "完整五轮节奏是否实际落在 3–5 分钟并保持新鲜。"
+    ]
+  },
+  "criteria": {
+    "humanDirectiveFit": 0.35,
+    "mechanicDirectness": 0.25,
+    "assetPipeline": 0.15,
+    "webDelivery": 0.15,
+    "reversibility": 0.1
+  },
+  "candidates": [
+    {
+      "id": "godot-4-gdscript-compatibility",
+      "route": "Godot 4.7.2 stable + GDScript + Compatibility renderer；程序化 3D 灰盒，Windows 预览，Web 为目标导出。",
+      "decision": "用户直接指定并锁定",
+      "scores": {
+        "humanDirectiveFit": 100,
+        "mechanicDirectness": 91,
+        "assetPipeline": 92,
+        "webDelivery": 76,
+        "reversibility": 85,
+        "weightedTotal": 91.05
+      },
+      "risks": [
+        "Godot 4 Web 目标的兼容性与性能必须在可玩 Demo 后单独验证。",
+        "动态曲线和回溯若直接依赖物理引擎，可能难以重放；因此采用受控规则而非通用绳索物理。"
+      ]
+    }
+  ],
+  "spikes": [
+    {
+      "id": "build-first-playable-demo",
+      "scope": "用户要求敏捷先做完整可体验 Demo；将最高风险机制 spike 合并进五轮可玩实现，不单独交付装饰性技术样例。",
+      "result": "PASS",
+      "evidence": {
+        "smoke": "SMOKE PASS: resolver, model, snapshots, states, and main scene parsed",
+        "headlessSceneFrames": 300,
+        "exitCodes": {"smoke": 0, "scene": 0},
+        "project": "games/odyssey-drifter/src/godot/project.godot"
+      },
+      "remaining": "用户本人窗口试玩 Gate 2；Web 导出模板、浏览器输入延迟与性能仍未验证。"
+    }
+  ],
+  "recommendation": "按用户指令采用 Godot 4.7.2 stable、GDScript 与 Compatibility renderer。当前推荐置信度中；Windows 预览适配度高，Web 导出仍需实际构建确认。",
+  "migrationBoundary": "玩法状态、关卡数据与张力规则保持纯 GDScript 数据逻辑；正式资产通过稳定 ID 和 resolver 替换，场景不得直接绑定未经登记的外部文件。",
+  "environment": {
+    "systemProbe": "未在 PATH、Program Files、Downloads、Desktop 或项目中发现既有 Godot 可执行文件。",
+    "provisioning": "从 Godot 官方发布存储获取自包含 Windows x86_64 版本；首次传输中断，最终通过官方端点返回的剩余响应完成文件并成功解压。",
+    "localExecutable": ".tools/godot-4.7.2/Godot_v4.7.2-stable_win64.exe",
+    "versionProbe": "4.7.2.stable.official.ed1daf0bf",
+    "officialVersion": "4.7.2-stable",
+    "versionCheckedAt": "2026-09-03T08:55:36+08:00"
+  },
+  "selected": "godot-4-gdscript-compatibility",
+  "humanApproval": {
+    "runId": "run-20260903-lightline-godot",
+    "inputVersion": "lightline-godot-strategy-v1",
+    "decisionMaker": "human_user",
+    "result": "approved",
+    "reason": "用户明确指示：使用 Godot 实现，技术选型适配对应方案，先完整实现可体验 Demo。",
+    "approvedAt": "2026-09-03T08:55:36+08:00"
+  },
+  "locked": true,
+  "verificationCommands": {
+    "dev": ".tools\\godot-4.7.2\\Godot_v4.7.2-stable_win64.exe --path games/odyssey-drifter/src/godot --editor",
+    "build": ".tools\\godot-4.7.2\\Godot_v4.7.2-stable_win64.exe --headless --path games/odyssey-drifter/src/godot --editor --quit-after 1",
+    "test": ".tools\\godot-4.7.2\\Godot_v4.7.2-stable_win64.exe --headless --path games/odyssey-drifter/src/godot --script res://tests/smoke_test.gd",
+    "quality": "npm run validate:library && node games/odyssey-drifter/scripts/verify-assets.mjs"
+  }
+}

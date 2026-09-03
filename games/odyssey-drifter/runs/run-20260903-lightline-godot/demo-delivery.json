@@ -1,0 +1,48 @@
+{
+  "runId": "run-20260903-lightline-godot",
+  "gameId": "odyssey-drifter",
+  "deliveredAt": "2026-09-03T09:12:11+08:00",
+  "status": "awaiting_human_gate2_playtest",
+  "engine": "Godot 4.7.2.stable.official.ed1daf0bf",
+  "project": "games/odyssey-drifter/src/godot/project.godot",
+  "launcher": "games/odyssey-drifter/PLAY_GODOT_DEMO.cmd",
+  "implemented": [
+    "标题和首次教程",
+    "五轮递进跨越与静息终台",
+    "按住—移动—松开的连续驭线",
+    "自动借锚与行进中调势",
+    "松、稳、紧、险反馈",
+    "阿迦程序化身体提示",
+    "长按和点击切换输入",
+    "暂停、继续、取消、失败、约八秒回溯、成功与重开",
+    "六类稳定 ID 的程序化占位资产"
+  ],
+  "engineeringChecks": [
+    {
+      "command": ".tools\\godot-4.7.2\\Godot_v4.7.2-stable_win64_console.exe --headless --path games/odyssey-drifter/src/godot --script res://tests/smoke_test.gd",
+      "exitCode": 0,
+      "result": "SMOKE PASS: resolver, model, snapshots, states, and main scene parsed"
+    },
+    {
+      "command": ".tools\\godot-4.7.2\\Godot_v4.7.2-stable_win64_console.exe --headless --path games/odyssey-drifter/src/godot --quit-after 300",
+      "exitCode": 0,
+      "result": "主场景运行 300 帧，无项目脚本错误"
+    },
+    {
+      "command": "node games/odyssey-drifter/scripts/verify-assets.mjs",
+      "exitCode": 0,
+      "result": "12 registered, 0 unresolved, 0 resolver bypasses"
+    }
+  ],
+  "environmentWarnings": [
+    "受限沙箱无法写入 Windows AppData 下的 Godot user:// 日志目录。",
+    "受限沙箱无法读取 Windows 根证书库；Demo 无联网依赖，工程仍正常退出。"
+  ],
+  "notVerified": [
+    "用户实际窗口体验与 Gate 2 乐趣判断",
+    "Godot Web 导出模板和浏览器构建",
+    "浏览器输入延迟与性能",
+    "正式视觉、声音和角色资产"
+  ],
+  "gate2Authority": "human_user_only"
+}

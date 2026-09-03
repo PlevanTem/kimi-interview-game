@@ -1,0 +1,17 @@
+{
+  "runId": "run-20260902-odyssey-concept",
+  "generatedAt": "2026-09-02T21:36:13+08:00",
+  "artifact": "games/odyssey-drifter/context/concepts.json",
+  "status": "awaiting_human_selection",
+  "method": [
+    "Jesse Schell: core experience, surprise, and problem-solving lenses",
+    "Jeffrey J. Arnett: emerging adulthood identity exploration, instability, self-focus, in-between feeling, and possibilities"
+  ],
+  "themeBoundary": "不将失业、贫困、心理困境或逃避责任审美化；候选只把可控的小行动做成反馈。",
+  "humanDecisionsRequired": [
+    "从三个候选中选择、退回或冻结一个",
+    "确认主题是青年过渡期，而非古希腊或刺客信条题材",
+    "确认更偏好即时动感、空间顿悟或节奏性承诺",
+    "确认抽象行动词而非职业或财务叙事"
+  ]
+}

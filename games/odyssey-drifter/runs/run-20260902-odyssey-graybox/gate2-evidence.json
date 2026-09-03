@@ -1,0 +1,32 @@
+{
+  "gameId": "odyssey-drifter",
+  "runId": "run-20260902-odyssey-graybox",
+  "inputVersion": "gameplay-spec-v1",
+  "generatedAt": "2026-09-02T23:00:35+08:00",
+  "status": "automated_ready_human_blocked",
+  "gateDecision": "pending",
+  "automatedEvidence": {
+    "libraryValidation": {"command": "npm run validate:library", "exitCode": 0, "result": "PASS"},
+    "typecheck": {"command": "node node_modules/typescript/bin/tsc --project games/odyssey-drifter/tsconfig.json --noEmit", "exitCode": 0, "result": "PASS"},
+    "unit": {"command": "node node_modules/vitest/vitest.mjs run --config games/odyssey-drifter/vitest.config.ts", "exitCode": 0, "result": "13 passed", "coverage": ["路径四类失败与断口失败", "8 段作者路线", "第 2–8 段直线拒绝", "开始/暂停/继续/重开", "三次耗尽失败", "8 段成功", "非法迁移诊断", "资产 resolver"]},
+    "build": {"command": "node node_modules/vite/bin/vite.js build --config games/odyssey-drifter/vite.config.ts", "exitCode": 0, "result": "PASS", "bundleBytes": 487730, "bundleGzipBytes": 124980},
+    "browser": {"command": "node node_modules/@playwright/test/cli.js test --config games/odyssey-drifter/playwright.config.ts", "exitCode": 0, "result": "3 passed in 14.3s", "coverage": ["完整 8 段成功", "暂停/继续", "三次耗尽失败", "同布局立即重开", "requestAnimationFrame 性能"]},
+    "performance": {"samples": 120, "medianFps": 169.49, "medianFrameMs": 5.9, "p95FrameMs": 6.0, "machineScope": "当前本机 headless system Chrome；不可外推到全部设备"},
+    "assetAudit": {"command": "node games/odyssey-drifter/scripts/verify-assets.mjs", "exitCode": 0, "result": "1 registered, 0 unresolved, 0 resolver bypasses"}
+  },
+  "artifacts": {
+    "successScreenshot": "games/odyssey-drifter/runs/run-20260902-odyssey-graybox/evidence/full-success.png",
+    "spatialChoiceScreenshot": "games/odyssey-drifter/runs/run-20260902-odyssey-graybox/evidence/spatial-choice.png",
+    "performance": "games/odyssey-drifter/runs/run-20260902-odyssey-graybox/evidence/performance.json",
+    "interactionTraces": "games/odyssey-drifter/runs/run-20260902-odyssey-graybox/evidence/playwright/",
+    "iterationLedger": "games/odyssey-drifter/context/iterations.json"
+  },
+  "humanBlockers": [
+    "缺少 5 名新手原始试玩记录，因此无法确认至少 4/5 在 30 秒内首次铺至终点。",
+    "缺少真人完整局时长，因此 3–5 分钟目标未知；自动脚本时长不代表真人时长。",
+    "缺少访谈回答，因此无法确认至少 3/5 玩家感到有意义空间选择而非普通连线。",
+    "失败反馈是否温和、八段节奏是否重复，必须由真人判断。"
+  ],
+  "nextHumanAction": "在桌面浏览器试玩至少一局；若方向成立，再组织 5 名新手测试并由人类作出 Gate 2 决策。",
+  "visualProduction": "blocked_until_human_gate2_approval"
+}
