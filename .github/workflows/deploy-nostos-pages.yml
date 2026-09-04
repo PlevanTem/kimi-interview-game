@@ -1,0 +1,73 @@
+# 把《归航 · NOSTOS》构建产物发布到 GitHub Pages。
+#
+# 这个游戏是纯静态的：零个二进制资产，几何、纹理、音频全部在运行时生成，
+# 所以 Pages 这种"只会发静态文件"的托管正好够用，不需要任何服务端。
+#
+# 站点地址：https://<owner>.github.io/<repo>/
+# vite.config.ts 里 base 已经是 './'（相对路径），所以不管仓库名是什么、
+# 部署到哪一级子路径下，资源都能找得到——不需要为 Pages 再改一次 base。
+name: Deploy NOSTOS to Pages
+
+on:
+  push:
+    branches: [main]
+    # 只有游戏本身或这个工作流变了才重新发布，改文档不触发部署
+    paths:
+      - 'games/nostos/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/deploy-nostos-pages.yml'
+  # 允许在 Actions 页面手动发一次（首次启用 Pages 之后需要用它跑第一遍）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同时只跑一个部署；新的推送排队等前一个发完，而不是打断它——
+# 半途取消的部署会让线上停在一个中间状态。
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      # 注意：package-lock.json 里 339 个 resolved 地址都指向 registry.npmmirror.com。
+      # GitHub 的 runner 能访问它，但那是一个额外的单点依赖；哪天它挂了或变慢，
+      # 这一步就是第一个失败的地方。真出问题时的最小改法见 README 的部署一节。
+      - name: Install dependencies
+        run: npm ci --no-audit --fund=false
+
+      # 类型检查已经含在 build:nostos 里；单元测试只要一秒，
+      # 顺手挡住"内容契约被改坏了还照发上线"的情况
+      - name: Unit tests
+        run: npm run test:nostos
+
+      - name: Build
+        run: npm run build:nostos
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: games/nostos/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
