@@ -19,6 +19,17 @@ const SHOTS = fileURLToPath(new URL('../../docs/screenshots/', import.meta.url))
 
 const state = (page: Page): Promise<NostosState> => page.evaluate(() => window.__nostos!.state());
 
+/**
+ * 存一张证据图。
+ *
+ * 用 JPEG 而不是 PNG：这些画面本身带胶片颗粒，是照片式的连续调，
+ * 无损压缩既压不动又会让证据目录涨到几十 MB。质量 82 足够看清构图、
+ * 色调、遮幅与阴影，也就是这些图要证明的全部东西。
+ */
+async function shot(page: Page, name: string): Promise<void> {
+  await page.screenshot({ path: `${SHOTS}${name}.jpg`, type: 'jpeg', quality: 82 });
+}
+
 async function boot(page: Page): Promise<void> {
   await page.goto('/');
   await page.waitForFunction(() => typeof window.__nostos !== 'undefined');
@@ -64,7 +75,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
   await boot(page);
 
   await expect(page.locator('button[data-role="start"]')).toBeVisible();
-  await page.screenshot({ path: `${SHOTS}00-title.png` });
+  await shot(page, `00-title`);
 
   await page.locator('button[data-role="start"]').click();
 
@@ -77,7 +88,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
     visited.push(arrived.actId);
 
     const index = String(act).padStart(2, '0');
-    await page.screenshot({ path: `${SHOTS}${index}-${arrived.actId}-a-登岸.png` });
+    await shot(page, `${index}-${arrived.actId}-a-登岸`);
 
     // 性能预算：合批之后单幕顶点数必须留在三十万以内
     expect(arrived.vertexCount).toBeLessThan(300_000);
@@ -91,7 +102,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
     for (let i = 0; i < others.length; i += 1) {
       await page.evaluate((id) => window.__nostos!.teleport(id), others[i]!);
       await waitForFocus(page, others[i]!);
-      if (i === 0) await page.screenshot({ path: `${SHOTS}${index}-${arrived.actId}-b-线索.png` });
+      if (i === 0) await shot(page, `${index}-${arrived.actId}-b-线索`);
       await page.evaluate(() => window.__nostos!.interact());
       // 第一条完整听完，其余快进：这一遍测的是流程能不能走通，
       // 台词本身由 tests/vision.test.ts 覆盖
@@ -120,7 +131,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
     await page.waitForFunction(() => window.__nostos!.state().visionTime > 12, null, {
       timeout: 180_000,
     });
-    await page.screenshot({ path: `${SHOTS}${index}-${arrived.actId}-c-回忆.png` });
+    await shot(page, `${index}-${arrived.actId}-c-回忆`);
 
     await page.evaluate(() => window.__nostos!.skipVision());
     await waitForPhase(page, act === 7 ? 'ended' : 'roaming');
@@ -148,7 +159,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
 
   // 终幕字卡
   await page.waitForTimeout(1500);
-  await page.screenshot({ path: `${SHOTS}99-终幕.png` });
+  await shot(page, `99-终幕`);
   await expect(page.locator('.endcard .mark')).toBeVisible();
 });
 
