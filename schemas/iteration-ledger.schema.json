@@ -1,1 +1,0 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"IterationLedger","type":"object","required":["runId","entries"],"properties":{"entries":{"type":"array","items":{"$ref":"iteration-entry.schema.json"}}}}

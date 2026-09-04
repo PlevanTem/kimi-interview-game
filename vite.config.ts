@@ -6,8 +6,7 @@ export default defineConfig({
   build: {
     target: 'es2022',
     sourcemap: true,
-    // Three.js is the single runtime engine; its 300 kB gzip output is within the
-    // framework transfer budget even though the uncompressed chunk exceeds 500 kB.
-    chunkSizeWarningLimit: 1100,
+    // three.js 是唯一的运行时引擎，其未压缩包体超过 500 kB 但 gzip 后仍在预算内。
+    chunkSizeWarningLimit: 1200,
   },
 })

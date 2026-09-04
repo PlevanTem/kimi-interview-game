@@ -1,9 +1,0 @@
-{
-  "gate": "gate1",
-  "status": "pending",
-  "selectedConceptId": null,
-  "decidedBy": null,
-  "decidedAt": null,
-  "rationale": null,
-  "instruction": "必须由人工选择、退回或要求改稿；禁止按分数自动选择。"
-}

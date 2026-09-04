@@ -1,62 +1,103 @@
-# Concept Forge
+# 归乡录 · Nostos
 
-Concept Forge 是一套“创意与玩法先行，再选择技术并生产内容”的 AI 游戏 Demo 生产系统。它把概念、玩法、技术决策、视觉语言、资产、质量证据和每次纠偏纳入版本化管理。
+> 众神拿走了你漂泊十年的记忆。在获准回家之前，你必须自己把这十年一条一条查清楚。
 
-系统不预设 Web、原生、2D、3D、引擎、输入方式或资产管线。每个游戏先锁定体验与核心机制，再根据能力需求比较技术候选、验证最高风险并由人类完成 Tech Fit Lock。仓库附带的 Vite、React、TypeScript、Three.js 和 React Three Fiber 页面只是一个已验证的参考适配器，不是新游戏默认值。
-
-## 当前状态
-
-当前处于 **Repository Bootstrap**，游戏生产工作流已由人类暂停，`games/registry.json` 中没有 active game。系统曾生成以下三个候选用于验证框架，但它们目前只是启动证据，不构成已登记或已锁定的游戏：
-
-- **共振庭院**：用声波脉冲连接节拍节点，形成连锁共振；视觉记忆点是从冷寂到暖亮的同心波纹。
-- **折径**：沿预设轴折叠微缩空间，为自动前进的光点接通断路；视觉记忆点是纸雕世界的三维折叠。
-- **影迹信标**：转动信标，用投影出的影子桥护送旅者；视觉记忆点是聚光灯下不断重构的几何剪影。
-
-当前参考页面保持主题中立，仅用于证明一种 Web 3D 路线及系统验证设施可以工作，不代表最终游戏主题或技术结论。恢复生产时，必须先创建 `games/<game-id>/` 独立工作区并登记，再进入该游戏自己的 Gate 1 与 Tech Fit Review。
-
-## 快速开始
-
-建议使用 Node.js 20 LTS 或 22，以及已安装的 Playwright Chromium。
+一款 2.5D 俯视角短篇推理冒险游戏，主题荷马《奥德赛》，**严格沿用《Obra Dinn 奥伯拉丁的回归》的玩法框架与交互范式**。
 
 ```bash
 npm install
-npm run dev
+npm run dev      # 打开 http://localhost:5173
 ```
 
-打开终端显示的本地地址。以下操作只属于 Web 3D 参考适配器：
+## 这是什么
 
-- `W` `A` `S` `D`：移动
-- `Space`：与附近锚点交互
-- `Esc`：暂停/继续
-- `R`：重开
-- `M`：静音
+奥德修斯在奥吉吉亚岛失去了漂泊十年的记忆。众神的裁决是：在获准归乡之前，他必须自己重建这十年究竟发生了什么。
 
-## 质量验证
+他驾一叶小舟重访五座岛屿——每座岛上事情都已经结束，只剩遗骸、器物、痕迹和极少数留守者。他随身携带摩涅莫绪涅之杖：触碰带有残留记忆的遗物，那一刻的场景会在原地凝固成一座立体画面，他能绕着走、能观察，但不能干预。
+
+**没有战斗，没有计时，没有死亡，没有失败态。你唯一会输掉的东西是真相。**
+
+## 核心机制：三条一组校验
+
+这是本作对标《Obra Dinn》最关键的一条规则，原样沿用：
+
+> 单独填对一条归乡录条目**不会有任何反馈**——没有对勾、没有叉、没有颜色变化、没有音效。只有当尚未锁定的条目里累计出现 **3 条全部正确**时，它们才会一起永久锁定。
+
+这条规则从机制上杜绝了暴力穷举：你必须先在脑子里建立起三条互相印证的推断，才能换来一次确认。
+
+## 规模
+
+| | |
+|---|---|
+| 岛屿 | 5 座互相隔离的岛 + 伊萨卡尾声 |
+| 证物 | 38 件（物品 / 铭文 / 尸体 / 痕迹） |
+| 记忆定影 | 14 段 |
+| 归乡录条目 | 30 条 |
+| NPC | 14 名（每岛 2–3 名） |
+| 不可撤销抉择 | 6 个 |
+| 结局 | 6 种 |
+| 预期时长 | 50–70 分钟 |
+
+## 操作
+
+| 输入 | 行为 |
+|---|---|
+| `WASD` / 方向键 | 移动 |
+| `E` | 检视 / 唤起记忆 / 交谈 / 抉择 / 离岛 |
+| `Q` | 退出记忆定影 |
+| `Tab` | 归乡录 |
+| `1`–`4` | 对话选项 |
+| `Esc` / `P` | 暂停 |
+| `M` | 静音 |
+
+## 设计文档
+
+完整设计输出在 [`docs/design/`](docs/design/)：
+
+| 文档 | 内容 |
+|---|---|
+| [00 核心循环](docs/design/00-core-loop.md) | 叙事框架、核心循环、三条一组校验、硬性禁止项 |
+| [01 物品线索系统](docs/design/01-evidence-system.md) | 证物类型、选项池门控、跨岛互证链、全部 38 件证物对照表 |
+| [02 岛屿关卡事件](docs/design/02-islands.md) | 五岛逐关：场景、NPC、定影、条目、抉择 |
+| [03 对话分支条件](docs/design/03-dialogue.md) | 条件表达式、三条设计规则、逐岛门控表 |
+| [04 多结局逻辑](docs/design/04-endings.md) | 三个隐藏计量、判定优先级、六个结局、计量来源全表 |
+| [05 交互规则](docs/design/05-interaction-rules.md) | 操作表、相机、碰撞、归乡录交互纪律、无障碍、性能预算 |
+| [06 美术方向](docs/design/06-art-direction.md) | 配色、几何语言、双色抖动实现要点、动画预算 |
+
+## 代码结构
+
+```
+src/
+├─ content/          全部游戏内容，纯数据。新增一岛不需要改一行逻辑
+│  ├─ types.ts       Evidence / Tableau / LedgerEntry / DialogueNode / Condition
+│  ├─ crew.ts        十二名同船者名册 + 非人名选项池
+│  └─ islands/       六个场景文件
+├─ domain/           全部纯函数，不依赖 React，单测全覆盖
+│  ├─ ledger.ts      三条一组校验、选项可用性
+│  ├─ conditions.ts  对话与抉择的条件求值
+│  ├─ endings.ts     六结局优先级判定
+│  ├─ movement.ts    八向移动、圆 vs 盒/圆柱碰撞、子步进
+│  ├─ interaction.ts E 键的交互优先级
+│  └─ state.ts       全局 reducer
+├─ render/           程序化低多边形，零外部资产
+│  ├─ palette.ts     全作唯一的配色来源
+│  ├─ pieces.tsx     人物、地形、道具、地面
+│  ├─ IslandScene.tsx 固定正交相机与场景装配
+│  └─ DitherPass.tsx 4×4 Bayer 有序抖动全屏 pass
+└─ ui/               面板与输入
+```
+
+## 验证
 
 ```bash
-npm run quality:framework
-npm run validate:library
-npm run test:e2e
-npm run test:performance
+npm run lint      # eslint
+npm test          # vitest，49 项
+npm run build     # tsc -b + vite build
+npm run test:e2e  # playwright，4 项
 ```
 
-`quality:framework` 验证上下文、资产、技能、代码、单元测试与构建。完整的 `npm run quality` 还要求 Gate 4 的正式质量报告；在游戏尚未通过 Gate 4 时，它按设计返回非零，防止把半成品误报为发布候选。
+单测不只覆盖规则，也覆盖**内容完整性**：每个条目的正确答案必须真实存在于选项池、每个人名必须在其所属岛屿之内就能被解锁、每个对话选项的跳转必须指向存在的节点、每件证物与每个 NPC 都必须真的走得到。最后这条在开发中抓出了三处把证物埋进墙里的布局错误。
 
-发布门槛为总分至少 85/100、任一类别不低于 75、没有 P0/P1，并附带测试输出、截图或性能数据。所有修复都必须留下“问题 → 证据 → 根因 → 修改 → 验证 → 结果”。
+## 技术栈
 
-## 如何理解项目
-
-- [架构与工作模式](docs/architecture.md)：工作流、数据流、文件系统、职责边界与纠偏路径。
-- [多游戏内容治理](docs/content-governance.md)：游戏库注册、目录隔离、命名和共享提升规则。
-- [技术选择治理](docs/technology-selection.md)：如何从策划和玩法需求推导技术候选、风险验证与锁定条件。
-- [共享上下文治理](docs/context-governance.md)：单一事实源、读取顺序和资产引用规则。
-- [质量评分与放行](docs/quality-system.md)：评分权重、证据要求和 Gate 4 条件。
-- [变更记录](CHANGELOG.md)：功能、决策、修复与验证记录。
-- [`game-context/index.json`](game-context/index.json)：所有代理开始工作的唯一上下文入口。
-- [`games/registry.json`](games/registry.json)：正式游戏工作区与 active game 的唯一注册表。
-
-项目级专家位于 `.codex/agents/`，可复用技能位于 `.agents/skills/`。未来每个游戏独立位于 `games/<game-id>/`；未经登记的目录会被校验器拒绝。仓库根目录现有的 `Note.docx` 不属于生产上下文，系统不会读取、修改或删除它。
-
-## 许可与发布
-
-当前项目为私有原型，尚未声明开源许可，也未公开部署。Gate 4 通过后输出静态 `dist/`、操作说明、最终报告、关键截图与完整迭代证据。
+React 19 · Three.js 0.180 · @react-three/fiber 9 · Vite 6 · TypeScript 5.8 · Vitest 3 · Playwright 1.55

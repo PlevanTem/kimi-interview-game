@@ -1,1 +1,0 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","title":"ContextIndex","type":"object","required":["contextVersion","activeRunId","productionState","gateState","sources","readOrder"],"properties":{"gateState":{"type":"object","required":["gate1","gate2","gate3","gate4"]},"readOrder":{"type":"array","minItems":1,"uniqueItems":true}}}

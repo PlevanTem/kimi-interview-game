@@ -1,25 +1,95 @@
-import { useEffect, useReducer } from 'react'
-import { GameScene } from './game/GameScene'
-import { gameReducer, initialGameState, nearestCollectible } from './game/model'
-import { useGameControls } from './game/useGameControls'
-import conceptSet from '../game-context/concepts.json'
+import { useEffect, useMemo, useReducer, useState } from 'react'
+import { ALL_LEDGER_ENTRIES } from './content'
+import { interactionAt } from './domain/interaction'
+import { currentIsland, gameReducer, initialState } from './domain/state'
+import { IslandScene } from './render/IslandScene'
+import { HUD } from './ui/HUD'
+import { Ledger } from './ui/Ledger'
+import {
+  ArrivalCard,
+  ChoicePanel,
+  DialoguePanel,
+  EndingScreen,
+  ExaminePanel,
+  OutcomePanel,
+  PausePanel,
+  TableauOverlay,
+  TitleScreen,
+} from './ui/panels'
+import { useChime } from './ui/useChime'
+import { useControls } from './ui/useControls'
 
-const labels = { gate: 'Gate 01 pending', playing: 'Interaction probe', paused: 'Probe paused', complete: 'Signal complete', failed: 'Probe expired' }
 export function App() {
-  const [state, dispatch] = useReducer(gameReducer, initialGameState)
-  useGameControls(state, dispatch)
-  useEffect(() => { const media = matchMedia('(prefers-reduced-motion: reduce)'); dispatch({ type: 'SET_REDUCED_MOTION', value: media.matches }) }, [])
-  const nearby = nearestCollectible(state)
-  return <main className={`app phase-${state.phase}`}>
-    <div className="scene"><GameScene state={state} /></div><div className="grain" aria-hidden="true" />
-    <header className="topbar"><a className="brand" href="#overview" aria-label="Concept Forge home"><span className="brand-mark">CF</span><span>Concept Forge<small>Vertical slice system</small></span></a><div className="gate-pill"><i />{labels[state.phase]}</div><div className="run-id">RUN / {String(state.run).padStart(3, '0')}</div></header>
-    <section className="brief" id="overview"><p className="eyebrow">Mechanic calibration · no theme locked</p><h1>Find the <em>feel</em><br />before the fiction.</h1><p className="lede">A neutral interaction field for testing movement, feedback and pacing. No world, character or art direction is committed at this gate.</p>
-      {state.phase === 'gate' && <button className="primary" onClick={() => dispatch({ type: 'START' })}>Run interaction probe <span>↗</span></button>}
-      {state.phase === 'playing' && <div className="objective"><span>Active calibration</span><strong>Connect {3 - state.collected.length} signal anchors</strong><small>Move close, then press SPACE</small></div>}
-      {(state.phase === 'complete' || state.phase === 'failed') && <div className="result"><span>{state.phase === 'complete' ? 'Probe passed' : 'Time elapsed'}</span><strong>{state.phase === 'complete' ? 'Interaction loop verified.' : 'The loop needs another pass.'}</strong><button onClick={() => dispatch({ type: 'RESTART' })}>Return to Gate 01</button></div>}
-    </section>
-    <aside className="concepts" aria-label="Concept candidate status"><div className="section-head"><span>Concept candidates</span><small>0 / 3 locked</small></div>{conceptSet.candidates.map((candidate, index) => <article key={candidate.id} title={candidate.fantasy}><span>0{index + 1}</span><div><strong>{candidate.title}</strong><small>{candidate.coreVerb.toUpperCase()} · {candidate.scores.weightedTotal.toFixed(2)}</small></div><i /></article>)}<p>Scores are evidence only. Human approval is required before Concept Lock.</p></aside>
-    <footer className="controls"><div className="metric"><small>TIME</small><strong>{String(Math.ceil(state.timeRemaining)).padStart(2,'0')}</strong><span>SEC</span></div><div className="progress" aria-label={`${state.collected.length} of 3 anchors collected`}><small>SIGNAL</small><div>{[0,1,2].map(i => <i key={i} className={i < state.collected.length ? 'on' : ''} />)}</div><span>{state.collected.length}/3</span></div><div className="keys"><span><kbd>WASD</kbd> Move</span><span><kbd>SPACE</kbd> {nearby ? 'Connect' : 'Interact'}</span><span><kbd>ESC</kbd> Pause</span></div><div className="actions"><button aria-label={state.muted ? 'Unmute sound' : 'Mute sound'} onClick={() => dispatch({ type: 'TOGGLE_MUTE' })}>{state.muted ? 'Sound off' : 'Sound on'}</button><button aria-label="Restart probe" onClick={() => dispatch({ type: 'RESTART' })}>Restart</button></div></footer>
-    {state.phase === 'paused' && <div className="modal" role="dialog" aria-modal="true"><p>System hold</p><h2>Probe paused</h2><button className="primary" onClick={() => dispatch({ type: 'TOGGLE_PAUSE' })}>Resume calibration</button><small>Press ESC to continue</small></div>}
-  </main>
+  const [state, dispatch] = useReducer(gameReducer, initialState)
+  const island = currentIsland(state)
+
+  useControls(state, island, dispatch)
+  useChime(state.lockPulse, state.muted)
+
+  const interaction = useMemo(
+    () => (state.phase === 'explore' ? interactionAt(state, island) : null),
+    [state, island],
+  )
+
+  // 三条落定时的提示条。它是全作唯一的"你做对了"反馈。
+  const [toast, setToast] = useState<string[] | null>(null)
+  useEffect(() => {
+    if (state.newlyLocked.length === 0) return
+    setToast(
+      state.newlyLocked.map(
+        (id) => ALL_LEDGER_ENTRIES.find((entry) => entry.id === id)?.prompt ?? id,
+      ),
+    )
+    const timer = window.setTimeout(() => setToast(null), 6000)
+    return () => window.clearTimeout(timer)
+  }, [state.lockPulse, state.newlyLocked])
+
+  const showScene = state.phase !== 'title' && state.phase !== 'ending'
+
+  return (
+    <main className={`app phase-${state.phase}`}>
+      {showScene && (
+        <div className="scene">
+          <IslandScene island={island} state={state} />
+        </div>
+      )}
+      <div className="grain" aria-hidden="true" />
+
+      {state.phase === 'title' && <TitleScreen dispatch={dispatch} />}
+      {state.phase === 'arrival' && <ArrivalCard island={island} dispatch={dispatch} />}
+
+      {(state.phase === 'explore' ||
+        state.phase === 'examine' ||
+        state.phase === 'ledger' ||
+        state.phase === 'dialogue' ||
+        state.phase === 'choice' ||
+        state.phase === 'outcome') && (
+        <HUD state={state} island={island} interaction={interaction} dispatch={dispatch} />
+      )}
+
+      {state.phase === 'examine' && <ExaminePanel state={state} dispatch={dispatch} />}
+      {state.phase === 'tableau' && <TableauOverlay state={state} dispatch={dispatch} />}
+      {state.phase === 'ledger' && <Ledger state={state} dispatch={dispatch} />}
+      {state.phase === 'dialogue' && (
+        <DialoguePanel state={state} island={island} dispatch={dispatch} />
+      )}
+      {state.phase === 'choice' && <ChoicePanel state={state} island={island} dispatch={dispatch} />}
+      {state.phase === 'outcome' && <OutcomePanel state={state} dispatch={dispatch} />}
+      {state.phase === 'paused' && <PausePanel dispatch={dispatch} />}
+      {state.phase === 'ending' && state.ending && (
+        <EndingScreen ending={state.ending} state={state} dispatch={dispatch} />
+      )}
+
+      {toast && (
+        <div className="lock-toast" role="status">
+          <strong>三条落定</strong>
+          <ul>
+            {toast.map((line, i) => (
+              <li key={i}>{line}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </main>
+  )
 }

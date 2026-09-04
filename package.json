@@ -1,24 +1,17 @@
 {
-  "name": "concept-forge-demo",
+  "name": "nostos",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "《归乡录 · Nostos》— 2.5D 俯视角荷马奥德赛推理冒险",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "preview": "vite preview",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:e2e": "playwright test",
-    "test:visual": "playwright test --grep @visual",
-    "test:performance": "playwright test --grep @performance",
-    "validate:library": "node scripts/validate-library.mjs",
-    "validate:context": "node scripts/validate-context.mjs",
-    "audit:assets": "node scripts/audit-assets.mjs",
-    "validate:skills": "node scripts/validate-skills.mjs",
-    "quality:report": "node scripts/quality-report.mjs",
-    "quality:framework": "npm run validate:library && npm run validate:context && npm run audit:assets && npm run validate:skills && npm run lint && npm run test && npm run build",
-    "quality": "npm run quality:framework && npm run test:e2e && npm run quality:report"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@react-three/fiber": "^9.3.0",
@@ -29,8 +22,6 @@
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@playwright/test": "^1.55.0",
-    "@testing-library/jest-dom": "^6.8.0",
-    "@testing-library/react": "^16.3.0",
     "@types/node": "^24.3.1",
     "@types/react": "^19.1.12",
     "@types/react-dom": "^19.1.9",

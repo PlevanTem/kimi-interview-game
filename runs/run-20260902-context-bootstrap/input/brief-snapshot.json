@@ -1,8 +1,0 @@
-{
-  "source": "game-context/game-brief.json",
-  "briefId": "brief-lightweight-web3d-v1",
-  "briefVersion": 1,
-  "capturedAt": "2026-09-02T16:42:00+08:00",
-  "frozen": false,
-  "constraintsSnapshot": {"sceneCount":1,"coreMechanicCount":1,"sessionMinutes":[3,5],"target":"Chrome desktop 1920x1080","assetStrategy":"procedural-first"}
-}
