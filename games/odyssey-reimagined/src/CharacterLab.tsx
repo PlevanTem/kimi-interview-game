@@ -32,7 +32,6 @@ function LabCamera({ preset, revision }: { preset: CameraPreset; revision: numbe
   const controlsRef = useRef<OrbitControls | null>(null);
   const goalPosition = useRef(new THREE.Vector3(...CAMERA_PRESETS[preset].position));
   const goalTarget = useRef(new THREE.Vector3(0, 1.62, 0));
-  const transitioning = useRef(true);
 
   useEffect(() => {
     const controls = new OrbitControls(camera, gl.domElement);
@@ -56,23 +55,19 @@ function LabCamera({ preset, revision }: { preset: CameraPreset; revision: numbe
   useEffect(() => {
     goalPosition.current.set(...CAMERA_PRESETS[preset].position);
     goalTarget.current.set(0, 1.62, 0);
-    transitioning.current = true;
-  }, [preset, revision]);
+    camera.position.copy(goalPosition.current);
+    const controls = controlsRef.current;
+    if (controls) {
+      controls.target.copy(goalTarget.current);
+      controls.update();
+    } else {
+      camera.lookAt(goalTarget.current);
+    }
+  }, [camera, preset, revision]);
 
-  useFrame((_, delta) => {
+  useFrame(() => {
     const controls = controlsRef.current;
     if (!controls) return;
-
-    if (transitioning.current) {
-      const blend = 1 - Math.exp(-delta * 10);
-      camera.position.lerp(goalPosition.current, blend);
-      controls.target.lerp(goalTarget.current, blend);
-      if (camera.position.distanceToSquared(goalPosition.current) < 0.0004) {
-        camera.position.copy(goalPosition.current);
-        controls.target.copy(goalTarget.current);
-        transitioning.current = false;
-      }
-    }
     controls.update();
   });
 
@@ -101,6 +96,7 @@ function MetricsProbe({ onChange }: { onChange: (metrics: RenderMetrics) => void
 function StudioStage({
   action,
   actionSerial,
+  holdPeak,
   wireframe,
   showRig,
   showWeaponTrail,
@@ -108,6 +104,7 @@ function StudioStage({
 }: {
   action: HeroLabAction;
   actionSerial: number;
+  holdPeak: boolean;
   wireframe: boolean;
   showRig: boolean;
   showWeaponTrail: boolean;
@@ -137,6 +134,7 @@ function StudioStage({
         <HeroCharacterModel
           action={action}
           actionSerial={actionSerial}
+          holdPeak={holdPeak}
           wireframe={wireframe}
           showRig={showRig}
           showWeaponTrail={showWeaponTrail}
@@ -191,6 +189,7 @@ export function CharacterLab() {
   const [wireframe, setWireframe] = useState(false);
   const [showRig, setShowRig] = useState(false);
   const [showWeaponTrail, setShowWeaponTrail] = useState(true);
+  const [holdPeak, setHoldPeak] = useState(false);
   const [identity, setIdentity] = useState<"captain" | "pilgrim">("captain");
   const [metrics, setMetrics] = useState<RenderMetrics>({ calls: 0, triangles: 0, geometries: 0 });
 
@@ -230,7 +229,7 @@ export function CharacterLab() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      if (target?.matches("input, textarea, select")) return;
+      if (target?.closest("button, a, summary, input, textarea, select, [contenteditable='true']")) return;
       if (event.code === "ArrowRight") { event.preventDefault(); cycleAction(1); }
       if (event.code === "ArrowLeft") { event.preventDefault(); cycleAction(-1); }
       if (event.code === "Space") { event.preventDefault(); setAutoPlay((value) => !value); }
@@ -239,6 +238,7 @@ export function CharacterLab() {
       if (event.code === "Digit3") chooseCamera("back");
       if (event.code === "Digit4") chooseCamera("three-quarter");
       if (event.code === "KeyR") chooseCamera("three-quarter");
+      if (event.code === "KeyH") setHoldPeak((value) => !value);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -279,6 +279,7 @@ export function CharacterLab() {
                 <StudioStage
                   action={action}
                   actionSerial={actionSerial}
+                  holdPeak={holdPeak}
                   wireframe={wireframe}
                   showRig={showRig}
                   showWeaponTrail={showWeaponTrail}
@@ -367,7 +368,7 @@ export function CharacterLab() {
             </div>
             <div className="character-lab__cycle-help">
               <button type="button" onClick={() => cycleAction(-1)} aria-label="上一个动作">←</button>
-              <span>方向键逐项检查轮廓与重心</span>
+              <span>点击当前动作重播 · 方向键切换</span>
               <button type="button" onClick={() => cycleAction(1)} aria-label="下一个动作">→</button>
             </div>
           </section>
@@ -378,6 +379,7 @@ export function CharacterLab() {
               <Toggle label="线框" checked={wireframe} onChange={() => setWireframe((value) => !value)} testId="wireframe-toggle" />
               <Toggle label="关节标记" checked={showRig} onChange={() => setShowRig((value) => !value)} testId="rig-toggle" />
               <Toggle label="武器拖尾" checked={showWeaponTrail} onChange={() => setShowWeaponTrail((value) => !value)} />
+              <Toggle label="关键帧定格" checked={holdPeak} onChange={() => setHoldPeak((value) => !value)} testId="hold-peak-toggle" />
             </div>
             <div className="character-lab__identity" aria-label="身份配色">
               <span>身份配色</span>

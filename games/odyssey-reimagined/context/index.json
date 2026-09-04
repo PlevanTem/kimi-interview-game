@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/context-index.schema.json",
   "contextVersion": "4.0.0",
-  "updatedAt": "2026-09-04T07:42:45+08:00",
+  "updatedAt": "2026-09-04T08:14:22+08:00",
   "activeRunId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
   "productionState": "procedural_character_lab_integrated_and_browser_validated_awaiting_gate2_and_gate3",
   "gateState": {

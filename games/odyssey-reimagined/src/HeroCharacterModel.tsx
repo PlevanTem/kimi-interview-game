@@ -23,6 +23,7 @@ export type HeroLabAction = (typeof HERO_LAB_ACTIONS)[number]["id"];
 export interface HeroCharacterModelProps {
   action: HeroLabAction;
   actionSerial: number;
+  holdPeak?: boolean;
   wireframe?: boolean;
   showRig?: boolean;
   showWeaponTrail?: boolean;
@@ -31,6 +32,21 @@ export interface HeroCharacterModelProps {
 }
 
 type Vec3 = [number, number, number];
+
+const ACTION_PEAK_ELAPSED: Record<HeroLabAction, number> = {
+  idle_neutral: 0.42,
+  idle_combat: 0.42,
+  locomotion_walk: 0.34,
+  locomotion_run: 0.3,
+  observe: 0.46,
+  light_1: 0.3,
+  light_2: 0.34,
+  heavy: 0.46,
+  dodge: 0.3,
+  parry: 0.3,
+  hit: 0.28,
+  namebreak: 0.5,
+};
 
 interface Pose {
   rootPosition: Vec3;
@@ -193,6 +209,10 @@ function Head({ wireframe, showRig }: { wireframe: boolean; showRig: boolean }) 
       <mesh position={[0, 0.2, -0.12]} scale={[1.05, 0.9, 0.72]} castShadow>
         <dodecahedronGeometry args={[0.45, 1]} />
         <Surface color={COLORS.hairLight} wireframe={wireframe} roughness={0.94} />
+      </mesh>
+      <mesh position={[0, -0.08, -0.18]} scale={[0.94, 0.68, 0.68]} castShadow>
+        <dodecahedronGeometry args={[0.43, 1]} />
+        <Surface color={COLORS.hair} wireframe={wireframe} roughness={0.96} />
       </mesh>
       {HAIR_SPIKES.map((spike, index) => (
         <HairSpike key={index} {...spike} wireframe={wireframe} />
@@ -413,10 +433,12 @@ function WeaponTrail({
   visible,
   attack,
   actionSerial,
+  holdPeak,
 }: {
   visible: boolean;
   attack: HeroLabAction;
   actionSerial: number;
+  holdPeak: boolean;
 }) {
   const trail = useRef<THREE.Group>(null);
   const startedAt = useRef<number | null>(null);
@@ -432,7 +454,7 @@ function WeaponTrail({
     const elapsed = clock.elapsedTime - startedAt.current;
     const attackSupportsTrail = ["light_1", "light_2", "heavy", "parry"].includes(attack);
     const end = attack === "heavy" ? 0.82 : 0.6;
-    trail.current.visible = visible && attackSupportsTrail && elapsed >= 0.1 && elapsed <= end;
+    trail.current.visible = visible && attackSupportsTrail && (holdPeak || (elapsed >= 0.1 && elapsed <= end));
   });
 
   return (
@@ -455,12 +477,14 @@ function OarWeapon({
   showTrail,
   attack,
   actionSerial,
+  holdPeak,
 }: {
   wireframe: boolean;
   accent: string;
   showTrail: boolean;
   attack: HeroLabAction;
   actionSerial: number;
+  holdPeak: boolean;
 }) {
   return (
     <group position={[0, 0.45, 0.02]}>
@@ -487,7 +511,7 @@ function OarWeapon({
         <meshBasicMaterial color={accent} toneMapped={false} wireframe={wireframe} />
       </mesh>
 
-      <WeaponTrail visible={showTrail && !wireframe} attack={attack} actionSerial={actionSerial} />
+      <WeaponTrail visible={showTrail && !wireframe} attack={attack} actionSerial={actionSerial} holdPeak={holdPeak} />
     </group>
   );
 }
@@ -504,6 +528,14 @@ function CapePanel({ wireframe, accent, offset = 0 }: { wireframe: boolean; acce
         <Surface color={accent} wireframe={wireframe} metalness={0.08} roughness={0.68} />
       </mesh>
       <mesh position={[offset * 0.08, -0.63, 0.135]} rotation={[0, 0, Math.PI / 4]} scale={[0.07, 0.07, 0.025]}>
+        <boxGeometry />
+        <Surface color={accent} wireframe={wireframe} roughness={0.72} />
+      </mesh>
+      <mesh position={[0, -0.94, -0.135]} rotation={[0, 0, offset * 0.08]} scale={[0.25, 0.035, 0.025]}>
+        <boxGeometry />
+        <Surface color={accent} wireframe={wireframe} metalness={0.08} roughness={0.68} />
+      </mesh>
+      <mesh position={[offset * 0.08, -0.63, -0.135]} rotation={[0, 0, Math.PI / 4]} scale={[0.07, 0.07, 0.025]}>
         <boxGeometry />
         <Surface color={accent} wireframe={wireframe} roughness={0.72} />
       </mesh>
@@ -775,8 +807,8 @@ function applyActionPose(action: HeroLabAction, elapsed: number, t: number): Pos
     pose.headRotation = mixVec(pose.headRotation, [-0.05, -0.04, 0], w);
     pose.rightArmRotation = mixVec(pose.rightArmRotation, [-0.62, 0.12, 0.52], w);
     pose.rightForearmRotation = mixVec(pose.rightForearmRotation, [-0.35, 0, 0.18], w);
-    pose.leftArmRotation = mixVec(pose.leftArmRotation, [-0.76, -0.18, -0.6], w);
-    pose.leftForearmRotation = mixVec(pose.leftForearmRotation, [-0.35, 0, -0.2], w);
+    pose.leftArmRotation = mixVec(pose.leftArmRotation, [-0.76, -0.18, 0.72], w);
+    pose.leftForearmRotation = mixVec(pose.leftForearmRotation, [-0.35, 0, -0.15], w);
     pose.leftLegRotation = mixVec(pose.leftLegRotation, [0.08, 0, 0.24], w);
     pose.rightLegRotation = mixVec(pose.rightLegRotation, [-0.08, 0, -0.24], w);
     pose.weaponRotation = mixVec(pose.weaponRotation, [0.06, 0.05, Math.PI - 0.12], w);
@@ -820,6 +852,7 @@ function applyActionPose(action: HeroLabAction, elapsed: number, t: number): Pos
 export function HeroCharacterModel({
   action,
   actionSerial,
+  holdPeak = false,
   wireframe = false,
   showRig = false,
   showWeaponTrail = true,
@@ -853,7 +886,9 @@ export function HeroCharacterModel({
     const t = clock.elapsedTime;
     if (actionStartedAt.current === null) actionStartedAt.current = t;
     const elapsed = Math.max(0, t - actionStartedAt.current);
-    const pose = applyActionPose(action, elapsed, t);
+    const sampledElapsed = holdPeak ? ACTION_PEAK_ELAPSED[action] : elapsed;
+    const sampledTime = holdPeak ? ACTION_PEAK_ELAPSED[action] : t;
+    const pose = applyActionPose(action, sampledElapsed, sampledTime);
 
     dampGroupPosition(root.current, pose.rootPosition, delta, 18);
     dampGroupRotation(root.current, pose.rootRotation, delta, 18);
@@ -871,8 +906,8 @@ export function HeroCharacterModel({
     dampGroupRotation(weapon.current, pose.weaponRotation, delta, 24);
 
     const locomotion = action === "locomotion_walk" || action === "locomotion_run";
-    const actionWind = ["light_1", "light_2", "heavy", "dodge"].includes(action) ? oneShotWeight(elapsed, action === "heavy" ? 1.06 : 0.74) : 0;
-    const idleWind = Math.sin(t * 1.45) * 0.035;
+    const actionWind = ["light_1", "light_2", "heavy", "dodge"].includes(action) ? oneShotWeight(sampledElapsed, action === "heavy" ? 1.06 : 0.74) : 0;
+    const idleWind = holdPeak ? 0 : Math.sin(t * 1.45) * 0.035;
     const runWind = locomotion ? (action === "locomotion_run" ? 0.26 : 0.1) : 0;
     dampGroupRotation(capeLeft.current, [0.08 + runWind, 0.04, 0.07 + idleWind - actionWind * 0.1], delta, 9);
     dampGroupRotation(capeCenter.current, [0.05 + runWind, 0, idleWind * 0.35], delta, 9);
@@ -922,6 +957,7 @@ export function HeroCharacterModel({
                     showTrail={showWeaponTrail}
                     attack={action}
                     actionSerial={actionSerial}
+                    holdPeak={holdPeak}
                   />
                 </group>
               }

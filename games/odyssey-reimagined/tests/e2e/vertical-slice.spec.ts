@@ -1,12 +1,16 @@
 import { expect, test } from "@playwright/test";
 
 test("captain route completes both combats and writes a rumor", async ({ page }) => {
+  const clockStart = new Date("2026-09-04T00:00:00.000Z");
+  await page.clock.install({ time: clockStart });
   await page.goto("/");
   await expect(page.getByRole("heading", { name: "千名之海" })).toBeVisible();
+  await page.clock.pauseAt(new Date(clockStart.getTime() + 60_000));
   await page.getByRole("button", { name: "驶入盐岬" }).click();
   await page.keyboard.press("f");
   await page.getByRole("button", { name: /归来的船长/ }).click();
 
+  await page.clock.runFor(1_710);
   await expect(page.getByText("青色吸气 · 可招架", { exact: true })).toBeVisible({ timeout: 5_000 });
   await page.getByRole("button", { name: "L 招架" }).click();
   await expect(page.locator(".boss-bar .sigil--thread.is-active")).toHaveCount(1);
@@ -15,14 +19,17 @@ test("captain route completes both combats and writes a rumor", async ({ page })
   await expect(page.getByText("潮门誓卫", { exact: true })).toBeVisible();
 
   for (let index = 0; index < 2; index += 1) {
+    await page.clock.runFor(1_160);
     await expect(page.getByText("青色吸气 · 可招架", { exact: true })).toBeVisible({ timeout: 4_000 });
     await page.getByRole("button", { name: "L 招架" }).click({ force: true });
     await expect(page.locator(".boss-bar .sigil--thread.is-active")).toHaveCount(index + 1);
     await expect(page.getByText("青色吸气 · 可招架", { exact: true })).toBeHidden();
   }
+  await page.clock.runFor(1_160);
   await expect(page.getByText("金色环击 · 闪避", { exact: true })).toBeVisible({ timeout: 4_000 });
   await page.getByRole("button", { name: "⇧ 闪避" }).click({ force: true });
   await expect(page.getByText("金色环击 · 闪避", { exact: true })).toBeHidden();
+  await page.clock.runFor(1_160);
   await expect(page.getByText("青色吸气 · 可招架", { exact: true })).toBeVisible({ timeout: 4_000 });
   await page.getByRole("button", { name: "L 招架" }).click({ force: true });
   await expect(page.locator(".boss-bar .sigil--thread.is-active")).toHaveCount(3);

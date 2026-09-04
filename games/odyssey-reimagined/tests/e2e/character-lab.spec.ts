@@ -23,6 +23,10 @@ test("character lab exposes the model, twelve actions, camera presets and debug 
   await expect(heavy).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByTestId("current-action")).toContainText("重击");
 
+  const holdPeak = page.getByTestId("hold-peak-toggle");
+  await holdPeak.click();
+  await expect(holdPeak).toHaveAttribute("aria-pressed", "true");
+
   const heroCamera = page.getByTestId("camera-three-quarter");
   await heroCamera.click();
   await expect(heroCamera).toHaveAttribute("aria-pressed", "true");
@@ -37,7 +41,9 @@ test("character lab exposes the model, twelve actions, camera presets and debug 
   await expect(page.getByTestId("camera-status")).toHaveText("左侧 90°");
 
   const wireframe = page.getByTestId("wireframe-toggle");
-  await wireframe.click();
+  await wireframe.focus();
+  await page.keyboard.press("Space");
+  await expect(page.getByTestId("autoplay-toggle")).toHaveAttribute("aria-pressed", "false");
   await expect(wireframe).toHaveAttribute("aria-pressed", "true");
 
   const autoplay = page.getByTestId("autoplay-toggle");

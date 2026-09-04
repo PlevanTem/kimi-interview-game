@@ -207,7 +207,7 @@
       "id": "iter-hero-action-sheet-chibi-v2",
       "issue": "旧动作表使用成年写实比例且包含未实现的跳跃、攀越，不能作为当前 Q 版主角或当前代码状态的可信动画依据。",
       "evidence": [
-        "用户提供当前 4.5 头身低多边形 Q 版角色参考，并要求保持一致性生成 9:16 动作 spritesheet。",
+        "用户提供低多边形 Q 版角色参考并要求保持一致性生成 9:16 动作 spritesheet；生成提示写约 4.5 头身，但最终图实画更接近约 3 头身。",
         "gameState.ts 只有 idle、observe、light、heavy、dodge、parry、namebreak、hit 八个动作状态；GameScene.tsx 有移动和锁定，但没有独立 walk/run/combat-idle 状态。",
         "Models.tsx 仅为轻击、重击、闪避、招架和受击提供程序化姿态；观察、拆名、战斗待机和完整移动循环缺失。",
         "DESIGN v2 声称三段轻击，但 reducer 没有 comboIndex 或输入缓存，不能把三段连击标为已实现。"
@@ -246,8 +246,8 @@
         "修复后 Playwright 对角色实验室与完整船长流程 2/2 通过，并生成正常材质与左侧线框证据。"
       ],
       "rootCause": "参考图中的稳定身份、动作语义和不可推断的生产信息没有拆层；旧模型也缺少独立相机、重播、线框和运行统计，导致结构问题只能在主游戏复杂状态中发现。",
-      "change": "新增 HeroCharacterModel 拆件模型与 12 动作 pivot 表现；以入口级 query route 隔离 CharacterLab；提供 OrbitControls、四组镜头、动作重播/轮播、线框、关节、身份配色和参考图校对；通过两轮浏览器目检修复面部、前襟、连续尾带、限时拖尾与镜头安全边距；主游戏 HeroModel 改为兼容适配器。",
-      "verification": "game-local Vitest 9/9 通过；TypeScript/Vite build 63 modules 通过；Playwright 2/2 共 23.9 秒通过且无 pageerror/console.error；validate:library、validate:context、audit:assets、限定 ESLint 与 git diff --check 均退出码 0。",
+      "change": "新增 HeroCharacterModel 拆件模型与 12 动作 pivot 表现；以入口级 query route 隔离 CharacterLab；提供 OrbitControls、确定性四组镜头、动作重播/轮播、关键帧定格、线框、关节、身份配色和参考图校对；通过浏览器目检修复面部、后脑、前襟、连续尾带、背纹、限时拖尾、镜头穿模与动作安全边距；主游戏 HeroModel 改为兼容适配器。",
+      "verification": "game-local Vitest 11/11 通过；TypeScript/Vite build 63 modules 通过；Playwright 完整套件 2/2 通过且无 pageerror/console.error；受控时钟下完整船长路线连续 10/10 通过；validate:library、validate:context、audit:assets、限定 ESLint 与 git diff --check 均退出码 0。",
       "before": "角色只能作为主场景占位运行，参考身份、动作清单、结构调试和主游戏规则耦合，且没有可复现的模型审查入口。",
       "after": "浏览器可通过 ?lab=character 独立审查同一可运行角色；主游戏继续复用该模型。资产仍为 graybox-only，Gate 2/3 保持 blocked，右侧结构和生产拓扑未被伪称为已还原。",
       "status": "verified",

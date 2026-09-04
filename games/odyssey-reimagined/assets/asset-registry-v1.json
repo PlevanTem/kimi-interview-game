@@ -85,7 +85,7 @@
       },
       "license": "generated derivative reference; human rights review required before production use",
       "promptHash": "8592b2090ee91c074c298fdc50ca40399ddace73d5f4ac7d12f0b80a1eec7d68",
-      "styleTags": ["chibi-4.5-heads", "low-poly", "large-color-blocks", "modeling-friendly", "turnaround"],
+      "styleTags": ["chibi-approx-3-heads", "low-poly", "large-color-blocks", "modeling-friendly", "turnaround"],
       "sizeBudgetBytes": 2000000,
       "dependencies": ["game.odyssey-reimagined.previsual.hero-action-sheet-v1"],
       "approval": "graybox-only"
@@ -108,7 +108,7 @@
       },
       "license": "generated derivative reference; human rights review required before production use",
       "promptHash": "2332ed9f911b3de6ed60ed70fa3c03eaa09e952a20dad4c5464b2cce87dad71d",
-      "styleTags": ["chibi-4.5-heads", "low-poly", "twelve-key-poses", "modeling-friendly", "exact-9x16"],
+      "styleTags": ["chibi-approx-3-heads", "low-poly", "twelve-key-poses", "modeling-friendly", "exact-9x16"],
       "sizeBudgetBytes": 2600000,
       "dependencies": ["game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3"],
       "approval": "graybox-only"
@@ -121,7 +121,7 @@
       "source": {"kind": "project-authored-code", "adapter": "games/odyssey-reimagined/src/Models.tsx#HeroModel", "parts": ["faceted-face", "eyes-and-brows", "layered-hair", "open-front-mantle", "tunic-and-runes", "belt-and-pouch", "left-arm", "right-arm", "left-leg", "right-leg", "three-panel-cloak", "continuous-gold-tail", "oar-shaft", "oar-blade", "timed-weapon-trail", "observation-crystal", "name-threads"]},
       "license": "project-original",
       "promptHash": "not-applicable-code-authored",
-      "styleTags": ["chibi-4.5-heads", "replaceable-parts", "animated-pivots", "storybook-low-poly", "twelve-key-poses"],
+      "styleTags": ["chibi-approx-3-heads", "replaceable-parts", "animated-pivots", "storybook-low-poly", "twelve-key-poses"],
       "sizeBudgetBytes": 50000,
       "dependencies": ["game.odyssey-reimagined.previsual.hero-turnaround-chibi-v3", "game.odyssey-reimagined.previsual.hero-action-spritesheet-chibi-v2"],
       "approval": "graybox-only"

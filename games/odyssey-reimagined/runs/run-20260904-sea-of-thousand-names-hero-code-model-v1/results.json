@@ -1,8 +1,8 @@
 {
   "runId": "run-20260904-sea-of-thousand-names-hero-code-model-v1",
   "gameId": "odyssey-reimagined",
-  "completedAt": "2026-09-04T07:42:45+08:00",
-  "status": "validated_graybox_character_lab_awaiting_human_gates",
+  "completedAt": "2026-09-04T08:14:22+08:00",
+  "status": "implemented_internal_graybox_character_lab_with_known_gate4_gaps",
   "deliverables": {
     "route": "?lab=character",
     "component": "games/odyssey-reimagined/src/HeroCharacterModel.tsx",
@@ -11,12 +11,13 @@
     "wireframeEvidence": "games/odyssey-reimagined/runs/run-20260904-sea-of-thousand-names-hero-code-model-v1/character-lab-wireframe.png"
   },
   "verification": [
-    {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "9/9 rule and character-contract tests passed"},
+    {"command": "npm.cmd --prefix games/odyssey-reimagined run test", "exitCode": 0, "result": "11/11 rule, consecutive-parry, action-list and active-game asset-registry tests passed"},
     {"command": "npm.cmd --prefix games/odyssey-reimagined run build", "exitCode": 0, "result": "63 modules transformed; production build passed; CharacterLab remains a lazy chunk"},
-    {"command": "npx.cmd playwright test", "exitCode": 0, "result": "2/2 browser tests passed serially in 23.9 seconds, including character lab and full captain route"},
+    {"command": "npx.cmd playwright test --reporter=line", "exitCode": 0, "result": "2/2 final browser tests passed serially in 31.9 seconds after installing a deterministic Playwright clock for combat timers"},
+    {"command": "npx.cmd playwright test tests/e2e/vertical-slice.spec.ts --repeat-each=10 --reporter=line", "exitCode": 0, "result": "10/10 complete captain-route repetitions passed in 4.5 minutes"},
     {"command": "npx.cmd eslint games/odyssey-reimagined/src games/odyssey-reimagined/tests/heroCharacterModel.test.ts games/odyssey-reimagined/tests/e2e/character-lab.spec.ts", "exitCode": 0, "result": "PASS"},
     {"command": "npm.cmd run validate:context", "exitCode": 0, "result": "PASS"},
-    {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS"}
+    {"command": "npm.cmd run audit:assets", "exitCode": 0, "result": "PASS for the root control-plane registry; active-game hero registry semantics are separately asserted by Vitest"}
   ],
   "defectsClosed": [
     {
@@ -54,14 +55,32 @@
       "rootCause": "Camera presets were framed only against the neutral 3.2-unit standing silhouette.",
       "change": "Moved all four presets back and raised their target slightly to reserve action-safe headroom.",
       "evidence": "The fresh heavy-action screenshot keeps character, raised shaft and complete cyan arc inside the stage."
+    },
+    {
+      "issue": "One-shot actions returned to idle while the UI still named the selected action, preventing stable key-pose inspection.",
+      "rootCause": "The laboratory exposed only real-time pose playback and had no controlled sampling mode.",
+      "change": "Added a key-pose hold mode with per-action sample times; held attack trails remain visible only while this explicit debug mode is active.",
+      "evidence": "The fresh material capture holds the heavy pose and cyan trajectory while the key-pose toggle is visibly active."
+    },
+    {
+      "issue": "Switching front to back linearly interpolated the camera through the character, briefly showing a magnified inverted face.",
+      "rootCause": "Cartesian camera lerp crossed the OrbitControls target when presets were 180 degrees apart.",
+      "change": "Preset buttons now snap to deterministic inspection transforms; manual OrbitControls remains available.",
+      "evidence": "Immediate back-view capture shows the rear hair, continuous ribbon and cloak motifs at the intended scale."
+    },
+    {
+      "issue": "The real-time combat E2E intermittently lost the second name thread under software-rendering load.",
+      "rootCause": "The test waited for a DOM cue and then crossed the Playwright process boundary to click inside a 690 ms window; the strike timer could execute first.",
+      "change": "Installed Playwright Clock after lazy page load and advanced each telegraph deterministically; game timing was not widened.",
+      "evidence": "The full suite passed, then the complete captain route passed 10/10 consecutive repetitions."
     }
   ],
   "truthBoundary": {
     "gate2": "blocked_pending_human_fun_lock",
     "gate3": "blocked_no_formal_style_bible_or_production_asset_approval",
     "isProductionCharacter": false,
-    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking or weapon collision. The reference contains front, left and back full-body views plus a face close-up; unseen right-side construction remains a symmetric inference.",
-    "performanceEvidence": "A separate 60-second Playwright run under Chromium SwiftShader software rendering measured about 27.62 average FPS. This is below release thresholds but does not establish player-GPU performance; a hardware-accelerated capture is still required.",
-    "visualInspection": "Fresh 1600x900 material and wireframe captures show readable eyes, open-front mantle, continuous ochre ribbon, full raised-weapon silhouette and action-safe framing. This remains graybox evidence, not Gate 3 approval."
+    "knownGap": "Procedural pose groups do not prove production topology, skinning, root motion, foot locking, two-hand weapon constraints or weapon collision. The reference contains front, left and back full-body views plus a face close-up; unseen right-side construction remains a symmetric inference.",
+    "performanceEvidence": "An independent 60-second 1440x900 DPR1 run under Chromium ANGLE Vulkan SwiftShader measured 41.03 average FPS, 41.31 median and 38 minimum, with 59 sampled seconds below 45 FPS. This fails Gate 4 in that environment but does not establish player-GPU performance; geometry/material reuse and hardware-accelerated capture remain required.",
+    "visualInspection": "Fresh material and wireframe captures show readable eyes, an open-front mantle, continuous ochre ribbon, rear hair coverage, simplified rear gold motifs, full raised-weapon silhouette and action-safe framing. The code follows the final reference image's approximately three-head chibi proportion rather than the unfulfilled 4.5-head prompt text. This remains graybox evidence, not Gate 3 approval."
   }
 }

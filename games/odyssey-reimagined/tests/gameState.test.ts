@@ -59,6 +59,17 @@ describe("Sea of a Thousand Names domain state", () => {
     expect(state.phase).toBe("resolution");
   });
 
+  it("resolves consecutive parry telegraphs deterministically", () => {
+    let state = beginCombat();
+    state = gameReducer(state, { type: "ENEMY_TELEGRAPH", telegraph: "parryable" });
+    state = gameReducer(state, { type: "PARRY_START" });
+    expect(state.enemy).toMatchObject({ threads: 1, attackIndex: 1, telegraph: "none" });
+
+    state = gameReducer(state, { type: "ENEMY_TELEGRAPH", telegraph: "parryable" });
+    state = gameReducer(state, { type: "PARRY_START" });
+    expect(state.enemy).toMatchObject({ threads: 2, attackIndex: 2, telegraph: "none" });
+  });
+
   it("writes different rumor consequences and restarts deterministically", () => {
     const base = { ...initialGameState(), phase: "resolution" as const };
     const reveal = gameReducer(base, { type: "RESOLVE_NAME", choice: "reveal" });
