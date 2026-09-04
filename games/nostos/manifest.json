@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schemas/game-manifest.schema.json",
+  "id": "nostos",
+  "title": "归航 · NOSTOS",
+  "status": "concept",
+  "gateState": {
+    "gate1": "bypassed_by_user_brief",
+    "gate2": "not_started",
+    "gate3": "not_started",
+    "gate4": "not_started"
+  },
+  "contextIndex": "games/nostos/context/index.json",
+  "technologyDecision": null,
+  "createdAt": "2026-09-04T09:00:00+08:00",
+  "updatedAt": "2026-09-04T09:00:00+08:00"
+}

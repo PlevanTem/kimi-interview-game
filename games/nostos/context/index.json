@@ -1,0 +1,28 @@
+{
+  "$schema": "../../../schemas/context-index.schema.json",
+  "contextVersion": "1.0.0",
+  "updatedAt": "2026-09-04T09:00:00+08:00",
+  "activeRunId": "run-20260904-nostos-build",
+  "productionState": "playable_prototype_pending_human_gates",
+  "gateState": {
+    "gate1": "bypassed_by_user_brief",
+    "gate2": "not_started",
+    "gate3": "not_started",
+    "gate4": "not_started"
+  },
+  "sources": {
+    "brief": "games/nostos/context/brief.md",
+    "artBible": "games/nostos/docs/ART_BIBLE.md",
+    "scenes": "games/nostos/docs/SCENES.md",
+    "gameplay": "games/nostos/docs/GAMEPLAY.md",
+    "readme": "games/nostos/README.md",
+    "buildRun": "games/nostos/runs/run-20260904-nostos-build/run.json"
+  },
+  "readOrder": [
+    "games/nostos/context/brief.md",
+    "games/nostos/docs/GAMEPLAY.md",
+    "games/nostos/docs/SCENES.md",
+    "games/nostos/docs/ART_BIBLE.md",
+    "games/nostos/runs/run-20260904-nostos-build/run.json"
+  ]
+}
