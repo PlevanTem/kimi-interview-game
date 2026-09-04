@@ -404,7 +404,7 @@ export const LOTUS: Island = {
     title: '花丛边的决定',
     prompt:
       '佩里墨得斯站在花丛边上，等你开口。当年你在这里做过一个决定，现在你要重新做一次——这一次，它会决定他能不能跟你回去。',
-    position: [-5.0, -1.6],
+    position: [-3.0, 0.8],
     availableWhen: { locked: 'L-002' },
     options: [
       {

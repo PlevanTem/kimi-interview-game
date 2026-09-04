@@ -90,3 +90,83 @@ test('暂停面板列出全部操作，且不存在计时或血量', async ({ pa
   await page.getByRole('button', { name: /继续/ }).click()
   await expect(pause).toBeHidden()
 })
+
+/**
+ * 按住一组键走一段时间。
+ *
+ * 注意是「按住不放」而不是反复按下抬起：这台机器上 WebGL 走软件渲染，只有 ~6 fps，
+ * 短促的按下-抬起经常整个落在两帧之间，等于一步都没走。
+ */
+async function run(page: Page, keys: string[], ms: number) {
+  for (const key of keys) await page.keyboard.down(key)
+  await page.waitForTimeout(ms)
+  for (const key of keys) await page.keyboard.up(key)
+}
+
+/** 按住键一直走，边走边看 HUD 提示，出现目标文字就松手。 */
+async function walkUntil(page: Page, keys: string[], expected: RegExp, maxMs = 8000) {
+  for (const key of keys) await page.keyboard.down(key)
+  try {
+    for (let waited = 0; waited < maxMs; waited += 100) {
+      await page.waitForTimeout(100)
+      const text = await page.locator('.hud-bottom .prompt').textContent()
+      if (text && expected.test(text)) return
+    }
+    throw new Error(`走了 ${maxMs}ms 仍未出现提示：${expected}`)
+  } finally {
+    for (const key of keys) await page.keyboard.up(key)
+  }
+}
+
+test('完整通关教学岛：检视 → 填对三条 → 落定 → 抉择 → 离岛', async ({ page }) => {
+  await startFirstIsland(page)
+
+  // 走位靠「贴墙」定位而不是算距离：一直往一个方向走到被地形挡住，
+  // 落点就与帧率无关了。这里先撞西边界，再南下撞到那块岩台的北面，
+  // 于是玩家停在一条确定的纬线上，然后沿这条线往东扫过刻名的护身符。
+  await run(page, ['KeyA'], 5000)
+  await run(page, ['KeyW'], 4000)
+  await walkUntil(page, ['KeyD'], /刻名的护身符/)
+
+  await page.keyboard.press('KeyE')
+  await expect(page.getByText(/ΠΕΡΙΜΗΔΗΣ/)).toBeVisible()
+  await page.keyboard.press('KeyQ')
+
+  await page.getByRole('button', { name: /归乡录/ }).click()
+  const ledger = page.getByRole('dialog', { name: '归乡录' })
+
+  // 检视过护身符之后，「佩里墨得斯」才会出现在人名下拉框里。
+  await ledger.getByLabel(/属于哪一位同船者？ — 他是/).selectOption('perimedes')
+  await expect(page.locator('.lock-toast')).toHaveCount(0)
+
+  await ledger.getByLabel(/真实身份是谁？ — 他是/).selectOption('perimedes')
+  await expect(page.locator('.lock-toast')).toHaveCount(0)
+
+  // 第三条落位——三条同时正确，一起锁定。
+  await ledger.getByLabel(/死因是什么？ — 死于/).selectOption('walked-in')
+  await expect(page.locator('.lock-toast')).toBeVisible()
+  await expect(ledger.locator('.entry.locked')).toHaveCount(3)
+  await expect(ledger.getByText('已锁定 3 / 30')).toBeVisible()
+  await expect(ledger.getByText('已安息 3 / 12')).toBeVisible()
+
+  // 已落定的条目不可再更改。
+  await expect(ledger.getByLabel(/死因是什么？ — 死于/)).toBeDisabled()
+
+  await page.getByRole('button', { name: /合上册子/ }).click()
+  await expect(page.getByText('本岛已落定 3 / 3')).toBeVisible()
+
+  // 锁定 L-002 之后，花丛边的抉择才开放。
+  await walkUntil(page, ['KeyS', 'KeyD'], /花丛边的决定/)
+  await page.keyboard.press('KeyE')
+  const choice = page.getByRole('dialog', { name: '花丛边的决定' })
+  await expect(choice).toBeVisible()
+  await choice.getByRole('button', { name: '把他绑上船带走' }).click()
+  await expect(page.getByText(/绳子勒进皮肉的时候他也没喊/)).toBeVisible()
+  await page.getByRole('button', { name: /继续/ }).click()
+
+  // 同样贴北边界定位，再沿岸往东扫到离岛点。
+  await run(page, ['KeyS'], 5000)
+  await walkUntil(page, ['KeyD'], /登船离岛/)
+  await page.keyboard.press('KeyE')
+  await expect(page.getByRole('heading', { name: '独目巨人的洞窟' })).toBeVisible()
+})

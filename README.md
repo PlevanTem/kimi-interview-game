@@ -91,7 +91,7 @@ src/
 
 ```bash
 npm run lint      # eslint
-npm test          # vitest，49 项
+npm test          # vitest，47 项
 npm run build     # tsc -b + vite build
 npm run test:e2e  # playwright，4 项
 ```
