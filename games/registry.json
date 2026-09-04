@@ -1,23 +1,29 @@
 {
   "$schema": "../schemas/game-library.schema.json",
-  "version": "1.0.0",
-  "updatedAt": "2026-09-03T09:27:38+08:00",
-  "activeGameId": "odyssey-drifter",
+  "version": "1.1.0",
+  "updatedAt": "2026-09-04T09:00:00+08:00",
+  "activeGameId": "nostos",
   "productionPaused": false,
   "games": [
     {
+      "id": "nostos",
+      "title": "归航 · NOSTOS",
+      "status": "concept",
+      "path": "games/nostos",
+      "manifest": "games/nostos/manifest.json"
+    },
+    {
       "id": "odyssey-drifter",
       "title": "光线之上",
-      "status": "graybox",
+      "status": "archived",
       "path": "games/odyssey-drifter",
       "manifest": "games/odyssey-drifter/manifest.json"
     }
   ],
   "notes": [
-    "用户直测退回 Godot Demo v1：连线意义、通关规则和环境作用不可读；当前按固定正交 isometric 与功能环境语法重构 Gate 2 v2。",
-    "敏捷交付阶段不做自主体验评分或五人测试；只保留工程解析、启动和资产引用等最低事实检查。",
-    "旧《下一盏灯》的 Gate 1、技术锁定与灰盒证据保留为历史，不构成《光线之上》的有效验证。",
-    "技术栈由每个游戏在 Concept Lock 后通过 Tech Fit Review 独立决定；根级 Web 3D 仅为参考适配器。",
-    "根级 game-context 与 runs 是框架启动验证证据，不属于未来游戏库。"
+    "《归航 · NOSTOS》直接由用户 2026-09-04 的指定简报产生，未走 Gate 1 三候选发散与人工概念锁定；因此 status 停在 concept，gateState.gate1 记为 bypassed_by_user_brief。没有人工 Gate 记录就不声称通过 Gate。",
+    "《归航 · NOSTOS》的技术路线（浏览器 WebGL2 + Three.js）由用户简报的能力需求直接推导，未做多方案 Tech Fit Review；manifest.technologyDecision 保持 null。",
+    "《光线之上》与其目录内的历史产物按用户指示不再继续，改标 archived 作为历史保留，不删除。",
+    "根级 game-context 与 runs 是框架启动验证证据，不属于游戏库。"
   ]
 }
