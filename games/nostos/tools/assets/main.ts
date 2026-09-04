@@ -89,19 +89,75 @@ const camera = new THREE.PerspectiveCamera(38, RW / RH, 0.1, 200);
 const KEY_LIGHT = ENV.ithacaClearing;
 applyEnvToMaterials(KEY_LIGHT);
 
-/** 把一个几何体摆正、取景、渲染，结果拷进目标画布 */
-function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: HTMLCanvasElement): void {
-  geometry.computeBoundingBox();
-  const box = geometry.boundingBox!;
+/** 玩家眼高，来自 engine/controller.ts。植物的"冠底离地"要跟它比 */
+const EYE_HEIGHT = 1.68;
+
+/**
+ * 一件待渲染的零件。
+ *
+ * 之所以要支持"多零件"，是因为这部作品里不少东西在游戏里从来不单独出现：
+ * 橄榄树永远是树干 + 树冠两件套，藤蔓是二十几段茎加叶簇。
+ * 只画零件的话，审阅者看到的是一根棍和一个球，而不是一棵树。
+ */
+interface Part {
+  geometry: THREE.BufferGeometry;
+  material: THREE.Material;
+  /** 相对整株的位置 */
+  at?: [number, number, number];
+  /** 绕 Y 轴自转 */
+  yaw?: number;
+  /** 前后倾倒 */
+  tiltX?: number;
+  scale?: number;
+}
+
+interface ShootOptions {
+  /**
+   * 镜头仰角系数，默认 0.38（略高于水平的四分之三视角）。
+   * 高瘦的东西（树、柏、柱）要调低：从高处看树，树冠会把树干整个盖住，
+   * 而玩家在游戏里是站在地上抬头看的。
+   */
+  elevation?: number;
+}
+
+/**
+ * 把一组零件装配起来、摆正、取景、渲染，结果拷进目标画布。
+ * 返回装配后的真实包围盒（**未平移前**的世界尺寸），
+ * 好让卡片能标出这件东西到底多大——审阅体量时这比看图可靠。
+ */
+function shootParts(
+  parts: Part[],
+  into: HTMLCanvasElement,
+  options: ShootOptions = {},
+): { size: THREE.Vector3; liftedMinY: number } {
+  const group = new THREE.Group();
+  // 被抬起来的那些零件（树冠、叶簇）单独量一次最低点。
+  // 量整组是没有意义的：树干的底就在 y=0，整组的最小值永远是 0。
+  let liftedMinY = Infinity;
+  const probe = new THREE.Box3();
+  for (const part of parts) {
+    const mesh = new THREE.Mesh(part.geometry, part.material);
+    const [x, y, z] = part.at ?? [0, 0, 0];
+    mesh.position.set(x, y, z);
+    if (part.yaw) mesh.rotation.y = part.yaw;
+    if (part.tiltX) mesh.rotation.x = part.tiltX;
+    if (part.scale) mesh.scale.setScalar(part.scale);
+    group.add(mesh);
+    if (y > 0) {
+      mesh.updateMatrixWorld(true);
+      probe.setFromObject(mesh);
+      if (probe.min.y < liftedMinY) liftedMinY = probe.min.y;
+    }
+  }
+  scene.add(group);
+
+  const box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
   const center = new THREE.Vector3();
   box.getSize(size);
   box.getCenter(center);
-
-  const mesh = new THREE.Mesh(geometry, material);
-  // 把物体挪到原点，镜头就不用为每件东西单独算构图
-  mesh.position.set(-center.x, -center.y, -center.z);
-  scene.add(mesh);
+  // 把整株挪到原点，镜头就不用为每件东西单独算构图
+  group.position.set(-center.x, -center.y, -center.z);
 
   // 按包围盒的实际投影取景，而不是按包围球半径。
   // 用半径会让细长件（桅杆、柱子）在画面里缩成一根火柴——
@@ -112,7 +168,8 @@ function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: H
   const distH = half / (tan * camera.aspect);
   const dist = Math.max(distV, distH, 0.6) * 1.18;
   // 略高于水平的四分之三视角：看得到顶面的转折，又不至于变成俯视图
-  camera.position.set(dist * 0.55, dist * 0.38, dist * 0.74);
+  const ey = options.elevation ?? 0.38;
+  camera.position.set(dist * 0.55, dist * ey, dist * 0.74);
   camera.lookAt(0, 0, 0);
   camera.updateProjectionMatrix();
 
@@ -122,7 +179,13 @@ function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: H
   const g = into.getContext('2d')!;
   g.drawImage(renderer.domElement, 0, 0, into.width, into.height);
 
-  scene.remove(mesh);
+  scene.remove(group);
+  return { size, liftedMinY };
+}
+
+/** 单件的简写 */
+function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: HTMLCanvasElement): void {
+  shootParts([{ geometry, material }], into);
 }
 
 /** 一块预览画布，按设备像素比出图 */
@@ -146,6 +209,7 @@ const tallies: Array<[number, string]> = [
   [MOTIF_KINDS.length, '黑绘母题'],
   [4, '程序纹理'],
   [propNames.length, '构件几何'],
+  [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
   [totalActs, '幕 / 地形'],
   [0, '二进制文件'],
@@ -187,6 +251,7 @@ const TOC: Array<[string, string]> = [
   ['motif', '黑绘母题'],
   ['texture', '程序纹理'],
   ['props', '构件几何'],
+  ['plant', '植物'],
   ['terrain', '地形'],
   ['audio', '音景'],
   ['text', '文本'],
@@ -518,12 +583,143 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 七、地形
+// ─────────────────────────────────────────── 七、植物
+
+/**
+ * 植物在这部作品里**从来不是一件几何**。
+ *
+ * 橄榄树是树干 + 树冠两件套，喀耳刻的藤是二十几段茎加叶簇。
+ * 所以它们不能只出现在"构件几何"那一节里——那里画的是零件，
+ * 看到的是一根棍和一个球。这一节按各幕装配代码里的真实比例把它们拼起来，
+ * 参数与 game/scenes/*.ts 中的写法一致。
+ */
+{
+  const s = section({
+    id: 'plant',
+    title: '七、植物',
+    count: 5,
+    blurb:
+      '全作只有三种植物，但它们在场景里都是**装配出来的**，不是单件几何：' +
+      '橄榄树永远是树干加树冠两件套，藤是二十几段茎接起来再挂叶簇。' +
+      '下面按各幕装配代码里的真实比例拼装，' +
+      '所以这里看到的就是走到树下时看到的那棵树。',
+    source: 'src/world/props.ts（零件）+ src/game/scenes/*.ts 的 dress()（装配比例）',
+  });
+
+  const drift = SURFACE.driftwood();
+  const olive = SURFACE.olive();
+
+  // 树冠抬到 height * 1.02：走到树下要能看见叶子的底面，而不是撞进一团黑
+  const oliveTree = (h: number, seed: number, canopyRatio: number): Part[] => [
+    { geometry: P.oliveTrunk(h, seed), material: drift },
+    { geometry: P.oliveCanopy(h * canopyRatio, seed + 1), material: olive, at: [0, h * 1.02, 0] },
+  ];
+
+  // 喀耳刻的藤：茎一小段一小段接起来，比一根长管更像自然爬出来的。
+  // 叶团块必须小——藤是一条线，不是一串球。
+  const creeper = (): Part[] => {
+    const parts: Part[] = [];
+    let seed = 1;
+    const rng = (): number => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+    for (let i = 0; i < 22; i += 1) {
+      const t = i / 21;
+      const x = -Math.sin(t * 3.4) * 2.4;
+      const z = -t * 8.5;
+      const lift = 0.05 + Math.max(0, Math.sin(t * 2.6)) * 1.1;
+      parts.push({
+        geometry: P.pole(0.55, 0.035, 1020 + i),
+        material: drift,
+        at: [x, lift, z],
+        tiltX: 1.1 + Math.sin(t * 5) * 0.35,
+        yaw: t * 3.4,
+      });
+      if (i % 2 === 0) {
+        parts.push({
+          geometry: P.oliveCanopy(0.2 + rng() * 0.1, 1060 + i),
+          material: olive,
+          at: [x + (rng() - 0.5) * 0.5, lift + 0.18, z + (rng() - 0.5) * 0.5],
+        });
+      }
+    }
+    return parts;
+  };
+
+  const plants: Array<{ name: string; note: string; call: string; parts: Part[]; elevation?: number }> = [
+    {
+      name: '果树（忘食岸）',
+      note: '低矮、伸手就够得到，光从叶缝里切下来。全幕六棵，高 3.6–4.6 米',
+      call: 'oliveTrunk(4.4) + oliveCanopy(4.4 × 0.80) @ lift 4.49',
+      parts: oliveTree(4.4, 340, 0.8),
+    },
+    {
+      name: '橄榄树（喀耳刻柱廊外）',
+      note: '把柱廊框起来的四棵，树冠比忘食岸略大一点',
+      call: 'oliveTrunk(4.2) + oliveCanopy(4.2 × 0.82) @ lift 4.28',
+      parts: oliveTree(4.2, 1040, 0.82),
+    },
+    {
+      name: '老橄榄树（伊萨卡）',
+      note: '终幕院子里那三棵，最高的一棵 5.2 米——他离开时它就在那儿',
+      call: 'oliveTrunk(5.2, 2460) + oliveCanopy(4.2, 2461) @ lift 5.4',
+      parts: [
+        { geometry: P.oliveTrunk(5.2, 2460), material: drift },
+        { geometry: P.oliveCanopy(4.2, 2461), material: olive, at: [0, 5.4, 0] },
+      ],
+    },
+    {
+      name: '柏树（卡吕普索之岛）',
+      note: '全作唯一的单件植物，不需要装配。永昼里一排排的深色竖线',
+      call: 'cypress(5)',
+      parts: [{ geometry: P.cypress(5, 1950), material: olive }],
+    },
+    {
+      name: '爬藤（喀耳刻的柱廊）',
+      note: '22 段茎 + 11 簇叶，爬进来又爬回去。它是一条线，不是一串球',
+      call: 'pole(0.55, 0.035) × 22 + oliveCanopy(0.2–0.3) × 11',
+      parts: creeper(),
+    },
+  ];
+
+  const grid = el('div', 'grid g-tile');
+  for (const plant of plants) {
+    const c = card();
+    const cv = previewCanvas(300, 300);
+    const cap = el('figcaption');
+    cap.append(
+      el('div', 'name', plant.name),
+      el('div', 'note', plant.note),
+      el('div', 'id', plant.call),
+    );
+    c.append(cv, cap);
+    grid.append(c);
+    // 树用接近人眼的低机位：从高处看，树冠会把树干整个盖住，
+    // 而玩家在游戏里是站在地上抬头看的
+    const { size, liftedMinY } = shootParts(plant.parts, cv, { elevation: plant.elevation ?? 0.12 });
+    // 标出真实体量，以及树冠最低的那片叶子离地多高。
+    // 后者要跟眼高 1.68 米比：低于它，玩家走到树下就是一头撞进叶子里，
+    // 而不是抬头看见叶子的底面。红色 = 低于眼高。
+    const dims = el('div', 'note');
+    dims.innerHTML =
+      `宽 ${size.x.toFixed(1)} × 高 ${size.y.toFixed(1)} m` +
+      (Number.isFinite(liftedMinY) && size.y > 2
+        ? `　·　冠底离地 <b style="color:${liftedMinY < EYE_HEIGHT ? '#a6402c' : '#6e8c7a'}">` +
+          `${liftedMinY.toFixed(2)} m</b>（眼高 ${EYE_HEIGHT}）`
+        : '');
+    cap.append(dims);
+  }
+  s.append(grid);
+  main.append(s);
+}
+
+// ─────────────────────────────────────────── 八、地形
 
 {
   const s = section({
     id: 'terrain',
-    title: '七、地形',
+    title: '八、地形',
     count: ACTS.length,
     blurb:
       '八座岛，八个互不相同的种子——它们不能长得一样。下图是每座岛的真实高程：' +
@@ -605,12 +801,12 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 八、音景
+// ─────────────────────────────────────────── 九、音景
 
 {
   const s = section({
     id: 'audio',
-    title: '八、音景 AUDIO',
+    title: '九、音景 AUDIO',
     count: Object.keys(AUDIO).length,
     blurb:
       '零个音频文件。风、浪、低频嗡鸣、混响、竖琴、脚步全部由 WebAudio 现场合成——' +
@@ -669,12 +865,12 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 九、文本
+// ─────────────────────────────────────────── 十、文本
 
 {
   const s = section({
     id: 'text',
-    title: '九、文本',
+    title: '十、文本',
     count: ACTS.length + 2,
     blurb:
       '全部叙事文案。环境叙事是这部作品的绝对核心，所以文本本身就是最大的一件素材。' +
