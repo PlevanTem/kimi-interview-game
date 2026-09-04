@@ -26,6 +26,15 @@ export interface Blocker {
 }
 
 const WALK_SPEED = 2.05;
+/**
+ * 快跑倍率。
+ *
+ * 步行叙事作品通常刻意不给奔跑，好把节奏攥在自己手里。但这几座岛
+ * 从岸边走到岛心要一分多钟，来回找东西时那一分钟会变成负担——
+ * 于是给一个克制的倍率：快到能省时间，慢到跑起来仍然像一个疲惫的人，
+ * 而不是像在冲刺。快跑时步伐摆动与脚步声一起加快，视野略微推开。
+ */
+const SPRINT_MULTIPLIER = 1.75;
 const ACCELERATION = 9;
 const DAMPING = 11;
 const EYE_HEIGHT = 1.68;
@@ -48,6 +57,7 @@ export class Walker {
   private bobPhase = 0;
   private swayTime = 0;
   private locked = false;
+  private sprintHeld = false;
 
   private ground: GroundSampler | null = null;
   private blockers: Blocker[] = [];
@@ -60,6 +70,16 @@ export class Walker {
   /** 当前水平速度（0–1 归一化），HUD 与音频用它调节脚步与风声 */
   get speedRatio(): number {
     return Math.min(1, Math.hypot(this.velocity.x, this.velocity.z) / WALK_SPEED);
+  }
+
+  /** 步幅比例：走路时封顶在 1，快跑时可以到 SPRINT_MULTIPLIER。脚步频率与镜头用它 */
+  get strideRatio(): number {
+    return Math.min(SPRINT_MULTIPLIER, Math.hypot(this.velocity.x, this.velocity.z) / WALK_SPEED);
+  }
+
+  /** 此刻是不是在快跑。视野推开与音频加密都看它 */
+  get sprinting(): boolean {
+    return this.sprintHeld && this.movementEnabled && this.speedRatio > 0.5;
   }
 
   constructor(private readonly canvas: HTMLCanvasElement) {
@@ -112,6 +132,11 @@ export class Walker {
       if (wish.lengthSq() > 1) wish.normalize();
     }
 
+    // Shift 或手柄扳机：只有真的在往前走时才算快跑，站着按住不作数
+    this.sprintHeld =
+      this.movementEnabled && (this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.padSprint);
+    const speed = WALK_SPEED * (this.sprintHeld ? SPRINT_MULTIPLIER : 1);
+
     const sin = Math.sin(this.yaw);
     const cos = Math.cos(this.yaw);
     // yaw = 0 时朝 -Z 看，与 three 的相机默认朝向一致
@@ -120,8 +145,8 @@ export class Walker {
     const rightX = cos;
     const rightZ = -sin;
 
-    const targetX = (forwardX * wish.y + rightX * wish.x) * WALK_SPEED;
-    const targetZ = (forwardZ * wish.y + rightZ * wish.x) * WALK_SPEED;
+    const targetX = (forwardX * wish.y + rightX * wish.x) * speed;
+    const targetZ = (forwardZ * wish.y + rightZ * wish.x) * speed;
 
     const accel = wish.lengthSq() > 0.0001 ? ACCELERATION : DAMPING;
     this.velocity.x += (targetX - this.velocity.x) * Math.min(1, accel * dt);
@@ -137,7 +162,7 @@ export class Walker {
     const follow = targetY > this.position.y ? 14 : 9;
     this.position.y += (targetY - this.position.y) * Math.min(1, follow * dt);
 
-    this.bobPhase += this.speedRatio * dt * 8.6;
+    this.bobPhase += this.strideRatio * dt * 8.6;
   }
 
   /** 把当前姿态写进相机，包含步伐摆动与手持漂移。 */
@@ -148,11 +173,12 @@ export class Walker {
 
     let roll = 0;
     if (!this.reducedMotion) {
+      const stride = this.strideRatio;
       const speed = this.speedRatio;
-      // 步伐：竖向是横向的两倍频，这才是人走路的样子
-      const bobY = Math.sin(this.bobPhase * 2) * 0.032 * speed;
-      const bobX = Math.sin(this.bobPhase) * 0.026 * speed;
-      roll = Math.sin(this.bobPhase) * 0.011 * speed;
+      // 步伐：竖向是横向的两倍频，这才是人走路的样子。快跑时幅度按步幅放大
+      const bobY = Math.sin(this.bobPhase * 2) * 0.032 * stride;
+      const bobX = Math.sin(this.bobPhase) * 0.026 * stride;
+      roll = Math.sin(this.bobPhase) * 0.011 * stride;
 
       // 呼吸：站着不动时也有
       const breathe = Math.sin(this.swayTime * 0.85) * 0.011 * (1 - speed * 0.6);
@@ -185,12 +211,16 @@ export class Walker {
   // --- 内部 ---
 
   private readonly padMove = new THREE.Vector2();
+  private padSprint = false;
 
   private readGamepad(dt: number): void {
     this.padMove.set(0, 0);
+    this.padSprint = false;
     const pads = navigator.getGamepads?.() ?? [];
     const pad = pads.find((p) => p !== null);
     if (!pad) return;
+    // 左扳机快跑
+    this.padSprint = (pad.buttons[6]?.value ?? 0) > 0.4 || (pad.buttons[10]?.pressed ?? false);
     const dead = (v: number): number => (Math.abs(v) < 0.18 ? 0 : v);
     this.padMove.set(dead(pad.axes[0] ?? 0), -dead(pad.axes[1] ?? 0));
     if (this.lookEnabled) {

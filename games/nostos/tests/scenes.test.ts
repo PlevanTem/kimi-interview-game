@@ -5,6 +5,7 @@ import { AUDIO } from '../src/engine/audio';
 import { MOTIF_KINDS } from '../src/world/silhouette';
 import { findFocus } from '../src/game/interact';
 import { holdFor } from '../src/game/types';
+import { MEMORY_LABELS, TEXT } from '../src/content/script';
 
 /**
  * 这一组测试守的是**内容契约**，不是渲染。
@@ -168,6 +169,46 @@ describe('八幕内容契约', () => {
     expect(actAt(999).def.id).toBe('ithaca');
     expect(actById('nekyia')?.def.act).toBe(4);
     expect(actById('atlantis')).toBeUndefined();
+  });
+});
+
+describe('开场引导与终幕收束', () => {
+  it('开场引导把三件事说清楚：你是谁、要做什么、为什么值得', () => {
+    const lines = TEXT.intro.lines;
+    expect(lines.length).toBeGreaterThanOrEqual(5);
+    for (const line of lines) expect(line.trim().length).toBeGreaterThan(0);
+    const all = lines.join('');
+    // 目标与使命必须落到字面上，不能靠玩家自己悟
+    expect(all).toContain('八座岛');
+    expect(all).toContain('回家');
+    // 操作也要说，否则玩家不知道 E 和 H 是干什么的
+    expect(all).toContain('E');
+    expect(all).toContain('H');
+    // 但它得念得完。这是全作唯一一次直接对玩家说话，也是玩家点了"开始"之后
+    // 唯一一段看着黑屏等的时间——超过一分钟就不再是引导，是过场动画了。
+    // 五十秒是留了余地的上限：任何一次改写把它撑破，都该先砍字，而不是先放宽这条线。
+    const seconds = lines.reduce((sum, line) => sum + holdFor(line), 0);
+    expect(seconds).toBeLessThan(52);
+  });
+
+  it('每一幕的记忆物件都有名字，进度面板与终幕总览才有东西可显示', () => {
+    for (const { def } of ACTS) {
+      const label = MEMORY_LABELS[def.id];
+      expect(label, `${def.id} 缺少记忆物件名`).toBeTruthy();
+      expect(label!.trim().length).toBeGreaterThan(0);
+    }
+    expect(Object.keys(MEMORY_LABELS)).toHaveLength(TOTAL_ACTS);
+  });
+
+  it('终幕的收束把序章那十二条船的账算清楚', () => {
+    const epilogue = TEXT.ithaca.epilogue;
+    expect(epilogue.length).toBeGreaterThan(4);
+    const all = epilogue.join('');
+    // 序章数出十二条船，全程没有计数器，终幕必须结这个账
+    expect(TEXT.prologue.vision.join('')).toContain('十二条船');
+    expect(all).toContain('十二条船');
+    // 并且要落到"他变成了什么样的人"，而不只是报个数
+    expect(all).toContain('名字');
   });
 });
 

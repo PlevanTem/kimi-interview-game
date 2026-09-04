@@ -43,6 +43,17 @@ async function waitForPhase(page: Page, phase: string): Promise<void> {
   });
 }
 
+/**
+ * 开场引导会在黑场里念二十几秒。测试关心的是它能正常结束、
+ * 而不是它念得对不对（那由 tests/vision.test.ts 那类单测覆盖），
+ * 所以这里直接快进过去。
+ */
+async function skipIntro(page: Page): Promise<void> {
+  await page.waitForFunction(() => window.__nostos!.state().phase !== 'title', null, { timeout: 60_000 });
+  if ((await state(page)).phase !== 'intro') return;
+  await page.evaluate(() => window.__nostos!.skipNarration());
+}
+
 async function waitQuiet(page: Page): Promise<void> {
   await page.waitForFunction(() => !window.__nostos!.state().narrating, null, { timeout: 180_000 });
 }
@@ -78,6 +89,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
   await shot(page, `00-title`);
 
   await page.locator('button[data-role="start"]').click();
+  await skipIntro(page);
 
   const visited: string[] = [];
 
@@ -166,6 +178,7 @@ test('从标题走到伊萨卡：八幕都能登岸、读线索、看完回忆�
 test('暂停与恢复不会丢掉进度 @flow', async ({ page }) => {
   await boot(page);
   await page.locator('button[data-role="start"]').click();
+  await skipIntro(page);
   await waitForPhase(page, 'roaming');
 
   const before = await state(page);
@@ -188,6 +201,7 @@ test('暂停与恢复不会丢掉进度 @flow', async ({ page }) => {
 test('主循环保持 requestAnimationFrame 节奏 @performance', async ({ page }) => {
   await boot(page);
   await page.locator('button[data-role="start"]').click();
+  await skipIntro(page);
   await waitForPhase(page, 'roaming');
 
   const first = (await state(page)).frames;

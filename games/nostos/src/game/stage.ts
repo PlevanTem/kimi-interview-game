@@ -7,6 +7,7 @@ import { Sea } from '../engine/sea';
 import { Sky } from '../engine/sky';
 import { Terrain } from '../world/terrain';
 import { Glint } from '../world/glint';
+import { GuideLight, guidePath } from '../world/guidelight';
 import { MOTIF_FOOT, Motif } from '../world/silhouette';
 import { Dresser } from './scenes/dresser';
 import type { Act } from './scenes';
@@ -25,6 +26,7 @@ export class Stage {
   readonly sky = new Sky();
   readonly sea = new Sea();
   private readonly shadow = new ShadowMap();
+  private readonly guide: GuideLight;
 
   terrain!: Terrain;
   act!: Act;
@@ -36,6 +38,7 @@ export class Stage {
   private readonly npcs = new Map<string, Motif>();
 
   constructor() {
+    this.guide = new GuideLight(this.scene);
     // 天与海不投影：一个是无限远的背景，一个是自己会动的面
     this.sky.mesh.layers.set(NO_SHADOW_LAYER);
     this.sea.mesh.layers.set(NO_SHADOW_LAYER);
@@ -112,6 +115,15 @@ export class Stage {
     this.npcs.set(def.id, motif);
   }
 
+  /** 点一条通向目标的引路光。玩家按键呼唤时才亮，几秒后自己熄灭。 */
+  showGuide(from: { x: number; z: number }, yaw: number, to: { x: number; z: number }): void {
+    this.guide.show(guidePath(this.terrain, from, yaw, to));
+  }
+
+  get guideActive(): boolean {
+    return this.guide.active;
+  }
+
   /** 已经触碰过的东西，微光熄灭，永不再亮。 */
   extinguish(id: string): void {
     this.glints.get(id)?.extinguish();
@@ -124,14 +136,23 @@ export class Stage {
     glint.mesh.visible = ready;
   }
 
-  update(dt: number, elapsed: number, focusedId: string | null, cameraPosition: THREE.Vector3): void {
+  update(
+    dt: number,
+    elapsed: number,
+    focusedId: string | null,
+    hintId: string | null,
+    cameraPosition: THREE.Vector3,
+  ): void {
     this.sky.follow(cameraPosition);
     this.sea.follow(cameraPosition, this.act.terrain.waterLevel ?? 0);
-    for (const [id, glint] of this.glints) glint.update(dt, elapsed, id === focusedId);
+    // 被引路光指着的那件东西，微光和被看着时一样亮起来
+    for (const [id, glint] of this.glints) glint.update(dt, elapsed, id === focusedId || id === hintId);
     for (const motif of this.npcs.values()) motif.tick(elapsed);
+    this.guide.update(dt, elapsed);
   }
 
   unload(): void {
+    this.guide.clear();
     for (const glint of this.glints.values()) {
       this.scene.remove(glint.mesh);
       glint.dispose();
@@ -156,5 +177,6 @@ export class Stage {
     this.sky.dispose();
     this.sea.dispose();
     this.shadow.dispose();
+    this.guide.dispose();
   }
 }

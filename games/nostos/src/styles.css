@@ -384,3 +384,240 @@ button.link:focus-visible {
     transition-duration: 1ms;
   }
 }
+
+/* ── 引路提示：漫游时挂在左下角，告诉玩家这个功能存在 ── */
+.guidehint {
+  position: absolute;
+  left: 34px;
+  bottom: 34px;
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  color: rgba(231, 217, 190, 0.34);
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+
+.guidehint.visible {
+  opacity: 1;
+}
+
+.guidehint::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background: var(--dusk);
+  vertical-align: middle;
+  box-shadow: 0 0 8px rgba(224, 169, 78, 0.8);
+  animation: guide-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes guide-breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+/* ── 开场卡：黑场里的标题，字幕在它下面一句一句出来 ── */
+.introcard {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1800ms ease;
+}
+
+.introcard.visible {
+  opacity: 1;
+}
+
+.introcard .mark {
+  font-size: 40px;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: rgba(231, 217, 190, 0.9);
+}
+
+.introcard .latin {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.9em;
+  text-indent: 0.9em;
+  color: rgba(224, 169, 78, 0.65);
+}
+
+/* 暂停面板要装下设置 + 八幕航程，720p 下必须收紧并允许滚动 */
+.panel.pausepanel {
+  gap: 12px;
+  padding: 4vh 4vw;
+  overflow-y: auto;
+  justify-content: flex-start;
+  background: radial-gradient(ellipse at 50% 45%, rgba(20, 16, 14, 0.9), rgba(6, 5, 4, 0.97));
+}
+
+.panel.pausepanel .footnote {
+  position: static;
+  margin-top: 14px;
+}
+
+/* ── 暂停面板里的航程 ── */
+.sectionlabel {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: rgba(224, 169, 78, 0.75);
+}
+
+.voyage {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: min(420px, 76vw);
+  margin-top: 4px;
+}
+
+.voyage-row {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 2px 0;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+}
+
+.voyage-row i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 1px solid rgba(231, 217, 190, 0.35);
+  justify-self: center;
+}
+
+.voyage-row[data-state='done'] i {
+  background: var(--ochre);
+  border-color: var(--ochre);
+}
+
+.voyage-row[data-state='current'] i {
+  border-color: var(--dusk);
+  box-shadow: 0 0 9px rgba(224, 169, 78, 0.9);
+  animation: guide-breathe 2.6s ease-in-out infinite;
+}
+
+.voyage-row[data-state='done'] .name {
+  color: rgba(231, 217, 190, 0.86);
+}
+
+.voyage-row[data-state='current'] .name {
+  color: var(--dusk);
+}
+
+.voyage-row[data-state='locked'] .name {
+  color: rgba(231, 217, 190, 0.22);
+  letter-spacing: 0.3em;
+}
+
+.voyage-row .memory {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(231, 217, 190, 0.42);
+}
+
+.voyage-summary {
+  margin-top: 10px;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: rgba(231, 217, 190, 0.34);
+}
+
+/* ── 终幕：八段记忆总览与最后那段话 ── */
+.panel.endpanel {
+  justify-content: flex-start;
+  padding: 5vh 4vw 8vh;
+  overflow-y: auto;
+  gap: 0;
+  /* 终幕要读的字很多，背景压到接近全黑，别让身后的世界跟文字抢眼睛 */
+  background: radial-gradient(ellipse at 50% 40%, rgba(20, 16, 14, 0.94), rgba(6, 5, 4, 0.985));
+}
+
+.panel.endpanel h1,
+.panel.endpanel .mark {
+  font-size: clamp(28px, 4vw, 40px);
+}
+
+.endcard .memoirtitle {
+  margin-top: 30px;
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: rgba(224, 169, 78, 0.8);
+}
+
+.endcard .memoirs {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: min(460px, 82vw);
+  margin: 18px auto 0;
+  text-align: left;
+}
+
+.memoir {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(231, 217, 190, 0.07);
+}
+
+.memoir .no {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(224, 169, 78, 0.8);
+}
+
+.memoir .where {
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  color: rgba(231, 217, 190, 0.85);
+}
+
+.memoir .what {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(231, 217, 190, 0.45);
+}
+
+.endcard .reveal {
+  width: min(520px, 84vw);
+  margin: 26px auto 0;
+  text-align: left;
+}
+
+.endcard .reveal p {
+  margin: 0 0 2px;
+  min-height: 0.8em;
+  font-size: 14px;
+  line-height: 1.95;
+  letter-spacing: 0.08em;
+  color: rgba(231, 217, 190, 0.72);
+}
+
+.endcard .reveal p:first-child {
+  font-size: 20px;
+  letter-spacing: 0.22em;
+  color: var(--dusk);
+  margin-bottom: 10px;
+}
+
+.endcard .reveal p:last-child {
+  margin-top: 14px;
+  color: rgba(231, 217, 190, 0.92);
+  letter-spacing: 0.14em;
+}
