@@ -97,6 +97,33 @@ npm run test:e2e:nostos    # 端到端：从标题走到伊萨卡，顺手拍下
 
 ---
 
+## 部署（GitHub Pages）
+
+工作流在 [`.github/workflows/deploy-nostos-pages.yml`](../../.github/workflows/deploy-nostos-pages.yml)：
+推送到 `main` 且动到 `games/nostos/**` 时自动构建并发布，也可以在 Actions 页手动触发。
+
+**第一次需要先在仓库里打开 Pages**（只有仓库管理员能做，命令行做不了）：
+`Settings → Pages → Build and deployment → Source` 选 **GitHub Actions**。
+打开之后到 Actions 页手动跑一次 `Deploy NOSTOS to Pages`，站点就会出现在
+`https://<owner>.github.io/<repo>/`。
+
+之所以不用改 `base`：`vite.config.ts` 里已经是 `base: './'`，产物里的引用是
+`./assets/…`，所以部署到任何一级子路径下都能找到资源。整站四个文件、
+没有任何外部请求——这个游戏零个二进制资产，几何、纹理、音频全在运行时生成。
+
+⚠️ **一个已知的脆弱点**：`package-lock.json` 里 339 个 `resolved` 地址全部指向
+`registry.npmmirror.com`（国内镜像）。GitHub 的 runner 能访问它，但这是一个
+额外的单点依赖。哪天 `npm ci` 在 CI 上装不动，多半就是它——最小改法是本地跑
+
+```bash
+npm install --registry=https://registry.npmjs.org   # 重写 lockfile 到官方源
+```
+
+再提交新的 lockfile。注意这会影响国内本地开发的安装速度，是一个取舍，
+所以这里没有替你改。
+
+---
+
 ## 目录
 
 ```
