@@ -274,14 +274,30 @@ export const circe: Act = {
     d.place(stoneBlock(1.6, 0.5, 1.6, 1013, 0.04), 'weatheredMarble', { x: 4.5, z: -25.5, y: FLOOR - 0.5 });
 
     // ── 爬进来又爬回去的藤 ──
-    for (let i = 0; i < 9; i += 1) {
-      const t = i / 8;
-      d.place(oliveCanopy(0.55 + d.rng() * 0.3, 1020 + i), 'olive', {
-        x: -9.5 - Math.sin(t * 3.1) * 2.2,
-        z: 14 - t * 7,
+    // 一根细木质藤蔓贴着地与柱子走，叶子是一小簇一小簇的。
+    // 团块必须小：藤是一条线，不是一串球。
+    for (let i = 0; i < 22; i += 1) {
+      const t = i / 21;
+      const x = -9.5 - Math.sin(t * 3.4) * 2.4;
+      const z = 14 - t * 8.5;
+      const lift = 0.05 + Math.max(0, Math.sin(t * 2.6)) * 1.1;
+      // 藤茎：一小段一小段接起来，比一根长管更像自然爬出来的
+      d.place(pole(0.55, 0.035, 1020 + i), 'driftwood', {
+        x,
+        z,
         y: FLOOR,
-        lift: 0.4 + Math.sin(t * 2.4) * 1.4,
+        lift,
+        tiltX: 1.1 + Math.sin(t * 5) * 0.35,
+        yaw: t * 3.4,
       });
+      if (i % 2 === 0) {
+        d.place(oliveCanopy(0.2 + d.rng() * 0.1, 1060 + i), 'olive', {
+          x: x + (d.rng() - 0.5) * 0.5,
+          z: z + (d.rng() - 0.5) * 0.5,
+          y: FLOOR,
+          lift: lift + 0.18,
+        });
+      }
     }
 
     // ── 台基之外：橄榄树与碎石，把柱廊框起来 ──
