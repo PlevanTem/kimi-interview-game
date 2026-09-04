@@ -82,6 +82,7 @@ npm run dev:nostos
 - [`docs/ART_BIBLE.md`](docs/ART_BIBLE.md) — 颜料、三阶色带材质、阴影、天与海、后期链、镜头语言、性能预算
 - [`docs/SCENES.md`](docs/SCENES.md) — 逐幕规格书：美术与镜头描述、触发式回忆事件、环境线索清单、叙事片段全文、情绪基调
 - [`docs/GAMEPLAY.md`](docs/GAMEPLAY.md) — 核心循环、操作、**非目标清单**、状态机、无障碍
+- [`docs/asset-library.html`](docs/asset-library.html) — 资产库：九类素材由源码当场渲染，单文件可直接打开
 - [`docs/screenshots/`](docs/screenshots/) — e2e 自动产出的逐幕实拍画面
 
 ---
@@ -94,6 +95,33 @@ npm run typecheck:nostos   # tsc --noEmit
 npm run build:nostos       # 类型检查 + 构建
 npm run test:e2e:nostos    # 端到端：从标题走到伊萨卡，顺手拍下逐幕截图
 ```
+
+---
+
+## 资产库
+
+```bash
+npm run assets:nostos      # → docs/asset-library.html（单文件，双击即可打开）
+```
+
+本作**没有任何二进制素材文件**，所有"素材"都是代码里的生成器与参数。
+所以资产库不是一份截图清单，而是**直接 import `src/` 下的生成器当场渲染**——
+它永远等于当前代码的真实产出，不会过期。
+
+收录九类：颜料 12 · 表面材质 14 · 天候预设 8 · 黑绘母题 16 ·
+程序纹理 4 · 构件几何 21 · 地形 8 · 音景 7 · 全部文案。
+
+### 精调与同步的流程
+
+资产库和游戏**读的是同一份源**，所以不存在"导回去"这一步：
+
+1. 在资产库里找到要改的那一项，它下面标着**编辑入口**（例如 `src/content/palette.ts → PIGMENT`）；
+2. 改那个文件；
+3. `npm run assets:nostos` 重新生成，复核改动；
+4. 同一份改动已经生效在游戏里了——`npm run dev:nostos` 直接能看到。
+
+换句话说：**改代码就是改素材**，资产库只是照出当前状态的一面镜子。
+它不参与游戏构建，也不会被打进游戏包。
 
 ---
 
@@ -133,6 +161,8 @@ src/
   game/      幕状态机、进度、交互对焦、幻象播放器、逐句播放器、八幕定义
   content/   调色板与全部中文文本
   ui/        准星、提示、字幕、幕卡、标题与暂停面板
+tools/
+  assets/    资产库生成器：import src/ 当场渲染，产出单文件 HTML
 tests/       单元测试与端到端
-docs/        Art Bible、分幕规格书、玩法规格、截图
+docs/        Art Bible、分幕规格书、玩法规格、资产库、截图
 ```
