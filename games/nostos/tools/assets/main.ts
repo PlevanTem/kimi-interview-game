@@ -546,6 +546,11 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     stoneAnchor: { make: () => P.stoneAnchor(0.6), call: 'stoneAnchor(.6)', note: '石锚' },
     boundaryStone: { make: () => P.boundaryStone(1.1), call: 'boundaryStone(1.1)', note: '界石' },
     ribBone: { make: () => P.ribBone(1.4), call: 'ribBone(1.4)', note: '肋骨' },
+    footprint: {
+      make: () => P.footprint(0.27),
+      call: 'footprint(0.27)',
+      note: '沙地上的一枚脚印。忘食岸那一行由 46 枚铺成，只有去程没有回程',
+    },
   };
 }
 

@@ -345,6 +345,29 @@ export function oliveCanopy(radius: number, seed = 41): THREE.BufferGeometry {
 }
 
 /**
+ * 沙地上的一个脚印。
+ *
+ * 压扁到几乎没有厚度的一枚椭圆，长轴是脚的方向。放置时刻意往下沉一点，
+ * 只露出边缘那一圈——在三档色带的壁画材质下，它读出来就是沙面上一块
+ * 颜色更深的凹痕，正好是湿沙里踩出来的样子。
+ *
+ * 不做脚趾、不做纹路：这部作品的造型语言是大块平涂加一条边线，
+ * 一枚 26 厘米的东西上任何细节在游戏里都看不见，只会变成噪点。
+ */
+export function footprint(length = 0.27, seed = 83): THREE.BufferGeometry {
+  const geometry = new THREE.IcosahedronGeometry(0.5, 2);
+  // x 是横向、z 是脚尖方向；y 压到几乎为零
+  const height = length * 0.16;
+  geometry.scale(length * 0.44, height, length);
+  // 二十面体的原点在正中心，而本文件的约定是**原点在底面中心**。
+  // 不抬这一下，放下去就有一半埋在地面以下——再叠上装配时的 lift，
+  // 整枚脚印会整个沉进沙子里，游戏里什么都看不见。第一版就是这么丢的。
+  geometry.translate(0, height * 0.5, 0);
+  const eroded = erode(geometry, length * 0.06, seed, 3.4);
+  return weld(eroded, length * 0.012);
+}
+
+/**
  * 玩家眼高，与 engine/controller.ts 的 EYE_HEIGHT 一致。
  * 树冠必须让开的就是这条线。
  */
