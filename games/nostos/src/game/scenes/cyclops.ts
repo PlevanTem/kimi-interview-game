@@ -1,5 +1,5 @@
 import { TEXT } from '../../content/script';
-import { boatHull, boulder, plank, pole, ribBone, stoneBlock } from '../../world/props';
+import { boatHull, boulder, crushedShield, plank, pole, ribBone, stoneBlock, woolTuft } from '../../world/props';
 import type { Act } from './types';
 
 const T = TEXT.cyclops;
@@ -222,7 +222,10 @@ export const cyclops: Act = {
     d.place(ribBone(7.4, 630), 'bone', { x: 10.5, z: 11.5, yaw: 2.4, tiltZ: -0.5, block: 0.8 });
 
     // ── 被压成一张饼的青铜盾 ──
-    d.place(boulder(1.05, 640, 2), 'bronze', { x: -6, z: 2, lift: -0.6, scale: [1.25, 0.14, 1.25], yaw: 0.6 });
+    // 原来是一块压扁的卵石，而且 lift 给到 -0.6：盾面半高只有 15 厘米，
+    // 整面盾沉在地下 45 厘米，玩家走到跟前也什么都看不见。
+    // 现在用真的盾形（碟面 + 中央盾脐，纹章就在盾脐上），只略微陷进土里。
+    d.place(crushedShield(1.15, 640), 'bronze', { x: -6, z: 2, lift: -0.03, yaw: 0.6, tiltZ: 0.05 });
 
     // ── 洞口：几块巨岩围出的拱，里面是黑的 ──
     const mouth: Array<[number, number, number, number]> = [
@@ -241,15 +244,34 @@ export const cyclops: Act = {
     // 洞的后壁：把光完全吃掉
     d.place(stoneBlock(14, 7, 2.4, 661, 0.08), 'basalt', { x: 0, z: -34.5, block: 5 });
 
-    // ── 石缝里的羊毛（用极小的浅色卵石表示被拖出去的痕迹）──
-    for (let i = 0; i < 7; i += 1) {
-      d.place(boulder(0.14 + d.rng() * 0.08, 670 + i, 1), 'bone', {
-        x: 4 + (d.rng() - 0.5) * 1.6,
-        z: -10 + (i - 3) * 0.55,
-        lift: 0.6,
+    // ── 石缝里的羊毛 ──
+    //
+    // 这是全幕最不该被看错的一处：它是奥德修斯把人绑在羊肚子底下、
+    // 贴着石壁拖出洞口留下的痕迹。原来用的是小卵石，圆滚滚地浮在半空，
+    // 读出来是七颗蛋，跟"羊毛"没有关系。
+    //
+    // 改成扁长的一绺，**贴着石头的立面**卡进去（不再悬空），
+    // 顺着被拖走的方向排成一条线，配合 SURFACE.fleece 的纤维细节图。
+    const CRACK_X = 5.6;
+    const CRACK_Z = -10;
+    d.place(stoneBlock(2.4, 2.2, 1.2, 675, 0.15), 'darkRock', {
+      x: CRACK_X,
+      z: CRACK_Z,
+      yaw: 0.3,
+      block: 1.3,
+    });
+    for (let i = 0; i < 9; i += 1) {
+      const t = i / 8;
+      d.place(woolTuft(0.22 + d.rng() * 0.12, 670 + i), 'fleece', {
+        // 沿石头朝向洞口的那一面排开，稍微离面一点点，像被挤在缝里
+        x: CRACK_X - 0.72 - d.rng() * 0.16,
+        z: CRACK_Z - 1.05 + t * 2.1,
+        // 高度错落：羊背蹭过的那一段，不是一条直线
+        lift: 0.35 + Math.sin(t * 4.1) * 0.42 + d.rng() * 0.12,
+        yaw: -1.35 + (d.rng() - 0.5) * 0.5,
+        tiltZ: (d.rng() - 0.5) * 0.7,
       });
     }
-    d.place(stoneBlock(2.4, 2.2, 1.2, 675, 0.15), 'darkRock', { x: 5.6, z: -10, yaw: 0.3, block: 1.3 });
 
     // ── 焦木堆与那根削尖的木桩 ──
     for (let i = 0; i < 8; i += 1) {

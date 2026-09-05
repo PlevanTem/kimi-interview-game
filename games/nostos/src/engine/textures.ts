@@ -231,6 +231,67 @@ export function meanderTexture(): THREE.Texture {
 }
 
 /** 释放全部缓存纹理（场景切换不需要，页面销毁时用）。 */
+/**
+ * 羊毛细节图：一绺一绺的纤维。
+ *
+ * 与其他三张不同，这张是**有方向**的：细密的曲线顺着同一个大方向走，
+ * 中间夹着少量岔开的乱毛。低多边形的一撮毛之所以能读成毛而不是石头，
+ * 靠的就是这层方向性——形状给不出蓬松，纹理能给出。
+ */
+export function fleeceTexture(): THREE.Texture {
+  return memo('fleece', () => {
+    const size = 512;
+    const { c, g } = canvas(size);
+    const rng = createRng(917);
+
+    g.fillStyle = '#cfcfcf';
+    g.fillRect(0, 0, size, size);
+
+    // 一层薄雾似的底噪，免得纤维之间是死板的纯色
+    const img = g.getImageData(0, 0, size, size);
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const n = fbm2(x * 0.03, y * 0.03, 3, 41);
+        const o = (y * size + x) * 4;
+        const v = clamp(img.data[o]! + (n - 0.5) * 46, 0, 255);
+        img.data[o] = v;
+        img.data[o + 1] = v;
+        img.data[o + 2] = v;
+      }
+    }
+    g.putImageData(img, 0, 0);
+
+    // 纤维：从左往右走的细曲线，两端出画才能无缝平铺
+    g.lineCap = 'round';
+    for (let i = 0; i < 620; i += 1) {
+      const y0 = rng() * size;
+      // 大部分顺着主方向，少量乱毛岔开
+      const stray = rng() < 0.16;
+      const drift = (rng() - 0.5) * (stray ? 90 : 26);
+      const dark = rng() < 0.5;
+      g.strokeStyle = dark ? `rgba(90,88,84,${0.10 + rng() * 0.16})` : `rgba(255,255,255,${0.10 + rng() * 0.2})`;
+      g.lineWidth = 0.7 + rng() * 1.7;
+      g.beginPath();
+      const bow = (rng() - 0.5) * 70;
+      // 画两遍并上下各偏移一个贴图高度，接缝处才连得上
+      for (const wrap of [-size, 0, size]) {
+        g.moveTo(-20, y0 + wrap);
+        g.bezierCurveTo(
+          size * 0.3,
+          y0 + bow + wrap,
+          size * 0.7,
+          y0 + drift - bow + wrap,
+          size + 20,
+          y0 + drift + wrap,
+        );
+      }
+      g.stroke();
+    }
+
+    return finish('fleece', c, 3);
+  });
+}
+
 export function disposeTextures(): void {
   for (const tex of cache.values()) tex.dispose();
   cache.clear();

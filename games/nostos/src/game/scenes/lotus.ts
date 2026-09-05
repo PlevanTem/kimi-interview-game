@@ -1,6 +1,8 @@
 import { TEXT } from '../../content/script';
 import {
   amphora,
+  corinthianHelmet,
+  footprint,
   boatHull,
   boulder,
   columnDrum,
@@ -230,12 +232,58 @@ export const lotus: Act = {
       d.place(tree.canopy, 'olive', { x, z, lift: tree.canopyLift });
     }
 
+    // ── 一行脚印：从水边往岛里去，只有去的那一行 ──
+    //
+    // 这条线索原本**没有实物**：交互点、提示语"看脚印"和三句旁白都写好了，
+    // 沙地上却从来没有画过脚印。玩家走过去，准星张开，地上是空的——
+    // 旁白在描述一件不存在的东西。走完整周目的 e2e 也抓不到它：
+    // 触碰照样成功，旁白照样播完，只有人眼看得出那里什么都没有。
+    //
+    // 方向是单向的，这是本幕的整个论点："上岛的人都还在岛上"。
+    // 所以只铺去程，绝不铺回程——那一行不存在的返程脚印，就是这一幕的主题。
+    {
+      const START_X = 17;
+      const START_Z = 32;
+      const dirX = -START_X;
+      const dirZ = -START_Z;
+      const len = Math.hypot(dirX, dirZ);
+      // 步幅法线，用来做左右交替的脚位与蜿蜒
+      const nx = -dirZ / len;
+      const nz = dirX / len;
+      const STEPS = 46;
+      const yaw = Math.atan2(dirX, dirZ);
+      for (let i = 0; i < STEPS; i += 1) {
+        const t = i / (STEPS - 1);
+        // 没有人在沙上走直线
+        const wander = Math.sin(t * 5.2) * 1.1;
+        // 左右脚交替偏出半个身位
+        const side = (i % 2 === 0 ? 1 : -1) * 0.17;
+        const offset = wander + side;
+        d.place(footprint(0.26 + d.rng() * 0.05, 700 + i), 'driftwood', {
+          x: START_X + dirX * t + offset * nx,
+          z: START_Z + dirZ * t + offset * nz,
+          yaw: yaw + (d.rng() - 0.5) * 0.26,
+          // 略微陷进沙里，只留薄薄一层露在外面
+          lift: -0.012,
+        });
+      }
+    }
+
     // ── 留下的人坐的那块石头 ──
     d.place(stoneBlock(1.8, 0.5, 1.4, 360), 'limestone', { x: 22.1, z: -1.9, yaw: 0.4 });
 
     // ── 被丢下的头盔（核心记忆）：一块矮台上 ──
     d.place(stoneBlock(1.2, 0.42, 1.2, 370), 'limestone', { x: -6, z: -19, yaw: 0.2 });
-    d.place(boulder(0.34, 371, 2), 'bronze', { x: -6, z: -19, lift: 0.45 });
+    // 侧翻着搁在矮台上：旁白说"头盔翻在地上，里面积了一层沙"，
+    // 所以它必须是倒的——正着摆就成了陈列，而这顶盔是被人解开带子丢下的。
+    d.place(corinthianHelmet(0.38, 371), 'bronze', {
+      x: -6,
+      z: -19,
+      lift: 0.5,
+      yaw: 0.7,
+      tiltX: 1.42,
+      tiltZ: 0.16,
+    });
 
     // ── 岛心的一段断柱廊：这里从前有人住过 ──
     for (let i = 0; i < 5; i += 1) {

@@ -42,8 +42,10 @@ export const nekyia: Act = {
         kind: 'clue',
         prompt: '看界石',
         lines: T.clue.marker,
-        x: 9,
-        z: 10,
+        // 界石排成一列弯离了原来的交互点，最近的一块在 5 m 外——
+        // 旁白写的是"一块界石"，就该站在它跟前读。挪到第一块石头旁边。
+        x: 12.6,
+        z: 10.4,
         y: 1.2,
       },
       {
