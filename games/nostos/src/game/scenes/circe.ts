@@ -1,4 +1,8 @@
+import * as THREE from 'three';
+import { PIGMENT } from '../../content/palette';
 import { TEXT } from '../../content/script';
+import { createFrescoMaterial } from '../../engine/materials';
+import { muralTexture } from '../../engine/textures';
 import {
   amphora,
   boatHull,
@@ -202,6 +206,37 @@ export const circe: Act = {
     // 玩家是踩在地形（平台高度 FLOOR）上走的，所以石板的**顶面**必须正好落在 FLOOR，
     // 否则脚会陷进板里、板面又浮在视线下缘，走起来像踩在半透明的地上
     d.place(stoneBlock(34, 0.55, 40, 900, 0.02), 'paintedPlaster', { x: 0, z: -6, y: FLOOR - 0.55 });
+
+    // ── 地上那幅壁画 ──
+    //
+    // 「地上的壁画剥了大半。还能看出一排人，弯着腰，越往后越不像人。」
+    // 在此之前这句旁白是空的：地面只是一块铺了灰泥纹理的石板，
+    // 上面从来没有画过任何人。
+    //
+    // 它不能走 d.place()：那条路会把几何烘进合批、按世界坐标做三平面投影，
+    // 而一幅画有确定的上下左右，必须按 UV 贴。所以单独挂一块带真 UV 的
+    // 平面，用同一套壁画材质加上反照率贴图——全作唯一一处这么做的地方。
+    d.attach(() => {
+      const mural = new THREE.Mesh(
+        new THREE.PlaneGeometry(13, 5.5),
+        createFrescoMaterial({
+          color: PIGMENT.plaster,
+          albedoMap: muralTexture(),
+          detail: 'fresco',
+          detailScale: 0.06,
+          detailStrength: 0.55,
+          roughBreakup: 0.15,
+          transparent: true,
+        }),
+      );
+      mural.rotation.x = -Math.PI / 2;
+      // 贴着石板顶面往上 1 厘米：再低会和石板 z-fighting，再高会看出是一层皮。
+      // 中心比交互点（z = 4）再往里 3 米：玩家是**站在画边上看过去**，
+      // 不是站在画正中间——站正中间平视只看得见边框，看不见那一排人。
+      mural.position.set(0, FLOOR + 0.01, 7);
+      mural.receiveShadow = false;
+      return mural;
+    });
     d.place(stoneBlock(36, 0.4, 42, 901, 0.03), 'weatheredMarble', { x: 0, z: -6, y: FLOOR - 0.95 });
 
     // ── 两排列柱：光被切成一根根竖条 ──

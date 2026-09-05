@@ -18,7 +18,7 @@ import { ENV, PIGMENT, VISION_GRADE, type EnvName } from '../../src/content/pale
 import { MEMORY_LABELS, TEXT } from '../../src/content/script';
 import { AUDIO, Soundscape } from '../../src/engine/audio';
 import { SURFACE, applyEnvToMaterials, tickMaterials } from '../../src/engine/materials';
-import { fleeceTexture, frescoTexture, meanderTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
+import { fleeceTexture, frescoTexture, meanderTexture, muralTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
 import { ACTS } from '../../src/game/scenes';
 import { holdFor } from '../../src/game/types';
 import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
@@ -208,7 +208,7 @@ const tallies: Array<[number, string]> = [
   [Object.keys(SURFACE).length, '表面材质'],
   [Object.keys(ENV).length, '天候预设'],
   [MOTIF_KINDS.length, '黑绘母题'],
-  [5, '程序纹理'],
+  [6, '程序纹理'],
   [propNames.length, '构件几何'],
   [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
@@ -484,9 +484,9 @@ app.append(main);
   const s = section({
     id: 'texture',
     title: '五、程序纹理',
-    count: 5,
+    count: 6,
     blurb:
-      '五张 Canvas2D 生成的贴图，全部可平铺。前三张作为壁画材质的三平面细节图使用' +
+      '六张 Canvas2D 生成的贴图。前五张可平铺；壁画那张不平铺——它是一幅画，有确定的上下左右。前三张作为壁画材质的三平面细节图使用' +
       '（石 / 沙 / 壁画），回纹用在地面与檐口的装饰带上。',
     source: 'src/engine/textures.ts',
   });
@@ -497,12 +497,15 @@ app.append(main);
     ['壁画 fresco', frescoTexture, '有笔触的上色墙面'],
     ['回纹 meander', meanderTexture, '希腊回纹装饰带'],
     ['羊毛 fleece', fleeceTexture, '有方向的纤维，独眼岬石缝里的那几撮毛用它'],
+    ['壁画 mural', muralTexture, '喀耳刻柱廊地上那幅：一排人弯着腰，越往后越不像人。剥了大半'],
   ];
   for (const [name, make, note] of list) {
     const c = card();
-    const cv = previewCanvas(260, 260);
-    const g = cv.getContext('2d')!;
     const src = make().image as HTMLCanvasElement;
+    // 按贴图自己的比例预览：壁画是 1024×512，硬塞进正方形会把人挤扁，
+    // 而"人被挤扁"恰好是这张图最不该产生的误会
+    const cv = previewCanvas(260, Math.round((260 * src.height) / src.width));
+    const g = cv.getContext('2d')!;
     g.drawImage(src, 0, 0, cv.width, cv.height);
     const cap = el('figcaption');
     cap.append(el('div', 'name', name), el('div', 'note', note), el('div', 'id', `${src.width}×${src.height}`));
