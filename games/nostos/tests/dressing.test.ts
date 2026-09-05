@@ -69,6 +69,9 @@ function authoredPlacements(act: (typeof ACTS)[number]): Placement[] {
     placed.push({ x: o.x, z: o.z, r, above, label: `${surface} @ (${o.x}, ${o.z})` });
   };
   patched.scatter = () => {};
+  // attach 会真的去建网格与贴图（Canvas2D），Node 里跑不了。
+  // 它挂的东西不参与"孤儿"判定，跳过是安全的。
+  (dresser as unknown as { attach: () => void }).attach = () => {};
 
   act.dress(dresser);
   return placed;

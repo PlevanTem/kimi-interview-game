@@ -36,6 +36,8 @@ export class Dresser {
   private readonly batches = new Map<SurfaceName, GeometryBatch>();
   private readonly materials = new Map<SurfaceName, THREE.ShaderMaterial>();
   private readonly meshes: THREE.Mesh[] = [];
+  /** 不进合批、但同样由本装配器持有的网格 */
+  private readonly attached: THREE.Mesh[] = [];
   readonly rng: () => number;
 
   constructor(
@@ -143,12 +145,40 @@ export class Dresser {
     return { meshes: this.meshes, vertexCount };
   }
 
+  /**
+   * 挂一件**不进合批**的网格。
+   *
+   * 合批会把几何按世界坐标烘在一起，材质走三平面投影——对一幅
+   * 有确定上下左右的画来说那是错的，它需要自己的 UV。
+   * 但它仍然必须由 Dresser 持有：换幕时 dispose() 得把它一起带走，
+   * 否则这幅画会跟着玩家去下一座岛。全作只有喀耳刻地上那幅壁画用它。
+   *
+   * 收的是**工厂**而不是现成的网格，和 scatter 的 make 回调同形：
+   * 这样单元测试可以把它整个跳过。壁画的贴图是 Canvas2D 画的，
+   * 而 Node 里没有 DOM——收成品的话，光是跑一遍 dress() 就会炸。
+   */
+  attach(make: () => THREE.Mesh): void {
+    const mesh = make();
+    this.scene.add(mesh);
+    this.attached.push(mesh);
+  }
+
   dispose(): void {
     for (const mesh of this.meshes) {
       this.scene.remove(mesh);
       mesh.geometry.dispose();
     }
     this.meshes.length = 0;
+    for (const mesh of this.attached) {
+      this.scene.remove(mesh);
+      mesh.geometry.dispose();
+      // 材质必须注销，不能只 dispose：createFrescoMaterial 把它登记在
+      // 一张表里，applyEnvToMaterials 每次换天候都会往表里的每一个写
+      // uniform——漏掉注销就是在往一个已释放的对象上写。
+      const material = mesh.material;
+      if (!Array.isArray(material)) releaseFrescoMaterial(material as THREE.ShaderMaterial);
+    }
+    this.attached.length = 0;
     for (const material of this.materials.values()) releaseFrescoMaterial(material);
     this.materials.clear();
   }

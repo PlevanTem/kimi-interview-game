@@ -99,6 +99,13 @@ const FRAG = /* glsl */ `
   uniform float uRoughBreakup;
   uniform float uOpacity;
   uniform sampler2D uDetail;
+  /**
+   * 可选的反照率贴图，按 UV 采样（不是三平面）。
+   * 全作只有一处用它：喀耳刻柱廊地上那幅壁画——它是一幅**画**，
+   * 有确定的上下左右，不能像风化图那样沿三个轴平铺。
+   */
+  uniform sampler2D uAlbedoMap;
+  uniform float uAlbedoMapAmount;
 
   varying vec3 vWorldPos;
   varying vec3 vWorldNormal;
@@ -135,6 +142,11 @@ const FRAG = /* glsl */ `
       baseColor = mix(baseColor, uColorSteep, steep * uSlopeBlend);
       float high = smoothstep(uHeightStart, uHeightEnd, vWorldPos.y + jitter * 2.0);
       baseColor = mix(baseColor, uColorHigh, high * uSlopeBlend);
+    }
+    // 贴了画的地方，画本身就是底色；uAlbedoMapAmount = 0 时这一段完全不参与
+    if (uAlbedoMapAmount > 0.001) {
+      vec4 painted = texture2D(uAlbedoMap, vUv);
+      baseColor = mix(baseColor, painted.rgb, painted.a * uAlbedoMapAmount);
     }
     vec3 albedo = baseColor * wear;
 
@@ -220,6 +232,13 @@ export interface FrescoOptions {
   roughBreakup?: number;
   /** 使用哪张细节图 */
   detail?: 'stone' | 'sand' | 'fresco' | 'fleece';
+  /**
+   * 可选的反照率贴图，按 UV 采样。用它的网格必须有真的 UV
+   * （PlaneGeometry 有；props.ts 里那些程序化几何没有可靠的 UV，别用）。
+   */
+  albedoMap?: THREE.Texture;
+  /** 贴图盖过底色的程度，0–1 */
+  albedoMapAmount?: number;
   opacity?: number;
   transparent?: boolean;
   side?: THREE.Side;
@@ -249,6 +268,8 @@ export function createFrescoMaterial(options: FrescoOptions): THREE.ShaderMateri
     uniforms: {
       ...sharedUniforms,
       uColor: { value: new THREE.Color(options.color) },
+      uAlbedoMap: { value: options.albedoMap ?? null },
+      uAlbedoMapAmount: { value: options.albedoMap ? (options.albedoMapAmount ?? 1) : 0 },
       uColorSteep: { value: new THREE.Color(options.colorSteep ?? options.color) },
       uColorHigh: { value: new THREE.Color(options.colorHigh ?? options.color) },
       uSlopeBlend: { value: options.slopeBlend ?? 0 },
