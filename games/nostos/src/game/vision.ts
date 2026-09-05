@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { PIGMENT, VISION_GRADE } from '../content/palette';
 import { NO_SHADOW_LAYER } from '../engine/shadow';
+import { disposeMemoryMotifs, memoryMotifTexture } from '../world/memory-silhouettes';
 import { Motif } from '../world/silhouette';
 import { holdFor, type Caption, type VisionBeat, type VisionDef } from './types';
 
@@ -165,6 +166,7 @@ export class VisionStage {
       const spec = beat.motif;
       const motif = new Motif({
         kind: spec.kind,
+        texture: memoryMotifTexture(spec.kind),
         size: spec.size,
         ink: spec.ink === 'shadow' ? VISION_GRADE.shadow : PIGMENT.blackFigure,
         billboard: spec.billboard ?? false,
@@ -228,5 +230,6 @@ export class VisionStage {
   dispose(): void {
     this.clear();
     this.scene.remove(this.group);
+    disposeMemoryMotifs();
   }
 }

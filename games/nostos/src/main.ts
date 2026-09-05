@@ -1,6 +1,7 @@
 import './styles.css';
 import './probe';
 import { Game } from './game/flow';
+import { preloadMemoryMotifs } from './world/memory-silhouettes';
 
 /**
  * 《归航 · NOSTOS》入口。
@@ -10,14 +11,22 @@ import { Game } from './game/flow';
 const container = document.getElementById('app');
 if (!container) throw new Error('#app not found');
 
-const game = new Game(container);
+async function bootstrap(target: HTMLElement): Promise<void> {
+  await preloadMemoryMotifs();
+  const game = new Game(target);
 
-window.__nostos = {
-  state: () => game.debugState(),
-  teleport: (id: string) => game.debugTeleport(id),
-  interact: () => game.debugInteract(),
-  skipVision: () => game.debugSkipVision(),
-  skipNarration: () => game.debugSkipNarration(),
-  gotoAct: (index: number) => game.debugGotoAct(index),
-  actCount: game.actCount,
-};
+  window.__nostos = {
+    state: () => game.debugState(),
+    teleport: (id: string) => game.debugTeleport(id),
+    interact: () => game.debugInteract(),
+    skipVision: () => game.debugSkipVision(),
+    skipNarration: () => game.debugSkipNarration(),
+    gotoAct: (index: number) => game.debugGotoAct(index),
+    actCount: game.actCount,
+  };
+}
+
+void bootstrap(container).catch((error: unknown) => {
+  console.error('NOSTOS bootstrap failed', error);
+  container.textContent = '回忆图像加载失败，请刷新重试。';
+});

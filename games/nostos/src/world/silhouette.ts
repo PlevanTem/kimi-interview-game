@@ -516,6 +516,8 @@ const MOTIF_FRAG = /* glsl */ `
 
 export interface MotifOptions {
   kind: MotifKind;
+  /** 可选外部 alpha 纹理；不传时继续使用 kind 对应的程序化 Canvas。 */
+  texture?: THREE.Texture;
   /** 世界尺寸（高度），宽度按贴图比例 1:1 */
   size: number;
   ink: number;
@@ -550,7 +552,7 @@ export class Motif {
       depthTest: options.depthTest ?? true,
       side: THREE.DoubleSide,
       uniforms: {
-        uMap: { value: motifTexture(options.kind) },
+        uMap: { value: options.texture ?? motifTexture(options.kind) },
         uInk: { value: new THREE.Color(options.ink) },
         uOpacity: { value: options.opacity ?? 1 },
         uReveal: { value: 0 },

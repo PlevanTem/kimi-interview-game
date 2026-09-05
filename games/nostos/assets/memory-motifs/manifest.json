@@ -1,0 +1,361 @@
+{
+  "version": 2,
+  "sourceSheet": "games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png",
+  "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8",
+  "processingScript": "games/nostos/tools/assets/split-memory-motifs.py",
+  "evidence": "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/evidence/edge-cleanup/memory-motifs-report.json",
+  "assets": [
+    {
+      "id": "game.nostos.texture.memory_galley",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/galley.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 58625,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "afc323ff64e88102b6deeeb3de273fed44100c07d97febfc053b807cce424b89",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_rower",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/rower.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 46959,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "35eae1b3672b1ff5faf14db8cb9cb94c95ab7ff21dfda8e4ceeeb008bac120b2",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_standing",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/standing.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 43579,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "2c5ce7d329a97acc5b0ec6aaff025467efee9eadf2468ec50bd9cdcff6a2d893",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_reaching",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/reaching.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 50468,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "88e6d6579826a80560da5356536d4ba7af93d11e21df14cc51f032b02dd22a35",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_bound",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/bound.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 48679,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "ba6d53e590415cdda9d448628de8ef8664ab0f11c014b3d0e8cf12e8b475c6f9",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_kneeling",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/kneeling.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 54826,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "af0dd10a32992521759f77ebaff2c54ecb7876dc9c06db6896e51b9af433f569",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_eye",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/eye.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 73047,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "c9a78d251880c7d54575a6d3dd698a3e97181f7443d2fa4272a648105d9d5065",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_hand",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/hand.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 40992,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "3aa9884b75a43384d3af8f64006133f66b786a0926ff8f8f295151efe39d48d0",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_siren",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/siren.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 68207,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "f62697680e8426f8491192f8b431a245406301c430d2f35dd995c22c6c0e67e9",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_loom",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/loom.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 66125,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "e31853a434a1a6f08725f19a635231e0ab5ed28f0dd8122caabf919b5adf78ff",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_flock",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/flock.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 50614,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "802304cefe7e08ce0bfb28983ae49d196a99628b8f1b4a03196e2fd8f99f7cfa",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_shades",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/shades.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 49355,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "fbef200044bc0fef3d356b6d8415452c235e8255dfc22c186fd72ee1e9f7a496",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_wreath",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/wreath.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 67648,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "83f38f083180a70ed9cac7a5bb4b353bb6a363f35947d5d51863124dfb09e1e0",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_threshold",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/threshold.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 55069,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "ed996eb81ab37354036438093df8c2e001029ce77bb8da05b649198b7e5ce6fb",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_wave",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/wave.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 76814,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "c4b3b708ab184ef5f5183e7b246c8ab81993bfc2081707183b463491a1baeb64",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_flame",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/flame.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 40803,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "a832a98f33b52ac56fd685caed0275491d004aa8c0ffa10de3bca33770124532",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    }
+  ]
+}
