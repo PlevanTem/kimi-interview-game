@@ -1,0 +1,15 @@
+{
+  "runId": "run-20260904-nostos-build",
+  "gameId": "nostos",
+  "capturedAt": "2026-09-05T12:06:08+08:00",
+  "requestType": "gate3_prelock_motif_concept_sheet",
+  "source": "games/nostos/tools/assets/index.html",
+  "resolvedSource": "games/nostos/src/world/silhouette.ts",
+  "humanRequest": "从 HTML 梳理出 16 个黑绘母题，带入场景优化姿态、结构、动作与形体设计，4×4 均匀分布生成到一张图。",
+  "template": "artifact-template-nostos",
+  "motifOrder": ["galley", "rower", "standing", "reaching", "bound", "kneeling", "eye", "hand", "siren", "loom", "flock", "shades", "wreath", "threshold", "wave", "flame"],
+  "gateStateAtCapture": {
+    "gate2": "locked",
+    "gate3": "not_started"
+  },
+  "scope": "Gate 3 前的视觉候选板；不是正式锁定资产，也不改变玩法或 Gate 状态。"

@@ -1,0 +1,17 @@
+{
+  "runId": "run-20260904-nostos-build",
+  "gameId": "nostos",
+  "capturedAt": "2026-09-05T08:48:12+08:00",
+  "requestType": "gate2_human_fun_lock_approval",
+  "inputVersion": "nostos-playable-prototype-context-v1.0.0",
+  "contextVersion": "1.0.0",
+  "sources": [
+    "games/nostos/context/brief.md",
+    "games/nostos/docs/GAMEPLAY.md",
+    "games/nostos/docs/SCENES.md",
+    "games/nostos/runs/run-20260904-nostos-build/run.json",
+    "games/nostos/docs/screenshots/"
+  ],
+  "humanStatement": "玩法没问题",
+  "scope": "用户本人对当前 Nostos 可游玩原型的核心循环与玩法方向作出 Fun Lock 判断。"
+}

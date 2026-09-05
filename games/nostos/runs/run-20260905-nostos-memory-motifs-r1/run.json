@@ -1,0 +1,37 @@
+{
+  "runId": "run-20260905-nostos-memory-motifs-r1",
+  "startedAt": "2026-09-05T12:33:00+08:00",
+  "input": "用户要求将既有 4×4 黑绘概念图裁成 16 张素材，并以最快捷方式替换游戏回忆部分的 silhouette，不考虑世界资产复用。",
+  "output": "16 张 512×512 透明 alpha 纹理、可复现裁切脚本、独立回忆纹理缓存，以及对 VisionStage 的最小纹理注入。",
+  "verification": {
+    "preflight": "npm run validate:library",
+    "raster": "python games/nostos/tools/assets/split-memory-motifs.py --source games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png --out-dir games/nostos/assets/memory-motifs --evidence-dir games/nostos/runs/run-20260905-nostos-memory-motifs-r1/evidence",
+    "unit": "npm run test:nostos",
+    "typecheck": "npm run typecheck:nostos",
+    "build": "npm run build:nostos",
+    "assetConsole": "npm run assets:nostos",
+    "e2e": "npm run test:e2e:nostos",
+    "evidence": "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/evidence/"
+  },
+  "humanGates": {
+    "gate1": null,
+    "techFitLock": null,
+    "gate2": "games/nostos/runs/run-20260904-nostos-build/gate2-decision.json",
+    "gate3": null,
+    "gate4": null
+  },
+  "status": "ready_for_human_visual_review",
+  "verificationResults": {
+    "preflight": "passed",
+    "raster": "passed_16_of_16",
+    "unit": "passed_62_of_62",
+    "typecheck": "passed",
+    "build": "passed_16_textures_bundled",
+    "assetConsole": "passed",
+    "e2e": "stopped_by_user_before_completion"
+  },
+  "notes": [
+    "本轮只替换 VisionStage 回忆剪影；世界 NPC 继续使用 silhouette.ts 的程序化 Canvas 纹理和 MOTIF_FOOT。",
+    "用户授权实现不等于 Gate 3 批准；16 张新纹理保持 pending。"
+  ]
+}

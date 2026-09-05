@@ -1,0 +1,9 @@
+{
+  "runId": "run-20260905-nostos-act12-art-r1",
+  "input": "input-snapshot.json",
+  "output": "两幕程序化叙事建模、环境构图、提示落点和隔离存档的本地预览。",
+  "direction": "games/nostos/docs/ACT12_ART_DIRECTION.md",
+  "verification": "verification.json",
+  "humanGates": { "gate3": null, "gate4": null },
+  "status": "verified_for_local_art_review"
+}

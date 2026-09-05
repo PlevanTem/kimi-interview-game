@@ -1,0 +1,817 @@
+{
+  "$schema": "../../../schemas/asset-registry.schema.json",
+  "version": 5,
+  "styleBibleVersion": 2,
+  "assets": [
+    {
+      "id": "game.nostos.prop.orchard_tree",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#orchardTree"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "open-canopy",
+        "reachable-fruit",
+        "rooted-trunk"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [
+        "game.nostos.material.olive_wood"
+      ],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/lotus.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.prop.abandoned_vessels",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#abandonedVessels"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "hollow-pottery",
+        "abandoned-camp"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/lotus.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.prop.cold_hearth",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#coldHearth"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "cold-ash",
+        "charcoal"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/lotus.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.prop.abandoned_helmet",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#abandonedHelmet"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "bronze",
+        "untied-straps",
+        "memory-object"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/lotus.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.prop.shore_oar",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#NARRATIVE_ASSETS"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "wide-blade",
+        "half-buried"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [
+        "game.nostos.material.salt_wreckage"
+      ],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/lotus.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.environment.cyclops_cave",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#caveMouth"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "continuous-rock-shell",
+        "recessed-mouth",
+        "giant-scale"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [
+        "game.nostos.material.layered_basalt"
+      ],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/cyclops.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.prop.burned_stake",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#burnedStake"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "carved-taper",
+        "fire-hardened-tip",
+        "memory-object"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [
+        "game.nostos.material.olive_wood",
+        "game.nostos.material.burnt_wood"
+      ],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/cyclops.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.environment.layered_outcrops",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/narrative-assets.ts#stratifiedRock"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "continuous-rock-shell",
+        "cape-silhouette"
+      ],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": [
+        "game.nostos.material.layered_basalt"
+      ],
+      "approval": "pending",
+      "consumers": [
+        "games/nostos/src/game/scenes/cyclops.ts"
+      ],
+      "pivot": "ground-centre; metres; +Y up",
+      "collision": "scene-authored simplified circle proxies; no render-mesh collision"
+    },
+    {
+      "id": "game.nostos.material.layered_basalt",
+      "type": "procedural-shader-preset",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/materials.ts#SURFACE.layeredBasalt"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "existing-pigments",
+        "low-rim",
+        "weathered-surface"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.material.olive_wood",
+      "type": "procedural-shader-preset",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/materials.ts#SURFACE.oliveWood"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "existing-pigments",
+        "low-rim",
+        "weathered-surface"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.material.burnt_wood",
+      "type": "procedural-shader-preset",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/materials.ts#SURFACE.burntWood"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "existing-pigments",
+        "low-rim",
+        "weathered-surface"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.ui.navigation_mark",
+      "type": "procedural-svg",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/ui/navigation-mark.ts"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "nautical-ticks",
+        "bone-copper-indigo"
+      ],
+      "sizeBudgetBytes": 16384,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.ui.coastal_title",
+      "type": "procedural-ui",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/ui/opening.css"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "coastal-frontispiece",
+        "bone-copper-indigo"
+      ],
+      "sizeBudgetBytes": 16384,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.camera.opening",
+      "type": "procedural-camera",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/game/opening.ts"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "continuous-opening",
+        "bone-copper-indigo"
+      ],
+      "sizeBudgetBytes": 16384,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.prop.wrecked_raft",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/props.ts#wreckedRaft"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "salt-worn-wood",
+        "rope-knot",
+        "prologue-hero"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.nostos.material.salt_wreckage"
+      ],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.prop.broken_oar",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/props.ts#brokenOar"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "directional-fragment",
+        "wide-blade",
+        "memory-object"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.nostos.material.salt_wreckage"
+      ],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.prop.name_plank",
+      "type": "procedural-geometry",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/world/props.ts#weatheredNamePlank"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "erased-inscription",
+        "salt-worn-wood",
+        "narrative-clue"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [
+        "game.nostos.material.salt_wreckage"
+      ],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.environment.guide_star",
+      "type": "procedural-shader-cue",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/sky.ts#uGuideStarDir"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "single-guide-star",
+        "cool-halo",
+        "warm-core"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.material.wet_shore",
+      "type": "procedural-shader-material",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/materials.ts#uShoreWetStrength"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "wet-dry-transition",
+        "mineral-shore",
+        "grazing-sheen"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.material.salt_wreckage",
+      "type": "procedural-shader-preset",
+      "locator": {
+        "kind": "source",
+        "value": "games/nostos/src/engine/materials.ts#SURFACE.saltWood"
+      },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "salt-worn-wood",
+        "cold-shadow",
+        "rough-breakup"
+      ],
+      "sizeBudgetBytes": 0,
+      "dependencies": [],
+      "approval": "pending"
+    },
+    {
+      "id": "game.nostos.texture.memory_galley",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/galley.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 58625,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "afc323ff64e88102b6deeeb3de273fed44100c07d97febfc053b807cce424b89",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_rower",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/rower.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 46959,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "35eae1b3672b1ff5faf14db8cb9cb94c95ab7ff21dfda8e4ceeeb008bac120b2",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_standing",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/standing.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 43579,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "2c5ce7d329a97acc5b0ec6aaff025467efee9eadf2468ec50bd9cdcff6a2d893",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_reaching",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/reaching.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 50468,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "88e6d6579826a80560da5356536d4ba7af93d11e21df14cc51f032b02dd22a35",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_bound",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/bound.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 48679,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "ba6d53e590415cdda9d448628de8ef8664ab0f11c014b3d0e8cf12e8b475c6f9",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_kneeling",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/kneeling.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 54826,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "af0dd10a32992521759f77ebaff2c54ecb7876dc9c06db6896e51b9af433f569",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_eye",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/eye.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 73047,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "c9a78d251880c7d54575a6d3dd698a3e97181f7443d2fa4272a648105d9d5065",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_hand",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/hand.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 40992,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "3aa9884b75a43384d3af8f64006133f66b786a0926ff8f8f295151efe39d48d0",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_siren",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/siren.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 68207,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "f62697680e8426f8491192f8b431a245406301c430d2f35dd995c22c6c0e67e9",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_loom",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/loom.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 66125,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "e31853a434a1a6f08725f19a635231e0ab5ed28f0dd8122caabf919b5adf78ff",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_flock",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/flock.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 50614,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "802304cefe7e08ce0bfb28983ae49d196a99628b8f1b4a03196e2fd8f99f7cfa",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_shades",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/shades.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 49355,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "fbef200044bc0fef3d356b6d8415452c235e8255dfc22c186fd72ee1e9f7a496",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_wreath",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/wreath.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 67648,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "83f38f083180a70ed9cac7a5bb4b353bb6a363f35947d5d51863124dfb09e1e0",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_threshold",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/threshold.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 55069,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "ed996eb81ab37354036438093df8c2e001029ce77bb8da05b649198b7e5ce6fb",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_wave",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/wave.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 76814,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "c4b3b708ab184ef5f5183e7b246c8ab81993bfc2081707183b463491a1baeb64",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    {
+      "id": "game.nostos.texture.memory_flame",
+      "type": "raster-alpha-mask",
+      "locator": {
+        "kind": "file",
+        "value": "games/nostos/assets/memory-motifs/flame.png"
+      },
+      "version": 2,
+      "source": "project-generated-concept-sheet",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": [
+        "black-figure",
+        "memory-only",
+        "alpha-mask"
+      ],
+      "sizeBudgetBytes": 40803,
+      "dependencies": [],
+      "approval": "pending",
+      "sha256": "a832a98f33b52ac56fd685caed0275491d004aa8c0ffa10de3bca33770124532",
+      "sourceSheetSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    }
+  ]
+}

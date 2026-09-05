@@ -1,19 +1,16 @@
 import { TEXT } from '../../content/script';
 import {
-  amphora,
-  corinthianHelmet,
   footprint,
   boatHull,
   boulder,
   columnDrum,
   flutedColumn,
-  oliveTree,
   pithos,
-  plank,
   pole,
   statueTorso,
   stoneBlock,
 } from '../../world/props';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import type { Act } from './types';
 
 const T = TEXT.lotus;
@@ -80,8 +77,8 @@ export const lotus: Act = {
         kind: 'clue',
         prompt: '闻果子',
         lines: T.clue.fruit,
-        x: 15,
-        z: -11,
+        x: 14.25,
+        z: -10.95,
         y: 1.7,
       },
       {
@@ -184,34 +181,21 @@ export const lotus: Act = {
     colorHigh: 0xa89268,
     heightStart: 2.4,
     heightEnd: 6.5,
+    shoreWetWidth: 4,
+    shoreWetColor: 0x8d7454,
+    shoreWetStrength: 0.35,
   },
 
   dress(d) {
     // ── 倒下的酒瓮，口朝下 ──
-    d.place(amphora(1.5, 300), 'terracotta', { x: -12, z: 16, lift: 0.55, tiltZ: Math.PI * 0.52, yaw: 0.7 });
-    d.place(amphora(1.2, 301), 'terracotta', { x: -13.6, z: 14.2, lift: 0.4, tiltZ: Math.PI * 0.46, yaw: 2.1 });
+    placeNarrativeAsset(d, 'game.nostos.prop.abandoned_vessels', { x: -12, z: 16, yaw: 0.7 }, 300);
     d.place(pithos(1.6, 302), 'terracotta', { x: -15.4, z: 17.6, lift: -0.5, yaw: 0.4, block: 1 });
 
     // ── 半埋的桨 ──
-    d.place(pole(3.4, 0.08, 310), 'driftwood', { x: 11, z: 19, lift: -0.3, tiltX: 1.05, yaw: -0.8 });
+    placeNarrativeAsset(d, 'game.nostos.prop.shore_oar', { x: 11, z: 19, yaw: -0.8, tiltZ: 0.04 }, 310);
 
     // ── 冷掉的火堆 ──
-    for (let i = 0; i < 9; i += 1) {
-      const a = (i / 9) * Math.PI * 2;
-      d.place(boulder(0.32 + d.rng() * 0.16, 320 + i), 'darkRock', {
-        x: -18 + Math.cos(a) * 1.5,
-        z: -6 + Math.sin(a) * 1.5,
-      });
-    }
-    for (let i = 0; i < 5; i += 1) {
-      d.place(plank(0.9 + d.rng() * 0.5, 0.16, 0.1, 330 + i), 'charredWood', {
-        x: -18 + (d.rng() - 0.5) * 1.4,
-        z: -6 + (d.rng() - 0.5) * 1.4,
-        lift: 0.1,
-        yaw: d.rng() * Math.PI,
-        tiltZ: (d.rng() - 0.5) * 0.5,
-      });
-    }
+    placeNarrativeAsset(d, 'game.nostos.prop.cold_hearth', { x: -18, z: -6 }, 320);
 
     // ── 果树：低矮、伸手就够得到，光从叶缝里切下来 ──
     const trees: Array<[number, number, number]> = [
@@ -224,12 +208,7 @@ export const lotus: Act = {
     ];
     for (const [x, z, height] of trees) {
       const seed = 340 + Math.floor(x * 7 + z);
-      // 树冠抬到人眼之上：走到树下要能看见叶子的底面，而不是撞进一团黑。
-      // 这个保证由 oliveTree() 量出来，不是在这里算的——「闻果子」那处线索
-      // 就摆在其中一棵树的正下方，每个玩家都必然站到那儿。
-      const tree = oliveTree(height, seed);
-      d.place(tree.trunk, 'driftwood', { x, z, block: 0.5 });
-      d.place(tree.canopy, 'olive', { x, z, lift: tree.canopyLift });
+      placeNarrativeAsset(d, 'game.nostos.prop.orchard_tree', { x, z, scale: height / 4.4, block: 0.45 }, seed);
     }
 
     // ── 一行脚印：从水边往岛里去，只有去的那一行 ──
@@ -273,31 +252,52 @@ export const lotus: Act = {
     d.place(stoneBlock(1.8, 0.5, 1.4, 360), 'limestone', { x: 22.1, z: -1.9, yaw: 0.4 });
 
     // ── 被丢下的头盔（核心记忆）：一块矮台上 ──
-    d.place(stoneBlock(1.2, 0.42, 1.2, 370), 'limestone', { x: -6, z: -19, yaw: 0.2 });
+    d.place(stoneBlock(2.0, 0.16, 1.8, 370), 'limestone', { x: -6, z: -19, yaw: 0.2 });
     // 侧翻着搁在矮台上：旁白说"头盔翻在地上，里面积了一层沙"，
     // 所以它必须是倒的——正着摆就成了陈列，而这顶盔是被人解开带子丢下的。
-    d.place(corinthianHelmet(0.38, 371), 'bronze', {
+    placeNarrativeAsset(d, 'game.nostos.prop.abandoned_helmet', {
       x: -6,
       z: -19,
-      lift: 0.5,
-      yaw: 0.7,
-      tiltX: 1.42,
-      tiltZ: 0.16,
-    });
+      lift: 0.16,
+      yaw: 0.3,
+    }, 371);
 
     // ── 岛心的一段断柱廊：这里从前有人住过 ──
     for (let i = 0; i < 5; i += 1) {
       const x = -2 + i * 3.4;
       const z = -28 - i * 0.6;
-      d.place(flutedColumn({ height: 3.6 - i * 0.42, radius: 0.42, seed: 380 + i, broken: 0.25 + i * 0.11 }), 'limestone', {
+      const height = 5.5 - i * 0.52;
+      d.place(flutedColumn({ height, radius: 0.48, seed: 380 + i, broken: 0.12 + i * 0.11 }), 'limestone', {
         x,
         z,
         block: 0.62,
         tiltZ: (d.rng() - 0.5) * 0.05,
       });
+      d.place(stoneBlock(1.35, 0.23, 1.35, 1400 + i), 'limestone', { x, z, lift: -0.04 });
+      // Two surviving lintels establish architecture; the rest is deliberately missing.
+      if (i < 2) {
+        const top0 = d.terrain.heightAt(x, z) + height * (0.88 - i * 0.11);
+        const top1 = d.terrain.heightAt(x + 3.4, z - 0.6) + (height - 0.52) * (0.77 - i * 0.11);
+        const span = Math.hypot(3.4, 0.6), rise = top1 - top0;
+        d.place(stoneBlock(Math.hypot(span, rise) + 0.55, 0.48, 1.05, 1410 + i, 0.1), 'limestone', {
+          x: x + 1.7, z: z - 0.3, y: (top0 + top1) / 2 - 0.08,
+          yaw: Math.atan2(0.6, 3.4), tiltZ: Math.atan2(rise, span),
+        });
+      }
     }
     d.place(columnDrum(0.44, 0.9, 390), 'limestone', { x: 3.2, z: -24.5, tiltX: 1.4, yaw: 0.9, block: 0.6 });
     d.place(columnDrum(0.44, 1.1, 391), 'limestone', { x: 5.6, z: -26.2, tiltZ: 1.5, yaw: 0.3, block: 0.6 });
+
+    // Eroded courtyard fragments: discontinuous, ground-conforming, never a raised collision floor.
+    for (let row = 0; row < 5; row++) for (let col = 0; col < 7; col++) {
+      if ((row * 3 + col * 5) % 7 < 2) continue;
+      const x = 6 + col * 1.65 + (row % 2) * 0.7, z = -5 - row * 1.7;
+      const g = stoneBlock(1.45, 0.09, 1.48, 1800 + row * 7 + col, 0.08);
+      const pos = g.getAttribute('position'), base = d.terrain.heightAt(x, z);
+      for (let j = 0; j < pos.count; j++) pos.setY(j, pos.getY(j) + d.terrain.heightAt(x + pos.getX(j), z + pos.getZ(j)) - base);
+      g.computeVertexNormals();
+      d.place(g, 'weatheredMarble', { x, z, lift: -0.045 });
+    }
 
     // ── 登岸口的地标：一对倒下的断柱与一段矮墙，
     //    让玩家一上岸就有一个"这里从前有人"的读法，而不是一片空沙 ──
@@ -355,13 +355,14 @@ export const lotus: Act = {
     d.place(pole(3.9, 0.1, 401), 'driftwood', { x: -6.2, z: 36.6, lift: 0.72, tiltX: 0.13 });
 
     // ── 卵石与灌木，把空地填成可读的地面 ──
-    d.scatter(46, {
-      innerRadius: 6,
+    d.scatter(24, {
+      innerRadius: 18,
       outerRadius: 40,
       minSpacing: 2.2,
       minHeight: 0.4,
+      exclude: lotus.def.interactables.map((p) => ({ x: p.x, z: p.z, radius: 4 })),
       make: (_, rng) => ({
-        geometry: boulder(0.3 + rng() * 0.9, 500 + Math.floor(rng() * 900)),
+        geometry: boulder(0.2 + rng() * 0.55, 500 + Math.floor(rng() * 900)),
         surface: 'limestone' as const,
         place: { yaw: rng() * Math.PI, lift: -0.12 },
       }),

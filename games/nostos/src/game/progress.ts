@@ -1,4 +1,5 @@
 import type { SceneDef } from './types';
+import { previewAct } from './local-preview';
 
 /**
  * 进度。
@@ -53,6 +54,7 @@ export function isFinalAct(progress: Progress, totalActs: number): boolean {
 
 /** 存档。localStorage 不可用（无痕、被禁用）时静默跳过，不影响游玩。 */
 export function save(progress: Progress): void {
+  if (previewAct() !== null) return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch {
@@ -61,6 +63,7 @@ export function save(progress: Progress): void {
 }
 
 export function load(): Progress | null {
+  if (previewAct() !== null) return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -84,6 +87,7 @@ export function load(): Progress | null {
 }
 
 export function clear(): void {
+  if (previewAct() !== null) return;
   try {
     localStorage.removeItem(STORAGE_KEY);
   } catch {

@@ -52,6 +52,10 @@ export interface TerrainParams {
   detail?: 'stone' | 'sand';
   heightStart?: number;
   heightEnd?: number;
+  /** 仅需要潮湿海岸层的场景启用。 */
+  shoreWetWidth?: number;
+  shoreWetColor?: number;
+  shoreWetStrength?: number;
   /** 需要平整的地方（神殿、祭坛、村口） */
   plateaus?: Plateau[];
   /** 需要下陷的地方（洞窟前的谷、干涸的泉） */
@@ -101,6 +105,10 @@ export class Terrain implements GroundSampler {
       detailStrength: 0.92,
       roughBreakup: 0.32,
       rimStrength: 0.35,
+      shoreWetRadius: this.params.radius,
+      shoreWetWidth: this.params.shoreWetWidth,
+      shoreWetColor: this.params.shoreWetColor,
+      shoreWetStrength: this.params.shoreWetStrength,
     });
 
     this.mesh = new THREE.Mesh(geometry, this.material);

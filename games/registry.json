@@ -1,7 +1,7 @@
 {
   "$schema": "../schemas/game-library.schema.json",
   "version": "1.1.0",
-  "updatedAt": "2026-09-04T09:00:00+08:00",
+  "updatedAt": "2026-09-05T00:00:00+08:00",
   "activeGameId": "nostos",
   "productionPaused": false,
   "games": [
@@ -18,12 +18,20 @@
       "status": "archived",
       "path": "games/odyssey-drifter",
       "manifest": "games/odyssey-drifter/manifest.json"
+    },
+    {
+      "id": "odyssey-drifter-opus-51",
+      "title": "光线之上 · Opus 5.1 重制",
+      "status": "archived",
+      "path": "games/odyssey-drifter-opus-51",
+      "manifest": "games/odyssey-drifter-opus-51/manifest.json"
     }
   ],
   "notes": [
     "《归航 · NOSTOS》直接由用户 2026-09-04 的指定简报产生，未走 Gate 1 三候选发散与人工概念锁定；因此 status 停在 concept，gateState.gate1 记为 bypassed_by_user_brief。没有人工 Gate 记录就不声称通过 Gate。",
     "《归航 · NOSTOS》的技术路线（浏览器 WebGL2 + Three.js）由用户简报的能力需求直接推导，未做多方案 Tech Fit Review；manifest.technologyDecision 保持 null。",
     "《光线之上》与其目录内的历史产物按用户指示不再继续，改标 archived 作为历史保留，不删除。",
+    "《光线之上 · Opus 5.1 重制》保留为历史工作区并登记为 archived，不再作为 active game。",
     "根级 game-context 与 runs 是框架启动验证证据，不属于游戏库。"
   ]
 }

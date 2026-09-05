@@ -1,0 +1,77 @@
+{
+  "$schema": "../../../schemas/style-bible.schema.json",
+  "id": "nostos-prologue-visual-pilot",
+  "version": 2,
+  "status": "draft",
+  "approved": false,
+  "act12Extension": {
+    "direction": "games/nostos/docs/ACT12_ART_DIRECTION.md",
+    "authorization": "user_directed_implementation",
+    "lotus": "蜜金、枝叶负形、散落陶片、浅石铺；甜蜜的停留与被丢下的归途。",
+    "cyclops": "青灰逆光、连续层岩洞壳、巨骨与烧尖木桩；尺度压迫与人的代价。",
+    "materialRule": "只复用既有颜料。新增层岩/橄榄木/焦尖预设降低轮廓光，保留全作壁画着色。",
+    "shapeRule": "方向性长构件、侵蚀矿物体块、水平层带；树冠通过枝叶负形表达，不添加新剪影母题。"
+  },
+  "conceptId": "nostos",
+  "keyframe": {
+    "scene": "prologue",
+    "status": "implementation-baseline",
+    "evidence": "games/nostos/docs/screenshots/00-prologue-a-登岸.jpg"
+  },
+  "mood": [
+    "黎明前的失重感",
+    "盐蚀残骸仍保留人的手艺",
+    "唯一导星给出微弱但明确的方向"
+  ],
+  "worldRules": [
+    "第0幕只使用程序化几何与现有壁画着色，不引入黑绘或音频新资产",
+    "木筏绳结为主焦点，断桨为次焦点，导星为远景焦点",
+    "残骸后方必须保留负形，船肋与卵石不得争夺主轮廓"
+  ],
+  "palette": {
+    "dominant": ["#0d1424", "#26384c", "#9a8872"],
+    "support": ["#71839f", "#b09a74", "#e7d9be"],
+    "rule": "保持靛蓝、灰蓝、冷骨白与盐蚀木色，不扩充全作十二颜料体系"
+  },
+  "shapeLanguages": [
+    "方向性长构件：木板、残桨、船肋",
+    "低矮圆钝体块：潮线卵石与石锚",
+    "水平层带：湿岸、海面、雾与天际"
+  ],
+  "materials": [
+    "盐蚀木与绳：较亮木面、深冷影、独立绳索色阶",
+    "湿干矿物岸：径向潮湿带与克制的掠射亮边",
+    "海雾天空：低饱和星场、唯一暖白导星、收敛的浪沫"
+  ],
+  "compositionRules": [
+    "出生视线先落到木筏和可读绳结",
+    "断桨以宽桨叶和断口区别于普通杆件",
+    "导星不使用地面微光替身，必须通过真实抬头凝视触发",
+    "卵石减量并远离木筏背后的负形区"
+  ],
+  "lighting": {
+    "preset": "dawnAtSea",
+    "ambientIntensity": 0.49,
+    "exposure": 1.16,
+    "halation": 0.16,
+    "vignette": 0.31,
+    "grain": 0.035
+  },
+  "uiTokens": {
+    "bone": "#e7d9be",
+    "copper": "#b8a17b",
+    "deep": "#101c2b",
+    "hairlineOpacity": 0.22,
+    "direction": "games/nostos/docs/OPENING_DIRECTION.md",
+    "layout": "左侧衬线标题，右侧真实木筏，原生键盘按钮，窄屏安全区域"
+  },
+  "motion": {
+    "openingSeconds": 15,
+    "cameraCurve": "quintic smootherstep",
+    "uiEase": "cubic-bezier(.16,1,.3,1)",
+    "touchPulseMs": 650,
+    "reducedMotion": "静态机位、禁用漂移及UI动画、保留跳过和情境提示"
+  },
+  "promptPrefix": "NOSTOS 第0幕，黎明前靛蓝海面，盐蚀残骸，低饱和湿壁画色带，清晰叙事焦点与大片负形",
+  "negativePrompt": "随机亮点冒充导星，圆石铺满画面，塑料高光，同材质灰糊，过重暗角，过重颗粒，新增黑绘或音频资产"
+}

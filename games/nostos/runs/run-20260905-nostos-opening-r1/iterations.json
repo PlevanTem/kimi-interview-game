@@ -1,0 +1,23 @@
+{
+  "$schema": "../../../../schemas/iteration-ledger.schema.json",
+  "runId": "run-20260905-nostos-opening-r1",
+  "entries": [
+    {
+      "id": "opening-continuity",
+      "issue": "标题和开场缺乏可见背景、情境操作与叙事连续性。",
+      "evidence": [
+        "games/nostos/docs/screenshots/opening-01-title.jpg",
+        "games/nostos/docs/screenshots/opening-02-cinematic.jpg",
+        "games/nostos/docs/screenshots/opening-03-handoff.jpg",
+        "games/nostos/docs/screenshots/opening-04-narrow.jpg"
+      ],
+      "rootCause": "转场初值完全盖住标题；引导强制黑场且用全量文字教学；默认后期画幅对窄屏添加黑边。",
+      "change": "透明初始遮罩、有界海岸机位与指针响应、15秒五次平滑镜头、三句独白、操作情境提示、SVG航海印记、响应UI和低动态选项。实拍第二轮修正船舷遮挡与竖屏黑边。",
+      "verification": "npm run test:nostos; npm run build:nostos; isolated-port Playwright @opening|@prologue-visual",
+      "before": "标题被遮蔽，八句黑场引导，竖屏世界仅显示中央窄带。",
+      "after": "64项单测与类型构建通过；3个浏览器用例通过。实拍确认海岸标题可见、转场连续、绳结交接、竖屏无默认黑边；详见verification.json。",
+      "status": "verified",
+      "commit": null
+    }
+  ]
+}

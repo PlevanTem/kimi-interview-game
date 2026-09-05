@@ -1,0 +1,29 @@
+{
+  "runId": "run-20260904-nostos-build",
+  "iterationId": "gate3-motif-sheet-001",
+  "recordedAt": "2026-09-05T12:06:08+08:00",
+  "inputSnapshot": "games/nostos/runs/run-20260904-nostos-build/gate3/motif-sheet-input-snapshot.json",
+  "output": "games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png",
+  "source": "games/nostos/tools/assets/index.html",
+  "resolvedSource": "games/nostos/src/world/silhouette.ts",
+  "generation": {
+    "mode": "Codex built-in image_gen",
+    "template": "artifact-template-nostos",
+    "referenceSha256": "908f525b32477a0e0d0aee8b407d401dc92f2660a14f521fce89ecebcdf4a906",
+    "promptSummary": "精确按源码顺序生成 galley、rower、standing、reaching、bound、kneeling、eye、hand、siren、loom、flock、shades、wreath、threshold、wave、flame；带入八幕语义优化姿态与形体；暖石灰底、近黑剪影、稀疏负形刻线；4×4 等分；无文字、无现代元素、无战斗扩写。"
+  },
+  "verification": {
+    "libraryValidation": {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    "raster": {
+      "format": "PNG",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8"
+    },
+    "visualInspection": "PASS: exactly 4×4 cells and 16 motifs; no labels, cropping, duplicate cells, modern costume, combat additions, watermark, or palette drift."
+  },
+  "gateImpact": "none",

@@ -1,0 +1,58 @@
+{
+  "environment": "Chromium / ANGLE SwiftShader software renderer; not hardware FPS certification",
+  "reports": [
+    {
+      "act": 1,
+      "elapsedMs": 30424.199999952318,
+      "frames": 107,
+      "medianMs": 283.2999999999993,
+      "p95Ms": 583.3000000000029
+    },
+    {
+      "act": 2,
+      "elapsedMs": 30411.600000000006,
+      "frames": 74,
+      "medianMs": 400.09999999999127,
+      "p95Ms": 833.3000000000029
+    }
+  ],
+  "resources": [
+    {
+      "act": 1,
+      "calls": 1,
+      "geometries": 23,
+      "textures": 8
+    },
+    {
+      "act": 2,
+      "calls": 1,
+      "geometries": 20,
+      "textures": 9
+    },
+    {
+      "act": 1,
+      "calls": 1,
+      "geometries": 23,
+      "textures": 9
+    },
+    {
+      "act": 2,
+      "calls": 1,
+      "geometries": 20,
+      "textures": 9
+    },
+    {
+      "act": 1,
+      "calls": 1,
+      "geometries": 23,
+      "textures": 9
+    },
+    {
+      "act": 2,
+      "calls": 1,
+      "geometries": 20,
+      "textures": 9
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,90 @@
+{
+  "runId": "run-20260905-nostos-act12-art-r1",
+  "status": "verified_for_local_art_review",
+  "buildAsset": "games/nostos/dist/assets/index-eel76FHn.js",
+  "checks": [
+    {
+      "command": "npm run test:nostos",
+      "exitCode": 0,
+      "result": "76 tests / 7 files passed, including registry resolution and byte budgets; run alone after a CPU-contention timeout."
+    },
+    {
+      "command": "npm run build:nostos",
+      "exitCode": 0,
+      "result": "TypeScript + Vite passed."
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT='4186'; npx playwright test --config games/nostos/playwright.config.ts --grep '@act12|@opening|@prologue-visual'",
+      "exitCode": 1,
+      "result": "5 functional cases passed; first resource assertion failed by comparing cold cache (8 textures) against warmed cache (9). No game code changed for this failure."
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT='4186'; npx playwright test --config games/nostos/playwright.config.ts --grep '@act12-perf'",
+      "exitCode": 0,
+      "result": "Corrected lifecycle test passed: 60.8 seconds sampled and six scene visits, two warm cycles with no growth. All six affected browser cases now passed across these runs."
+    },
+    {
+      "command": "npm run assets:nostos",
+      "exitCode": 0,
+      "result": "Standalone asset console rebuilt; additional Chromium smoke verified 7 canvases, nonblank pixels, no page/console errors."
+    },
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "visualEvidence": [
+    "games/nostos/docs/screenshots/act12-lotus-entry.jpg",
+    "games/nostos/docs/screenshots/act12-lotus-orchard.jpg",
+    "games/nostos/docs/screenshots/act12-lotus-pottery.jpg",
+    "games/nostos/docs/screenshots/act12-lotus-fruit.jpg",
+    "games/nostos/docs/screenshots/act12-lotus-helmet.jpg",
+    "games/nostos/docs/screenshots/act12-cyclops-entry.jpg",
+    "games/nostos/docs/screenshots/act12-cyclops-cave.jpg",
+    "games/nostos/docs/screenshots/act12-cyclops-stake.jpg",
+    "games/nostos/docs/screenshots/act12-cyclops-bone.jpg",
+    "games/nostos/docs/screenshots/act12-asset-console.jpg"
+  ],
+  "geometry": {
+    "lotusVertices": 220050,
+    "cyclopsVertices": 72792,
+    "budgetPerAct": 300000
+  },
+  "performance": {
+    "report": "games/nostos/docs/screenshots/act12-performance.json",
+    "renderer": "Chromium ANGLE SwiftShader software",
+    "lotusMedianFrameMs": 283.3,
+    "cyclopsMedianFrameMs": 400.1,
+    "warmResources": {
+      "lotus": {
+        "geometries": 23,
+        "textures": 9
+      },
+      "cyclops": {
+        "geometries": 20,
+        "textures": 9
+      }
+    },
+    "note": "No growth after warmup. This software environment does NOT satisfy the 55FPS release threshold; hardware performance remains unverified. renderStats.calls describes the final pass, not total frame draw calls."
+  },
+  "localPreview": {
+    "port": 4175,
+    "host": "127.0.0.1",
+    "httpStatus": 200,
+    "lotus": "http://127.0.0.1:4175/?preview=lotus",
+    "cyclops": "http://127.0.0.1:4175/?preview=cyclops",
+    "saveIsolation": "Verified existing normal save remains unchanged through clues, memory and departure.",
+    "opened": "Default browser launch for lotus succeeded; Codex browser tabs queued."
+  },
+  "limits": [
+    "Full eight-act journey not rerun; acts 1/2 depart into the next scene verified.",
+    "No hardware GPU, physical gamepad or touch-device performance validation.",
+    "No human Visual Lock or Release Candidate approval; assets remain pending."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "gate": "Gate 2 — Fun Lock",
+  "gameId": "nostos",
+  "runId": "run-20260904-nostos-build",
+  "inputVersion": "nostos-playable-prototype-context-v1.0.0",
+  "decisionMaker": "human_user",
+  "result": "approved",
+  "decidedAt": "2026-09-05T08:48:12+08:00",
+  "reason": [
+    "用户本人体验当前可游玩原型后明确确认：玩法没问题。",
+    "核心循环可以锁定，后续投入转向正常 3D 世界为主体、平面回忆为特殊状态的视觉系统重建。"
+  ],
+  "approvedScope": [
+    "开始页进入游戏",
+    "行走、观察与触碰",
+    "环境线索与回忆触发",
+    "回忆结束后返回现实并离岛",
+    "暂停、继续、重开与终幕流程"
+  ],
+  "intentionalExceptions": [
+    {
+      "requirement": "failure_state",
+      "status": "not_applicable_by_design",
+      "reason": "Nostos 是无战斗、无死亡、无时间压力的第一人称叙事探索；GAMEPLAY.md 已将失败状态列为非目标，不为通用 Gate 模板新增失败机制。"
+    }
+  ],
+  "visualGate": {
+    "gate3": "not_started",
+    "directive": "Gate 2 已通过，可以重建 draft StyleBible 与目标关键帧；正式视觉资产仍须等待用户批准 Gate 3。"
+  },
+  "lifecycleNote": "manifest 与 registry 的 status 暂保留 concept，因为 technologyDecision 仍为 null，不能伪造 Tech Fit Lock。"
+}

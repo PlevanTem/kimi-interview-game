@@ -1,0 +1,16 @@
+{
+  "runId": "run-20260905-nostos-opening-r1",
+  "request": "以程序化画面和动画转场优化标题、开场引导及游戏UI，建立统一美术风格并增加趣味交互。",
+  "sources": [
+    "games/nostos/src/game/flow.ts",
+    "games/nostos/src/ui/overlay.ts",
+    "games/nostos/src/styles.css",
+    "games/nostos/context/style-bible.json"
+  ],
+  "baselineFindings": [
+    "标题阶段fade与fadeTarget默认1，场景渲染被遮蔽。",
+    "八句引导保持黑场并提前透露十二条船。",
+    "默认后期目标画幅1.6导致竖屏上下大块黑边。"
+  ],
+  "scope": "第0幕标题、引导、UI、转场与可访问性；保留并行回忆资产工作。"
+}

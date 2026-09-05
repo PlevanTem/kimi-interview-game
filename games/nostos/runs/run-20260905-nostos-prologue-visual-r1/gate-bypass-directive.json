@@ -1,0 +1,9 @@
+{
+  "runId": "run-20260905-nostos-prologue-visual-r1",
+  "recordedAt": "2026-09-05T12:18:00+08:00",
+  "decisionMaker": "human-user",
+  "statement": "忽略gate直接改",
+  "scope": "仅第0幕美术视觉试点；不含黑绘、音效与玩法扩展",
+  "result": "authorized_visual_spike_without_gate_lock",
+  "gate3StateAfter": "not_started"
+}

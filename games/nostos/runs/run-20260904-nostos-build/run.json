@@ -13,12 +13,12 @@
   "humanGates": {
     "gate1": null,
     "techFitLock": null,
-    "gate2": null,
+    "gate2": "games/nostos/runs/run-20260904-nostos-build/gate2-decision.json",
     "gate3": null,
     "gate4": null
   },
   "notes": [
-    "没有任何人工 Gate 决策记录，所以本次运行不构成任何 Gate 通过。",
+    "本次运行的 Gate 2 已由用户本人于 2026-09-05 明确批准；其余 Gate 仍无人工批准记录。",
     "截图由 e2e 自动产出，是美术方向的实拍证据而非概念图。"
   ]
 }

@@ -88,6 +88,7 @@ export class Stage {
   }
 
   private addGlint(def: InteractableDef): void {
+    if (def.glint === false) return;
     const ground = this.terrain.heightAt(def.x, def.z);
     // 记忆物件的微光更大更暖一点，离岛点最大——它是"该走了"的唯一提示
     const size = def.kind === 'memory' ? 0.8 : def.kind === 'depart' ? 1.0 : 0.5;

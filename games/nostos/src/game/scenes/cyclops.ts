@@ -1,6 +1,7 @@
 import { TEXT } from '../../content/script';
-import { boatHull, boulder, crushedShield, plank, pole, ribBone, stoneBlock, woolTuft } from '../../world/props';
+import { boatHull, crushedShield, plank, pole, ribBone, stoneBlock, woolTuft } from '../../world/props';
 import type { Act } from './types';
+import { placeNarrativeAsset, stratifiedRock } from '../../world/narrative-assets';
 
 const T = TEXT.cyclops;
 
@@ -31,8 +32,8 @@ export const cyclops: Act = {
         kind: 'clue',
         prompt: '看羊栏',
         lines: T.clue.pen,
-        x: -14,
-        z: 18,
+        x: -9.2,
+        z: 21,
         y: 1,
         radius: 3.4,
       },
@@ -180,16 +181,19 @@ export const cyclops: Act = {
   terrain: {
     seed: 20260301,
     radius: 44,
-    amplitude: 4.6,
+    amplitude: 2.8,
     frequency: 0.058,
     dome: 5.5,
-    ridge: 3.2,
+    ridge: 1.8,
     detail: 'stone',
     colorFlat: 0x5a5450,
     colorSteep: 0x36332f,
     colorHigh: 0x6b6560,
     heightStart: 5,
     heightEnd: 13,
+    shoreWetWidth: 5,
+    shoreWetColor: 0x26384c,
+    shoreWetStrength: 0.5,
     plateaus: [{ x: 0, z: -30, radius: 13, height: 3.2 }],
     basins: [{ x: 0, z: -14, radius: 12, depth: 1.6 }],
   },
@@ -227,22 +231,18 @@ export const cyclops: Act = {
     // 现在用真的盾形（碟面 + 中央盾脐，纹章就在盾脐上），只略微陷进土里。
     d.place(crushedShield(1.15, 640), 'bronze', { x: -6, z: 2, lift: -0.03, yaw: 0.6, tiltZ: 0.05 });
 
-    // ── 洞口：几块巨岩围出的拱，里面是黑的 ──
-    const mouth: Array<[number, number, number, number]> = [
-      [-6.2, -24.5, 4.4, 650],
-      [-4.4, -28.5, 5.2, 651],
-      [6.4, -24.2, 4.6, 652],
-      [4.8, -28.8, 5.4, 653],
-      [-1.5, -32.5, 6.2, 654],
-      [2.6, -33.2, 5.8, 655],
-    ];
-    for (const [x, z, r, seed] of mouth) {
-      d.place(boulder(r, seed), 'basalt', { x, z, yaw: seed * 0.7, block: r * 0.82 });
+    // Three recessed rock courses form a real dark volume, with a 9m clear approach.
+    placeNarrativeAsset(d, 'game.nostos.environment.cyclops_cave', { x: 0, z: -25, y: 3.2 }, 650);
+    for (let i = 0; i < 3; i++) for (const side of [-1, 1]) {
+      d.blockers.push({ x: side * 8.1, z: -25 - i * 3.5, radius: 3.4 });
     }
-    // 洞顶的压梁，让洞口成为一个"门"而不是一堆石头
-    d.place(stoneBlock(13, 2.6, 5, 660, 0.1), 'basalt', { x: 0, z: -28.5, lift: 4.6, yaw: 0.05 });
-    // 洞的后壁：把光完全吃掉
-    d.place(stoneBlock(14, 7, 2.4, 661, 0.08), 'basalt', { x: 0, z: -34.5, block: 5 });
+    d.blockers.push({ x: 0, z: -35.1, radius: 5 });
+    // Flanking outcrops extend the cape silhouette, leaving the centre deliberately open.
+    for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
+      d.place(stratifiedRock(6.5, 6.4 + i * 1.4, 5.5, 1600 + i), 'layeredBasalt', {
+        x: side * (15 + i * 3.8), z: -23 + i * 3, lift: -0.3, yaw: side * 0.2, block: 2.8,
+      });
+    }
 
     // ── 石缝里的羊毛 ──
     //
@@ -283,18 +283,22 @@ export const cyclops: Act = {
         tiltZ: (d.rng() - 0.5) * 0.6,
       });
     }
-    d.place(pole(3.8, 0.13, 690), 'charredWood', { x: 0, z: -27, lift: 0.15, tiltX: 1.28, yaw: 0.5 });
+    placeNarrativeAsset(d, 'game.nostos.prop.burned_stake', { x: 0, z: -27, yaw: 0.5 }, 690);
 
     // ── 礁石群：把海岸线咬得很碎，也让登岸那一眼有前景 ──
-    d.scatter(58, {
-      innerRadius: 10,
+    d.scatter(26, {
+      innerRadius: 18,
       outerRadius: 42,
       minSpacing: 2.4,
       minHeight: 0.2,
       maxSlope: 1.1,
+      exclude: [
+        ...cyclops.def.interactables.map((p) => ({ x: p.x, z: p.z, radius: 4.5 })),
+        ...[28, 20, 12, 4, -4, -12, -20, -28].map((z) => ({ x: 0, z, radius: 7 })),
+      ],
       make: (_, rng) => ({
-        geometry: boulder(0.5 + rng() * 1.9, 700 + Math.floor(rng() * 900)),
-        surface: rng() > 0.4 ? ('basalt' as const) : ('darkRock' as const),
+        geometry: stratifiedRock(1.4 + rng() * 2, 0.5 + rng() * 1.4, 1.5 + rng(), 700 + Math.floor(rng() * 900)),
+        surface: 'layeredBasalt' as const,
         place: { yaw: rng() * Math.PI, lift: -0.25, block: 0.9 },
       }),
     });

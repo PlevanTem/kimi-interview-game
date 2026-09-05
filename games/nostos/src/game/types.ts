@@ -33,6 +33,16 @@ export interface InteractableDef {
   y?: number;
   /** 触发半径，默认 2.4 米 */
   radius?: number;
+  /** 小范围环境交互：贴近此半径后无需瞄准脚下的单个点。默认仍须朝向目标。 */
+  proximityRadius?: number;
+  /** 远处线索可要求玩家真正抬头并朝向它，而不只是在地面交互点附近。 */
+  look?: {
+    yaw: number;
+    pitch: number;
+    tolerance?: number;
+  };
+  /** 物件自身足够醒目时可关闭近地面的辅助微光。 */
+  glint?: boolean;
   /**
    * 离岛点专用：必须先触发核心记忆才会亮起。
    * 其余类型忽略此字段。
