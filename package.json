@@ -25,7 +25,8 @@
     "quality:report": "node scripts/quality-report.mjs",
     "quality:framework": "npm run validate:library && npm run validate:context && npm run audit:assets && npm run validate:skills && npm run lint && npm run test && npm run build",
     "quality": "npm run quality:framework && npm run test:e2e && npm run quality:report",
-    "assets:nostos": "vite build --config games/nostos/tools/assets/vite.config.ts && node games/nostos/tools/assets/build.mjs"
+    "assets:nostos": "vite build --config games/nostos/tools/assets/vite.config.ts && node games/nostos/tools/assets/build.mjs",
+    "tuner:nostos": "vite build --config games/nostos/tools/tuner/vite.config.ts && node games/nostos/tools/tuner/build.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.3.0",
