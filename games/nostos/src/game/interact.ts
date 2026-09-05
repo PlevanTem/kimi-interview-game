@@ -28,6 +28,13 @@ const DEFAULT_RADIUS = 2.6;
 /** 视锥半角：约 55°，比准星宽，避免"明明看着却点不到" */
 const CONE = Math.PI * 0.31;
 
+function insideZone(query: FocusQuery, def: InteractableDef): boolean {
+  const zone = def.proximityZone;
+  if (!zone) return false;
+  const radial = Math.hypot(query.x - zone.centerX, query.z - zone.centerZ);
+  return radial >= zone.innerRadius && radial <= zone.outerRadius;
+}
+
 /** 在候选里挑出当前该高亮的那一个；没有就返回 null。 */
 export function findFocus(
   query: FocusQuery,
@@ -44,9 +51,12 @@ export function findFocus(
     if (!isAvailable(def)) continue;
     const dx = def.x - query.x;
     const dz = def.z - query.z;
-    const distance = Math.hypot(dx, dz);
+    const anchorDistance = Math.hypot(dx, dz);
+    const inZone = insideZone(query, def);
+    // 区域命中代表玩家已经碰到画面里的目标；锚点距离只用于区域外的旧交互。
+    const distance = inZone ? 0 : anchorDistance;
     const radius = def.radius ?? DEFAULT_RADIUS;
-    if (distance > radius) continue;
+    if (!inZone && distance > radius) continue;
 
     if (def.look) {
       const tolerance = def.look.tolerance ?? 0.28;
@@ -61,7 +71,7 @@ export function findFocus(
 
     // 站在物件正上方时方向无意义，直接判为正对
     let offAngle = 0;
-    if (!def.look && distance > Math.max(0.15, def.proximityRadius ?? 0)) {
+    if (!def.look && !inZone && distance > Math.max(0.15, def.proximityRadius ?? 0)) {
       const dot = (dx * forwardX + dz * forwardZ) / distance;
       offAngle = Math.acos(Math.max(-1, Math.min(1, dot)));
       if (offAngle > CONE) continue;

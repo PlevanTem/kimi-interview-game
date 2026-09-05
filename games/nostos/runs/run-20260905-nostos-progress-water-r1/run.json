@@ -1,0 +1,8 @@
+{
+  "runId": "run-20260905-nostos-progress-water-r1",
+  "input": "input-snapshot.json",
+  "output": "八幕名称暂停进度与整圈湿岸水温交互修复",
+  "verification": "verification.json",
+  "humanGates": { "gate3": null, "gate4": null },
+  "status": "verified_for_merge"
+}
