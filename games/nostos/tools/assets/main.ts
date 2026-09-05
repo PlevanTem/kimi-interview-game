@@ -20,6 +20,7 @@ import { AUDIO, Soundscape } from '../../src/engine/audio';
 import { SURFACE, applyEnvToMaterials, tickMaterials } from '../../src/engine/materials';
 import { frescoTexture, meanderTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
 import { ACTS } from '../../src/game/scenes';
+import { holdFor } from '../../src/game/types';
 import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
 import * as P from '../../src/world/props';
 import { Terrain } from '../../src/world/terrain';
@@ -89,19 +90,75 @@ const camera = new THREE.PerspectiveCamera(38, RW / RH, 0.1, 200);
 const KEY_LIGHT = ENV.ithacaClearing;
 applyEnvToMaterials(KEY_LIGHT);
 
-/** 把一个几何体摆正、取景、渲染，结果拷进目标画布 */
-function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: HTMLCanvasElement): void {
-  geometry.computeBoundingBox();
-  const box = geometry.boundingBox!;
+/** 玩家眼高，来自 engine/controller.ts。植物的"冠底离地"要跟它比 */
+const EYE_HEIGHT = 1.68;
+
+/**
+ * 一件待渲染的零件。
+ *
+ * 之所以要支持"多零件"，是因为这部作品里不少东西在游戏里从来不单独出现：
+ * 橄榄树永远是树干 + 树冠两件套，藤蔓是二十几段茎加叶簇。
+ * 只画零件的话，审阅者看到的是一根棍和一个球，而不是一棵树。
+ */
+interface Part {
+  geometry: THREE.BufferGeometry;
+  material: THREE.Material;
+  /** 相对整株的位置 */
+  at?: [number, number, number];
+  /** 绕 Y 轴自转 */
+  yaw?: number;
+  /** 前后倾倒 */
+  tiltX?: number;
+  scale?: number;
+}
+
+interface ShootOptions {
+  /**
+   * 镜头仰角系数，默认 0.38（略高于水平的四分之三视角）。
+   * 高瘦的东西（树、柏、柱）要调低：从高处看树，树冠会把树干整个盖住，
+   * 而玩家在游戏里是站在地上抬头看的。
+   */
+  elevation?: number;
+}
+
+/**
+ * 把一组零件装配起来、摆正、取景、渲染，结果拷进目标画布。
+ * 返回装配后的真实包围盒（**未平移前**的世界尺寸），
+ * 好让卡片能标出这件东西到底多大——审阅体量时这比看图可靠。
+ */
+function shootParts(
+  parts: Part[],
+  into: HTMLCanvasElement,
+  options: ShootOptions = {},
+): { size: THREE.Vector3; liftedMinY: number } {
+  const group = new THREE.Group();
+  // 被抬起来的那些零件（树冠、叶簇）单独量一次最低点。
+  // 量整组是没有意义的：树干的底就在 y=0，整组的最小值永远是 0。
+  let liftedMinY = Infinity;
+  const probe = new THREE.Box3();
+  for (const part of parts) {
+    const mesh = new THREE.Mesh(part.geometry, part.material);
+    const [x, y, z] = part.at ?? [0, 0, 0];
+    mesh.position.set(x, y, z);
+    if (part.yaw) mesh.rotation.y = part.yaw;
+    if (part.tiltX) mesh.rotation.x = part.tiltX;
+    if (part.scale) mesh.scale.setScalar(part.scale);
+    group.add(mesh);
+    if (y > 0) {
+      mesh.updateMatrixWorld(true);
+      probe.setFromObject(mesh);
+      if (probe.min.y < liftedMinY) liftedMinY = probe.min.y;
+    }
+  }
+  scene.add(group);
+
+  const box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
   const center = new THREE.Vector3();
   box.getSize(size);
   box.getCenter(center);
-
-  const mesh = new THREE.Mesh(geometry, material);
-  // 把物体挪到原点，镜头就不用为每件东西单独算构图
-  mesh.position.set(-center.x, -center.y, -center.z);
-  scene.add(mesh);
+  // 把整株挪到原点，镜头就不用为每件东西单独算构图
+  group.position.set(-center.x, -center.y, -center.z);
 
   // 按包围盒的实际投影取景，而不是按包围球半径。
   // 用半径会让细长件（桅杆、柱子）在画面里缩成一根火柴——
@@ -112,7 +169,8 @@ function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: H
   const distH = half / (tan * camera.aspect);
   const dist = Math.max(distV, distH, 0.6) * 1.18;
   // 略高于水平的四分之三视角：看得到顶面的转折，又不至于变成俯视图
-  camera.position.set(dist * 0.55, dist * 0.38, dist * 0.74);
+  const ey = options.elevation ?? 0.38;
+  camera.position.set(dist * 0.55, dist * ey, dist * 0.74);
   camera.lookAt(0, 0, 0);
   camera.updateProjectionMatrix();
 
@@ -122,7 +180,13 @@ function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: H
   const g = into.getContext('2d')!;
   g.drawImage(renderer.domElement, 0, 0, into.width, into.height);
 
-  scene.remove(mesh);
+  scene.remove(group);
+  return { size, liftedMinY };
+}
+
+/** 单件的简写 */
+function shoot(geometry: THREE.BufferGeometry, material: THREE.Material, into: HTMLCanvasElement): void {
+  shootParts([{ geometry, material }], into);
 }
 
 /** 一块预览画布，按设备像素比出图 */
@@ -146,6 +210,7 @@ const tallies: Array<[number, string]> = [
   [MOTIF_KINDS.length, '黑绘母题'],
   [4, '程序纹理'],
   [propNames.length, '构件几何'],
+  [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
   [totalActs, '幕 / 地形'],
   [0, '二进制文件'],
@@ -187,9 +252,10 @@ const TOC: Array<[string, string]> = [
   ['motif', '黑绘母题'],
   ['texture', '程序纹理'],
   ['props', '构件几何'],
+  ['plant', '植物'],
   ['terrain', '地形'],
   ['audio', '音景'],
-  ['text', '文本'],
+  ['text', '剧本与交互'],
 ];
 const toc = el('nav', 'toc');
 for (const [id, label] of TOC) {
@@ -518,12 +584,147 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 七、地形
+// ─────────────────────────────────────────── 七、植物
+
+/**
+ * 植物在这部作品里**从来不是一件几何**。
+ *
+ * 橄榄树是树干 + 树冠两件套，喀耳刻的藤是二十几段茎加叶簇。
+ * 所以它们不能只出现在"构件几何"那一节里——那里画的是零件，
+ * 看到的是一根棍和一个球。这一节按各幕装配代码里的真实比例把它们拼起来，
+ * 参数与 game/scenes/*.ts 中的写法一致。
+ */
+{
+  const s = section({
+    id: 'plant',
+    title: '七、植物',
+    count: 5,
+    blurb:
+      '全作只有三种植物，但它们在场景里都是**装配出来的**，不是单件几何：' +
+      '橄榄树永远是树干加树冠两件套，藤是二十几段茎接起来再挂叶簇。' +
+      '下面直接调用游戏的整株工厂 oliveTree() 装配，不在这里复刻比例，' +
+      '所以这里看到的就是走到树下时看到的那棵树。' +
+      '「冠底离地」是这株树最低那片叶子的高度，由工厂量出树冠包围盒后保证——' +
+      '它必须高过眼高 1.68 米，否则玩家走到树下就是一头撞进一团黑。',
+    source: 'src/world/props.ts → oliveTree() / cypress()',
+  });
+
+  const drift = SURFACE.driftwood();
+  const olive = SURFACE.olive();
+
+  // 直接用游戏的整株工厂，不在这里复刻装配比例。
+  // 之前这里抄了一份 height * 1.02 的算法——那就是第四份抄写，
+  // 而"资产库不能有自己的一份真相"正是这个工具存在的理由。
+  const tree = (h: number, seed: number): Part[] => {
+    const t = P.oliveTree(h, seed);
+    return [
+      { geometry: t.trunk, material: drift },
+      { geometry: t.canopy, material: olive, at: [0, t.canopyLift, 0] },
+    ];
+  };
+
+  // 喀耳刻的藤：茎一小段一小段接起来，比一根长管更像自然爬出来的。
+  // 叶团块必须小——藤是一条线，不是一串球。
+  const creeper = (): Part[] => {
+    const parts: Part[] = [];
+    let seed = 1;
+    const rng = (): number => {
+      seed = (seed * 1664525 + 1013904223) % 4294967296;
+      return seed / 4294967296;
+    };
+    for (let i = 0; i < 22; i += 1) {
+      const t = i / 21;
+      const x = -Math.sin(t * 3.4) * 2.4;
+      const z = -t * 8.5;
+      const lift = 0.05 + Math.max(0, Math.sin(t * 2.6)) * 1.1;
+      parts.push({
+        geometry: P.pole(0.55, 0.035, 1020 + i),
+        material: drift,
+        at: [x, lift, z],
+        tiltX: 1.1 + Math.sin(t * 5) * 0.35,
+        yaw: t * 3.4,
+      });
+      if (i % 2 === 0) {
+        parts.push({
+          geometry: P.oliveCanopy(0.2 + rng() * 0.1, 1060 + i),
+          material: olive,
+          at: [x + (rng() - 0.5) * 0.5, lift + 0.18, z + (rng() - 0.5) * 0.5],
+        });
+      }
+    }
+    return parts;
+  };
+
+  const plants: Array<{ name: string; note: string; call: string; parts: Part[]; elevation?: number }> = [
+    {
+      name: '果树（忘食岸）',
+      note: '低矮、伸手就够得到，光从叶缝里切下来。全幕六棵，高 3.6–4.6 米',
+      call: 'oliveTree(4.4, 340)',
+      parts: tree(4.4, 340),
+    },
+    {
+      name: '橄榄树（喀耳刻柱廊外）',
+      note: '把柱廊框起来的四棵，树冠比忘食岸略大一点',
+      call: 'oliveTree(4.2, 1040)',
+      parts: tree(4.2, 1040),
+    },
+    {
+      name: '老橄榄树（伊萨卡）',
+      note: '终幕院子里那三棵，最高的一棵 5.2 米——他离开时它就在那儿',
+      call: 'oliveTree(5.2, 2460)',
+      parts: tree(5.2, 2460),
+    },
+    {
+      name: '柏树（卡吕普索之岛）',
+      note: '全作唯一的单件植物，不需要装配。永昼里一排排的深色竖线',
+      call: 'cypress(5)',
+      parts: [{ geometry: P.cypress(5, 1950), material: olive }],
+    },
+    {
+      name: '爬藤（喀耳刻的柱廊）',
+      note: '22 段茎 + 11 簇叶，爬进来又爬回去。它是一条线，不是一串球',
+      call: 'pole(0.55, 0.035) × 22 + oliveCanopy(0.2–0.3) × 11',
+      parts: creeper(),
+    },
+  ];
+
+  const grid = el('div', 'grid g-tile');
+  for (const plant of plants) {
+    const c = card();
+    const cv = previewCanvas(300, 300);
+    const cap = el('figcaption');
+    cap.append(
+      el('div', 'name', plant.name),
+      el('div', 'note', plant.note),
+      el('div', 'id', plant.call),
+    );
+    c.append(cv, cap);
+    grid.append(c);
+    // 树用接近人眼的低机位：从高处看，树冠会把树干整个盖住，
+    // 而玩家在游戏里是站在地上抬头看的
+    const { size, liftedMinY } = shootParts(plant.parts, cv, { elevation: plant.elevation ?? 0.12 });
+    // 标出真实体量，以及树冠最低的那片叶子离地多高。
+    // 后者要跟眼高 1.68 米比：低于它，玩家走到树下就是一头撞进叶子里，
+    // 而不是抬头看见叶子的底面。红色 = 低于眼高。
+    const dims = el('div', 'note');
+    dims.innerHTML =
+      `宽 ${size.x.toFixed(1)} × 高 ${size.y.toFixed(1)} m` +
+      (Number.isFinite(liftedMinY) && size.y > 2
+        ? `　·　冠底离地 <b style="color:${liftedMinY < EYE_HEIGHT ? '#a6402c' : '#6e8c7a'}">` +
+          `${liftedMinY.toFixed(2)} m</b>（眼高 ${EYE_HEIGHT}）`
+        : '');
+    cap.append(dims);
+  }
+  s.append(grid);
+  main.append(s);
+}
+
+// ─────────────────────────────────────────── 八、地形
 
 {
   const s = section({
     id: 'terrain',
-    title: '七、地形',
+    title: '八、地形',
     count: ACTS.length,
     blurb:
       '八座岛，八个互不相同的种子——它们不能长得一样。下图是每座岛的真实高程：' +
@@ -605,12 +806,12 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 八、音景
+// ─────────────────────────────────────────── 九、音景
 
 {
   const s = section({
     id: 'audio',
-    title: '八、音景 AUDIO',
+    title: '九、音景 AUDIO',
     count: Object.keys(AUDIO).length,
     blurb:
       '零个音频文件。风、浪、低频嗡鸣、混响、竖琴、脚步全部由 WebAudio 现场合成——' +
@@ -669,59 +870,274 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 九、文本
+// ─────────────────────────────────────────── 十、剧本与交互
 
+/**
+ * 这一节是整部作品的**剧本统筹台**：八幕的每一个交互点、它的全部台词、
+ * 它跟别的东西的关联、以及碰了它之后世界会发生什么，都在这里一次看完。
+ *
+ * 之所以不只是"把台词列出来"：台词单独看是读不懂的。
+ * 「你已经看了很多次了」这句喀耳刻的台词，只有知道它挂在"织机"上、
+ * 而织机就在核心记忆物件旁边三米、并且玩家此刻已经读过"藤爬了一个来回要一年"
+ * 之后，才知道它在说什么。所以说明、关联、影响必须和台词摆在一起。
+ */
 {
+  const KIND: Record<string, { label: string; color: string; effect: string }> = {
+    clue: {
+      label: '线索',
+      color: '#cbb89a',
+      effect: '读一两句旁白。不进任何清单，不改变任何状态，跳过它照样能走完全程。',
+    },
+    talk: {
+      label: '对话',
+      color: '#6e8c7a',
+      effect: '一段线性短对话，说完就结束。同样不改变状态。',
+    },
+    memory: {
+      label: '核心记忆',
+      color: '#e0a94e',
+      effect: '触发本幕的回忆幻象，并且**解锁岸边的离岛点**。这是本幕唯一的必经交互。',
+    },
+    depart: {
+      label: '离岛',
+      color: '#a6402c',
+      effect: '硬切进入下一幕。必须先看完本幕核心记忆才会亮起。',
+    },
+  };
+
   const s = section({
     id: 'text',
-    title: '九、文本',
-    count: ACTS.length + 2,
+    title: '十、剧本与交互',
+    count: ACTS.reduce((n, a) => n + a.def.interactables.length, 0),
     blurb:
-      '全部叙事文案。环境叙事是这部作品的绝对核心，所以文本本身就是最大的一件素材。' +
-      '下面按幕展开：线索旁白、NPC 对话、回忆幻象的逐拍旁白，加上开场引导与终幕收束。',
-    source: 'src/content/script.ts → TEXT',
+      '全作的台词、交互点与它们之间的关系。环境叙事是这部作品的绝对核心，' +
+      '所以剧本本身就是最大的一件素材——但台词单独列出来是读不懂的：' +
+      '它挂在哪件东西上、离核心记忆多远、碰了之后世界会发生什么，缺一样都读不出意思。' +
+      '下面每一幕都按「元数据 → 交互点（含影响与关联）→ 幻象逐拍时间轴」展开。',
+    source: 'src/content/script.ts（台词）+ src/game/scenes/*.ts（交互点与关联）',
   });
 
+  // ── 玩法边界：四种交互，各自的影响 ──
+  const legend = el('div', 'legend');
+  legend.append(el('div', 'sectionlabel', '四种交互，以及碰了它们会发生什么'));
+  for (const meta of Object.values(KIND)) {
+    const row = el('div', 'legend-row');
+    const badge = el('span', 'badge');
+    badge.textContent = meta.label;
+    badge.style.color = meta.color;
+    badge.style.borderColor = meta.color;
+    row.append(badge, el('span', 'legend-text', meta.effect.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')));
+    legend.append(row);
+  }
+  legend.append(
+    el(
+      'p',
+      'note',
+      '全作只有这四种，不会有第五种——这条边界由 tests/scenes.test.ts 写死。' +
+        '进度只记两件事：走到第几幕、碰过哪些东西；没有数值、没有分支权重、没有结局解算。',
+    ),
+  );
+  s.append(legend);
+
+  // ── 全局一览表 ──
+  const overview = el('div', 'overview');
+  overview.append(el('div', 'sectionlabel', '八幕一览'));
+  const head = el('div', 'orow ohead');
+  for (const h of ['幕', '岛', '天候', '音景', '核心记忆', 'NPC', '线索', '幻象']) {
+    head.append(el('span', undefined, h));
+  }
+  overview.append(head);
+  for (const { def } of ACTS) {
+    const npc = def.interactables.find((i) => i.kind === 'talk');
+    const clues = def.interactables.filter((i) => i.kind === 'clue').length;
+    const row = el('div', 'orow');
+    row.append(
+      el('span', undefined, def.act === 0 ? '序' : String(def.act)),
+      el('span', undefined, def.title),
+      el('span', 'mono', def.env),
+      el('span', 'mono', def.audio),
+      el('span', undefined, MEMORY_LABELS[def.id] ?? '—'),
+      el('span', undefined, npc?.speaker ?? '—'),
+      el('span', 'mono', String(clues)),
+      el('span', 'mono', `${def.vision.duration}s`),
+    );
+    overview.append(row);
+  }
+  s.append(overview);
+
+  // ── 开场引导 ──
   const intro = el('details', 'act');
   const introSum = el('summary');
-  introSum.append(el('span', undefined, '开场引导'), el('span', 'k', `${TEXT.intro.lines.length} 句`));
+  introSum.append(
+    el('span', undefined, '开场引导'),
+    el('span', 'k', `${TEXT.intro.lines.length} 句 · 黑场 · 仅首次开始`),
+  );
   const introBody = el('div', 'body');
+  introBody.append(
+    el(
+      'p',
+      'note',
+      '全作唯一一次直接对玩家说话。说完就再也不解释——之后所有信息都由环境自己给出。' +
+        '从存档继续时不出现。',
+    ),
+  );
   const introLines = el('div', 'lines');
   for (const line of TEXT.intro.lines) introLines.append(el('p', undefined, line));
   introBody.append(introLines);
   intro.append(introSum, introBody);
   s.append(intro);
 
-  for (const { def } of ACTS) {
+  // ── 逐幕 ──
+  for (const act of ACTS) {
+    const def = act.def;
+    const memory = def.interactables.find((i) => i.id === def.memoryId);
     const d = el('details', 'act');
     const sum = el('summary');
     sum.append(
       el('span', undefined, `${def.act === 0 ? '序章' : `第 ${def.act} 幕`} · ${def.title}`),
-      el('span', 'k', `${MEMORY_LABELS[def.id] ?? ''} · ${def.interactables.length} 处交互`),
+      el('span', 'k', `${def.interactables.length} 处交互 · ${MEMORY_LABELS[def.id] ?? ''}`),
     );
-    const body = el('div', 'body');
-    body.append(el('p', 'note', `${def.subtitle} — ${def.tone}`));
 
-    const lines = el('div', 'lines');
+    const body = el('div', 'body');
+
+    // 元数据条
+    const meta = el('div', 'scriptmeta');
+    for (const [k, v] of [
+      ['副题', def.subtitle],
+      ['天候', def.env],
+      ['音景', def.audio],
+      ['地形 seed', String(act.terrain.seed)],
+      ['岛半径', `${act.terrain.radius} m`],
+      ['出生点', `x ${def.spawn.x} · z ${def.spawn.z}`],
+      ['登岸横摇', `${def.arrival.seconds}s`],
+    ] as const) {
+      const cell = el('div');
+      cell.append(el('dt', undefined, k), el('dd', undefined, v));
+      meta.append(cell);
+    }
+    body.append(meta);
+    body.append(el('p', 'tone', def.tone));
+
+    // 交互点
+    body.append(el('div', 'sectionlabel', '交互点'));
     for (const item of def.interactables) {
-      if (item.lines.length === 0) continue;
-      const label = item.speaker ? `${item.kind} · ${item.speaker}` : `${item.kind} · ${item.prompt}`;
-      lines.append(el('div', 'h', `${label}　[${item.id}]`));
-      for (const line of item.lines) lines.append(el('p', undefined, line));
+      const meta2 = KIND[item.kind]!;
+      const row = el('div', 'irow');
+
+      const headRow = el('div', 'ihead');
+      const badge = el('span', 'badge');
+      badge.textContent = meta2.label;
+      badge.style.color = meta2.color;
+      badge.style.borderColor = meta2.color;
+      headRow.append(badge, el('span', 'iprompt', item.prompt), el('span', 'id', item.id));
+      row.append(headRow);
+
+      const facts: string[] = [
+        `x ${item.x} · z ${item.z}${item.y !== undefined ? ` · 视线高 ${item.y}` : ''}`,
+        `触发半径 ${item.radius ?? 2.4} m`,
+      ];
+      if (memory && item.id !== def.memoryId) {
+        const dist = Math.hypot(item.x - memory.x, item.z - memory.z);
+        facts.push(`距核心记忆 ${dist.toFixed(1)} m`);
+      }
+      if (item.speaker) facts.push(`说话人 ${item.speaker}`);
+      if (item.motif) facts.push(`剪影母题 ${item.motif}`);
+      row.append(el('div', 'ifacts', facts.join('　·　')));
+
+      // 影响与关联——这是"看得懂"的关键，不能只列台词
+      const effect = el('div', 'ieffect');
+      if (item.kind === 'memory') {
+        effect.innerHTML =
+          '<b>影响</b>：触发幻象 <code>' +
+          def.vision.id +
+          '</code>（' +
+          def.vision.duration +
+          's），并解锁本幕离岛点。<br><b>关联</b>：本幕 <code>memoryId</code> 指向它；幻象舞台就摆在它前方 ' +
+          Math.hypot(def.vision.stage.x - item.x, def.vision.stage.z - item.z).toFixed(1) +
+          ' m 处，构图才对得上。';
+      } else if (item.kind === 'depart') {
+        effect.innerHTML =
+          '<b>影响</b>：1.8 秒推向过曝白，硬切下一幕。<br><b>关联</b>：' +
+          (item.requiresMemory
+            ? `<code>requiresMemory</code> — 必须先触碰「${MEMORY_LABELS[def.id] ?? def.memoryId}」，它才会亮起微光。`
+            : '无前置。');
+      } else {
+        effect.innerHTML = `<b>影响</b>：${meta2.effect}`;
+      }
+      row.append(effect);
+
+      if (item.lines.length > 0) {
+        const lines = el('div', 'lines');
+        for (const line of item.lines) lines.append(el('p', undefined, line));
+        row.append(lines);
+      } else {
+        row.append(el('p', 'note', '（无台词——离岛点不说话，走过去就是结束）'));
+      }
+      body.append(row);
     }
-    lines.append(el('div', 'h', `回忆幻象　[${def.vision.id}] · ${def.vision.duration}s`));
+
+    // 幻象时间轴
+    body.append(el('div', 'sectionlabel', `回忆幻象　${def.vision.id}　${def.vision.duration}s`));
+    body.append(
+      el(
+        'p',
+        'note',
+        `舞台中心 x ${def.vision.stage.x} · z ${def.vision.stage.z}。` +
+          '幻象里世界褪成壁画双色，遮幅收窄到 2.39:1，黑绘剪影随旁白一层层浮现。' +
+          '玩家全程仍可自由转头，镜头只是被轻轻推向该看的方向；`空格` 随时可跳过。',
+      ),
+    );
+    const timeline = el('div', 'timeline');
     for (const beat of def.vision.beats) {
-      if (beat.line) lines.append(el('p', undefined, `${beat.at.toFixed(1)}s　${beat.line}`));
+      const b = el('div', 'beat');
+      b.append(el('span', 'at', `${beat.at.toFixed(1)}s`));
+      const bodyCell = el('div', 'bcell');
+      if (beat.line) bodyCell.append(el('p', 'bline', beat.line));
+      const tags: string[] = [];
+      if (beat.motif) {
+        tags.push(
+          `剪影 ${beat.motif.kind}　size ${beat.motif.size}` +
+            (beat.motif.ink === 'shadow' ? '　影色' : '') +
+            (beat.motif.crumbleAt ? `　${beat.motif.crumbleAt}s 崩解` : ''),
+        );
+      }
+      if (beat.camera) {
+        const c = beat.camera;
+        tags.push(
+          '镜头 ' +
+            [
+              c.yaw !== undefined ? `yaw ${c.yaw}` : '',
+              c.pitch !== undefined ? `pitch ${c.pitch}` : '',
+              c.fov !== undefined ? `fov ${c.fov}` : '',
+            ]
+              .filter(Boolean)
+              .join(' · '),
+        );
+      }
+      if (beat.exposure !== undefined) tags.push(`曝光 ×${beat.exposure}`);
+      if (tags.length) bodyCell.append(el('div', 'btags', tags.join('　|　')));
+      b.append(bodyCell);
+      timeline.append(b);
     }
-    body.append(lines);
+    body.append(timeline);
+
     d.append(sum, body);
     s.append(d);
   }
 
+  // ── 终幕收束 ──
   const outro = el('details', 'act');
   const outroSum = el('summary');
   outroSum.append(el('span', undefined, '终幕收束'), el('span', 'k', '八段记忆全部苏醒之后'));
   const outroBody = el('div', 'body');
+  outroBody.append(
+    el(
+      'p',
+      'note',
+      '八段记忆是必经的——每一幕不看完核心记忆就上不了船，所以"全部解锁"等同于"走完全程"。' +
+        '终幕把八幕的岛名与记忆物件排成一列还给玩家，再压上全作唯一一次把账算清的那句话。',
+    ),
+  );
   const outroLines = el('div', 'lines');
   outroLines.append(el('div', 'h', '字卡'));
   outroLines.append(el('p', undefined, TEXT.ithaca.epitaph));
@@ -732,11 +1148,36 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   outro.append(outroSum, outroBody);
   s.append(outro);
 
+  // ── 体量统计 ──
+  let lineCount = 0;
+  let charCount = 0;
+  let seconds = 0;
+  const eat = (arr: readonly string[]): void => {
+    for (const l of arr) {
+      if (!l) continue;
+      lineCount += 1;
+      charCount += l.length;
+      seconds += holdFor(l);
+    }
+  };
+  eat(TEXT.intro.lines);
+  eat(TEXT.ithaca.epilogue);
+  for (const { def } of ACTS) {
+    for (const item of def.interactables) eat(item.lines);
+    eat(def.vision.beats.map((b) => b.line ?? '').filter(Boolean));
+  }
+  const stat = el('p', 'note');
+  stat.style.marginTop = '22px';
+  stat.innerHTML =
+    `全作共 <b>${lineCount}</b> 句台词、<b>${charCount}</b> 字，` +
+    `按 <code>holdFor()</code> 估算朗读时长约 <b>${Math.round(seconds / 60)}</b> 分钟。` +
+    '（一整周目约 50–70 分钟，其余时间是走路与看。）';
+  s.append(stat);
+
   main.append(s);
 }
 
 // ─────────────────────────────────────────── 页脚
-
 const foot = el('footer');
 foot.innerHTML =
   `生成于 ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC　·　` +

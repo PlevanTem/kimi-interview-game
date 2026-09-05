@@ -7,7 +7,7 @@ import {
   doricCapital,
   flutedColumn,
   oliveCanopy,
-  oliveTrunk,
+  oliveTree,
   pole,
   sailCloth,
   statueTorso,
@@ -309,8 +309,9 @@ export const circe: Act = {
     ];
     for (const [x, z, height] of trees) {
       const seed = 1040 + Math.floor(x + z);
-      d.place(oliveTrunk(height, seed), 'driftwood', { x, z, block: 0.6 });
-      d.place(oliveCanopy(height * 0.82, seed + 1), 'olive', { x, z, lift: height * 1.02 });
+      const tree = oliveTree(height, seed);
+      d.place(tree.trunk, 'driftwood', { x, z, block: 0.6 });
+      d.place(tree.canopy, 'olive', { x, z, lift: tree.canopyLift });
     }
 
     d.scatter(40, {
