@@ -22,11 +22,24 @@ describe('序章水温线索的真实岸边可达性', () => {
     expect(hit?.def.id).toBe(water.id);
   });
 
-  it('贴近触水区域后转身仍有提示，远处仍必须朝向目标', () => {
+  it('整圈可见湿岸都能试水温，不再依赖西南角单一潮石', () => {
+    const zone = water.proximityZone!;
+    expect(zone).toEqual({ kind: 'annulus', centerX: 0, centerZ: 0, innerRadius: 20.4, outerRadius: 25.6 });
+    for (let i = 0; i < 12; i += 1) {
+      const angle = i / 12 * Math.PI * 2;
+      for (const radius of [20.8, 22.8, 24.4]) {
+        const x = Math.cos(angle) * radius, z = Math.sin(angle) * radius;
+        if (!ground.walkable(x, z)) continue;
+        // 背向西南潮石也应触发：玩家触碰的是脚边湿岸，不是远处石头。
+        expect(findFocus({ x, z, yaw: angle }, [water])?.def.id, `a=${angle}, r=${radius}`).toBe(water.id);
+      }
+    }
+    expect(findFocus({ x: 18.8, z: 0, yaw: 0 }, [water])).toBeNull();
+  });
+
+  it('原潮石附近仍然保留宽容触发', () => {
     for (const yaw of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
       expect(findFocus({ x: water.x, z: water.z + 0.8, yaw }, [water])?.def.id).toBe(water.id);
     }
-    expect(findFocus({ x: water.x, z: water.z + 2.5, yaw: Math.PI }, [water])).toBeNull();
-    expect(findFocus({ x: water.x, z: water.z + 5, yaw: 0 }, [water])).toBeNull();
   });
 });

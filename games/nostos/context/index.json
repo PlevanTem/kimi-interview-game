@@ -1,9 +1,9 @@
 {
   "$schema": "../../../schemas/context-index.schema.json",
   "contextVersion": "1.0.0",
-  "updatedAt": "2026-09-05T14:02:15+08:00",
-  "activeRunId": "run-20260905-nostos-character-theatre-r1",
-  "productionState": "user_directed_character_and_theatre_polish",
+  "updatedAt": "2026-09-05T16:06:00+08:00",
+  "activeRunId": "run-20260905-nostos-progress-water-r1",
+  "productionState": "user_directed_progress_and_water_interaction_fix",
   "gateState": {
     "gate1": "bypassed_by_user_brief",
     "gate2": "locked",
@@ -27,11 +27,13 @@
     "act12Iterations": "games/nostos/runs/run-20260905-nostos-act12-art-r1/iterations.json",
     "characterTheatreInput": "games/nostos/runs/run-20260905-nostos-character-theatre-r1/input-snapshot.json",
     "characterTheatreVerification": "games/nostos/runs/run-20260905-nostos-character-theatre-r1/verification.json",
+    "progressWaterInput": "games/nostos/runs/run-20260905-nostos-progress-water-r1/input-snapshot.json",
+    "progressWaterVerification": "games/nostos/runs/run-20260905-nostos-progress-water-r1/verification.json",
     "memoryMotifIterations": "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/iterations.json",
     "prologueVisualRun": "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/run.json",
     "gateBypassDirective": "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/gate-bypass-directive.json",
     "memoryMotifInputSnapshot": "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/input-snapshot.json",
-    "activeRun": "games/nostos/runs/run-20260905-nostos-character-theatre-r1/run.json",
+    "activeRun": "games/nostos/runs/run-20260905-nostos-progress-water-r1/run.json",
     "act12InputSnapshot": "games/nostos/runs/run-20260905-nostos-act12-art-r1/input-snapshot.json",
     "act12ArtDirection": "games/nostos/docs/ACT12_ART_DIRECTION.md",
     "act12Verification": "games/nostos/runs/run-20260905-nostos-act12-art-r1/verification.json",
@@ -66,6 +68,9 @@
     "games/nostos/runs/run-20260905-nostos-act12-art-r1/iterations.json",
     "games/nostos/runs/run-20260905-nostos-character-theatre-r1/input-snapshot.json",
     "games/nostos/runs/run-20260905-nostos-character-theatre-r1/run.json",
-    "games/nostos/runs/run-20260905-nostos-character-theatre-r1/iterations.json"
+    "games/nostos/runs/run-20260905-nostos-character-theatre-r1/iterations.json",
+    "games/nostos/runs/run-20260905-nostos-progress-water-r1/input-snapshot.json",
+    "games/nostos/runs/run-20260905-nostos-progress-water-r1/run.json",
+    "games/nostos/runs/run-20260905-nostos-progress-water-r1/iterations.json"
   ]
 }

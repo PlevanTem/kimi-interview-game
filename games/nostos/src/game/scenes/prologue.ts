@@ -64,6 +64,9 @@ export const prologue: Act = {
         y: 0.15,
         radius: 3.4,
         proximityRadius: 1.5,
+        // 湿岸着色从 radius - shoreWetWidth 开始，环绕整座沙洲。
+        // 玩家踩到任何一段可见湿岸都能试水温，不再必须找到西南角的潮石。
+        proximityZone: { kind: 'annulus', centerX: 0, centerZ: 0, innerRadius: 20.4, outerRadius: 25.6 },
       },
       {
         id: 'prologue.star',

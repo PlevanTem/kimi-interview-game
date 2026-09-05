@@ -1,0 +1,29 @@
+{
+  "runId": "run-20260905-nostos-progress-water-r1",
+  "status": "verified_for_merge",
+  "runtimeBundle": "index-BUPwDez0.js",
+  "environment": "Windows; Chromium ANGLE SwiftShader; fixed seeds; 1280x720 plus responsive viewport",
+  "commands": [
+    { "command": "npm run validate:library", "exitCode": 0, "result": "PASS before production" },
+    { "command": "npm run test:nostos", "exitCode": 0, "result": "81 tests / 8 files" },
+    { "command": "npm run build:nostos", "exitCode": 0, "result": "typecheck and production build passed" },
+    { "command": "git diff --check", "exitCode": 0, "result": "no whitespace errors" },
+    { "command": "$env:NOSTOS_E2E_PORT='4189'; npx playwright test --config games/nostos/playwright.config.ts --grep '@opening|@prologue-visual'", "exitCode": 1, "result": "prologue water and narrow opening passed; desktop pause failed only because new test expected 奥吉吉亚 while canonical SceneDef title is 卡吕普索之岛" },
+    { "command": "$env:NOSTOS_E2E_PORT='4190'; npx playwright test --config games/nostos/playwright.config.ts --grep '@opening'", "exitCode": 0, "result": "2 passed: canonical eight names at 1280x720; 390x844 rows fit and keyboard flow resumes" },
+    { "command": "$env:NOSTOS_E2E_PORT='4191'; npx playwright test --config games/nostos/playwright.config.ts --grep '海岸标题连续进入开场'", "exitCode": 0, "result": "1 passed: recaptured desktop pause after 700ms fade; opening time frozen during transition" }
+  ],
+  "evidence": [
+    "games/nostos/docs/screenshots/pause-01-eight-act-names.jpg",
+    "games/nostos/docs/screenshots/pause-02-narrow-eight-act-names.jpg",
+    "games/nostos/docs/screenshots/00-prologue-e-试水温.jpg"
+  ],
+  "visualReview": "桌面与窄屏八幕均完整可读，无？？？占位；东岸湿岸画面出现E试水温。首次桌面截图撞上700ms淡入，DOM正确但证据不可读；修正取证时机后复拍通过。",
+  "focusedAssessment": {
+    "functionality": { "score": 30, "max": 30, "evidence": "pause/resume, eight rows, E trigger and narration all passed" },
+    "visuals": { "score": 24, "max": 25, "evidence": "desktop and narrow captures readable; future rows deliberately lower contrast" },
+    "interaction": { "score": 20, "max": 20, "evidence": "12-direction zone unit coverage plus real east-shore walk and keypress" }
+  },
+  "releaseScore": null,
+  "gateRecommendation": "Focused regression verified; Gate4 unchanged because performance, full journey, motion and sound were not re-audited.",
+  "limitations": ["完整八幕journey与硬件GPU性能不属于本次窄修复验收", "Gate3/Gate4未通过"]
+}

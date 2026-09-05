@@ -21,6 +21,18 @@ export type InteractKind =
   /** 离岛：走到船边，结束这一幕 */
   | 'depart';
 
+/**
+ * 可见环境本身就是交互目标时使用的二维区域。
+ * 物件仍以 x/z 作为引导光锚点；区域只扩展玩家可触发的真实画面范围。
+ */
+export interface ProximityZone {
+  kind: 'annulus';
+  centerX: number;
+  centerZ: number;
+  innerRadius: number;
+  outerRadius: number;
+}
+
 export interface InteractableDef {
   id: string;
   kind: InteractKind;
@@ -36,6 +48,8 @@ export interface InteractableDef {
   radius?: number;
   /** 小范围环境交互：贴近此半径后无需瞄准脚下的单个点。默认仍须朝向目标。 */
   proximityRadius?: number;
+  /** 面状环境交互：进入可见区域即可触发，例如环绕岛屿的湿岸。 */
+  proximityZone?: ProximityZone;
   /** 远处线索可要求玩家真正抬头并朝向它，而不只是在地面交互点附近。 */
   look?: {
     yaw: number;

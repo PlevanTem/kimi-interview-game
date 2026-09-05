@@ -519,8 +519,8 @@ button.link:focus-visible {
 }
 
 .voyage-row[data-state='locked'] .name {
-  color: rgba(231, 217, 190, 0.22);
-  letter-spacing: 0.3em;
+  color: rgba(231, 217, 190, 0.48);
+  letter-spacing: 0.14em;
 }
 
 .voyage-row .memory {

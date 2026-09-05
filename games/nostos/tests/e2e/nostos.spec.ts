@@ -96,9 +96,18 @@ test('海岸标题连续进入开场，暂停冻结镜头并正常交还控制 @
   await shot(page, 'opening-02-cinematic');
   await page.keyboard.press('Escape');
   await expect(page.locator('.pausepanel:not(.hidden)')).toBeVisible();
+  const voyageRows = page.locator('.pausepanel:not(.hidden) .voyage-row');
+  await expect(voyageRows).toHaveCount(8);
+  const voyageNames = ['序章 · 无名之海', '第一幕 · 忘食岸', '第二幕 · 独眼岬', '第三幕 · 喀耳刻的柱廊',
+    '第四幕 · 亡者之岸', '第五幕 · 塞壬水道', '第六幕 · 卡吕普索之岛', '第七幕 · 伊萨卡'];
+  for (let i = 0; i < voyageNames.length; i++) {
+    await expect(voyageRows.nth(i).locator('.name')).toHaveText(voyageNames[i]!);
+  }
   const paused = (await state(page)).openingTime;
-  await page.waitForTimeout(600);
+  // 等暂停层700ms淡入完成再取证，同时证明过渡期间开场时间保持冻结。
+  await page.waitForTimeout(800);
   expect((await state(page)).openingTime).toBe(paused);
+  await shot(page, 'pause-01-eight-act-names');
   await page.keyboard.press('Escape');
   await waitForPhase(page, 'roaming');
   const landed = await state(page);
@@ -142,6 +151,18 @@ test('窄屏标题、键盘菜单与低动态跳过可用 @opening', async ({ pa
   await waitForPhase(page, 'roaming');
   expect((await state(page)).fade).toBe(0);
   await expect(page.locator('.titlepanel')).toHaveJSProperty('inert', true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.keyboard.press('Escape');
+  const compactVoyage = page.locator('.pausepanel:not(.hidden) .voyage-row');
+  await expect(compactVoyage).toHaveCount(8);
+  for (let i = 0; i < 8; i++) await expect(compactVoyage.nth(i).locator('.name')).not.toHaveText('？？？');
+  await compactVoyage.last().scrollIntoViewIfNeeded();
+  const finalRow = await compactVoyage.last().boundingBox();
+  expect(finalRow).not.toBeNull();
+  expect(finalRow!.x).toBeGreaterThanOrEqual(0);
+  expect(finalRow!.x + finalRow!.width).toBeLessThanOrEqual(390);
+  await shot(page, 'pause-02-narrow-eight-act-names');
+  await page.keyboard.press('Escape');
 });
 
 test('第0幕视觉试点可渲染、木筏可读、导星可抬头对焦 @prologue-visual', async ({ page }) => {
@@ -170,7 +191,8 @@ test('第0幕视觉试点可渲染、木筏可读、导星可抬头对焦 @prolo
   await shot(page, '00-prologue-d-导星');
 
   await test.step('到达湿岸，实际向前走后仍显示 E，并能触发水温旁白', async () => {
-    await page.evaluate(() => window.__nostos!.teleport('prologue.water'));
+    // 东岸与旧西南潮石相隔近四十米；这里命中才能证明交互跟着整圈湿岸，而非隐藏点。
+    await page.evaluate(() => window.__nostos!.view({ x: 20.8, z: 0, yaw: -Math.PI / 2, pitch: -0.18 }));
     await waitForFocus(page, 'prologue.water');
     await expect(page.locator('.prompt.visible')).toContainText('试水温');
     await expect(page.locator('.prompt.visible em')).toHaveText('E');

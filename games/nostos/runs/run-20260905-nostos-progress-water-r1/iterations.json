@@ -1,0 +1,25 @@
+{
+  "runId": "run-20260905-nostos-progress-water-r1",
+  "entries": [
+    {
+      "id": "pause-voyage-names-01",
+      "issue": "Esc航程无法看到八幕对应名称。",
+      "evidence": "Overlay.setProgress对index > currentAct硬编码显示？？？。",
+      "rootCause": "旧设计把幕名与记忆物一并当作剧透隐藏，和用户现在要求的航程总览不符。",
+      "change": "八幕固定显示幕号与场景名；只把未经历的核心记忆名称继续隐藏，并提高锁定行可读性。",
+      "verification": "单测/构建；浏览器暂停面板8行文本断言和1280x720实拍。",
+      "after": "1280×720与390×844均显示八行正式幕名；当前幕高亮，未来幕仅隐藏记忆物；键盘Esc与返回焦点正常。",
+      "status": "verified"
+    },
+    {
+      "id": "prologue-water-zone-01",
+      "issue": "玩家靠近画面中明显水坑/湿岸仍无E提示。",
+      "evidence": "湿岸shader按岛心20.4–25.6m环带绘制；prologue.water却只以(-18.6,-15.2)单点3.4m半径判定。",
+      "rootCause": "视觉目标是环绕全岛的面状湿岸，交互目标却是西南岸单点；此前自动化只传送到该隐藏点，未覆盖参考图这种其他岸段。",
+      "change": "为面状环境添加环带proximityZone；进入任意可见湿岸即聚焦，原潮石附近仍可触发，其他物件继续使用距离与朝向判定。",
+      "verification": "12方向×多半径单测；浏览器在东岸、距旧锚点近40m处实际前行后检查E并触发旁白。",
+      "after": "东岸(20.8,0)距旧西南锚点约40m，进入湿岸立即出现E；继续向水边实际移动1.2m后提示保持，按E触发水温旁白。原潮石触发保留。",
+      "status": "verified"
+    }
+  ]
+}

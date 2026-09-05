@@ -353,8 +353,8 @@ export class Overlay {
   /**
    * 航程：走到第几幕、看过多少件东西。
    *
-   * 幕是线性的，所以当前幕之前的都算走完了；当前幕高亮；后面的还没揭开，
-   * 只留一个占位——把没到的地方剧透出来，等于把探索的意义提前花掉。
+   * 幕是线性的，所以当前幕之前的都算走完了；当前幕高亮。
+   * 八幕名称始终可见，作为航程结构；核心记忆仍只在真正走过后揭示。
    */
   setProgress(currentAct: number, touched: number): void {
     this.progressList.innerHTML = '';
@@ -363,7 +363,8 @@ export class Overlay {
       const state = index < currentAct ? 'done' : index === currentAct ? 'current' : 'locked';
       row.dataset.state = state;
       row.append(el('i'));
-      const label = index > currentAct ? '？？？' : act.def.title;
+      const ordinal = index === 0 ? '序章' : `第${'一二三四五六七'[index - 1]}幕`;
+      const label = `${ordinal} · ${act.def.title}`;
       row.append(el('span', 'name', label));
       const memory = index < currentAct ? (MEMORY_LABELS[act.def.id] ?? '') : '';
       row.append(el('span', 'memory', memory));
