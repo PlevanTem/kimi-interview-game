@@ -19,6 +19,8 @@ export interface NostosProbe {
   skipNarration: () => void;
   /** 直接跳到某一幕 */
   gotoAct: (index: number) => void;
+  /** Reproducible camera evidence; no narrative flags are changed. */
+  view: (pose: { x: number; z: number; yaw: number; pitch: number }) => void;
   actCount: number;
 }
 

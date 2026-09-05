@@ -97,6 +97,10 @@ const FRAG = /* glsl */ `
   uniform float uDetailScale;
   uniform float uDetailStrength;
   uniform float uRoughBreakup;
+  uniform float uShoreWetRadius;
+  uniform float uShoreWetWidth;
+  uniform vec3 uShoreWetColor;
+  uniform float uShoreWetStrength;
   uniform float uOpacity;
   uniform sampler2D uDetail;
   /**
@@ -148,6 +152,17 @@ const FRAG = /* glsl */ `
       vec4 painted = texture2D(uAlbedoMap, vUv);
       baseColor = mix(baseColor, painted.rgb, painted.a * uAlbedoMapAmount);
     }
+    float shoreWet = 0.0;
+    if (uShoreWetStrength > 0.001) {
+      float shoreDistance = length(vWorldPos.xz);
+      float wetNoise = (triplanar(uDetail, vWorldPos, N, uDetailScale * 0.55).r - 0.5) * 1.4;
+      shoreWet = smoothstep(
+        uShoreWetRadius - uShoreWetWidth + wetNoise,
+        uShoreWetRadius - uShoreWetWidth * 0.08,
+        shoreDistance
+      ) * uShoreWetStrength * smoothstep(0.35, 0.9, N.y);
+      baseColor = mix(baseColor, uShoreWetColor, shoreWet);
+    }
     vec3 albedo = baseColor * wear;
 
     // 朝上的面被日晒被雨冲，比侧面更白一点；这一条让断柱立刻有体积
@@ -167,6 +182,9 @@ const FRAG = /* glsl */ `
     float shadow = sunShadow(vWorldPos, N, uSunDir);
     vec3 hemi = mix(uGroundAmbient, uSkyAmbient, N.y * 0.5 + 0.5) * uAmbientIntensity;
     vec3 color = shaded * (hemi + uSunColor * uSunIntensity * band * shadow);
+    // 湿沙只在掠射角浮出一道冷亮边；保持壁画色带，不引入完整 PBR。
+    float wetGlance = pow(1.0 - max(dot(N, -V), 0.0), 3.0) * shoreWet;
+    color += uSkyAmbient * wetGlance * 0.28;
 
     // --- 逆光轮廓：黑绘陶器的那一条边线 ---
     float fres = pow(1.0 - max(dot(N, -V), 0.0), uRimPower);
@@ -230,6 +248,11 @@ export interface FrescoOptions {
   detailStrength?: number;
   /** 朝上面的提亮量 0–1 */
   roughBreakup?: number;
+  /** 岛岸湿润带；strength 为 0 时不参与。 */
+  shoreWetRadius?: number;
+  shoreWetWidth?: number;
+  shoreWetColor?: number;
+  shoreWetStrength?: number;
   /** 使用哪张细节图 */
   detail?: 'stone' | 'sand' | 'fresco' | 'fleece';
   /**
@@ -282,6 +305,10 @@ export function createFrescoMaterial(options: FrescoOptions): THREE.ShaderMateri
       uDetailScale: { value: options.detailScale ?? 0.12 },
       uDetailStrength: { value: options.detailStrength ?? 0.85 },
       uRoughBreakup: { value: options.roughBreakup ?? 0.5 },
+      uShoreWetRadius: { value: options.shoreWetRadius ?? 0 },
+      uShoreWetWidth: { value: options.shoreWetWidth ?? 1 },
+      uShoreWetColor: { value: new THREE.Color(options.shoreWetColor ?? 0x24374a) },
+      uShoreWetStrength: { value: options.shoreWetStrength ?? 0 },
       uOpacity: { value: options.opacity ?? 1 },
       uDetail: { value: detailTexture(options.detail) },
     },
@@ -338,6 +365,10 @@ export function setVisionAmount(amount: number): void {
 
 /** 常用材质预设，保证全作的表面语言只有这几种。 */
 export const SURFACE = {
+  ochreSkin: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0xb09a74, shadowTint: 0x6b5a49, detailScale: 0.8, roughBreakup: 0.45, rimStrength: 0.15 }),
+  weatheredLinen: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0xc9b291, shadowTint: 0x7d6a54, detailScale: 0.65, roughBreakup: 0.45, rimStrength: 0.18, side: THREE.DoubleSide }),
   limestone: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: PIGMENT.bone, detailScale: 0.14, roughBreakup: 0.6 }),
   weatheredMarble: (): THREE.ShaderMaterial =>
@@ -346,6 +377,12 @@ export const SURFACE = {
     createFrescoMaterial({ color: 0x5b5148, shadowTint: 0x3a2f2a, detailScale: 0.1, roughBreakup: 0.35 }),
   basalt: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0x3c3a3c, shadowTint: 0x26262c, detailScale: 0.16, roughBreakup: 0.3 }),
+  layeredBasalt: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0x3c3a3c, shadowTint: 0x26262c, detailScale: 0.24, detailStrength: 1, roughBreakup: 0.7, rimStrength: 0.25 }),
+  oliveWood: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0x6b5a49, shadowTint: 0x40342c, detailScale: 0.45, detailStrength: 1, roughBreakup: 0.7, rimStrength: 0.22 }),
+  burntWood: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0x2e2620, shadowTint: 0x1a1512, detailScale: 0.48, detailStrength: 1, roughBreakup: 0.65, rimStrength: 0.12 }),
   sand: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: PIGMENT.plaster, detail: 'sand', detailScale: 0.05, roughBreakup: 0.15 }),
   paintedPlaster: (): THREE.ShaderMaterial =>
@@ -354,6 +391,10 @@ export const SURFACE = {
     createFrescoMaterial({ color: 0x8f4732, detailScale: 0.2, roughBreakup: 0.4 }),
   driftwood: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0x6b5a49, shadowTint: 0x40342c, detailScale: 0.22, roughBreakup: 0.45 }),
+  saltWood: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0x9a8872, shadowTint: 0x354052, detailScale: 0.28, detailStrength: 0.9, roughBreakup: 0.72 }),
+  rope: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0xb09a74, shadowTint: 0x4e4b52, detailScale: 0.7, detailStrength: 0.65, roughBreakup: 0.5, rimStrength: 0.78 }),
   charredWood: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0x2e2620, shadowTint: 0x1a1512, detailScale: 0.24, roughBreakup: 0.25 }),
   bronze: (): THREE.ShaderMaterial =>

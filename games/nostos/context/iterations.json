@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../schemas/iteration-ledger.schema.json",
+  "runId": "run-20260905-nostos-prologue-visual-r1",
+  "entries": [
+    {
+      "id": "prologue-visual-r1",
+      "issue": "木筏不聚焦，关键叙事物件使用通用几何，星线索由地面微光替代，岸滩与残骸材质层次同质。",
+      "evidence": [
+        "games/nostos/docs/screenshots/00-prologue-a-登岸.jpg",
+        "games/nostos/docs/screenshots/00-prologue-b-线索.jpg"
+      ],
+      "rootCause": "第0幕直接拼装通用 plank、pole 和 boulder；天空没有稳定导星；FrescoMaterial 没有潮湿岸带；卵石数量和后期强度压缩了负形与中间调。",
+      "change": "新增绳结木筏、半擦除名牌和断桨工厂；加入唯一导星与俯仰凝视判定；增加湿岸层；减少卵石与船肋；收敛颗粒、暗角、光晕。",
+      "verification": "npm run test:nostos (64/64, exit 0); npm run build:nostos (typecheck + production build, exit 0); npm run assets:nostos (exit 0); NOSTOS_E2E_PORT=4186 playwright --grep @prologue-visual (1/1, exit 0). Full eight-act journey was interrupted and is not claimed as passed.",
+      "before": "通用构件与统一灰蓝响应，画面焦点依赖微光。",
+      "after": "已核对最新构建的登岸、木筏、导星和试水温截图。木筏绳结可见，主区域卵石减为10块，导星和俯仰对齐，湿岸可交互。正式美术批准仍待人工审阅。",
+      "status": "verified",
+      "commit": null
+    },
+    {
+      "id": "prologue-water-shore-focus-fix",
+      "issue": "用户反馈第0幕到试水温处找不到 E 提示。",
+      "evidence": [
+        "games/nostos/tests/prologue-water.test.ts",
+        "games/nostos/docs/screenshots/00-prologue-e-试水温.jpg",
+        "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/verification.json"
+      ],
+      "rootCause": "旧落点(-11,-9)的岛心距离为14.2m，水线半径26m，实际岸边已超出3.4m交互范围；贴近小点后越过中心还会被平面视锥排除。只补潮石不能修复位置错位。",
+      "change": "交互点和潮石共用湿岸落点(-18.6,-15.2)，去掉潮石阻挡；仅水温线索启用1.5m近距容错。测试覆盖真实地形可达性及浏览器步行后按E触发。",
+      "verification": "npm run test:nostos: 64 passed, exit 0; NOSTOS_E2E_PORT=4186 npx playwright test --config games/nostos/playwright.config.ts --grep @prologue-visual: 1 passed, exit 0.",
+      "before": "实际岸边与交互点相隔约10m；装饰存在检查能通过，但玩家看海没有E提示。",
+      "after": "沿真实地形可到达湿岸，近距转向保留提示；浏览器实走1.2m后仍显示E试水温，按E后旁白启动且triggered增加1。",
+      "status": "verified",
+      "commit": null
+    }
+  ]
+}

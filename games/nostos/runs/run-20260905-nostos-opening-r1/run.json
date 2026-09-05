@@ -1,0 +1,18 @@
+{
+  "runId": "run-20260905-nostos-opening-r1",
+  "input": "input-snapshot.json",
+  "output": "实时海岸标题、十五秒连续开场、情境教程、程序化航海标记和统一UI设计令牌。",
+  "style": "games/nostos/docs/OPENING_DIRECTION.md",
+  "verification": {
+    "unit": "npm run test:nostos",
+    "build": "npm run build:nostos",
+    "e2e": "$env:NOSTOS_E2E_PORT='4186'; npx playwright test --config games/nostos/playwright.config.ts --grep '@opening|@prologue-visual'"
+  },
+  "humanGates": {
+    "gate3": null,
+    "gate4": null
+  },
+  "notes": [
+    "沿用用户本会话直接实施授权，不将本轮实现视作Gate审批。"
+  ]
+}

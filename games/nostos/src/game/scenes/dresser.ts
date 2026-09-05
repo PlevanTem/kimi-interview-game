@@ -100,6 +100,8 @@ export class Dresser {
       minSpacing?: number;
       maxSlope?: number;
       minHeight?: number;
+      /** Authored focal clearings: keep procedural dressing away from routes and clues. */
+      exclude?: ReadonlyArray<{ x: number; z: number; radius: number }>;
       make: (index: number, rng: () => number) => { geometry: THREE.BufferGeometry; surface: SurfaceName; place: Partial<PlaceOptions> };
     },
   ): void {
@@ -120,6 +122,7 @@ export class Dresser {
 
       if (this.terrain.heightAt(x, z) < minHeight) continue;
       if (this.terrain.slopeAt(x, z) > maxSlope) continue;
+      if (options.exclude?.some((p) => Math.hypot(p.x - x, p.z - z) < p.radius)) continue;
       if (used.some((p) => Math.hypot(p.x - x, p.z - z) < spacing)) continue;
 
       const spec = options.make(placed, this.rng);

@@ -1,0 +1,37 @@
+{
+  "runId": "run-20260905-nostos-act12-art-r1",
+  "entries": [
+    {
+      "id": "act12-environment-01",
+      "issue": "场景地标弱、道具轮廓和叙事文字不一致。",
+      "evidence": ["games/nostos/docs/screenshots/01-lotus-a-登岸.jpg", "games/nostos/docs/screenshots/02-cyclops-a-登岸.jpg"],
+      "rootCause": "占位杆件与整团树冠缺少语义细节；随机石和高丘占据主视线。",
+      "change": "七件多材质英雄模型、地形与布景减量、羊栏/果子焦点对齐、完整洞壳。",
+      "verification": "npm run test:nostos; npm run build:nostos; Playwright --grep @act12",
+      "before": "64项既有测试，圆石与杆件主导场景。",
+      "after": "首轮74项单测和2个两幕浏览器用例通过，全部线索与离岛正常；实拍发现接合和轮廓光待改进。",
+      "status": "verified_with_visual_followup"
+    },
+    {
+      "id": "act12-environment-02",
+      "issue": "首轮实拍果梗脱离枝条、横梁支撑不准、洞岩像叠桶、木桩偏金属。",
+      "rootCause": "枝果独立坐标、梁高未采样两端柱顶、各层岩块重复封口、默认轮廓光偏强。",
+      "change": "共用枝曲线、两端高程拟合横梁、连续岩壳、专用低轮廓光材质、贴地庭院残铺。",
+      "verification": "最终76项单测通过；5个功能浏览器用例通过；缓存预热后60秒/六次切幕资源用例复测通过。资产台7画布与页面/GPU日志检查通过。",
+      "before": "首轮枝果/梁柱接合不准确，分层封口亮缝，默认轮廓光偏金属。",
+      "after": "固定机位复拍确认接合、连续洞壳和低轮廓光；布景顶点lotus 220050、cyclops 72792，均低于300000。",
+      "evidence": ["games/nostos/docs/screenshots/act12-lotus-orchard.jpg", "games/nostos/docs/screenshots/act12-cyclops-cave.jpg", "games/nostos/docs/screenshots/act12-asset-console.jpg"],
+      "status": "verified"
+    },
+    {
+      "id": "act12-verification-integrity",
+      "issue": "资源测试首次误判纹理缓存、并跑单测超时，资产台预览偏暗过小。",
+      "rootCause": "fleeceTexture全局memo首次增加一张纹理；软件渲染争用CPU；独立资产页缺少运行时后期的sRGB编码且figure默认margin占用卡片宽度。",
+      "change": "比较两轮完整预热后的同幕资源；单测串行复跑而非放宽超时；仅资产页补单次sRGB编码和新英雄卡片布局。",
+      "verification": "76单测exit0；资源复测exit0，几何23/20、纹理9/9跨轮稳定；资产台7画布亮度非空且无日志错误exit0。",
+      "evidence": ["games/nostos/docs/screenshots/act12-performance.json", "games/nostos/docs/screenshots/act12-asset-console.jpg"],
+      "status": "verified",
+      "remaining": "软件渲染帧率不达发布门槛，尚未做玩家显卡性能验收；不声称Gate4通过。"
+    }
+  ]
+}

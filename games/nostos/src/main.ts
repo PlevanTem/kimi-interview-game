@@ -1,6 +1,7 @@
 import './styles.css';
 import './probe';
 import { Game } from './game/flow';
+import { previewAct } from './game/local-preview';
 import { preloadMemoryMotifs } from './world/memory-silhouettes';
 
 /**
@@ -22,8 +23,11 @@ async function bootstrap(target: HTMLElement): Promise<void> {
     skipVision: () => game.debugSkipVision(),
     skipNarration: () => game.debugSkipNarration(),
     gotoAct: (index: number) => game.debugGotoAct(index),
+    view: (pose) => game.debugView(pose),
     actCount: game.actCount,
   };
+  const preview = previewAct();
+  if (preview !== null) game.debugGotoAct(preview);
 }
 
 void bootstrap(container).catch((error: unknown) => {

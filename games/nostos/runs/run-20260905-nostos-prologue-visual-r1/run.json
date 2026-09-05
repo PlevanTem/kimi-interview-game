@@ -1,0 +1,26 @@
+{
+  "runId": "run-20260905-nostos-prologue-visual-r1",
+  "startedAt": "2026-09-05T12:18:00+08:00",
+  "input": "用户要求以第0幕试点精细优化美术视觉，排除黑绘和音效，并明确指令“忽略gate直接改”。",
+  "output": "第0幕程序化英雄资产、唯一导星、湿岸材质、减法构图、资产台预览与回归测试。",
+  "verification": {
+    "unit": "npm run test:nostos",
+    "typecheck": "npm run typecheck:nostos",
+    "build": "npm run build:nostos",
+    "assetConsole": "npm run assets:nostos",
+    "e2e": "NOSTOS_E2E_PORT=4186 npx playwright test --config games/nostos/playwright.config.ts --grep @prologue-visual",
+    "results": "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/verification.json",
+    "evidence": "games/nostos/docs/screenshots/"
+  },
+  "humanGates": {
+    "gate1": null,
+    "techFitLock": null,
+    "gate2": "games/nostos/runs/run-20260904-nostos-build/gate2-decision.json",
+    "gate3": null,
+    "gate4": null
+  },
+  "notes": [
+    "这是用户明确授权的 Gate 3 前视觉试点，不构成 Gate 3 批准。",
+    "新增资产保持 pending，直到人工视觉审阅。"
+  ]
+}

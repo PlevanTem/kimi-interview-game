@@ -1,0 +1,21 @@
+{
+  "runId": "run-20260905-nostos-character-theatre-r1",
+  "status": "verified_for_local_art_review",
+  "runtimeBundle": "index-B8-on_fu.js",
+  "environment": "Windows; Chromium ANGLE SwiftShader; 1280x720; fixed scene seeds",
+  "commands": [
+    { "command": "npm run validate:library", "exitCode": 0, "result": "PASS before production" },
+    { "command": "npm run test:nostos", "exitCode": 0, "result": "final version: 80 tests / 8 files" },
+    { "command": "npm run build:nostos", "exitCode": 0, "result": "final version typecheck and production bundle compiled" },
+    { "command": "$env:NOSTOS_E2E_PORT='4187'; npx playwright test --config games/nostos/playwright.config.ts --grep '@cyclops-theatre|@act12'", "exitCode": 0, "result": "4 passed: both acts all clues/talk/memory/depart/save isolation, 84s natural theatre, 60s/six-visit resources; first character version" },
+    { "command": "$env:NOSTOS_E2E_PORT='4188'; npx playwright test --config games/nostos/playwright.config.ts --grep 'lotus 建模|@cyclops-theatre'", "exitCode": 0, "result": "2 passed: final character front/side + E talk + departure; seven frozen theatre checkpoints, pause/resume, natural end and departure" },
+    { "command": "npm run assets:nostos", "exitCode": 0, "result": "8 hero assets, generated standalone asset console" },
+    { "command": "npm run tuner:nostos", "exitCode": 0, "result": "generated standalone environment tuner" },
+    { "command": "git diff --check", "exitCode": 0, "result": "no whitespace errors" }
+  ],
+  "evidence": ["games/nostos/docs/screenshots/act12-lotus-crewman-front.jpg", "games/nostos/docs/screenshots/act12-lotus-crewman-side.jpg", "games/nostos/docs/screenshots/cyclops-theatre-checkpoints.json", "games/nostos/docs/screenshots/act12-performance.json"],
+  "visualReview": "Checked final front/side model and all seven theatre phases. Capture pauses the real game and hides only pause menu; no game artwork edited. Original non-frozen captures passed flow but timestamps drifted during screenshot encoding, so recaptured with actual times recorded and <1s tolerance.",
+  "budgets": { "characterVertices": 18600, "lotusSceneVertices": 238650, "cyclopsSceneVertices": 72792, "sceneLimit": 300000 },
+  "resourceResult": "After warmup: lotus 25 geometries/8 textures, cyclops 20 geometries/8 textures, stable over repeated visits; no page errors. Software renderer median frame times 300ms / 416.6ms, not hardware FPS certification.",
+  "limitations": ["尚未显卡实机帧率验收", "完整八幕journey本轮不在重测范围", "新人物为静态程序化模型，不是绑定骨骼动画角色", "Gate3/Gate4未通过"]
+}

@@ -744,6 +744,129 @@ export function boatHull(length: number, seed = 71): THREE.BufferGeometry {
   return geometry;
 }
 
+export interface WreckedRaftGeometry {
+  wood: THREE.BufferGeometry;
+  rope: THREE.BufferGeometry;
+}
+
+/**
+ * 序章英雄木筏：七块不齐的盐蚀木板、两根横梁与两道真实包扎。
+ * 返回分材质几何，场景仍能分别合批，不需要额外 Mesh。
+ */
+export function wreckedRaft(seed = 97): WreckedRaftGeometry {
+  const rng = createRng(seed);
+  const woodParts: THREE.BufferGeometry[] = [];
+  for (let i = 0; i < 7; i += 1) {
+    const board = plank(4.5 + rng() * 0.85, 0.48 + rng() * 0.08, 0.12, seed + i);
+    const matrix = new THREE.Matrix4().compose(
+      new THREE.Vector3((rng() - 0.5) * 0.24, (rng() - 0.5) * 0.08, (i - 3) * 0.58),
+      new THREE.Quaternion().setFromEuler(new THREE.Euler(0, (rng() - 0.5) * 0.09, (rng() - 0.5) * 0.045)),
+      new THREE.Vector3(1, 1, 1),
+    );
+    board.applyMatrix4(matrix);
+    woodParts.push(board);
+  }
+  for (const x of [-1.28, 1.12]) {
+    const beam = plank(4.25, 0.24, 0.16, seed + 20 + Math.round(x * 10));
+    beam.rotateY(Math.PI / 2);
+    beam.translate(x, -0.15, 0);
+    woodParts.push(beam);
+  }
+
+  const ropeParts: THREE.BufferGeometry[] = [];
+  for (const x of [-1.28, 1.12]) {
+    const points: THREE.Vector3[] = [];
+    for (let i = 0; i < 16; i += 1) {
+      const a = (i / 16) * Math.PI * 2;
+      points.push(new THREE.Vector3(x, 0.02 + Math.sin(a) * 0.23, Math.cos(a) * 2.12));
+    }
+    const loop = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points, true), 48, 0.045, 6, true);
+    erode(loop, 0.008, seed + 40 + Math.round(x * 10), 4);
+    ropeParts.push(loop);
+  }
+  const knotCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(1.12, 0.21, 2.04),
+    new THREE.Vector3(1.22, 0.35, 2.16),
+    new THREE.Vector3(1.06, 0.42, 2.22),
+    new THREE.Vector3(0.97, 0.25, 2.13),
+    new THREE.Vector3(1.18, 0.2, 2.03),
+  ]);
+  ropeParts.push(new THREE.TubeGeometry(knotCurve, 18, 0.085, 7, false));
+  for (const offset of [-0.035, 0.045]) {
+    const tail = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(1.14 + offset, 0.22, 2.08),
+      new THREE.Vector3(1.35 + offset, 0.1, 2.36),
+      new THREE.Vector3(1.62 + offset, 0.04, 2.52),
+    ]);
+    ropeParts.push(new THREE.TubeGeometry(tail, 12, 0.045, 6, false));
+  }
+
+  return { wood: mergeSimple(woodParts), rope: mergeSimple(ropeParts) };
+}
+
+export interface NamePlankGeometry {
+  wood: THREE.BufferGeometry;
+  inscription: THREE.BufferGeometry;
+}
+
+/** 半擦除的船名板；刻痕故意不组成可辨认姓名。 */
+export function weatheredNamePlank(seed = 121): NamePlankGeometry {
+  const wood = plank(2.75, 0.72, 0.15, seed);
+  const cuts: THREE.BufferGeometry[] = [];
+  const strokes = [
+    [-0.72, -0.16, 0.42, 0.035],
+    [-0.48, 0.04, 0.28, -0.32],
+    [-0.08, -0.12, 0.5, 0.16],
+    [0.38, 0.02, 0.36, -0.18],
+    [0.73, -0.1, 0.22, 0.28],
+  ] as const;
+  for (const [x, z, length, yaw] of strokes) {
+    const cut = new THREE.BoxGeometry(length, 0.018, 0.035);
+    cut.rotateY(yaw);
+    cut.translate(x, 0.084, z);
+    cuts.push(cut);
+  }
+  return { wood, inscription: mergeSimple(cuts) };
+}
+
+/** 断桨：宽桨叶、细长柄与参差断口必须在远处也读得出来。 */
+export function brokenOar(length = 3.25, seed = 131): THREE.BufferGeometry {
+  const parts: THREE.BufferGeometry[] = [];
+  const shaftLength = length * 0.67;
+  const shaft = new THREE.CylinderGeometry(length * 0.023, length * 0.03, shaftLength, 9, 5);
+  shaft.rotateZ(Math.PI / 2);
+  shaft.translate(length * 0.13, 0.04, 0);
+  erode(shaft, length * 0.006, seed, 3.4);
+  parts.push(shaft);
+
+  const blade = new THREE.Shape();
+  blade.moveTo(-length * 0.5, 0);
+  blade.lineTo(-length * 0.43, length * 0.115);
+  blade.lineTo(-length * 0.18, length * 0.075);
+  blade.lineTo(-length * 0.08, length * 0.03);
+  blade.lineTo(-length * 0.08, -length * 0.03);
+  blade.lineTo(-length * 0.2, -length * 0.08);
+  blade.lineTo(-length * 0.45, -length * 0.1);
+  blade.closePath();
+  const paddle = new THREE.ExtrudeGeometry(blade, {
+    depth: length * 0.045,
+    bevelEnabled: true,
+    bevelSize: length * 0.008,
+    bevelThickness: length * 0.006,
+    bevelSegments: 1,
+    curveSegments: 2,
+  });
+  paddle.translate(0, 0, -length * 0.0225);
+  erode(paddle, length * 0.009, seed + 1, 2.3);
+  parts.push(paddle);
+
+  const splinter = new THREE.ConeGeometry(length * 0.035, length * 0.24, 5);
+  splinter.rotateZ(-Math.PI / 2);
+  splinter.translate(length * 0.49, length * 0.025, 0);
+  parts.push(splinter);
+  return mergeSimple(parts);
+}
+
 /** 几何合并的最小实现，只处理同属性的几何。 */
 export function mergeSimple(geometries: THREE.BufferGeometry[]): THREE.BufferGeometry {
   const positions: number[] = [];

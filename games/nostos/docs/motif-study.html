@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NOSTOS · 黑绘母题试验台</title>
+<style>
+:root{color-scheme:dark;--page:#100d0b;--panel:#1a1511;--line:#4c3c2e;--text:#eadcc3;--muted:#a99577;--accent:#c98a3b;--size:256px}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#2a1712 0,transparent 34rem),var(--page);color:var(--text);font-family:Georgia,"Noto Serif SC","Songti SC",serif}
+main{width:min(1460px,calc(100% - 40px));margin:auto;padding:34px 0 54px}
+header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}.eyebrow{margin:0 0 7px;color:var(--accent);font:600 12px ui-monospace,monospace;letter-spacing:.16em}h1{margin:0;font-size:clamp(28px,4vw,48px);font-weight:500;letter-spacing:-.04em}.lede{max-width:780px;margin:12px 0 0;color:var(--muted);line-height:1.75}
+.status{border:1px solid #79572f;padding:8px 10px;color:#e7b869;font:12px ui-monospace,monospace;white-space:nowrap}
+.toolbar{position:sticky;top:0;z-index:3;display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;margin-bottom:20px;padding:13px 15px;border:1px solid var(--line);background:#18130ff2;backdrop-filter:blur(10px)}
+fieldset{display:flex;align-items:center;gap:7px;margin:0;padding:0;border:0}legend{float:left;margin-right:8px;color:var(--muted);font:11px ui-monospace,monospace;letter-spacing:.08em}
+button{min-height:34px;padding:6px 10px;border:1px solid #594737;border-radius:0;background:#211a14;color:var(--text);font:inherit;cursor:pointer}button:hover,button:focus-visible{border-color:var(--accent)}button[aria-pressed=true]{background:#d0b990;border-color:#d0b990;color:#17110e}
+input{width:150px;accent-color:var(--accent)}output{min-width:48px;color:var(--accent);font:12px ui-monospace,monospace}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}.card{border:1px solid var(--line);background:var(--panel)}.stage{display:grid;min-height:310px;place-items:center;padding:18px;overflow:hidden;background:#cbb89a}.stage canvas{display:block;width:min(var(--size),100%);height:auto}
+.meta{min-height:142px;padding:15px 16px;border-top:1px solid var(--line)}.meta-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}h2{margin:0;font-size:18px}code{color:var(--accent);font-size:11px}.meta p{margin:9px 0 12px;color:var(--muted);font-size:13px;line-height:1.6}.meta button{min-height:28px;padding:3px 8px;font-size:12px}
+body.blind .meta{visibility:hidden}body.guides canvas{outline:1px dashed #f2d49eaa}
+.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;border:1px solid var(--line);background:var(--line)}.principles section{padding:17px;background:#211a14}.principles h3{margin:0 0 6px;color:var(--accent);font-size:13px}.principles p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+@media(max-width:700px){main{width:calc(100% - 24px);padding-top:22px}header{display:block}.status{display:inline-block;margin-top:16px}.toolbar{position:static}.principles{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="eyebrow">NOSTOS / MOTIF STUDY 01</p><h1>黑绘母题试验台</h1><p class="lede">五张未接入游戏的 Canvas2D 母版。希腊黑绘负责侧面具象轮廓，中国彩陶负责连续弧线与节奏；先检验形状和动作，再决定是否进入正式 StyleBible。</p></div><div class="status">GATE 3 · NOT LOCKED</div></header>
+<div class="toolbar" aria-label="显示控制">
+  <fieldset><legend>底色</legend><button data-ground="plaster" aria-pressed="true">石灰</button><button data-ground="terracotta" aria-pressed="false">陶土</button><button data-ground="night" aria-pressed="false">反相</button></fieldset>
+  <fieldset><legend>尺寸</legend><input id="size" type="range" min="64" max="288" step="32" value="256"><output id="sizeOut">256 px</output></fieldset>
+  <fieldset><legend>检查</legend><button id="cuts" aria-pressed="true">刻线</button><button id="blind" aria-pressed="false">隐藏名称</button><button id="guides" aria-pressed="false">边界框</button></fieldset>
+</div>
+<section id="gallery" class="grid"></section>
+<div class="principles">
+  <section><h3>先认形</h3><p>关闭刻线仍应一秒辨认；鼻、下巴、胸腔、骨盆、膝和脚掌由外轮廓承担。</p></section>
+  <section><h3>再读动作</h3><p>划桨靠完整受力链，跪坐靠臀—膝—脚跟关系，不再通过标签解释动作。</p></section>
+  <section><h3>最后见媒介</h3><p>刻线只解释衣褶、羽片和指缝；全图保持实黑与底色负形，不烘入透明渐变。</p></section>
+</div>
+</main>
+<script>
+const S=512;
+const palettes={plaster:{ground:"#cbb89a",ink:"#17110e"},terracotta:{ground:"#a6402c",ink:"#160f0c"},night:{ground:"#17191a",ink:"#dbc8a8"}};
+const state={ground:"plaster",cuts:true};
+const P=d=>new Path2D(d);
+const fill=(c,d)=>c.fill(P(d));
+function cut(c,d,w=8){if(!state.cuts)return;c.save();c.globalCompositeOperation="destination-out";c.lineWidth=w;c.lineCap="round";c.lineJoin="round";c.stroke(P(d));c.restore()}
+function setup(c){const p=palettes[state.ground];c.clearRect(0,0,S,S);c.fillStyle=p.ground;c.fillRect(0,0,S,S);c.fillStyle=p.ink;c.strokeStyle=p.ink;c.lineCap="round";c.lineJoin="round"}
+function head(c,x,y,s=1,r=0,long=false){c.save();c.translate(x,y);c.rotate(r);c.scale(s,s);fill(c,"M-22-29C-8-42 12-37 18-21Q18-12 30-7Q34-2 20 1Q28 6 18 9Q18 24 4 31Q-15 29-22 12Q-29-10-22-29Z");fill(c,long?"M-20-25Q-42 2-32 47Q-22 37-10 17L-6-26Z":"M-24-20Q-49-27-46-5Q-40 12-21 7Z");c.restore()}
+function standing(c){setup(c);fill(c,"M211 154Q257 135 307 166Q330 219 307 271L327 337Q274 360 196 337L207 273Q178 215 211 154Z");fill(c,"M232 161L238 112 276 113 286 168Z");head(c,267,88,1.35,-.04);fill(c,"M294 174Q348 213 327 258L289 303 267 280 302 240Q308 207 264 195Z");fill(c,"M235 332L282 332Q294 395 282 455L336 469Q342 489 305 487L257 478Q231 406 235 332ZM200 329L242 333Q232 398 198 451L242 470Q245 488 207 483L166 466Q178 397 200 329Z");cut(c,"M203 272Q257 291 318 271M225 310Q259 322 303 307M279 202Q300 226 304 252")}
+function kneeling(c){setup(c);fill(c,"M192 154Q253 132 304 174Q334 234 298 306Q255 343 184 317Q151 232 192 154Z");fill(c,"M211 160L218 108 255 110 267 169Z");head(c,251,83,1.32,.14);fill(c,"M278 179Q342 230 357 290L404 325 384 348 326 313Q302 253 244 210ZM238 201Q272 267 319 303L375 338 349 359 294 329Q235 291 199 227Z");fill(c,"M190 306Q278 311 371 365L347 407Q257 372 164 356Z M368 361Q347 426 261 450L147 451Q117 437 164 420L272 393 341 365Z M172 335Q238 362 288 407L253 432 161 399Z");cut(c,"M188 269Q252 296 303 282M238 351Q300 356 352 390M276 221Q303 256 312 293")}
+function rower(c){setup(c);fill(c,"M282 177L464 412 439 430 265 191Z M431 402L482 452 456 484 416 425Z");fill(c,"M151 174Q213 142 270 186Q299 242 263 309Q221 344 158 323Q126 250 151 174Z");fill(c,"M163 184L181 127 218 141 213 195Z");head(c,206,112,1.24,.24);fill(c,"M238 194Q296 210 326 257L359 309 337 330 296 288Q253 267 205 225Z M211 215Q252 264 286 286L328 345 307 364 260 318Q210 292 177 244Z");fill(c,"M184 309Q269 314 335 371L313 405Q239 368 155 356Z M331 366Q313 419 248 437L144 443 128 421 244 397 307 373Z");c.fillRect(105,438,312,18);c.fillRect(127,350,142,14);cut(c,"M177 255Q213 292 259 315M224 333Q278 340 316 382M258 230Q291 247 310 278")}
+function siren(c){setup(c);head(c,158,145,1.36,-.1,true);fill(c,"M131 180Q145 229 204 258L249 296 198 334Q135 286 114 211Z");fill(c,"M193 255Q279 206 375 251Q431 277 451 324Q355 351 254 339Q192 328 171 291Z");fill(c,"M214 279Q251 126 424 70Q382 181 286 296Z M243 300Q350 163 480 191Q411 264 308 333Z");fill(c,"M383 295L491 278 404 339ZM391 322L497 338 403 361ZM375 344L468 397 386 378Z");[244,310].forEach(x=>{c.fillRect(x-8,327,17,103);[-24,0,24].forEach(dx=>fill(c,"M"+x+" 422L"+(x+dx)+" 461 "+(x+dx+8)+" 463 "+(x+5)+" 427Z"))});cut(c,"M235 274Q309 164 396 103M268 298Q355 218 444 207M236 319Q306 340 376 320M278 239Q313 258 344 285")}
+function hand(c){setup(c);fill(c,"M30 91L182 70Q260 83 305 143Q354 164 434 168Q481 173 473 210Q464 241 420 228L331 215Q382 239 449 265Q487 282 466 317Q448 343 411 317L323 270Q362 314 415 359Q447 390 418 417Q392 436 365 402L294 329Q319 376 352 431Q370 466 334 481Q302 489 286 449L243 351Q210 325 180 311Q207 366 198 410Q188 451 151 440Q122 429 136 391L158 320Q116 286 30 279Z");cut(c,"M305 143Q298 184 331 215M331 215Q307 247 323 270M323 270Q286 304 294 329M294 329Q253 343 243 351",12);cut(c,"M151 284Q216 275 264 324M183 141Q233 154 273 199")}
+const motifs=[["standing","站立的人","侧面承重与放松腿错开；近侧手臂在身前形成窄负形。",standing],["kneeling","跪坐的人","臀部落向脚跟，大腿前伸、小腿折回；情绪是疲惫而非祈祷。",kneeling],["rower","划桨的人","背、肘、双手、桨、膝与脚组成一条连续受力链。",rower],["siren","鸟身女妖","女性侧脸与长发连接鸟胸；双翼是大块面，羽片由刻线解释。",siren],["hand","巨大的手","前臂从画外压入，四指向下抓取；用深负形分指，不画成城垛。",hand]];
+const gallery=document.querySelector("#gallery");
+motifs.forEach(m=>{const a=document.createElement("article");a.className="card";a.innerHTML='<div class="stage"><canvas width="512" height="512" aria-label="'+m[1]+'剪影"></canvas></div><div class="meta"><div class="meta-head"><h2>'+m[1]+'</h2><code>'+m[0]+'</code></div><p>'+m[2]+'</p><button class="export">导出 PNG</button></div>';a.querySelector(".export").onclick=()=>{const l=document.createElement("a");l.download="nostos-motif-"+m[0]+".png";l.href=a.querySelector("canvas").toDataURL();l.click()};gallery.append(a)});
+function render(){document.querySelectorAll("canvas").forEach((v,i)=>motifs[i][3](v.getContext("2d")));document.querySelectorAll(".stage").forEach(v=>v.style.background=palettes[state.ground].ground)}
+document.querySelectorAll("[data-ground]").forEach(b=>b.onclick=()=>{state.ground=b.dataset.ground;document.querySelectorAll("[data-ground]").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));render()});
+document.querySelector("#size").oninput=e=>{document.documentElement.style.setProperty("--size",e.target.value+"px");document.querySelector("#sizeOut").value=e.target.value+" px"};
+document.querySelector("#cuts").onclick=e=>{state.cuts=!state.cuts;e.currentTarget.setAttribute("aria-pressed",String(state.cuts));render()};
+document.querySelector("#blind").onclick=e=>{e.currentTarget.setAttribute("aria-pressed",String(document.body.classList.toggle("blind")))};
+document.querySelector("#guides").onclick=e=>{e.currentTarget.setAttribute("aria-pressed",String(document.body.classList.toggle("guides")))};
+render();
+</script>
+</body>
+</html>

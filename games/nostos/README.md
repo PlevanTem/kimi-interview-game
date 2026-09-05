@@ -2,199 +2,150 @@
 
 > 一个远航者，和他回家路上的每一次停靠。
 
-第一人称步行叙事探索。玩法范式参照《What Remains of Edith Finch 艾迪芬奇的记忆》：
-在八座**彼此独立**的小岛上行走，触碰物件触发一段回忆，环境叙事是绝对核心。
+本仓库当前交付的第一人称步行叙事探索游戏，以荷马《奥德赛》为背景，玩法范式参照《What Remains of Edith Finch》。八座岛各自独立，环境与遗物承载叙事。
 
-没有战斗，没有格斗，没有复杂物理交互，没有解谜，没有开放世界。
-**只有三个动词：走、看、触碰。**
+**只有走、看、触碰。** 没有战斗、背包、复杂物理拾取、解谜锁或巨型开放世界。
 
-主角是漂泊归乡的远航者奥德修斯。八幕依次经过孤岛、海蚀海岸、沉船遗迹与残破神殿，
-每一处地点触发一段旅途遭遇的记忆。他从不说自己的名字——直到最后一幕。
+![实时海岸标题](docs/screenshots/opening-01-title.jpg)
 
----
+## 运行与操作
 
-## 跑起来
-
-需要 Node.js 20 LTS 或 22。依赖装在仓库根目录，不需要单独安装。
+在仓库根目录执行（CI使用Node.js 22）：
 
 ```bash
-npm install
+npm ci
 npm run dev:nostos
 ```
 
-打开 <http://127.0.0.1:4175>，点"开始"。
+打开 [http://127.0.0.1:4175](http://127.0.0.1:4175/)，点击「循光归航」。
 
-| 操作 | 键 |
-|---|---|
-| 走 | `W` `A` `S` `D` / 方向键 / 手柄左摇杆 |
-| 快跑 | 按住 `Shift` / 手柄左扳机 |
-| 看 | 鼠标 / 手柄右摇杆 |
-| 触碰 | `E` / `Enter` / 鼠标左键 |
-| 呼唤引路的光 | `H` |
-| 跳过回忆 · 推进旁白 | `空格` |
-| 暂停（含航程进度） | `Esc` |
+- 移动：WASD / 方向键 / 手柄左摇杆；快跑：Shift / 手柄左扳机。
+- 观察：鼠标 / 手柄右摇杆。
+- 触碰：E / Enter / 鼠标左键；点击画面可重新锁定鼠标。
+- H：呼唤引路光尘，短暂指向下一处尚未查看的线索或离岛船。
+- 空格：推进旁白或跳过回忆；开场中可直接跳过。
+- Esc：暂停、查看航程、调整低动态、静音、字幕大小、灵敏度与视野。
 
-第一次开始时有一段黑场引导，交代你是谁、要做什么、为什么值得——
-不到一分钟，按 `E` 或 `空格` 可以逐句推进，之后再不出现。
+首次开始是**约15秒的实时海岸连续镜头**，不是黑场教学。三句独白保留叙事悬念，操作提示随观察、移动和接近木筏出现。支持键盘菜单与低动态模式；手柄已接入，尚未完成实体设备验收。
 
-卡住的时候按 `H`：一串光尘从你面前浮起，拐向这一幕下一处该去的地方，
-九秒后自己熄灭。它只在被呼唤时出现，不呼唤的人玩到的是原本那部没有指引的作品。
+## 本地分幕审阅
 
-暂停界面里可以调：减弱镜头晃动、静音、字幕大小、视角灵敏度、视野，
-也能看到航程进度（走过的幕次列出岛名与那件记忆物件，未到的是 `？？？`）。
+启动开发服务后，可直接打开：
 
----
+- [第一幕 · 忘食岸](http://127.0.0.1:4175/?preview=lotus)
+- [第二幕 · 独眼岬](http://127.0.0.1:4175/?preview=cyclops)
 
-## 八幕
+仅本机允许这两个参数，预览不读写或清除正常游戏存档。标准入口仍保留正常存档功能。
 
-| # | 场景 | 天候 | 情绪基调 |
-|---|---|---|---|
-| 0 | 无名之海 | 黎明前的靛蓝 | 失重、无名 |
-| 1 | 忘食岸 | 蜜金黄昏 | 甜蜜的麻痹 |
-| 2 | 独眼岬 | 雷暴逆光 | 幽闭与代价 |
-| 3 | 喀耳刻的柱廊 | 琥珀室内光 | 温柔的时间流失 |
-| 4 | 亡者之岸 | 无光灰白 | 肃穆、赎罪 |
-| 5 | 塞壬水道 | 铅灰海雾 | 诱惑与自缚 |
-| 6 | 卡吕普索之岛 | 永昼过曝 | 永生的代价 |
-| 7 | 伊萨卡 | 雾正在散 | 抵达后的空茫 |
+需要严格固定端口时：
 
-一整周目约 50–70 分钟。
+```bash
+npx vite --config games/nostos/vite.config.ts --host 127.0.0.1 --port 4175 --strictPort
+```
 
----
+## 八幕与当前美术进展
 
-## 技术
+0. 无名之海：靛蓝黎明、盐蚀木筏、绳结、断桨、湿岸与唯一导星。
+1. 忘食岸：蜜金黄昏、可透光果树、低垂果串、空瓮、灰塘、弃置头盔与庭院残铺。
+2. 独眼岬：雷暴逆光、巨骨、羊栏、层岩洞窟与烧尖橄榄木桩。
+3. 喀耳刻的柱廊：琥珀室内光与温柔的时间流失。
+4. 亡者之岸：无光灰白，肃穆与赎罪。
+5. 塞壬水道：铅灰海雾，诱惑与自缚。
+6. 卡吕普索之岛：永昼过曝，永生的代价。
+7. 伊萨卡：雾正在散，抵达后的空茫。
 
-| 项 | 选择 |
-|---|---|
-| 运行时 | 浏览器 WebGL2 |
-| 引擎 | Three.js 0.180（自定义着色器，不用内置材质） |
-| 语言 | TypeScript 5.8 + Vite 6 |
-| 美术资产 | **零个二进制文件**。几何全部程序化生成，纹理全部 Canvas2D 画出来 |
-| 音频 | **零个音频文件**。风、浪、混响、竖琴、脚步全部 WebAudio 合成 |
+八幕流程已实现。最近视觉深化集中于第0—2幕和标题/引导，**不代表后五幕已完成同等精度的美术重建**。原有叙事、线索与回忆保持不变。
 
-整包 gzip 后约 180 kB。所有随机都由固定种子驱动，同一次运行到同一处画面完全一致。
+## 技术与资产
 
----
-
-## 文档
-
-- [`docs/WORLDVIEW.md`](docs/WORLDVIEW.md) — 世界观、奥德赛典故对位、"名字"这条暗线、为什么只有三个动词
-- [`docs/ART_BIBLE.md`](docs/ART_BIBLE.md) — 颜料、三阶色带材质、阴影、天与海、后期链、镜头语言、性能预算
-- [`docs/SCENES.md`](docs/SCENES.md) — 逐幕规格书：美术与镜头描述、触发式回忆事件、环境线索清单、叙事片段全文、情绪基调
-- [`docs/GAMEPLAY.md`](docs/GAMEPLAY.md) — 核心循环、操作、**非目标清单**、状态机、无障碍
-- [`docs/env-tuner.html`](docs/env-tuner.html) — 天候试衣间：实时调光，带画面统计与一键导出
-- [`docs/asset-library.html`](docs/asset-library.html) — 资产库：九类素材由源码当场渲染，单文件可直接打开
-- [`docs/screenshots/`](docs/screenshots/) — e2e 自动产出的逐幕实拍画面
-
----
+- 浏览器 WebGL2，Three.js、自定义 Fresco 壁画着色，TypeScript + Vite。
+- 地形、现实环境与道具主要为固定种子的程序化3D几何，使用材质合批和简化碰撞。
+- 表面细节主要由 Canvas2D 生成；回忆母题另包含 `assets/memory-motifs/` 下16张透明PNG。**不再是“零二进制资产”。**
+- WebAudio 合成音景，无新增外部音频文件。
+- 相机、海浪、雾、幻象与后期为实时效果；固定种子保证几何可复现，不意味着任意时刻的动态画面逐像素相同。
+- 静态构建位于 `games/nostos/dist/`。实际体积以构建输出为准，PNG等资源也需计入，不沿用旧版“整包180kB、四个文件”的描述。
 
 ## 验证
 
-```bash
-npm run test:nostos        # 单元测试
-npm run typecheck:nostos   # tsc --noEmit
-npm run build:nostos       # 类型检查 + 构建
-npm run test:e2e:nostos    # 端到端：从标题走到伊萨卡，顺手拍下逐幕截图
-```
-
----
-
-## 资产库
+在仓库根目录运行：
 
 ```bash
-npm run assets:nostos      # → docs/asset-library.html（单文件，双击即可打开）
+npm run validate:library
+npm run test:nostos
+npm run typecheck:nostos
+npm run build:nostos
+npm run test:e2e:nostos
 ```
 
-本作**没有任何二进制素材文件**，所有"素材"都是代码里的生成器与参数。
-所以资产库不是一份截图清单，而是**直接 import `src/` 下的生成器当场渲染**——
-它永远等于当前代码的真实产出，不会过期。
+当前80项单测通过；前轮开场、窄屏/低动态、试水温、两幕全部交互与离岛、60秒资源观察等6个浏览器用例经复测通过。最新人物与剧场修订加入84秒回忆完整播放和分段实拍，结果见[本轮验收](runs/run-20260905-nostos-character-theatre-r1/verification.json)。真实地形与碰撞可达性、资产ID和几何预算也有自动检查。
 
-收录九类：颜料 12 · 表面材质 14 · 天候预设 8 · 黑绘母题 16 ·
-程序纹理 6 · 构件几何 25 · 植物 5 · 地形 8 · 音景 7 · 全部剧本与交互点。
+只运行受影响范围，并使用新端口避免复用旧预览：
 
-### 精调与同步的流程
+```powershell
+$env:NOSTOS_E2E_PORT='4186'
+npx playwright test --config games/nostos/playwright.config.ts --grep '@act12|@opening|@prologue-visual'
+```
 
-资产库和游戏**读的是同一份源**，所以不存在"导回去"这一步：
+测试前先构建。完整八幕回归可使用 `--grep '@journey'`；最近这轮未重跑完整八幕。软件渲染下纹理预热后保持稳定，但显卡实机帧率仍待验收，不声称达到Release Candidate标准。
 
-1. 在资产库里找到要改的那一项，它下面标着**编辑入口**（例如 `src/content/palette.ts → PIGMENT`）；
-2. 改那个文件；
-3. `npm run assets:nostos` 重新生成，复核改动；
-4. 同一份改动已经生效在游戏里了——`npm run dev:nostos` 直接能看到。
+具体命令、退出码与限制见[最新验证记录](runs/run-20260905-nostos-act12-art-r1/verification.json)。
 
-换句话说：**改代码就是改素材**，资产库只是照出当前状态的一面镜子。
-它不参与游戏构建，也不会被打进游戏包。
+## 资产台
 
----
+```bash
+npm run assets:nostos
+```
+
+生成 [docs/asset-library.html](docs/asset-library.html)，单文件可本地打开。页面直接调用源码生成器，展示颜料、材质、天候、程序纹理、几何、植物、地形、音景和剧本等；数量以当前页面为准。
+
+第0幕有独立英雄资产分组，第1、2幕有7件环境英雄模型与1件实体人物「留下的人」（静态跪坐水手，无骨骼动画）。场景与资产台通过相同ID和工厂解析。独眼回忆已调整位置、尺寸与退场时序，沿用原台词及16张PNG。回忆PNG及其来源另见 [assets/README.md](assets/README.md)与[资产登记表](context/asset-registry.json)，不要把程序化母题预览误认为所有回忆PNG的自动同步副本。
+
+改动生成器或参数后，游戏开发服务会更新；资产台HTML需要重新生成。资产台预览单独做一次sRGB编码，不进入游戏后期链。
 
 ## 天候试衣间
 
 ```bash
-npm run tuner:nostos       # → docs/env-tuner.html（单文件，双击即可打开）
+npm run tuner:nostos
 ```
 
-调光是一件要几十轮对比的事，而"改代码 → 构建 → 起服务 → 截图 → 看"
-一轮要一分半，一次还只能试一个值。这个工具把那个循环压到**一次拖动**。
+生成 [docs/env-tuner.html](docs/env-tuner.html)。工具复用游戏的 `Viewport` / `Stage`，提供固定机位、光照/雾/后期/地形颜色调整、画面统计及参数导出。
 
-左边是天候的 16 个数值 + 15 个颜色，外加地形三色；右边是**三个固定机位**
-（登岸 / 果树林 / 头盔台——玩家真的会站的地方），拖动即时重渲染。
+入口在 `tools/tuner/main.ts`：`ACT_ID` 决定场景，`SHOTS` 决定机位。导出的改动需写回 `src/content/palette.ts` 或场景地形定义，再重新构建工具；调节审阅页本身不会自动修改游戏源码。
 
-三条设计约束：
+## 文档与事实入口
 
-1. **复用游戏本身的 `Viewport` 与 `Stage`**，不另写一套渲染。
-   这里看到的就是玩家会看到的：同一个地形、同一批构件、同一条后期链、
-   同一张阴影图。工具一旦有自己的一份渲染，它给出的判断就不作数了。
-2. **给数字，不只给图。** 每个机位下标出亮度分位 p2 / 中位、动态范围、
-   平坦度、饱和与色相跨度，越界标红。"暗部有没有锚"用眼睛判断会随显示器变，
-   用 p2 判断不会。
-3. **能把结果带走。** 点「导出改动」直接得到可以粘回 `palette.ts` 的
-   那一段 `preset({...})`，只列改动项，不用人肉抄十几个十六进制。
+- [context/index.json](context/index.json)：当前运行、Gate、资产和验证记录入口。
+- [世界观](docs/WORLDVIEW.md) · [Art Bible](docs/ART_BIBLE.md) · [分幕叙事](docs/SCENES.md) · [玩法规格](docs/GAMEPLAY.md)。
+- [开场与UI规范](docs/OPENING_DIRECTION.md) · [第1、2幕美术深化](docs/ACT12_ART_DIRECTION.md)。
+- [资产登记表](context/asset-registry.json) · [实拍截图](docs/screenshots/)。
 
-太阳角度与地形三色会触发整幕重新装配（阴影每幕只烘一次、地形颜色写在
-材质构造里），其余参数改完直接刷 uniform。
+Fun Lock已获人工确认；Visual Lock与Release Candidate尚未批准。用户授权的视觉试点不会被写成Gate审批。当前注册状态保留 `concept`，原因是概念/技术正式锁定记录仍未齐全，不是“没有可玩游戏”。
 
-换一幕调：改 `tools/tuner/main.ts` 顶部的 `ACT_ID`；换机位改同一处的 `SHOTS`。
-
----
-
-## 部署（GitHub Pages）
-
-工作流在 [`.github/workflows/deploy-nostos-pages.yml`](../../.github/workflows/deploy-nostos-pages.yml)：
-推送到 `main` 且动到 `games/nostos/**` 时自动构建并发布，也可以在 Actions 页手动触发。
-
-**第一次需要先在仓库里打开 Pages**（只有仓库管理员能做，命令行做不了）：
-`Settings → Pages → Build and deployment → Source` 选 **GitHub Actions**。
-打开之后到 Actions 页手动跑一次 `Deploy NOSTOS to Pages`，站点就会出现在
-`https://<owner>.github.io/<repo>/`。
-
-之所以不用改 `base`：`vite.config.ts` 里已经是 `base: './'`，产物里的引用是
-`./assets/…`，所以部署到任何一级子路径下都能找到资源。整站四个文件、
-没有任何外部请求——这个游戏零个二进制资产，几何、纹理、音频全在运行时生成。
-
-⚠️ **一个已知的脆弱点**：`package-lock.json` 里 339 个 `resolved` 地址全部指向
-`registry.npmmirror.com`（国内镜像）。GitHub 的 runner 能访问它，但这是一个
-额外的单点依赖。哪天 `npm ci` 在 CI 上装不动，多半就是它——最小改法是本地跑
+## 构建与发布
 
 ```bash
-npm install --registry=https://registry.npmjs.org   # 重写 lockfile 到官方源
+npm run build:nostos
+npm run preview:nostos
 ```
 
-再提交新的 lockfile。注意这会影响国内本地开发的安装速度，是一个取舍，
-所以这里没有替你改。
+[GitHub Pages 工作流](../../.github/workflows/deploy-nostos-pages.yml)在 `main` 的相关路径更新时执行单测、构建并发布 `games/nostos/dist/`。仓库Pages源需配置为GitHub Actions；上线结果以Actions实际状态为准。
 
----
+`base: './'` 支持子路径部署。需上传整个构建目录，包括生成的PNG和JS/CSS，不能只上传HTML。锁文件使用了npm镜像源；若CI安装失败，应先检查对应错误，不在本轮修改依赖源。
 
 ## 目录
 
-```
+```text
+assets/       回忆PNG母题及来源说明
+context/      当前事实入口、风格规范、资产登记表
 src/
-  engine/    渲染器、后期链、天空、海面、壁画材质、阴影、控制器、音景、主循环
-  world/     地形、构件工厂、黑绘剪影、微光、几何合批、噪声
-  game/      幕状态机、进度、交互对焦、幻象播放器、逐句播放器、八幕定义
-  content/   调色板与全部中文文本
-  ui/        准星、提示、字幕、幕卡、标题与暂停面板
-tools/
-  assets/    资产库生成器：import src/ 当场渲染，产出单文件 HTML
-  tuner/     天候试衣间：复用游戏的 Viewport/Stage，实时调光
-tests/       单元测试与端到端
-docs/        Art Bible、分幕规格书、玩法规格、资产库、截图
+  engine/     渲染、后期、天空海面、材质、控制器与音景
+  world/      地形、程序化构件、回忆剪影、光尘与合批
+  game/       幕流程、交互、进度、开场、分幕定义与本地预览
+  content/    调色板与剧本
+  ui/         标题、提示、字幕、暂停与情境引导
+tools/assets/ 资产台生成器
+tools/tuner/  天候试衣间
+tests/        单元与浏览器测试
+docs/         美术/叙事/玩法文档、工具页面与实拍
+runs/         输入快照、迭代与验证证据
 ```

@@ -1,6 +1,7 @@
 import { MEMORY_LABELS, TEXT } from '../content/script';
 import { ACTS } from '../game/scenes';
 import type { Caption } from '../game/types';
+import { navigationMark } from './navigation-mark';
 
 /**
  * 界面层。
@@ -67,6 +68,9 @@ export class Overlay {
   private readonly introCard: HTMLElement;
   private readonly progressList: HTMLElement;
   private readonly continueButton: HTMLButtonElement;
+  private readonly tutorial: HTMLElement;
+  private readonly introProgress: HTMLElement;
+  private touchAnimation: Animation | null = null;
   private actCardTimer = 0;
 
   constructor(
@@ -95,10 +99,14 @@ export class Overlay {
     this.skipHint = el('div', 'skiphint', U.skipHint);
     this.guideHint = el('div', 'guidehint', U.guideHint);
     this.root.append(this.skipHint, this.guideHint);
+    this.tutorial = el('div', 'tutorial');
+    this.root.append(this.tutorial);
 
-    // 开场卡：黑场里压在字幕上方的一行，告诉玩家这几句是给他听的
+    // 开场页脚：序章署名、可跳过说明与细线进度。
     this.introCard = el('div', 'introcard');
-    this.introCard.append(el('div', 'mark', U.title), el('div', 'latin', U.titleSub));
+    this.introCard.append(el('div', 'latin', 'N O S T O S / 序'), el('div', 'intro-skip', U.introSkip));
+    this.introProgress = el('div', 'intro-progress');
+    this.introCard.append(this.introProgress);
     this.root.append(this.introCard);
 
     this.titlePanel = this.buildTitle();
@@ -109,6 +117,19 @@ export class Overlay {
     this.endDedication = this.endPanel.querySelector('.dedication') as HTMLElement;
     this.continueButton = this.titlePanel.querySelector('[data-role="continue"]') as HTMLButtonElement;
     this.root.append(this.titlePanel, this.pausePanel, this.endPanel);
+    this.pausePanel.inert = true;
+    this.endPanel.inert = true;
+    // 模态面板内保留键盘焦点；不可见面板完全退出交互。
+    this.root.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const panel = this.root.querySelector<HTMLElement>('.panel:not(.hidden)');
+      const controls = panel ? [...panel.querySelectorAll<HTMLElement>('button:not([hidden]), input')].filter((node) => node.getClientRects().length) : [];
+      if (!controls.length) return;
+      const current = controls.indexOf(document.activeElement as HTMLElement);
+      const next = (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
+      event.preventDefault();
+      controls[next]!.focus();
+    });
 
     container.append(this.root);
     this.applySettings();
@@ -117,10 +138,14 @@ export class Overlay {
   // ── 构建 ──
 
   private buildTitle(): HTMLElement {
-    const panel = el('div', 'panel');
-    panel.append(el('h1', undefined, U.title));
-    panel.append(el('div', 'latin', U.titleSub));
-    panel.append(el('div', 'tagline', U.titleLine));
+    const panel = el('div', 'panel titlepanel');
+    const mast = el('div', 'title-mast');
+    mast.append(el('span', undefined, 'NOSTOS / 归航'), el('span', undefined, 'AN ODYSSEY OF MEMORY'));
+    const content = el('div', 'title-content');
+    const seal = el('div', 'navigation-mark');
+    seal.append(navigationMark());
+    content.append(seal, el('div', 'eyebrow', U.titleEyebrow), el('h1', undefined, U.title),
+      el('div', 'latin', U.titleSub), el('div', 'tagline', U.titleLine));
 
     const menu = el('div', 'menu');
     const start = el('button', 'link', U.start);
@@ -133,8 +158,23 @@ export class Overlay {
     cont.addEventListener('click', () => this.handlers.onResume());
 
     menu.append(cont, start);
-    panel.append(menu);
-    panel.append(el('div', 'footnote', U.controls));
+    content.append(menu);
+    const footer = el('div', 'title-footer');
+    footer.append(el('span', undefined, U.titleFootnote));
+    const motion = el('button', 'motion-switch', '镜头 / 流动');
+    motion.setAttribute('aria-label', '切换减弱镜头动态');
+    motion.setAttribute('aria-pressed', String(this.settings.reducedMotion));
+    motion.textContent = this.settings.reducedMotion ? '镜头 / 静止' : '镜头 / 流动';
+    motion.addEventListener('click', () => {
+      this.settings.reducedMotion = !this.settings.reducedMotion;
+      motion.setAttribute('aria-pressed', String(this.settings.reducedMotion));
+      motion.textContent = this.settings.reducedMotion ? '镜头 / 静止' : '镜头 / 流动';
+      this.applySettings();
+    });
+    footer.append(motion);
+    const location = el('div', 'title-location');
+    location.append(el('span', 'location-index', '00'), el('span', undefined, U.titleLocation), el('i', 'tideline'));
+    panel.append(mast, content, location, footer);
     return panel;
   }
 
@@ -227,6 +267,7 @@ export class Overlay {
 
   private applySettings(): void {
     document.documentElement.style.setProperty('--subtitle-scale', String(this.settings.subtitleScale));
+    document.documentElement.dataset.motion = this.settings.reducedMotion ? 'reduced' : 'full';
     this.handlers.onSettingsChange(this.settings);
   }
 
@@ -242,6 +283,12 @@ export class Overlay {
       this.prompt.classList.remove('visible');
       return;
     }
+    if (this.prompt.dataset.text === text && this.prompt.dataset.key === key) {
+      this.prompt.classList.add('visible');
+      return;
+    }
+    this.prompt.dataset.text = text;
+    this.prompt.dataset.key = key;
     this.prompt.innerHTML = '';
     this.prompt.append(el('em', undefined, key), document.createTextNode(text));
     this.prompt.classList.add('visible');
@@ -278,11 +325,29 @@ export class Overlay {
   }
 
   showIntroCard(): void {
+    this.root.classList.add('cinematic');
     this.introCard.classList.add('visible');
   }
 
   hideIntroCard(): void {
+    this.root.classList.remove('cinematic');
     this.introCard.classList.remove('visible');
+  }
+
+  setIntroProgress(progress: number): void {
+    this.introProgress.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+  }
+
+  setTutorial(text: string | null): void {
+    if (this.tutorial.textContent !== (text ?? '')) this.tutorial.textContent = text ?? '';
+    this.tutorial.classList.toggle('visible', text !== null);
+  }
+
+  pulseTouch(): void {
+    this.touchAnimation?.cancel();
+    if (!this.settings.reducedMotion) this.touchAnimation = this.reticle.animate([
+      { transform: 'scale(1)', opacity: 1 }, { transform: 'scale(1.7)', opacity: 0 },
+    ], { duration: 650, easing: 'cubic-bezier(.16,1,.3,1)' });
   }
 
   /**
@@ -312,14 +377,20 @@ export class Overlay {
   showTitle(hasSave: boolean): void {
     this.continueButton.hidden = !hasSave;
     this.titlePanel.classList.remove('hidden');
+    this.titlePanel.inert = false;
+    (hasSave ? this.continueButton : this.titlePanel.querySelector<HTMLButtonElement>('[data-role="start"]'))?.focus();
   }
 
   hideTitle(): void {
     this.titlePanel.classList.add('hidden');
+    this.titlePanel.inert = true;
   }
 
   setPaused(paused: boolean): void {
     this.pausePanel.classList.toggle('hidden', !paused);
+    this.pausePanel.inert = !paused;
+    this.root.classList.toggle('is-paused', paused);
+    if (paused) this.pausePanel.querySelector<HTMLButtonElement>('button')?.focus();
   }
 
   showEnd(
@@ -348,10 +419,13 @@ export class Overlay {
     }
 
     this.endPanel.classList.remove('hidden');
+    this.endPanel.inert = false;
+    this.endPanel.querySelector<HTMLButtonElement>('button')?.focus();
   }
 
   hideEnd(): void {
     this.endPanel.classList.add('hidden');
+    this.endPanel.inert = true;
   }
 
   update(dt: number): void {

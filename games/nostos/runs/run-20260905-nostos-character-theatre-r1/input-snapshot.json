@@ -1,0 +1,10 @@
+{
+  "runId": "run-20260905-nostos-character-theatre-r1",
+  "requests": ["第一幕的人物建模还是老版本，你帮忙做一个", "回忆剧场的时候 独眼的一些剪影有重叠 可以稍微移动一下位置 编排下小剧场"],
+  "priorDeliveryRequest": "更新README、推送并merge",
+  "baseCommit": "68c3ed2",
+  "sourceVersions": { "assetRegistry": 5, "styleBible": 2 },
+  "authorization": "用户直接要求实现；沿用忽略gate直接改指令，不虚构Visual Lock或RC批准",
+  "baseline": "第一幕NPC仍走Stage.addNpc的kneeling billboard；独眼回忆居中大尺寸母题多数不设crumbleAt，持续叠到84秒结尾。用户附图展示手、眼与门槛重叠。",
+  "preserve": ["原十三句独眼台词及84秒时长", "16张回忆PNG", "第一幕对话与交互ID", "其余三位NPC", "正常存档", "音景"]
+}

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import * as THREE from 'three';
 import { ACTS, TOTAL_ACTS, actAt, actById } from '../src/game/scenes';
 import { ENV } from '../src/content/palette';
 import { AUDIO } from '../src/engine/audio';
@@ -6,7 +7,13 @@ import { MOTIF_KINDS } from '../src/world/silhouette';
 import { findFocus } from '../src/game/interact';
 import { holdFor } from '../src/game/types';
 import { MEMORY_LABELS, TEXT } from '../src/content/script';
-import { CANOPY_CLEARANCE, oliveTree } from '../src/world/props';
+import {
+  CANOPY_CLEARANCE,
+  brokenOar,
+  oliveTree,
+  weatheredNamePlank,
+  wreckedRaft,
+} from '../src/world/props';
 
 /**
  * 这一组测试守的是**内容契约**，不是渲染。
@@ -74,12 +81,18 @@ describe('八幕内容契约', () => {
     }
   });
 
-  it('全作只有四位 NPC，每位都有名字、剪影与一段短对话', () => {
+  it('全作只有四位 NPC，每位都有名字、一种实体表示与短对话', () => {
     const talkers = ACTS.flatMap(({ def }) => def.interactables.filter((item) => item.kind === 'talk'));
     expect(talkers).toHaveLength(4);
     for (const npc of talkers) {
       expect(npc.speaker).toBeTruthy();
-      expect(npc.motif && MOTIF_KINDS.includes(npc.motif)).toBe(true);
+      if (npc.id === 'lotus.crewman') {
+        expect(npc.modelAsset).toBe('game.nostos.character.lotus_crewman');
+        expect(npc.motif).toBeUndefined();
+      } else {
+        expect(npc.motif && MOTIF_KINDS.includes(npc.motif)).toBe(true);
+        expect(npc.modelAsset).toBeUndefined();
+      }
       expect(npc.lines.length).toBeGreaterThanOrEqual(4);
       expect(npc.lines.length).toBeLessThanOrEqual(8);
       // 一段短对话：说得完，但不能拖成一场戏
@@ -174,22 +187,23 @@ describe('八幕内容契约', () => {
 });
 
 describe('开场引导与终幕收束', () => {
-  it('开场引导把三件事说清楚：你是谁、要做什么、为什么值得', () => {
+  it('开场留下归家动机，操作由情境提示承接，保留第一段回忆的揭示', () => {
     const lines = TEXT.intro.lines;
-    expect(lines.length).toBeGreaterThanOrEqual(5);
+    expect(lines).toHaveLength(3);
     for (const line of lines) expect(line.trim().length).toBeGreaterThan(0);
     const all = lines.join('');
     // 目标与使命必须落到字面上，不能靠玩家自己悟
-    expect(all).toContain('八座岛');
+    expect(all).not.toContain('八座岛');
+    expect(all).not.toContain('十二条船');
     expect(all).toContain('回家');
     // 操作也要说，否则玩家不知道 E 和 H 是干什么的
-    expect(all).toContain('E');
-    expect(all).toContain('H');
+    expect(TEXT.ui.tutorialTouch).toContain('E');
+    expect(TEXT.ui.guideHint).toContain('H');
     // 但它得念得完。这是全作唯一一次直接对玩家说话，也是玩家点了"开始"之后
     // 唯一一段看着黑屏等的时间——超过一分钟就不再是引导，是过场动画了。
     // 五十秒是留了余地的上限：任何一次改写把它撑破，都该先砍字，而不是先放宽这条线。
     const seconds = lines.reduce((sum, line) => sum + holdFor(line), 0);
-    expect(seconds).toBeLessThan(52);
+    expect(seconds).toBeLessThanOrEqual(15);
   });
 
   it('每一幕的记忆物件都有名字，进度面板与终幕总览才有东西可显示', () => {
@@ -243,6 +257,38 @@ describe('交互对焦', () => {
     const near = { id: 'a', kind: 'clue' as const, prompt: '', lines: ['x'], x: 0, z: -1.6, radius: 4 };
     const side = { id: 'b', kind: 'clue' as const, prompt: '', lines: ['x'], x: 2.6, z: 0.4, radius: 4 };
     expect(findFocus({ x: 0, z: 0, yaw: 0 }, [near, side])?.def.id).toBe('a');
+  });
+
+  it('序章导星必须在观星点抬头对准，且不生成地面微光', () => {
+    const star = ACTS[0]!.def.interactables.find((item) => item.id === 'prologue.star')!;
+    expect(findFocus({ x: star.x, z: star.z, yaw: 0, pitch: 0 }, [star])).toBeNull();
+    expect(findFocus({ x: star.x, z: star.z, yaw: 0, pitch: 0.42 }, [star])?.def.id).toBe('prologue.star');
+    expect(findFocus({ x: star.x, z: star.z, yaw: 0, pitch: -0.42 }, [star])).toBeNull();
+    expect(star.glint).toBe(false);
+  });
+});
+
+describe('序章英雄资产轮廓', () => {
+  it('木筏、名牌与断桨各自保留可辨识的比例和分材质细节', () => {
+    const raft = wreckedRaft(100);
+    const raftBox = new THREE.Box3().setFromBufferAttribute(raft.wood.getAttribute('position') as THREE.BufferAttribute);
+    expect(raftBox.max.x - raftBox.min.x).toBeGreaterThan(4);
+    expect(raftBox.max.z - raftBox.min.z).toBeGreaterThan(3.5);
+    expect(raft.rope.getAttribute('position').count).toBeGreaterThan(100);
+
+    const name = weatheredNamePlank(120);
+    const nameBox = new THREE.Box3().setFromBufferAttribute(name.inscription.getAttribute('position') as THREE.BufferAttribute);
+    expect(nameBox.max.y).toBeGreaterThan(0.08);
+
+    const oar = brokenOar(3.35, 130);
+    const oarBox = new THREE.Box3().setFromBufferAttribute(oar.getAttribute('position') as THREE.BufferAttribute);
+    expect(oarBox.max.x - oarBox.min.x).toBeGreaterThan(3);
+
+    raft.wood.dispose();
+    raft.rope.dispose();
+    name.wood.dispose();
+    name.inscription.dispose();
+    oar.dispose();
   });
 });
 

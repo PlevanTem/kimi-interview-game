@@ -23,6 +23,7 @@ import { ACTS } from '../../src/game/scenes';
 import { holdFor } from '../../src/game/types';
 import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
 import * as P from '../../src/world/props';
+import { NARRATIVE_ASSETS, resolveNarrativeAsset, type NarrativeAssetId } from '../../src/world/narrative-assets';
 import { Terrain } from '../../src/world/terrain';
 
 // ─────────────────────────────────────────── 小工具
@@ -137,6 +138,18 @@ function shootParts(
   let liftedMinY = Infinity;
   const probe = new THREE.Box3();
   for (const part of parts) {
+    // Runtime Fresco emits linear light for the game's post chain. This standalone
+    // viewer has no post chain: encode once here or every material preview is too dark.
+    if (part.material instanceof THREE.ShaderMaterial && !part.material.userData.previewEncoded) {
+      part.material.fragmentShader = part.material.fragmentShader.replace(/\}\s*$/, `
+        vec3 displayLinear = max(gl_FragColor.rgb, vec3(0.0));
+        gl_FragColor.rgb = mix(displayLinear * 12.92,
+          1.055 * pow(displayLinear, vec3(1.0 / 2.4)) - 0.055,
+          step(vec3(0.0031308), displayLinear));
+      }`);
+      part.material.userData.previewEncoded = true;
+      part.material.needsUpdate = true;
+    }
     const mesh = new THREE.Mesh(part.geometry, part.material);
     const [x, y, z] = part.at ?? [0, 0, 0];
     mesh.position.set(x, y, z);
@@ -210,6 +223,7 @@ const tallies: Array<[number, string]> = [
   [MOTIF_KINDS.length, '黑绘母题'],
   [6, '程序纹理'],
   [propNames.length, '构件几何'],
+  [3, '序章英雄资产'],
   [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
   [totalActs, '幕 / 地形'],
@@ -252,6 +266,8 @@ const TOC: Array<[string, string]> = [
   ['motif', '黑绘母题'],
   ['texture', '程序纹理'],
   ['props', '构件几何'],
+  ['prologue-hero-assets', '第0幕英雄资产'],
+  ['act12-hero-assets', '第1、2幕场景与道具'],
   ['plant', '植物'],
   ['terrain', '地形'],
   ['audio', '音景'],
@@ -606,6 +622,91 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   }
   s.append(grid);
   main.append(s);
+}
+
+// ─────────────────────────────────────────── 六点五、序章英雄资产
+
+{
+  const s = section({
+    id: 'prologue-hero-assets',
+    title: '六点五、序章英雄资产',
+    count: 3,
+    blurb:
+      '第0幕视觉试点的三件叙事焦点。木筏保留绳结分材质，名牌保留半擦除刻痕，' +
+      '断桨以宽桨叶和参差断口区别于普通 pole；这里与游戏场景调用同一工厂。',
+    source: 'src/world/props.ts · src/game/scenes/prologue.ts',
+  });
+  const grid = el('div', 'grid g-tile');
+  const cards: Array<{
+    name: string;
+    id: string;
+    note: string;
+    shoot: (canvas: HTMLCanvasElement) => void;
+  }> = [
+    {
+      name: 'wreckedRaft',
+      id: 'game.nostos.prop.wrecked_raft',
+      note: '七块盐蚀木板、横梁、双道捆扎与可读绳结',
+      shoot: (canvas) => {
+        const raft = P.wreckedRaft(100);
+        shootParts([
+          { geometry: raft.wood, material: SURFACE.saltWood() },
+          { geometry: raft.rope, material: SURFACE.rope() },
+        ], canvas, { elevation: 0.6 });
+      },
+    },
+    {
+      name: 'weatheredNamePlank',
+      id: 'game.nostos.prop.name_plank',
+      note: '名字已不可辨，但刻写行为仍可见',
+      shoot: (canvas) => {
+        const plank = P.weatheredNamePlank(120);
+        shootParts([
+          { geometry: plank.wood, material: SURFACE.saltWood() },
+          { geometry: plank.inscription, material: SURFACE.charredWood() },
+        ], canvas, { elevation: 0.7 });
+      },
+    },
+    {
+      name: 'brokenOar',
+      id: 'game.nostos.prop.broken_oar',
+      note: '宽桨叶、细柄、断裂木刺组成的核心记忆物',
+      shoot: (canvas) => shoot(P.brokenOar(3.35, 130), SURFACE.saltWood(), canvas),
+    },
+  ];
+  for (const item of cards) {
+    const c = card();
+    const cv = previewCanvas(300, 240);
+    const cap = el('figcaption');
+    cap.append(
+      el('div', 'name', item.name),
+      el('div', 'note', item.note),
+      el('div', 'id', item.id),
+    );
+    c.append(cv, cap);
+    grid.append(c);
+    item.shoot(cv);
+  }
+  s.append(grid);
+  main.append(s);
+}
+
+// Asset console and scenes resolve exactly the same typed IDs / factories / materials.
+{
+  const s = section({
+    id: 'act12-hero-assets', title: '六点六、第1、2幕人物、场景与道具', count: Object.keys(NARRATIVE_ASSETS).length,
+    blurb: '跪坐水手与七件环境叙事模型。人物为实体3D，回忆继续使用黑绘；全部与场景共用稳定ID。',
+    source: 'src/world/narrative-assets.ts · src/game/scenes/lotus.ts · cyclops.ts',
+  });
+  const grid = el('div', 'grid hero-grid');
+  for (const id of Object.keys(NARRATIVE_ASSETS) as NarrativeAssetId[]) {
+    const c = card(), cv = previewCanvas(300, 240), cap = el('figcaption');
+    cap.append(el('div', 'name', NARRATIVE_ASSETS[id].name), el('div', 'id', id));
+    c.append(cv, cap); grid.append(c);
+    shootParts(resolveNarrativeAsset(id).map((p) => ({ geometry: p.geometry, material: SURFACE[p.surface]() })), cv,
+      { elevation: id.includes('tree') || id.includes('cave') || id.includes('character') ? 0.18 : 0.7 });
+  }
+  s.append(grid); main.append(s);
 }
 
 // ─────────────────────────────────────────── 七、植物

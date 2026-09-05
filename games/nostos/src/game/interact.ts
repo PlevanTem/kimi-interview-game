@@ -13,6 +13,8 @@ export interface FocusQuery {
   z: number;
   /** 玩家朝向。yaw = 0 时朝 -Z */
   yaw: number;
+  /** 镜头俯仰；正值代表抬头（Three.js 相机默认朝 -Z）。 */
+  pitch?: number;
 }
 
 export interface FocusResult {
@@ -46,16 +48,33 @@ export function findFocus(
     const radius = def.radius ?? DEFAULT_RADIUS;
     if (distance > radius) continue;
 
+    if (def.look) {
+      const tolerance = def.look.tolerance ?? 0.28;
+      const yawDelta = Math.atan2(
+        Math.sin(query.yaw - def.look.yaw),
+        Math.cos(query.yaw - def.look.yaw),
+      );
+      const pitchDelta = (query.pitch ?? 0) - def.look.pitch;
+      const lookError = Math.hypot(yawDelta, pitchDelta);
+      if (lookError > tolerance) continue;
+    }
+
     // 站在物件正上方时方向无意义，直接判为正对
     let offAngle = 0;
-    if (distance > 0.15) {
+    if (!def.look && distance > Math.max(0.15, def.proximityRadius ?? 0)) {
       const dot = (dx * forwardX + dz * forwardZ) / distance;
       offAngle = Math.acos(Math.max(-1, Math.min(1, dot)));
       if (offAngle > CONE) continue;
     }
 
     // 近的优先，正对的优先；角度权重稍大，让"看着谁"比"离谁近"更重要
-    const score = distance / radius + (offAngle / CONE) * 1.35;
+    const authoredLook = def.look
+      ? Math.hypot(
+          Math.atan2(Math.sin(query.yaw - def.look.yaw), Math.cos(query.yaw - def.look.yaw)),
+          (query.pitch ?? 0) - def.look.pitch,
+        ) / (def.look.tolerance ?? 0.28)
+      : 0;
+    const score = distance / radius + (offAngle / CONE) * 1.35 + authoredLook * 1.6;
     if (score < bestScore) {
       bestScore = score;
       best = { def, distance, offAngle };

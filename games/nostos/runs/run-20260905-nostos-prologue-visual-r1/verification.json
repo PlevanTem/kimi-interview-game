@@ -1,0 +1,20 @@
+{
+  "runId": "run-20260905-nostos-prologue-visual-r1",
+  "verifiedAt": "2026-09-05T13:22:38+08:00",
+  "buildAsset": "games/nostos/dist/assets/index-CDGnFurK.js",
+  "checks": [
+    { "command": "npm run validate:library", "exitCode": 0, "result": "PASS" },
+    { "command": "npm run test:nostos", "exitCode": 0, "result": "64 tests passed across 6 files" },
+    { "command": "npm run build:nostos", "exitCode": 0, "result": "TypeScript and Vite production build passed" },
+    { "command": "npm run assets:nostos", "exitCode": 0, "result": "asset-library.html regenerated, 622 kB" },
+    { "command": "$env:NOSTOS_E2E_PORT='4186'; npx playwright test --config games/nostos/playwright.config.ts --grep '@prologue-visual'", "exitCode": 0, "result": "1 passed (52.6s); independent fresh preview; E prompt visible before and after walking; physical E key starts narration and increments triggered count; no page errors" },
+    { "command": "git diff --check", "exitCode": 0, "result": "PASS" }
+  ],
+  "screenshotsReviewed": [
+    "games/nostos/docs/screenshots/00-prologue-a-登岸.jpg",
+    "games/nostos/docs/screenshots/00-prologue-b-线索.jpg",
+    "games/nostos/docs/screenshots/00-prologue-d-导星.jpg",
+    "games/nostos/docs/screenshots/00-prologue-e-试水温.jpg"
+  ],
+  "limitations": ["Full eight-act E2E was interrupted; only the targeted prologue browser test is claimed as passed.", "Visual approval remains pending."]
+}

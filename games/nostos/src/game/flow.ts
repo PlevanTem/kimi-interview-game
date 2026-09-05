@@ -8,6 +8,7 @@ import { ENV, VISION_GRADE } from '../content/palette';
 import { MEMORY_LABELS, TEXT } from '../content/script';
 import { Overlay, type Settings } from '../ui/overlay';
 import { findFocus } from './interact';
+import { OPENING, openingPose, type OpeningPose } from './opening';
 import { canDepart, clear as clearSave, createProgress, hasTriggered, load, markTriggered, save } from './progress';
 import { GUIDE_SECONDS } from '../world/guidelight';
 import { ACTS, TOTAL_ACTS, actAt } from './scenes';
@@ -53,8 +54,8 @@ export class Game {
   private focus: InteractableDef | null = null;
 
   /** 转场用：白光量与它的目标 */
-  private fade = 1;
-  private fadeTarget = 1;
+  private fade = 0;
+  private fadeTarget = 0;
   private fadeSpeed = 1 / ARRIVE_FADE;
   private fadeColor = 0xf3ead6;
 
@@ -64,6 +65,11 @@ export class Game {
   private arriveTo = 0;
 
   private stepPhase = 0;
+  private openingTime = 0;
+  private openingFrom: OpeningPose = { ...OPENING.title };
+  private tutorialTime = 0;
+  private tutorialActive = false;
+  private titlePointer = 0;
   /** 正在被引路光指着的那件东西；只影响它的微光亮度，不影响任何判定 */
   private hintTargetId: string | null = null;
   private hintUntil = 0;
@@ -92,11 +98,14 @@ export class Game {
     window.addEventListener('keydown', this.onKeyDown);
     this.viewport.canvas.addEventListener('mousedown', this.onMouseDown);
     document.addEventListener('pointerlockchange', this.onPointerLockChange);
+    window.addEventListener('pointermove', this.onTitlePointer);
 
     // 标题界面也要有画面：先把第一幕装好，让玩家隔着面板看见海
     this.stage.load(actAt(0), this.viewport, this.sound);
     this.walker.setGround(this.stage.terrain, this.stage.blockers);
     this.placeAtSpawn(actAt(0).def.spawn);
+    this.walker.movementEnabled = false;
+    this.setOpeningPose(OPENING.title);
     this.loop.start();
   }
 
@@ -111,15 +120,18 @@ export class Game {
     this.walker.requestPointerLock();
 
     if (withIntro) {
-      // 开场引导：先把"你是谁、要做什么、为什么"说清楚，再让世界亮起来。
-      // 这几句是全作唯一一次直接对玩家说话，说完就再也不解释了。
+      // 标题海岸直接成为故事舞台，镜头随三句独白靠近绳结。
       this.phase = 'intro';
+      this.openingTime = 0;
+      this.openingFrom = { x: this.walker.position.x, z: this.walker.position.z, yaw: this.walker.yaw, pitch: this.walker.pitch };
+      this.tutorialActive = true;
+      this.tutorialTime = 0;
       this.narration = new LinePlayer(TEXT.intro.lines);
       this.walker.movementEnabled = false;
       this.overlay.setReticle(false, false);
       this.overlay.showIntroCard();
-      this.fade = 1;
-      this.fadeTarget = 1;
+      this.fade = 0;
+      this.fadeTarget = 0;
       this.fadeColor = INTRO_BLACK;
       return;
     }
@@ -161,6 +173,12 @@ export class Game {
   }
 
   private loadAct(index: number, fadeFrom = 0xf3ead6): void {
+    this.overlay.hideIntroCard();
+    this.overlay.setTutorial(null);
+    this.tutorialActive = false;
+    this.narration = null;
+    this.focus = null;
+    this.pendingVision = false;
     const act = actAt(index);
     this.stage.load(act, this.viewport, this.sound);
     this.walker.setGround(this.stage.terrain, this.stage.blockers);
@@ -198,6 +216,9 @@ export class Game {
   // ── 输入 ──
 
   private readonly onResize = (): void => this.viewport.resize();
+  private readonly onTitlePointer = (event: PointerEvent): void => {
+    if (this.phase === 'title') this.titlePointer = event.clientX / window.innerWidth - 0.5;
+  };
 
   private readonly onPointerLockChange = (): void => {
     // 玩家按了浏览器的 Esc 退出鼠标锁定：视为暂停
@@ -226,6 +247,7 @@ export class Game {
 
     if (event.code === 'Space') {
       event.preventDefault();
+      if (this.phase === 'intro') { this.finishIntro(); return; }
       if (this.phase === 'vision') this.timeline?.skip();
       else if (this.narration) this.narration.next();
       return;
@@ -308,6 +330,7 @@ export class Game {
     }
 
     this.sound.pluck(def.kind === 'memory' ? -5 : 2);
+    this.overlay.pulseTouch();
     markTriggered(this.progress, def.id);
     this.stage.extinguish(def.id);
     save(this.progress);
@@ -410,14 +433,18 @@ export class Game {
         this.updateIntro(dt);
         break;
       case 'title':
-        // 标题界面：镜头极缓慢地横摇，让海一直在动
-        this.walker.yaw += dt * 0.012;
+        this.setOpeningPose({ ...OPENING.title,
+          yaw: OPENING.title.yaw + (this.walker.reducedMotion ? 0 : Math.sin(elapsed * 0.18) * 0.012 + this.titlePointer * 0.025),
+        });
         break;
       case 'ended':
         break;
     }
 
     this.walker.update(dt);
+    if (this.phase === 'intro') {
+      this.setOpeningPose(this.walker.reducedMotion ? OPENING.landing : openingPose(this.openingFrom, this.openingTime / OPENING.duration));
+    }
     this.walker.applyTo(this.viewport.camera);
     const hintId = elapsed < this.hintUntil ? this.hintTargetId : null;
     if (hintId === null) this.hintTargetId = null;
@@ -433,7 +460,8 @@ export class Game {
     }
 
     // 转场
-    this.fade += Math.sign(this.fadeTarget - this.fade) * this.fadeSpeed * dt;
+    const fadeDelta = this.fadeTarget - this.fade;
+    this.fade += Math.sign(fadeDelta) * Math.min(Math.abs(fadeDelta), this.fadeSpeed * dt);
     this.fade = Math.max(0, Math.min(1, this.fade));
     this.viewport.post.setFade(this.fadeColor, this.fade);
   }
@@ -441,24 +469,33 @@ export class Game {
   /**
    * 开场引导。
    *
-   * 黑场里把话说完，然后才把第一座岛点亮。这里刻意不给任何画面——
-   * 玩家此刻要装进脑子里的是"我是谁、我要干什么"，不是风景。
+   * 背景持续可见，镜头按固定时长推进；字幕、暂停与跳过共用游戏时钟。
    */
   private updateIntro(dt: number): void {
-    if (!this.narration) {
-      this.overlay.hideIntroCard();
-      this.overlay.setCaption(null);
-      this.loadAct(this.progress.act, INTRO_BLACK);
-      return;
-    }
-    this.narration.update(dt);
-    this.overlay.setCaption(this.narration.caption);
-    if (this.narration.done) {
-      this.narration = null;
-      this.overlay.setCaption(null);
-      this.overlay.hideIntroCard();
-      this.loadAct(this.progress.act, INTRO_BLACK);
-    }
+    this.openingTime += dt;
+    this.narration?.update(dt);
+    this.overlay.setCaption(this.narration?.caption ?? null);
+    this.overlay.setIntroProgress(this.openingTime / OPENING.duration);
+    if (this.openingTime >= OPENING.duration) this.finishIntro();
+  }
+
+  private setOpeningPose(pose: OpeningPose): void {
+    this.walker.position.set(pose.x, this.stage.terrain.heightAt(pose.x, pose.z) + 1.68, pose.z);
+    this.walker.yaw = pose.yaw;
+    this.walker.pitch = pose.pitch;
+  }
+
+  private finishIntro(): void {
+    this.narration = null;
+    this.overlay.hideIntroCard();
+    this.overlay.setCaption(null);
+    this.setOpeningPose(OPENING.landing);
+    this.phase = 'roaming';
+    this.walker.movementEnabled = true;
+    this.overlay.setReticle(true, false);
+    this.overlay.showActCard(0, actAt(0).def.title, actAt(0).def.subtitle, 5);
+    this.refreshDeparture();
+    save(this.progress);
   }
 
   private updateArriving(dt: number): void {
@@ -494,7 +531,12 @@ export class Game {
 
     this.walker.footPosition(this.tmpVector);
     const result = findFocus(
-      { x: this.tmpVector.x, z: this.tmpVector.z, yaw: this.walker.yaw },
+      {
+        x: this.tmpVector.x,
+        z: this.tmpVector.z,
+        yaw: this.walker.yaw,
+        pitch: this.walker.pitch,
+      },
       act.def.interactables,
       (def) => {
         if (def.kind === 'depart') return canDepart(this.progress, act.def);
@@ -506,7 +548,15 @@ export class Game {
     const busy = this.narration !== null;
     this.overlay.setReticle(true, this.focus !== null && !busy);
     this.overlay.setPrompt(this.focus && !busy ? this.focus.prompt : null);
-    this.overlay.setGuideHint(!busy);
+    this.tutorialTime += dt;
+    if (this.tutorialActive && hasTriggered(this.progress, 'prologue.raft')) this.tutorialActive = false;
+    const looked = Math.abs(this.walker.yaw - OPENING.landing.yaw) + Math.abs(this.walker.pitch - OPENING.landing.pitch) > 0.12;
+    const tip = this.tutorialActive && !busy
+      ? this.focus ? TEXT.ui.tutorialTouch
+        : this.tutorialTime < 5 && !looked ? TEXT.ui.tutorialLook : TEXT.ui.tutorialWalk
+      : null;
+    this.overlay.setTutorial(tip);
+    this.overlay.setGuideHint(!busy && (!this.tutorialActive || this.tutorialTime > 20));
 
     // 凝视：看着可触碰之物时把 FOV 收窄一点点，像人不自觉地眯眼。
     // 快跑反过来把视野推开一点，速度感来自边缘的流动而不是数字。
@@ -581,10 +631,21 @@ export class Game {
     departId: string | null;
     interactableIds: string[];
     narrating: boolean;
+    player: { x: number; z: number; yaw: number; pitch: number };
+    fade: number;
+    openingTime: number;
+    renderStats: { calls: number; geometries: number; textures: number };
   } {
     const act = actAt(this.progress.act);
     return {
       phase: this.phase,
+      fade: this.fade,
+      openingTime: this.openingTime,
+      renderStats: {
+        calls: this.viewport.renderer.info.render.calls,
+        geometries: this.viewport.renderer.info.memory.geometries,
+        textures: this.viewport.renderer.info.memory.textures,
+      },
       act: this.progress.act,
       actId: act.def.id,
       triggered: this.progress.triggered.length,
@@ -596,6 +657,7 @@ export class Game {
       departId: act.def.interactables.find((item) => item.kind === 'depart')?.id ?? null,
       interactableIds: act.def.interactables.map((item) => item.id),
       narrating: this.narration !== null,
+      player: { x: this.walker.position.x, z: this.walker.position.z, yaw: this.walker.yaw, pitch: this.walker.pitch },
     };
   }
 
@@ -604,14 +666,23 @@ export class Game {
     const act = actAt(this.progress.act);
     const def = act.def.interactables.find((item) => item.id === interactableId);
     if (!def) return false;
-    const angle = Math.atan2(this.walker.position.x - def.x, this.walker.position.z - def.z);
+    const angle = def.look?.yaw
+      ?? Math.atan2(this.walker.position.x - def.x, this.walker.position.z - def.z);
     const distance = 2.3;
     const x = def.x + Math.sin(angle) * distance;
     const z = def.z + Math.cos(angle) * distance;
     const settled = this.stage.terrain.settle(x, z);
     // yaw = angle 时前向量正好指回物件（前向量是 (-sin yaw, -cos yaw)）
     this.walker.place(settled.x, settled.z, angle);
+    if (def.look) this.walker.pitch = def.look.pitch;
     return true;
+  }
+
+  /** 供 e2e 使用：触发当前对焦物。 */
+  debugView(pose: { x: number; z: number; yaw: number; pitch: number }): void {
+    const settled = this.stage.terrain.settle(pose.x, pose.z);
+    this.walker.place(settled.x, settled.z, pose.yaw);
+    this.walker.pitch = pose.pitch;
   }
 
   /** 供 e2e 使用：触发当前对焦物。 */
@@ -625,6 +696,7 @@ export class Game {
 
   /** 供 e2e 使用：把当前旁白一口气念完。 */
   debugSkipNarration(): void {
+    if (this.phase === 'intro') { this.finishIntro(); return; }
     while (this.narration && !this.narration.done) this.narration.next();
   }
 
@@ -645,6 +717,7 @@ export class Game {
     this.loop.stop();
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('keydown', this.onKeyDown);
+    window.removeEventListener('pointermove', this.onTitlePointer);
     document.removeEventListener('pointerlockchange', this.onPointerLockChange);
     this.viewport.canvas.removeEventListener('mousedown', this.onMouseDown);
     this.walker.dispose();

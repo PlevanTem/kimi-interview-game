@@ -58,6 +58,10 @@ export interface EnvPreset {
   cloudSpeed: number;
   /** 星光强度，仅序章使用 */
   starIntensity: number;
+  /** 唯一导星；强度为 0 时关闭。 */
+  guideStarAzimuth: number;
+  guideStarElevation: number;
+  guideStarIntensity: number;
 
   /** 雾。雾同时是关卡边界与情绪，密度决定"半封闭"的半径 */
   fogColor: number;
@@ -113,6 +117,9 @@ const BASE: EnvPreset = {
   cloudiness: 0.35,
   cloudSpeed: 0.012,
   starIntensity: 0,
+  guideStarAzimuth: -Math.PI / 2,
+  guideStarElevation: 0.42,
+  guideStarIntensity: 0,
 
   fogColor: 0xd9b073,
   fogDensity: 0.0095,
@@ -156,12 +163,15 @@ export const ENV = {
     sunIntensity: 0.5,
     skyAmbient: 0x2c3d5c,
     groundAmbient: 0x14202f,
-    ambientIntensity: 0.42,
-    horizonColor: 0x3d4a68,
+    ambientIntensity: 0.49,
+    horizonColor: 0x44526f,
     zenithColor: 0x0d1424,
     cloudiness: 0.5,
     cloudSpeed: 0.008,
-    starIntensity: 0.8,
+    starIntensity: 0.42,
+    guideStarAzimuth: -Math.PI / 2,
+    guideStarElevation: 0.42,
+    guideStarIntensity: 1.15,
     fogColor: 0x1e2b42,
     fogDensity: 0.011,
     fogHeightFalloff: 0.028,
@@ -170,15 +180,15 @@ export const ENV = {
     shadowTint: 0x2c3a52,
     seaShallow: 0x1f3244,
     seaDeep: 0x0b131d,
-    seaFoam: 0x8fa0bd,
+    seaFoam: 0x71839f,
     waveHeight: 0.5,
     waveChop: 1.15,
-    exposure: 1.12,
-    saturation: 0.85,
-    halation: 0.3,
+    exposure: 1.16,
+    saturation: 0.88,
+    halation: 0.16,
     halationTint: 0x9fb6ff,
-    vignette: 0.55,
-    grain: 0.07,
+    vignette: 0.31,
+    grain: 0.035,
   }),
 
   /** 第一幕 · 忘食岸：蜜金黄昏，静得让人不想走 */
@@ -194,9 +204,10 @@ export const ENV = {
     seaShallow: 0x3f6b70,
     waveHeight: 0.18,
     waveChop: 0.7,
-    saturation: 1.02,
-    halation: 0.42,
-    vignette: 0.38,
+    saturation: 0.9,
+    halation: 0.22,
+    vignette: 0.3,
+    grain: 0.035,
   }),
 
   /** 第二幕 · 独眼岬：雷暴逆光，洞口是唯一的亮 */
@@ -225,10 +236,10 @@ export const ENV = {
     waveChop: 1.6,
     exposure: 1,
     saturation: 0.78,
-    halation: 0.55,
+    halation: 0.24,
     halationTint: 0xc9dcff,
-    vignette: 0.6,
-    grain: 0.085,
+    vignette: 0.36,
+    grain: 0.04,
   }),
 
   /** 第三幕 · 喀耳刻的柱廊：琥珀室内光，时间在这里停了一年 */

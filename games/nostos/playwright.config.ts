@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig, devices } from '@playwright/test';
 
 const root = fileURLToPath(new URL('.', import.meta.url));
+const port = Number(process.env.NOSTOS_E2E_PORT ?? 4175);
 
 /**
  * 仓库容器里预装了 Chromium，但它的版本号未必和当前 @playwright/test
@@ -22,7 +23,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list']],
   use: {
-    baseURL: 'http://127.0.0.1:4175',
+    baseURL: `http://127.0.0.1:${port}`,
     viewport: { width: 1280, height: 720 },
     trace: 'retain-on-failure',
     launchOptions: {
@@ -38,10 +39,10 @@ export default defineConfig({
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npx vite preview --config games/nostos/vite.config.ts',
+    command: `npx vite preview --config games/nostos/vite.config.ts --port ${port} --strictPort`,
     cwd: fileURLToPath(new URL('../..', import.meta.url)),
-    url: 'http://127.0.0.1:4175',
-    reuseExistingServer: true,
+    url: `http://127.0.0.1:${port}`,
+    reuseExistingServer: process.env.NOSTOS_E2E_PORT === undefined,
     timeout: 120 * 1000,
   },
 });

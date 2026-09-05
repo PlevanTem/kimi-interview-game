@@ -88,6 +88,7 @@ export class Stage {
   }
 
   private addGlint(def: InteractableDef): void {
+    if (def.glint === false) return;
     const ground = this.terrain.heightAt(def.x, def.z);
     // 记忆物件的微光更大更暖一点，离岛点最大——它是"该走了"的唯一提示
     const size = def.kind === 'memory' ? 0.8 : def.kind === 'depart' ? 1.0 : 0.5;
@@ -95,7 +96,7 @@ export class Stage {
     const glint = new Glint(color, size);
     glint.mesh.layers.set(NO_SHADOW_LAYER);
     // 对话对象的微光浮在头顶，其余浮在物件上方一点点
-    const lift = def.kind === 'talk' ? (def.motifSize ?? 1.9) + 0.35 : (def.y ?? 1) + 0.4;
+    const lift = def.kind === 'talk' ? (def.modelHeight ?? def.motifSize ?? 1.9) + 0.35 : (def.y ?? 1) + 0.4;
     glint.mesh.position.set(def.x, ground + lift, def.z);
     this.scene.add(glint.mesh);
     this.glints.set(def.id, glint);

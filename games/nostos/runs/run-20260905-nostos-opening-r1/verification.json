@@ -1,0 +1,58 @@
+{
+  "runId": "run-20260905-nostos-opening-r1",
+  "status": "complete",
+  "buildAsset": "games/nostos/dist/assets/index-DZRfuW0B.js",
+  "checks": [
+    {
+      "command": "npm run typecheck:nostos",
+      "exitCode": 0,
+      "result": "passed"
+    },
+    {
+      "command": "npm run test:nostos",
+      "exitCode": 0,
+      "result": "64 tests / 6 files passed"
+    },
+    {
+      "command": "npm run build:nostos",
+      "exitCode": 0,
+      "result": "TypeScript + Vite passed"
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT='4186'; npx playwright test --config games/nostos/playwright.config.ts --grep '@opening|@prologue-visual'",
+      "exitCode": 0,
+      "result": "3 passed (1.7m): natural 15s opening, pause, first touch, reduced motion, Space skip, Tab focus, water E regression"
+    },
+    {
+      "command": "npm run assets:nostos",
+      "exitCode": 0,
+      "result": "regenerated"
+    },
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "PASS"
+    }
+  ],
+  "visualEvidence": [
+    "games/nostos/docs/screenshots/opening-01-title.jpg",
+    "games/nostos/docs/screenshots/opening-02-cinematic.jpg",
+    "games/nostos/docs/screenshots/opening-03-handoff.jpg",
+    "games/nostos/docs/screenshots/opening-04-narrow.jpg"
+  ],
+  "reviewedSizes": [
+    "1280x720",
+    "390x844",
+    "844x390 layout assertions"
+  ],
+  "limits": [
+    "No new full eight-act journey run; affected opening plus prologue regression tested.",
+    "No hardware gamepad or touchscreen movement validation.",
+    "Art direction remains a reviewable implementation, not a claim of human visual approval."
+  ]
+}

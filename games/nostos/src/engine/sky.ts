@@ -35,6 +35,8 @@ const FRAG = /* glsl */ `
   uniform float uCloudiness;
   uniform float uCloudSpeed;
   uniform float uStarIntensity;
+  uniform vec3 uGuideStarDir;
+  uniform float uGuideStarIntensity;
   uniform float uSunIntensity;
   uniform float uVision;
   uniform vec3 uVisionGround;
@@ -59,9 +61,18 @@ const FRAG = /* glsl */ `
       // 每格里随机放一个点，按距离做尖锐衰减；否则整格会亮成一个方块
       vec2 star = vec2(hash21(cell + 3.7), hash21(cell + 11.3));
       float d = length(frac - star);
-      float point = smoothstep(0.16, 0.0, d) * step(0.955, rnd);
+      float point = smoothstep(0.13, 0.0, d) * step(0.978, rnd);
       float twinkle = 0.55 + 0.45 * sin(uTime * 1.6 + rnd * 90.0);
-      color += vec3(0.78, 0.84, 1.0) * point * twinkle * uStarIntensity * smoothstep(0.02, 0.4, up);
+      color += vec3(0.70, 0.78, 0.94) * point * twinkle * uStarIntensity * smoothstep(0.02, 0.4, up);
+    }
+
+    // 序章的唯一导星：一个稳定的暖白核心和克制的冷色光晕。
+    if (uGuideStarIntensity > 0.001) {
+      float gd = dot(dir, uGuideStarDir);
+      float halo = pow(max(gd, 0.0), 18000.0);
+      float core = smoothstep(0.999992, 0.999999, gd);
+      color += vec3(0.68, 0.78, 1.0) * halo * 0.24 * uGuideStarIntensity;
+      color += vec3(1.0, 0.94, 0.78) * core * 2.4 * uGuideStarIntensity;
     }
 
     // 地平线附近整体交给雾色：天与海必须在同一处收敛，否则会出现一道接缝
@@ -136,6 +147,8 @@ export class Sky {
         uCloudiness: { value: 0.35 },
         uCloudSpeed: { value: 0.012 },
         uStarIntensity: { value: 0 },
+        uGuideStarDir: { value: new THREE.Vector3(0, 0.4, -1).normalize() },
+        uGuideStarIntensity: { value: 0 },
         uVision: sharedUniforms.uVision,
         uVisionGround: sharedUniforms.uVisionGround,
         uVisionShadow: sharedUniforms.uVisionShadow,
@@ -155,6 +168,13 @@ export class Sky {
     u.uCloudiness!.value = env.cloudiness;
     u.uCloudSpeed!.value = env.cloudSpeed;
     u.uStarIntensity!.value = env.starIntensity;
+    const horizontal = Math.cos(env.guideStarElevation);
+    (u.uGuideStarDir!.value as THREE.Vector3).set(
+      Math.cos(env.guideStarAzimuth) * horizontal,
+      Math.sin(env.guideStarElevation),
+      Math.sin(env.guideStarAzimuth) * horizontal,
+    );
+    u.uGuideStarIntensity!.value = env.guideStarIntensity;
   }
 
   /** 天空跟着相机走，玩家永远走不到边。 */

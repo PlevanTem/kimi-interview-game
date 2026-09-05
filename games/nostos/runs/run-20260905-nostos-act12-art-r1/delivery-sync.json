@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-05",
+  "request": "推送更新merge；更新README，明确当前交付游戏为NOSTOS。",
+  "base": "3d5b704",
+  "branch": "codex/game-asset-polish",
+  "changes": ["根README改为当前游戏交付首页", "游戏README同步实时开场、透明PNG、分幕预览和验证范围", "保留主分支新增天候试衣间并重建HTML", "资产说明与部署注释不再宣称零二进制文件"],
+  "checks": [
+    {"command": "npm run validate:library", "exitCode": 0},
+    {"command": "npm run test:nostos", "exitCode": 0, "result": "76 passed"},
+    {"command": "npm run build:nostos", "exitCode": 0, "bundle": "index-eel76FHn.js"},
+    {"command": "npm run tuner:nostos", "exitCode": 0},
+    {"command": "git diff --check", "exitCode": 0}
+  ],
+  "unchangedGameBuild": "构建哈希与前轮浏览器验证一致；本轮未改变游戏行为。",
+  "limits": ["不替代人工Visual Lock或Release Candidate批准", "合并与Pages上线状态以GitHub提交/PR/Actions为准"],
+  "excludedLocalFiles": [".agents/skills/disciplines/", "games/nostos/tools/assets/__pycache__/"]
+}

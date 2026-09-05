@@ -254,7 +254,7 @@ export class PostChain {
         uVignette: { value: 0.42 },
         uGrain: { value: 0.055 },
         uAberration: { value: 0.0016 },
-        uTargetAspect: { value: 1.6 },
+        uTargetAspect: { value: 0 },
         uBarSoftness: { value: 0.004 },
         uFadeColor: { value: new THREE.Color(0x000000) },
         uFadeAmount: { value: 0 },
@@ -299,7 +299,7 @@ export class PostChain {
     u.uVision!.value = amount;
     (u.uVisionPaper!.value as THREE.Color).setHex(paper);
     // 无幻象时不加黑边（用一个小于任何屏幕比的值关掉遮幅）
-    u.uTargetAspect!.value = amount < 0.001 ? 1.0 : aspectFrom + (aspectTo - aspectFrom) * amount;
+    u.uTargetAspect!.value = amount < 0.001 ? 0 : aspectFrom + (aspectTo - aspectFrom) * amount;
   }
 
   /** 转场：向指定颜色推。白光过曝用于登岛/离岛的硬切。 */
