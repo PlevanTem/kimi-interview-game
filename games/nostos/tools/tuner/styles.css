@@ -1,0 +1,178 @@
+/* 试衣间的界面刻意做暗、做窄：调光的时候，界面本身的亮度会污染判断。
+   面板固定在左侧，画面区不随内容跳动——对比两次渲染时，位置必须不变。 */
+:root {
+  --ink: #0e0c0b;
+  --ink-soft: #171412;
+  --line: #302a26;
+  --bone: #e7d9be;
+  --plaster: #b9a98e;
+  --dim: #7c7062;
+  --gold: #e0a94e;
+  --warn: #c9613f;
+  --serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', Georgia, serif;
+  --mono: 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: 13px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 渲染台的宿主：必须留在文档里（WebGL 画布不能 display:none，
+   否则某些浏览器会跳过绘制），所以挪到视野之外而不是隐藏 */
+.stagehost {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 640px;
+  height: 360px;
+  pointer-events: none;
+}
+
+.bar {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-soft);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.bar h1 { font-size: 16px; font-weight: 400; letter-spacing: 0.16em; margin: 0; }
+.bar .sub { color: var(--dim); font-size: 11px; flex: 1; }
+
+button {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--plaster);
+  font-family: var(--serif);
+  font-size: 12px;
+  padding: 5px 14px;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+}
+button:hover { border-color: var(--gold); color: var(--gold); }
+button.primary { border-color: var(--gold); color: var(--gold); }
+
+.body { display: flex; align-items: flex-start; }
+
+/* ── 左：控制面板 ── */
+.panel {
+  width: 320px;
+  flex: none;
+  border-right: 1px solid var(--line);
+  padding: 0 16px 60px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+  position: sticky;
+  top: 52px;
+}
+.panel h2 {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.85;
+  margin: 22px 0 4px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
+.panel .hint { color: var(--dim); font-size: 11px; line-height: 1.55; margin: 0 0 10px; }
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  padding: 5px 0;
+  align-items: center;
+}
+.row .lab { font-size: 12px; color: var(--plaster); }
+.row .val { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+.row input[type='range'] { grid-column: 1 / -1; width: 100%; accent-color: var(--gold); }
+.row input[type='color'] {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 22px;
+  padding: 0;
+  border: 1px solid var(--line);
+  background: none;
+  cursor: pointer;
+}
+/* 改过的项左侧亮一条线，一眼看出这一轮动了什么 */
+.row.changed { border-left: 2px solid var(--gold); padding-left: 8px; margin-left: -10px; }
+.row.changed .lab { color: var(--bone); }
+
+/* ── 右：三个机位 ── */
+.views {
+  flex: 1;
+  min-width: 0;
+  padding: 18px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.shot { margin: 0; border: 1px solid var(--line); background: var(--ink-soft); }
+.shot canvas { display: block; width: 100%; height: auto; background: #000; }
+.shot figcaption { padding: 10px 14px 12px; }
+.shot .name { font-size: 14px; letter-spacing: 0.12em; }
+.shot .note { font-size: 11px; color: var(--dim); margin-top: 2px; }
+
+.stats { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 10px; }
+.stat { display: flex; flex-direction: column; }
+.stat b {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+.stat i { font-style: normal; font-size: 10px; color: var(--dim); letter-spacing: 0.1em; }
+/* 越界的数标红：p2 太高＝画面里没有黑，平坦太高＝层次糊在一起 */
+.stat.warn b { color: var(--warn); }
+
+/* ── 导出 ── */
+.export {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: min(560px, 60vw);
+  max-height: 60vh;
+  overflow: auto;
+  background: var(--ink-soft);
+  border: 1px solid var(--gold);
+  z-index: 20;
+}
+.exportbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--dim);
+  position: sticky;
+  top: 0;
+  background: var(--ink-soft);
+}
+.exportbar span { flex: 1; }
+.export pre {
+  margin: 0;
+  padding: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--plaster);
+  white-space: pre-wrap;
+}
+
+@media (max-width: 900px) {
+  .body { flex-direction: column; }
+  .panel { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--line); }
+}
