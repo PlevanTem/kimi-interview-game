@@ -4,8 +4,7 @@ import {
   boulder,
   brazier,
   flutedColumn,
-  oliveCanopy,
-  oliveTrunk,
+  oliveTree,
   pole,
   ribBone,
   sailCloth,
@@ -211,12 +210,15 @@ export const ithaca: Act = {
     d.place(sailCloth(2.7, 1.9, 0.3, 2453), 'cloth', { x: -6, z: -10.06, y: YARD + 1.6 });
 
     // ── 那棵橄榄树：全作最后一件被触碰的活物 ──
-    d.place(oliveTrunk(5.2, 2460), 'driftwood', { x: -11, z: 2, block: 0.8 });
-    d.place(oliveCanopy(4.2, 2461), 'olive', { x: -11, z: 2, lift: 5.4 });
-    d.place(oliveTrunk(4.4, 2462), 'driftwood', { x: -15, z: -3, block: 0.7 });
-    d.place(oliveCanopy(3.6, 2463), 'olive', { x: -15, z: -3, lift: 4.6 });
-    d.place(oliveTrunk(4.8, 2464), 'driftwood', { x: 13, z: -2, block: 0.75 });
-    d.place(oliveCanopy(3.8, 2465), 'olive', { x: 13, z: -2, lift: 5.0 });
+    for (const [x, z, height, seed, block] of [
+      [-11, 2, 5.2, 2460, 0.8],
+      [-15, -3, 4.4, 2462, 0.7],
+      [13, -2, 4.8, 2464, 0.75],
+    ] as const) {
+      const tree = oliveTree(height, seed);
+      d.place(tree.trunk, 'driftwood', { x, z, block });
+      d.place(tree.canopy, 'olive', { x, z, lift: tree.canopyLift });
+    }
 
     // ── 从岸边通向院子的路：两侧的石 ──
     for (let i = 0; i < 12; i += 1) {

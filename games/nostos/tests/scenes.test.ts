@@ -6,6 +6,7 @@ import { MOTIF_KINDS } from '../src/world/silhouette';
 import { findFocus } from '../src/game/interact';
 import { holdFor } from '../src/game/types';
 import { MEMORY_LABELS, TEXT } from '../src/content/script';
+import { CANOPY_CLEARANCE, oliveTree } from '../src/world/props';
 
 /**
  * 这一组测试守的是**内容契约**，不是渲染。
@@ -242,5 +243,48 @@ describe('交互对焦', () => {
     const near = { id: 'a', kind: 'clue' as const, prompt: '', lines: ['x'], x: 0, z: -1.6, radius: 4 };
     const side = { id: 'b', kind: 'clue' as const, prompt: '', lines: ['x'], x: 2.6, z: 0.4, radius: 4 };
     expect(findFocus({ x: 0, z: 0, yaw: 0 }, [near, side])?.def.id).toBe('a');
+  });
+});
+
+describe('树冠必须让开人的头顶', () => {
+  /**
+   * 这不是洁癖，是一个真实发生过的 bug：
+   * 三座岛各自抄了一遍"树干 + 树冠"的装配比例，谁也没保证树冠够高，
+   * 结果忘食岸的冠底只有 1.48 米——比眼高 1.68 还低。而那一幕的
+   * 「闻果子」线索恰好摆在一棵树的正下方，也就是说**每个玩家**
+   * 都必然走到那儿，然后一头撞进一团黑。
+   *
+   * 修法是把装配收进 oliveTree()，由它量出树冠包围盒再决定抬多高。
+   * 这条测试盯着那个保证：只要还成立，树冠就永远在头顶之上。
+   */
+  it('不管树多高、seed 抽到什么形状，冠底都不低于 CANOPY_CLEARANCE', () => {
+    // 覆盖三座岛用到的全部树高，外加两端的极端值
+    const heights = [3.2, 3.6, 3.8, 3.9, 4.0, 4.1, 4.2, 4.4, 4.6, 4.8, 5.2, 6.5];
+    for (const height of heights) {
+      for (let seed = 0; seed < 40; seed += 1) {
+        const tree = oliveTree(height, 300 + seed * 7);
+        tree.canopy.computeBoundingBox();
+        const clearance = tree.canopyLift + tree.canopy.boundingBox!.min.y;
+        expect(
+          clearance,
+          `高 ${height} / seed ${300 + seed * 7} 的树冠垂到了 ${clearance.toFixed(2)} 米`,
+        ).toBeGreaterThanOrEqual(CANOPY_CLEARANCE - 1e-6);
+      }
+    }
+  });
+
+  it('留出的余量确实高过眼高，不是刚好擦过头皮', () => {
+    // engine/controller.ts 的 EYE_HEIGHT
+    expect(CANOPY_CLEARANCE).toBeGreaterThan(1.68 + 0.5);
+  });
+
+  it('树冠仍然坐在树干上，没有飘成一顶悬空的帽子', () => {
+    for (const height of [3.6, 4.4, 5.2]) {
+      const tree = oliveTree(height, 340);
+      tree.canopy.computeBoundingBox();
+      const canopyBottom = tree.canopyLift + tree.canopy.boundingBox!.min.y;
+      // 冠底必须低于树干顶，否则中间会开一道天光
+      expect(canopyBottom, `高 ${height} 的树冠与树干脱开了`).toBeLessThan(height);
+    }
   });
 });

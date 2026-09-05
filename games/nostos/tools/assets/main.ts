@@ -601,19 +601,26 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     blurb:
       '全作只有三种植物，但它们在场景里都是**装配出来的**，不是单件几何：' +
       '橄榄树永远是树干加树冠两件套，藤是二十几段茎接起来再挂叶簇。' +
-      '下面按各幕装配代码里的真实比例拼装，' +
-      '所以这里看到的就是走到树下时看到的那棵树。',
-    source: 'src/world/props.ts（零件）+ src/game/scenes/*.ts 的 dress()（装配比例）',
+      '下面直接调用游戏的整株工厂 oliveTree() 装配，不在这里复刻比例，' +
+      '所以这里看到的就是走到树下时看到的那棵树。' +
+      '「冠底离地」是这株树最低那片叶子的高度，由工厂量出树冠包围盒后保证——' +
+      '它必须高过眼高 1.68 米，否则玩家走到树下就是一头撞进一团黑。',
+    source: 'src/world/props.ts → oliveTree() / cypress()',
   });
 
   const drift = SURFACE.driftwood();
   const olive = SURFACE.olive();
 
-  // 树冠抬到 height * 1.02：走到树下要能看见叶子的底面，而不是撞进一团黑
-  const oliveTree = (h: number, seed: number, canopyRatio: number): Part[] => [
-    { geometry: P.oliveTrunk(h, seed), material: drift },
-    { geometry: P.oliveCanopy(h * canopyRatio, seed + 1), material: olive, at: [0, h * 1.02, 0] },
-  ];
+  // 直接用游戏的整株工厂，不在这里复刻装配比例。
+  // 之前这里抄了一份 height * 1.02 的算法——那就是第四份抄写，
+  // 而"资产库不能有自己的一份真相"正是这个工具存在的理由。
+  const tree = (h: number, seed: number): Part[] => {
+    const t = P.oliveTree(h, seed);
+    return [
+      { geometry: t.trunk, material: drift },
+      { geometry: t.canopy, material: olive, at: [0, t.canopyLift, 0] },
+    ];
+  };
 
   // 喀耳刻的藤：茎一小段一小段接起来，比一根长管更像自然爬出来的。
   // 叶团块必须小——藤是一条线，不是一串球。
@@ -651,23 +658,20 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     {
       name: '果树（忘食岸）',
       note: '低矮、伸手就够得到，光从叶缝里切下来。全幕六棵，高 3.6–4.6 米',
-      call: 'oliveTrunk(4.4) + oliveCanopy(4.4 × 0.80) @ lift 4.49',
-      parts: oliveTree(4.4, 340, 0.8),
+      call: 'oliveTree(4.4, 340)',
+      parts: tree(4.4, 340),
     },
     {
       name: '橄榄树（喀耳刻柱廊外）',
       note: '把柱廊框起来的四棵，树冠比忘食岸略大一点',
-      call: 'oliveTrunk(4.2) + oliveCanopy(4.2 × 0.82) @ lift 4.28',
-      parts: oliveTree(4.2, 1040, 0.82),
+      call: 'oliveTree(4.2, 1040)',
+      parts: tree(4.2, 1040),
     },
     {
       name: '老橄榄树（伊萨卡）',
       note: '终幕院子里那三棵，最高的一棵 5.2 米——他离开时它就在那儿',
-      call: 'oliveTrunk(5.2, 2460) + oliveCanopy(4.2, 2461) @ lift 5.4',
-      parts: [
-        { geometry: P.oliveTrunk(5.2, 2460), material: drift },
-        { geometry: P.oliveCanopy(4.2, 2461), material: olive, at: [0, 5.4, 0] },
-      ],
+      call: 'oliveTree(5.2, 2460)',
+      parts: tree(5.2, 2460),
     },
     {
       name: '柏树（卡吕普索之岛）',

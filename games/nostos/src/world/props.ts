@@ -344,6 +344,53 @@ export function oliveCanopy(radius: number, seed = 41): THREE.BufferGeometry {
   return mergeSimple(parts);
 }
 
+/**
+ * 玩家眼高，与 engine/controller.ts 的 EYE_HEIGHT 一致。
+ * 树冠必须让开的就是这条线。
+ */
+const EYE_HEIGHT = 1.68;
+
+/**
+ * 树冠最低那片叶子离地的下限。
+ *
+ * 眼高之上再留约一米的抬头余量：站在树干边上平视要能看见远处的海，
+ * 抬头才看见叶子的底面。低于这个值，玩家走到树下就是一头撞进一团黑——
+ * 而忘食岸的「闻果子」线索恰恰就摆在一棵树的正下方，
+ * 也就是说每一个玩家都必然走到那儿。
+ */
+export const CANOPY_CLEARANCE = EYE_HEIGHT + 0.92;
+
+export interface OliveTree {
+  trunk: THREE.BufferGeometry;
+  canopy: THREE.BufferGeometry;
+  /** 树冠该被抬到多高。已保证冠底不低于 CANOPY_CLEARANCE */
+  canopyLift: number;
+}
+
+/**
+ * 橄榄树 / 果树：树干加树冠的**整株**。
+ *
+ * 这个工厂存在的理由是：树在游戏里从来不是一件几何，而三座岛
+ * （忘食岸、喀耳刻柱廊、伊萨卡）各自抄了一遍装配比例。抄出来的三份
+ * 谁也不保证树冠让开人的头顶——实测忘食岸的冠底只有 1.48 米，
+ * 比眼高还低 20 公分。
+ *
+ * 所以这里不靠算，靠**量**：把树冠的包围盒量出来，再决定抬多高。
+ * 不管 seed 抽到什么形状、树多高，冠底不低于 CANOPY_CLEARANCE 都成立。
+ */
+export function oliveTree(height: number, seed = 37, canopyRatio = 0.66): OliveTree {
+  const trunk = oliveTrunk(height, seed);
+  const canopy = oliveCanopy(height * canopyRatio, seed + 1);
+  canopy.computeBoundingBox();
+  // 树冠几何以自己的中心为原点，最低点是个负数
+  const bottom = canopy.boundingBox!.min.y;
+  // 自然位置：树冠坐在树干顶上
+  const natural = height * 1.02;
+  // 但不能让最低那片叶子垂到眼前
+  const required = CANOPY_CLEARANCE - bottom;
+  return { trunk, canopy, canopyLift: Math.max(natural, required) };
+}
+
 /** 雪松 / 柏：卡吕普索岛上一列列的深色竖线。 */
 export function cypress(height: number, seed = 43): THREE.BufferGeometry {
   const rng = createRng(seed);

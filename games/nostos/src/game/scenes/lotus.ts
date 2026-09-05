@@ -5,8 +5,7 @@ import {
   boulder,
   columnDrum,
   flutedColumn,
-  oliveCanopy,
-  oliveTrunk,
+  oliveTree,
   pithos,
   plank,
   pole,
@@ -223,9 +222,12 @@ export const lotus: Act = {
     ];
     for (const [x, z, height] of trees) {
       const seed = 340 + Math.floor(x * 7 + z);
-      d.place(oliveTrunk(height, seed), 'driftwood', { x, z, block: 0.5 });
-      // 树冠抬到人眼之上：走到树下要能看见叶子的底面，而不是撞进一团黑
-      d.place(oliveCanopy(height * 0.8, seed + 1), 'olive', { x, z, lift: height * 1.02 });
+      // 树冠抬到人眼之上：走到树下要能看见叶子的底面，而不是撞进一团黑。
+      // 这个保证由 oliveTree() 量出来，不是在这里算的——「闻果子」那处线索
+      // 就摆在其中一棵树的正下方，每个玩家都必然站到那儿。
+      const tree = oliveTree(height, seed);
+      d.place(tree.trunk, 'driftwood', { x, z, block: 0.5 });
+      d.place(tree.canopy, 'olive', { x, z, lift: tree.canopyLift });
     }
 
     // ── 留下的人坐的那块石头 ──
