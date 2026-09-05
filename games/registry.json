@@ -1,33 +1,29 @@
 {
   "$schema": "../schemas/game-library.schema.json",
-  "version": "1.0.0",
-  "updatedAt": "2026-09-03T18:29:37+08:00",
-  "activeGameId": "odyssey-drifter-opus-51",
+  "version": "1.1.0",
+  "updatedAt": "2026-09-04T09:00:00+08:00",
+  "activeGameId": "nostos",
   "productionPaused": false,
   "games": [
     {
-      "id": "odyssey-drifter",
-      "title": "光线之上",
-      "status": "graybox",
-      "path": "games/odyssey-drifter",
-      "manifest": "games/odyssey-drifter/manifest.json"
+      "id": "nostos",
+      "title": "归航 · NOSTOS",
+      "status": "concept",
+      "path": "games/nostos",
+      "manifest": "games/nostos/manifest.json"
     },
     {
-      "id": "odyssey-drifter-opus-51",
-      "title": "光线之上 · Opus 5.1 重制",
-      "status": "graybox",
-      "path": "games/odyssey-drifter-opus-51",
-      "manifest": "games/odyssey-drifter-opus-51/manifest.json"
+      "id": "odyssey-drifter",
+      "title": "光线之上",
+      "status": "archived",
+      "path": "games/odyssey-drifter",
+      "manifest": "games/odyssey-drifter/manifest.json"
     }
   ],
   "notes": [
-    "Opus 5.1 v2 提示已按用户要求改为直接显示当前阶段完整答案线，并完成七阶段与失败页入口回归。",
-    "Opus 5.1 v2 五房共织机关候选已实现并通过规则与真实浏览器自动验证；Gate 2 仍为 iterating，等待用户本人试玩确认乐趣与可读性。",
-    "Opus 5.1 Gate 2 已被用户直测退回：玩法退化为连线等待，节拍引导、角色环境互动与完整产品流程均不达标；当前只进入玩法/交互重构提案，Gate 3 继续阻塞。",
-    "active game 切换为 odyssey-drifter-opus-51：用户要求在新工作区重新设计《光线之上》，不受旧版约束。",
-    "odyssey-drifter 保留为历史工作区，其 Gate 记录、Godot 技术锁定与灰盒证据不迁移到新工作区。",
-    "新工作区的技术决策是在用户指令下由 prototype 侧选定的浏览器 Canvas 2D；运行时本身尚未经用户逐项确认，见其 technology-decision.json 的 humanApproval.scope。",
-    "Gate 2 仍未通过：自动驾驶与单元测试只证明链路成立，乐趣与可读性必须由用户本人试玩判定。",
+    "《归航 · NOSTOS》直接由用户 2026-09-04 的指定简报产生，未走 Gate 1 三候选发散与人工概念锁定；因此 status 停在 concept，gateState.gate1 记为 bypassed_by_user_brief。没有人工 Gate 记录就不声称通过 Gate。",
+    "《归航 · NOSTOS》的技术路线（浏览器 WebGL2 + Three.js）由用户简报的能力需求直接推导，未做多方案 Tech Fit Review；manifest.technologyDecision 保持 null。",
+    "《光线之上》与其目录内的历史产物按用户指示不再继续，改标 archived 作为历史保留，不删除。",
     "根级 game-context 与 runs 是框架启动验证证据，不属于游戏库。"
   ]
 }

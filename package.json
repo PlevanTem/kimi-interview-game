@@ -12,13 +12,20 @@
     "test:e2e": "playwright test",
     "test:visual": "playwright test --grep @visual",
     "test:performance": "playwright test --grep @performance",
+    "dev:nostos": "vite --config games/nostos/vite.config.ts",
+    "build:nostos": "tsc --noEmit -p games/nostos/tsconfig.json && vite build --config games/nostos/vite.config.ts",
+    "preview:nostos": "vite preview --config games/nostos/vite.config.ts",
+    "typecheck:nostos": "tsc --noEmit -p games/nostos/tsconfig.json",
+    "test:nostos": "vitest run --config games/nostos/vitest.config.ts",
+    "test:e2e:nostos": "playwright test --config games/nostos/playwright.config.ts",
     "validate:library": "node scripts/validate-library.mjs",
     "validate:context": "node scripts/validate-context.mjs",
     "audit:assets": "node scripts/audit-assets.mjs",
     "validate:skills": "node scripts/validate-skills.mjs",
     "quality:report": "node scripts/quality-report.mjs",
     "quality:framework": "npm run validate:library && npm run validate:context && npm run audit:assets && npm run validate:skills && npm run lint && npm run test && npm run build",
-    "quality": "npm run quality:framework && npm run test:e2e && npm run quality:report"
+    "quality": "npm run quality:framework && npm run test:e2e && npm run quality:report",
+    "assets:nostos": "vite build --config games/nostos/tools/assets/vite.config.ts && node games/nostos/tools/assets/build.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.3.0",

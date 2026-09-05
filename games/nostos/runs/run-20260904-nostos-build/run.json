@@ -1,0 +1,24 @@
+{
+  "runId": "run-20260904-nostos-build",
+  "startedAt": "2026-09-04T09:00:00+08:00",
+  "input": "用户简报：荷马奥德赛主题第一人称步行叙事探索，Edith Finch 范式",
+  "output": "games/nostos 完整可游玩原型（八幕）+ Art Bible / 分幕规格书 / 玩法规格",
+  "verification": {
+    "unit": "npm run test:nostos",
+    "typecheck": "npm run typecheck:nostos",
+    "build": "npm run build:nostos",
+    "e2e": "npm run test:e2e:nostos",
+    "evidence": "games/nostos/docs/screenshots/"
+  },
+  "humanGates": {
+    "gate1": null,
+    "techFitLock": null,
+    "gate2": null,
+    "gate3": null,
+    "gate4": null
+  },
+  "notes": [
+    "没有任何人工 Gate 决策记录，所以本次运行不构成任何 Gate 通过。",
+    "截图由 e2e 自动产出，是美术方向的实拍证据而非概念图。"
+  ]
+}

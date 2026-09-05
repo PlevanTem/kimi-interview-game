@@ -1,0 +1,311 @@
+/* 资产库的样子刻意贴着游戏本身：壁画底色、衬线标题、窄色带。
+   审阅素材的时候，背景色如果和游戏里差得远，颜色判断就会跟着偏。 */
+:root {
+  --ink: #14100e;
+  --ink-soft: #1d1815;
+  --line: #37302a;
+  --bone: #e7d9be;
+  --plaster: #cbb89a;
+  --dim: #8d7f6d;
+  --gold: #e0a94e;
+  --terracotta: #a6402c;
+  --serif: 'Songti SC', 'Source Han Serif SC', 'Noto Serif CJK SC', Georgia, serif;
+  --mono: 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--gold); }
+
+/* ── 版头 ── */
+.masthead {
+  padding: 64px 40px 40px;
+  border-bottom: 1px solid var(--line);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.masthead h1 {
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  margin: 0 0 6px;
+}
+.masthead .latin {
+  color: var(--dim);
+  letter-spacing: 0.4em;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin-bottom: 26px;
+}
+.masthead p { max-width: 68ch; color: var(--plaster); margin: 0 0 14px; }
+
+.tally {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 26px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.tally div { min-width: 76px; }
+.tally b {
+  display: block;
+  font-size: 25px;
+  font-weight: 400;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.tally span { font-size: 11px; color: var(--dim); letter-spacing: 0.12em; }
+
+/* ── 目录 ── */
+.toc {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(20, 16, 14, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  padding: 12px 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.toc a { color: var(--plaster); text-decoration: none; }
+.toc a:hover { color: var(--gold); }
+
+/* ── 章节 ── */
+main { max-width: 1400px; margin: 0 auto; padding: 0 40px 90px; }
+
+section { padding-top: 58px; }
+section > h2 {
+  font-size: 21px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  margin: 0 0 4px;
+}
+section > h2 .count { color: var(--dim); font-size: 12px; letter-spacing: 0.1em; margin-left: 10px; }
+.blurb { color: var(--plaster); max-width: 74ch; margin: 0 0 8px; }
+
+/* 每一节都写清楚"改哪个文件"——这是同步回游戏的唯一入口 */
+.source {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--dim);
+  background: var(--ink-soft);
+  border-left: 2px solid var(--terracotta);
+  padding: 7px 12px;
+  margin: 0 0 26px;
+  display: inline-block;
+}
+.source b { color: var(--plaster); font-weight: 400; }
+
+.grid { display: grid; gap: 16px; }
+.g-swatch { grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); }
+.g-tile   { grid-template-columns: repeat(auto-fill, minmax(186px, 1fr)); }
+.g-wide   { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+
+.card {
+  background: var(--ink-soft);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.card figcaption, .card .meta { padding: 10px 12px 12px; }
+.card .name { font-size: 13px; letter-spacing: 0.06em; }
+.card .note { font-size: 11px; color: var(--dim); line-height: 1.55; margin-top: 3px; }
+.card .id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.75;
+  word-break: break-all;
+}
+
+/* 颜料 */
+.chip { height: 78px; display: block; }
+.hex { font-family: var(--mono); font-size: 11px; color: var(--plaster); }
+
+/* 预览画布统一深底，避免不同素材背景不一造成误判 */
+canvas.preview { display: block; width: 100%; background: #0d0a09; }
+
+/* 天候预设 */
+.env { background: var(--ink-soft); border: 1px solid var(--line); padding: 0 0 14px; }
+.env header { padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+.env header .name { font-size: 15px; letter-spacing: 0.1em; }
+.env header .used { font-size: 11px; color: var(--gold); margin-top: 2px; }
+.ramp { display: flex; height: 46px; }
+.ramp i { flex: 1; position: relative; }
+.ramp i span {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8px;
+  font-family: var(--mono);
+  color: rgba(255, 255, 255, 0.62);
+  text-shadow: 0 1px 2px #000;
+}
+.params {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 2px 12px;
+  padding: 12px 16px 0;
+  font-size: 11px;
+}
+.params div { display: flex; justify-content: space-between; gap: 6px; border-bottom: 1px dotted #2b2521; }
+.params dt { color: var(--dim); font-family: var(--mono); }
+.params dd { margin: 0; font-variant-numeric: tabular-nums; }
+
+/* 音景 */
+.bar { height: 5px; background: #2b2521; margin-top: 4px; }
+.bar i { display: block; height: 100%; background: var(--gold); }
+button.play {
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--plaster);
+  font-family: var(--serif);
+  font-size: 11px;
+  padding: 5px 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  letter-spacing: 0.1em;
+}
+button.play:hover { border-color: var(--gold); color: var(--gold); }
+
+/* 文本 */
+.act { border: 1px solid var(--line); background: var(--ink-soft); margin-bottom: 16px; }
+.act > summary {
+  padding: 13px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+}
+.act > summary::-webkit-details-marker { display: none; }
+.act > summary .k { color: var(--dim); font-size: 11px; font-family: var(--mono); }
+.act .body { padding: 0 16px 16px; border-top: 1px solid var(--line); }
+.lines { margin: 12px 0 0; padding: 0 0 0 14px; border-left: 1px solid var(--line); }
+.lines .h {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+}
+.lines p { margin: 2px 0; color: var(--plaster); }
+
+footer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 34px 40px 70px;
+  border-top: 1px solid var(--line);
+  color: var(--dim);
+  font-size: 12px;
+}
+footer code { font-family: var(--mono); color: var(--plaster); }
+
+@media (max-width: 720px) {
+  .masthead, .toc, main, footer { padding-left: 20px; padding-right: 20px; }
+}
+
+/* ── 剧本与交互 ───────────────────────────────────────────
+   这一节不是"把台词列出来"，而是把说明、关联、影响和台词摆在一起看，
+   所以排版要能承载四种密度不同的信息：徽标、坐标事实、影响说明、台词本身。 */
+
+.legend, .overview { margin: 0 0 26px; }
+
+.legend-row { display: flex; gap: 12px; align-items: baseline; padding: 6px 0; border-bottom: 1px dotted #2b2521; }
+.legend-text { font-size: 12px; color: var(--plaster); }
+
+.badge {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  border: 1px solid;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+/* 八幕一览：等宽网格，扫一眼就能横向比较 */
+.orow {
+  display: grid;
+  grid-template-columns: 2.2em 7em 8em 6em 9em 6em 3em 4em;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dotted #2b2521;
+  font-size: 12px;
+  align-items: baseline;
+}
+.orow.ohead { color: var(--dim); font-size: 10px; letter-spacing: 0.12em; border-bottom: 1px solid var(--line); }
+.orow .mono { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+
+.scriptmeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 2px 16px;
+  margin: 14px 0 10px;
+  font-size: 11px;
+}
+.scriptmeta div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted #2b2521; }
+.scriptmeta dt { color: var(--dim); }
+.scriptmeta dd { margin: 0; color: var(--plaster); font-family: var(--mono); }
+
+.tone { color: var(--gold); font-size: 12px; margin: 10px 0 4px; opacity: 0.85; }
+
+/* 一个交互点 */
+.irow { border-left: 2px solid var(--line); padding: 10px 0 12px 14px; margin: 14px 0; }
+.ihead { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.iprompt { font-size: 14px; letter-spacing: 0.06em; }
+.ifacts { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-top: 5px; }
+.ieffect { font-size: 11px; color: var(--plaster); margin-top: 7px; line-height: 1.65; }
+.ieffect b { color: var(--gold); font-weight: 400; }
+.ieffect code { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+
+/* 幻象逐拍时间轴 */
+.timeline { margin-top: 10px; }
+.beat { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px dotted #2b2521; }
+.beat .at {
+  flex: none;
+  width: 3.6em;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.7;
+  padding-top: 2px;
+}
+.bcell { flex: 1; min-width: 0; }
+.bline { margin: 0; color: var(--bone); font-size: 13px; }
+.btags { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-top: 3px; }
+
+@media (max-width: 820px) {
+  .orow { grid-template-columns: 2em 1fr 1fr; }
+  .orow span:nth-child(n + 4) { display: none; }
+  .orow.ohead span:nth-child(n + 4) { display: none; }
+}
+
+/* 小节标题：比 h2 轻，但要能把一幕内部切成几块 */
+.sectionlabel {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  opacity: 0.8;
+  margin: 22px 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
