@@ -18,7 +18,7 @@ import { ENV, PIGMENT, VISION_GRADE, type EnvName } from '../../src/content/pale
 import { MEMORY_LABELS, TEXT } from '../../src/content/script';
 import { AUDIO, Soundscape } from '../../src/engine/audio';
 import { SURFACE, applyEnvToMaterials, tickMaterials } from '../../src/engine/materials';
-import { frescoTexture, meanderTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
+import { fleeceTexture, frescoTexture, meanderTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
 import { ACTS } from '../../src/game/scenes';
 import { holdFor } from '../../src/game/types';
 import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
@@ -208,7 +208,7 @@ const tallies: Array<[number, string]> = [
   [Object.keys(SURFACE).length, '表面材质'],
   [Object.keys(ENV).length, '天候预设'],
   [MOTIF_KINDS.length, '黑绘母题'],
-  [4, '程序纹理'],
+  [5, '程序纹理'],
   [propNames.length, '构件几何'],
   [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
@@ -484,9 +484,9 @@ app.append(main);
   const s = section({
     id: 'texture',
     title: '五、程序纹理',
-    count: 4,
+    count: 5,
     blurb:
-      '四张 Canvas2D 生成的贴图，全部可平铺。前三张作为壁画材质的三平面细节图使用' +
+      '五张 Canvas2D 生成的贴图，全部可平铺。前三张作为壁画材质的三平面细节图使用' +
       '（石 / 沙 / 壁画），回纹用在地面与檐口的装饰带上。',
     source: 'src/engine/textures.ts',
   });
@@ -496,6 +496,7 @@ app.append(main);
     ['沙 sand', sandTexture, '沙地与灰泥'],
     ['壁画 fresco', frescoTexture, '有笔触的上色墙面'],
     ['回纹 meander', meanderTexture, '希腊回纹装饰带'],
+    ['羊毛 fleece', fleeceTexture, '有方向的纤维，独眼岬石缝里的那几撮毛用它'],
   ];
   for (const [name, make, note] of list) {
     const c = card();
@@ -550,6 +551,21 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
       make: () => P.footprint(0.27),
       call: 'footprint(0.27)',
       note: '沙地上的一枚脚印。忘食岸那一行由 46 枚铺成，只有去程没有回程',
+    },
+    corinthianHelmet: {
+      make: () => P.corinthianHelmet(0.38),
+      call: 'corinthianHelmet(0.38)',
+      note: '科林斯盔：钟形盔体 + 鼻梁护片 + 两侧颊片，缝就是眼孔。忘食岸的核心记忆物件',
+    },
+    crushedShield: {
+      make: () => P.crushedShield(1.15),
+      call: 'crushedShield(1.15)',
+      note: '被踩扁的青铜圆盾，中央盾脐还在——「中央的纹章还在，是我们的」',
+    },
+    woolTuft: {
+      make: () => P.woolTuft(0.3),
+      call: 'woolTuft(0.3)',
+      note: '卡在石缝里的一撮羊毛。扁、长、一头散，配 SURFACE.fleece 的纤维图',
     },
   };
 }

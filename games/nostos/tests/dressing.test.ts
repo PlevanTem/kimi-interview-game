@@ -33,6 +33,10 @@ interface Placement {
   z: number;
   /** 水平外接半径：量距离要量到这件东西的边缘，不是它的中心 */
   r: number;
+  /** 露出地面多高。<= 0 表示整件埋在地下，游戏里根本看不见 */
+  above: number;
+  /** 出问题时好认是谁 */
+  label: string;
 }
 
 function authoredPlacements(act: (typeof ACTS)[number]): Placement[] {
@@ -48,17 +52,21 @@ function authoredPlacements(act: (typeof ACTS)[number]): Placement[] {
     place: (g: THREE.BufferGeometry, s: SurfaceName, o: PlaceOptions) => void;
     scatter: (...args: unknown[]) => void;
   };
-  patched.place = (g, _s, o) => {
+  patched.place = (g, surface, o) => {
     // 量到边缘而不是中心：一块铺在地上的大石板能盖住交互点，
     // 但它的中心可能在好几米以外。只看中心会把它误判成孤儿。
     g.computeBoundingBox();
     const box = g.boundingBox;
     let r = 0;
+    let above = Infinity;
     if (box) {
       const scale = typeof o.scale === 'number' ? o.scale : 1;
+      const scaleY = Array.isArray(o.scale) ? o.scale[1] : scale;
       r = Math.max(box.max.x - box.min.x, box.max.z - box.min.z) * 0.5 * scale;
+      // place() 会先贴地再加 lift，所以露出地面的高度就是 lift + 几何顶
+      above = (o.lift ?? 0) + box.max.y * scaleY;
     }
-    placed.push({ x: o.x, z: o.z, r });
+    placed.push({ x: o.x, z: o.z, r, above, label: `${surface} @ (${o.x}, ${o.z})` });
   };
   patched.scatter = () => {};
 
@@ -89,6 +97,27 @@ describe('每个交互点在世界里都要有实物', () => {
    * 就意味着玩家站在交互点上什么也看不见。
    */
   const MAX_DISTANCE = 3;
+
+  /**
+   * 独眼岬那面青铜盾就是这么丢的：x / z 都对，错在 Y——
+   * 盾面半高 15 厘米，装配时 lift 却给到 -0.6，整面盾沉在地下 45 厘米。
+   * 交互点照样对得上焦，旁白照样念完，画面上什么都没有。
+   *
+   * 阈值不划在 0：与地面齐平是正当的做法（雕像底座就刻意做平，
+   * 侵蚀之后顶面在 ±1 厘米之间浮动），半埋也是正当的
+   * （「半埋的桨，只露出一截」）。**全埋**才是 bug，而那一类错得都很离谱——
+   * 那面盾差了 45 厘米。所以线划在"沉下去超过 5 厘米"。
+   */
+  it('没有整件埋在地下的构件', () => {
+    for (const act of ACTS) {
+      for (const p of authoredPlacements(act)) {
+        expect(
+          p.above,
+          `${act.def.id}：${p.label} 的最高点在地面下 ${(-p.above).toFixed(2)} m，游戏里看不见`,
+        ).toBeGreaterThan(-0.05);
+      }
+    }
+  });
 
   it('白名单里的 id 都还存在——它不能变成一张僵尸清单', () => {
     const all = new Set(ACTS.flatMap(({ def }) => def.interactables.map((i) => i.id)));

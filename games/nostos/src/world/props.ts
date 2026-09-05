@@ -345,6 +345,158 @@ export function oliveCanopy(radius: number, seed = 41): THREE.BufferGeometry {
 }
 
 /**
+ * 科林斯式头盔。
+ *
+ * 之前这里是一块涂成青铜色的石头——而它是忘食岸的**核心记忆物件**，
+ * 玩家为它走完整座岛，最后看到一颗卵石。
+ *
+ * 科林斯盔的识别度全在轮廓上，所以按轮廓拼，不按细节堆：
+ *   1. 一个前后略长的钟形盔体（旋转体，不是球——球会读成头，钟才读成盔）；
+ *   2. 正面中线一条**鼻梁护片**垂下来，这是这顶盔最不可替代的一笔；
+ *   3. 两侧颊片向前包，和鼻梁之间留出两道缝——那两道缝就是眼孔，
+ *      在剪影里比真的挖两个洞更清楚；
+ *   4. 顶上一道极低的**盔脊**，把钟形压出正反面之分。
+ *
+ * 全部不做纹样与铆钉：这部作品的造型语言是大块平涂加一条边线，
+ * 一顶 35 厘米的盔上任何刻花在游戏里都只会变成噪点。
+ */
+export function corinthianHelmet(height = 0.36, seed = 89): THREE.BufferGeometry {
+  const s = height;
+  const parts: THREE.BufferGeometry[] = [];
+
+  // ── 盔壳：只做头骨那一段，下缘敞口 ──
+  // 第一版把盔壳一路做到地面，于是变成一个圆桶；科林斯盔的读法是
+  // 上半个圆顶 + 下面三片分开的护片，中间那两道缝才是眼孔。
+  // Lathe 的首点半径不为零，底面自然是开的——旁白说"里面积了一层沙"，
+  // 本来就该看得见内部。
+  const profile: THREE.Vector2[] = [];
+  const pts: Array<[number, number]> = [
+    [0.44, 0.40],
+    [0.455, 0.55],
+    [0.45, 0.70],
+    [0.415, 0.83],
+    [0.32, 0.93],
+    [0.17, 0.985],
+    [0.00, 1.00],
+  ];
+  for (const [r, y] of pts) profile.push(new THREE.Vector2(r * s, y * s));
+  const skull = new THREE.LatheGeometry(profile, 24);
+  skull.scale(1, 1, 1.14);
+  parts.push(skull);
+
+  // ── 盔脊：顶上一道薄脊，给圆顶定出前后 ──
+  // 脊要短于圆顶的前后跨度，不然会像插了一块板子在头上戳出来
+  const crest = new THREE.BoxGeometry(s * 0.07, s * 0.09, s * 0.66);
+  crest.translate(0, s * 0.96, 0);
+  parts.push(crest);
+
+  // ── 鼻梁护片：正中一条窄板垂下来 ──
+  const nose = new THREE.BoxGeometry(s * 0.11, s * 0.46, s * 0.07);
+  nose.translate(0, s * 0.35, s * 0.47);
+  parts.push(nose);
+
+  // ── 颊片：左右各一片薄板，与鼻梁之间**留出缝**，那道缝就是眼孔 ──
+  for (const side of [-1, 1]) {
+    // 贴着盔壳挂下来：离远了就成了两块飘着的板
+    const cheek = new THREE.BoxGeometry(s * 0.19, s * 0.48, s * 0.08, 2, 3, 1);
+    cheek.translate(side * s * 0.27, s * 0.31, s * 0.3);
+    cheek.rotateY(side * -0.3);
+    parts.push(cheek);
+  }
+
+  // ── 颈后护片：向后下方张开的一片，挡住后颈 ──
+  const neck = new THREE.BoxGeometry(s * 0.62, s * 0.34, s * 0.09, 3, 2, 1);
+  neck.rotateX(-0.4);
+  neck.translate(0, s * 0.36, -s * 0.5);
+  parts.push(neck);
+
+  const merged = mergeSimple(parts);
+  // 侵蚀给得极轻：这一件的识别度全在棱与缝上，磨圆了就退回成一块石头。
+  // 第一版给到 0.018 * s，正是那样丢掉的。
+  erode(merged, s * 0.005, seed, 2.6);
+  return merged;
+}
+
+/**
+ * 被踩扁的青铜圆盾。
+ *
+ * 「一面青铜盾，被压成了一张饼。中央的纹章还在，是我们的。」
+ * 所以形要读出三件事：圆、扁、以及**中央那个还在的盾脐**。
+ * 之前这里是一块压扁的卵石，而且装配时 lift 给到 -0.6，
+ * 整面盾沉在地下 45 厘米——玩家当然看不见。
+ */
+export function crushedShield(radius = 1.1, seed = 91): THREE.BufferGeometry {
+  const parts: THREE.BufferGeometry[] = [];
+
+  // 盘面：一张几乎没有厚度的碟，边缘微微翘起
+  const dish: THREE.Vector2[] = [];
+  const pts: Array<[number, number]> = [
+    [0.00, 0.030],
+    [0.55, 0.026],
+    [0.86, 0.020],
+    [0.96, 0.034],
+    [1.00, 0.062],
+    [0.99, 0.020],
+    [0.90, 0.004],
+    [0.00, 0.000],
+  ];
+  for (const [r, y] of pts) dish.push(new THREE.Vector2(r * radius, y * radius));
+  parts.push(new THREE.LatheGeometry(dish, 30));
+
+  // 盾脐：中央那块没被压平的凸起，纹章就在它上面
+  const boss = new THREE.SphereGeometry(radius * 0.19, 14, 8, 0, Math.PI * 2, 0, Math.PI * 0.5);
+  boss.scale(1, 0.42, 1);
+  boss.translate(0, radius * 0.03, 0);
+  parts.push(boss);
+
+  const merged = mergeSimple(parts);
+  // 被踩扁的金属是皱的，不是磨圆的：高频、浅幅
+  erode(merged, radius * 0.045, seed, 3.6);
+  return merged;
+}
+
+/**
+ * 卡在石缝里的一撮羊毛。
+ *
+ * 「羊毛卡在石缝里，一撮一撮，排得很整齐。」——它是奥德修斯把人绑在羊肚子
+ * 底下拖出洞口留下的痕迹，所以形状必须是**被拽过的一绺**：扁、长、一头散。
+ * 之前这里放的是小卵石，圆滚滚地浮在半空，读出来是蛋。
+ *
+ * 做法是压扁再高频侵蚀：低多边形下"蓬松"靠的是不规则的边缘轮廓，
+ * 不是靠体积。配合 SURFACE.fleece 的纤维细节图，凑近了才有毛的质感。
+ */
+export function woolTuft(length = 0.3, seed = 93): THREE.BufferGeometry {
+  const rng = createRng(seed);
+  const strands: THREE.BufferGeometry[] = [];
+
+  // 一撮毛不是一个团块，是**一束乱七八糟的细丝**。
+  // 第一版做成了压扁的单体，侵蚀之后被 weld 磨平，读出来是一颗瓜子。
+  // 低多边形下"蓬松"给不出体积，只能给在轮廓上：几根细丝各自岔开，
+  // 边缘就碎了，那才像被拽下来的一绺。
+  const count = 7 + Math.floor(rng() * 4);
+  for (let i = 0; i < count; i += 1) {
+    const t = i / (count - 1);
+    // 短而胖：太长太直会读成一束针，羊毛是短纤维搅在一起的
+    const long = length * (0.34 + rng() * 0.42);
+    const strand = new THREE.IcosahedronGeometry(0.5, 1);
+    strand.scale(length * (0.09 + rng() * 0.08), length * (0.08 + rng() * 0.08), long);
+    // 每根各自扭一点、翘一点，散开的方向大体一致（被同一个方向拖过）
+    strand.rotateX((rng() - 0.5) * 1.5);
+    strand.rotateY((rng() - 0.5) * 1.4);
+    strand.translate(
+      (rng() - 0.5) * length * 0.4,
+      length * (0.05 + t * 0.16) + (rng() - 0.5) * length * 0.1,
+      (rng() - 0.5) * length * 0.35,
+    );
+    strands.push(strand);
+  }
+
+  const merged = mergeSimple(strands);
+  // 不 weld：这里要的就是各面朝各面的碎边，焊平了又变回一块石头
+  return merged;
+}
+
+/**
  * 沙地上的一个脚印。
  *
  * 压扁到几乎没有厚度的一枚椭圆，长轴是脚的方向。放置时刻意往下沉一点，

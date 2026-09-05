@@ -1,6 +1,7 @@
 import { TEXT } from '../../content/script';
 import {
   amphora,
+  corinthianHelmet,
   footprint,
   boatHull,
   boulder,
@@ -273,7 +274,16 @@ export const lotus: Act = {
 
     // ── 被丢下的头盔（核心记忆）：一块矮台上 ──
     d.place(stoneBlock(1.2, 0.42, 1.2, 370), 'limestone', { x: -6, z: -19, yaw: 0.2 });
-    d.place(boulder(0.34, 371, 2), 'bronze', { x: -6, z: -19, lift: 0.45 });
+    // 侧翻着搁在矮台上：旁白说"头盔翻在地上，里面积了一层沙"，
+    // 所以它必须是倒的——正着摆就成了陈列，而这顶盔是被人解开带子丢下的。
+    d.place(corinthianHelmet(0.38, 371), 'bronze', {
+      x: -6,
+      z: -19,
+      lift: 0.5,
+      yaw: 0.7,
+      tiltX: 1.42,
+      tiltZ: 0.16,
+    });
 
     // ── 岛心的一段断柱廊：这里从前有人住过 ──
     for (let i = 0; i < 5; i += 1) {

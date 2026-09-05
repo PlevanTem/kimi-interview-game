@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type { EnvPreset } from '../content/palette';
 import { PIGMENT } from '../content/palette';
 import { SHADOW_GLSL } from './shadow';
-import { weatheringTexture, sandTexture, frescoTexture } from './textures';
+import { weatheringTexture, sandTexture, frescoTexture, fleeceTexture } from './textures';
 
 /**
  * 壁画材质：全作唯一的表面着色模型。
@@ -219,7 +219,7 @@ export interface FrescoOptions {
   /** 朝上面的提亮量 0–1 */
   roughBreakup?: number;
   /** 使用哪张细节图 */
-  detail?: 'stone' | 'sand' | 'fresco';
+  detail?: 'stone' | 'sand' | 'fresco' | 'fleece';
   opacity?: number;
   transparent?: boolean;
   side?: THREE.Side;
@@ -235,6 +235,7 @@ const created = new Set<THREE.ShaderMaterial>();
 function detailTexture(kind: FrescoOptions['detail']): THREE.Texture {
   if (kind === 'sand') return sandTexture();
   if (kind === 'fresco') return frescoTexture();
+  if (kind === 'fleece') return fleeceTexture();
   return weatheringTexture();
 }
 
@@ -344,6 +345,19 @@ export const SURFACE = {
     createFrescoMaterial({ color: 0xc9b291, shadowTint: 0x7d6a54, detailScale: 0.3, side: THREE.DoubleSide }),
   ash: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: PIGMENT.ash, shadowTint: 0x6f7474, detailScale: 0.12, roughBreakup: 0.4 }),
+  /**
+   * 羊毛。detailScale 给得极大（贴图铺得极密），因为一撮毛只有二十几厘米，
+   * 常规的 0.1 会让整撮毛落在纹理的一个像素上，等于没贴。
+   */
+  fleece: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({
+      color: 0xdcd3c2,
+      shadowTint: 0x8d8578,
+      detail: 'fleece',
+      detailScale: 3.2,
+      detailStrength: 1,
+      roughBreakup: 0.5,
+    }),
 } as const;
 
 /** 销毁所有材质，页面卸载时调用。 */
