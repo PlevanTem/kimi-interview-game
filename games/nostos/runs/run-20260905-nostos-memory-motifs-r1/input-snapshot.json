@@ -1,0 +1,22 @@
+{
+  "runId": "run-20260905-nostos-memory-motifs-r1",
+  "capturedAt": "2026-09-05T12:33:00+08:00",
+  "request": "裁剪拆分 4×4 图并实现到游戏；剪影只用于回忆部分，选择最快捷兼容当前 TypeScript 设计的方法。",
+  "sourceSheet": {
+    "path": "games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png",
+    "sha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8",
+    "dimensions": [1254, 1254]
+  },
+  "motifOrder": [
+    "galley", "rower", "standing", "reaching",
+    "bound", "kneeling", "eye", "hand",
+    "siren", "loom", "flock", "shades",
+    "wreath", "threshold", "wave", "flame"
+  ],
+  "constraints": {
+    "runtimeOutput": "16 transparent 512x512 PNG textures",
+    "scope": "VisionStage memory silhouettes only",
+    "preserve": "procedural world NPC silhouettes and foot offsets",
+    "gate3Approval": false
+  }
+}

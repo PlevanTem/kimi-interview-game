@@ -1,0 +1,37 @@
+{
+  "$schema": "../../../../schemas/iteration-ledger.schema.json",
+  "runId": "run-20260905-nostos-memory-motifs-r1",
+  "entries": [
+    {
+      "id": "memory-motifs-r1",
+      "issue": "游戏回忆仍使用程序化 Canvas 母题，未呈现已选定的 16 个黑绘视觉设计；4×4 概念图也不能直接作为独立场景元素使用。",
+      "evidence": [
+        "games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png",
+        "games/nostos/src/world/silhouette.ts",
+        "games/nostos/src/game/vision.ts"
+      ],
+      "rootCause": "Motif 构造器把纹理来源硬编码为 motifTexture(kind)，回忆层没有独立纹理边界；概念图包含纸底和分隔线且单元格比例不一致。",
+      "change": "检测网格后逐格抠出灰度 alpha、等比适配到 512 方图；新增回忆专用预加载缓存，并通过 MotifOptions.texture 只注入 VisionStage。",
+      "verification": "npm run typecheck:nostos && npm run test:nostos && npm run build:nostos && npm run assets:nostos && npm run test:e2e:nostos",
+      "before": "回忆和世界 NPC 共用程序化 Canvas 纹理；外部 4×4 图无法直接替换。",
+      "after": "16 张素材已生成并由生产构建打包；类型检查与 62 项单测通过，端到端测试按用户要求提前停止，转人工视觉检视。",
+      "status": "open",
+      "commit": null
+    },
+    {
+      "id": "memory-motifs-edge-cleanup-r2",
+      "issue": "Fine black rectangle edges around memory silhouettes.",
+      "evidence": [
+        "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/evidence/edge-cleanup/memory-motifs-report.json",
+        "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/evidence/edge-cleanup/edge-cleanup-comparison.png"
+      ],
+      "rootCause": "Anti-aliased divider pixels survived inside padded textures; previous QA checked only the outer 512px boundary.",
+      "change": "Inset cells 4 source pixels; remove tiny 8-connected islands and thin peripheral divider fragments; recalculate padded bounds and fit to 512px. Preserve grayscale alpha and all larger detached components.",
+      "verification": "npm run validate:library; npm run build:nostos; review 16-pair contact sheet and check output hashes, alpha and dimensions. No E2E per user.",
+      "before": "Fine rectangular lines visible in comparison before-images.",
+      "after": "Visible frames removed in all 16 reviewed after-images. Build passed (exit 0), emitting 16 updated PNGs. In-game review remains manual.",
+      "status": "verified",
+      "commit": null
+    }
+  ]
+}

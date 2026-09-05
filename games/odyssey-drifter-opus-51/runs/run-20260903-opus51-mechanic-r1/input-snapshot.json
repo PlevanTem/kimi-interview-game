@@ -1,0 +1,27 @@
+{
+  "runId": "run-20260903-opus51-mechanic-r1",
+  "at": "2026-09-03T17:53:19+08:00",
+  "requestedBy": "human_user",
+  "requestType": "approved_v2_mechanic_implementation",
+  "inputs": {
+    "approval": "用户在收到 gameplay-spec-v2-proposal.md 后回复‘好的，直接生成’。",
+    "qualityTarget": "有审美、高质量、设计精良、玩法完整、studio 级别。",
+    "contentConstraint": "场景内容尽可能使用代码生成。",
+    "carriedFeedback": [
+      "不能再是无思考的连线等待。",
+      "删除点击模式/长按模式的伪选择。",
+      "角色必须与道具和环境产生直接互动。",
+      "补齐说明、设置、暂停、失败、重试、成功等完整体验状态。",
+      "玩法与交互成立后再开始正式 visual 设计。"
+    ]
+  },
+  "approvedSpec": "games/odyssey-drifter-opus-51/context/gameplay-spec-v2-proposal.md",
+  "gateConstraint": "本指令批准实现候选，不等同于 Gate 2 Fun Lock；只有用户本人试玩后可批准 Gate 2。",
+  "followUpInputs": [
+    {
+      "at": "2026-09-03T18:29:37+08:00",
+      "request": "用户点击提示时，直接显性呈现通关的线条给用户。",
+      "impact": "覆盖原规格中‘只显示下一步关系、不画完整答案’的保守提示策略；改为显示当前阶段完整合法路线。"
+    }
+  ]
+}

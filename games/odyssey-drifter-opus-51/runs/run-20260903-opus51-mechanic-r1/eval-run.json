@@ -1,0 +1,102 @@
+{
+  "evalId": "eval-opus51-v2-owner-r1",
+  "gameId": "odyssey-drifter-opus-51",
+  "runId": "run-20260903-opus51-mechanic-r1",
+  "buildId": "run-20260903-opus51-mechanic-r1",
+  "environment": {
+    "source": "implementation-owner automated browser audit",
+    "browser": "Microsoft Edge 129 headless via DevTools Protocol",
+    "viewport": "1440x900",
+    "device": "current Windows development host",
+    "content": "deterministic handcrafted five-room route"
+  },
+  "scoreType": "Gate 2 candidate diagnostic; not an independent Gate 4 release score",
+  "score": {
+    "functionality": {"earned": 29, "max": 30, "reason": "标题、说明、设置、开始、暂停、重开、失败、恢复、七个阶段、两阶段房间和结局均自动可达；首房使用真实浏览器鼠标拖拽。"},
+    "visuals": {"earned": 19, "max": 25, "reason": "程序化夜城、角色、五类机关、阴影、光线、粒子和完整 UI 已形成一致的功能呈现；Gate 3 尚未开始，故不评价为正式美术完成。"},
+    "interaction": {"earned": 19, "max": 20, "reason": "只有拖动一种核心输入；提示按钮和失败页提示会直接显示完整答案线、方向和机关顺序；首次玩家在不使用答案时的张力理解仍需人工验证。"},
+    "performance": {"earned": 12, "max": 15, "reason": "最终完整流程 479 个采样的中位帧耗时 16.7ms、p95 33.4ms；尚缺目标低端机器的连续 60 秒测量。"},
+    "motionAndSound": {"earned": 8, "max": 10, "reason": "阿迦会沿线行走并在绞盘、棱镜、踏座处切换动作，WebAudio 为装置生成差异音色；本轮未做客观音频录制。"},
+    "total": {"earned": 87, "max": 100}
+  },
+  "resolvedDefects": [
+    {
+      "id": "G2-P1-01",
+      "problem": "没有有意义的谜题决策。",
+      "evidence": ["五房含必经机关、分段张力、光序、双阶段与终局双解。", "固定直连终点策略通过率为 0%。", "puzzle-v2.test.mjs 8/8 通过。"],
+      "rootCause": "旧版把复杂度投入隐藏公式与等待，没有房间级环境状态。",
+      "minimalChange": "删除随机 23 段，替换为五间手工共织机关房。",
+      "verification": "规则测试与完整浏览器路线均通过。",
+      "before": "固定策略可以连续完成 23 跨。",
+      "after": "七个阶段需要不同路径、张力、顺序或角色驻留条件。",
+      "status": "verified"
+    },
+    {
+      "id": "G2-P1-02",
+      "problem": "节拍/保持提示无法与角色动作建立关联。",
+      "evidence": ["运行时不再包含节拍判定、点击模式或等待要求。", "首房提交后阿迦沿线到绞盘并触发旋转。"],
+      "rootCause": "非核心同步奖励占据了主目标层。",
+      "minimalChange": "删除节拍系统，用机关动作直接证明线的因果。",
+      "verification": "04b-prism-action.png 与 05b-city-heart-action.png 显示光线、角色和机关同帧反馈。",
+      "before": "玩家等待节拍窗口。",
+      "after": "松开即运行因果链，单段演出小于 2 秒。",
+      "status": "verified"
+    },
+    {
+      "id": "G2-P1-03",
+      "problem": "阿迦与环境缺少互动。",
+      "evidence": ["自动完整路线记录 10 次核心装置互动。", "阿迦具有绞盘、棱镜、踏座三类动作姿势。"],
+      "rootCause": "旧角色状态与世界状态没有共享装置。",
+      "minimalChange": "把绞盘、棱镜和踏座写入同一轨迹解析与动作时间线。",
+      "verification": "browser-smoke.json complete=true, interactions=10。",
+      "before": "环境大多为被动背景。",
+      "after": "没有阿迦转动、点亮或站住装置就无法过关。",
+      "status": "verified"
+    },
+    {
+      "id": "G2-P1-04",
+      "problem": "完整产品流程缺失或不直观。",
+      "evidence": ["玩法说明、三路音量、字幕、高对比、减少动态、全屏、暂停、失败和结局均有独立页面。", "浏览器冒烟测试控制台错误为 0。"],
+      "rootCause": "旧版把零散 toggle 当作信息架构。",
+      "minimalChange": "重建完整 overlay 状态机并加入自动保存。",
+      "verification": "browser-smoke.json: helpVisible=true, pauseVisible=pause, endingVisible=true。",
+      "before": "设置散落，失败没有决策界面。",
+      "after": "所有核心状态从游戏内可发现且可返回。",
+      "status": "verified"
+    },
+    {
+      "id": "G2-P2-HINT-01",
+      "problem": "提示只给文字关系，未按用户要求显性画出通关线条。",
+      "evidence": ["用户明确要求点击提示后直接呈现通关线条。", "修改前 showHint 只写入文本并在 5 秒后隐藏。"],
+      "rootCause": "原规格刻意避免完整答案，和用户最新的直接答案需求冲突。",
+      "minimalChange": "复用确定性 canonical 合法路线，以金色虚线、方向箭头和真实机关序号绘制当前阶段答案；关卡推进时清理。",
+      "verification": "Edge 冒烟测试真实点击提示；首房 hintVisible=true/hintPoints=3，失败页入口成立，其余六阶段全部生成 2–5 个答案点，完整路线仍通关且浏览器错误为 0。",
+      "before": "提示只有一句文字，5 秒后消失。",
+      "after": "提示持续显示可描摹完整答案线，直到当前阶段结束。",
+      "status": "verified"
+    }
+  ],
+  "remainingRisks": [
+    "Gate 2 乐趣、难度曲线和首次理解必须由用户本人试玩判定。",
+    "正式 Art Bible 与资产生产继续受 Gate 3 阻塞。",
+    "低端目标硬件 60 秒性能与触控设备手感尚未覆盖。",
+    "本评测由实现所有者完成，不替代 Gate 4 的独立 quality-auditor。"
+  ],
+  "evidence": {
+    "rules": "node --test games/odyssey-drifter-opus-51/tests/*.test.mjs -> 21/21 pass",
+    "browser": "runs/run-20260903-opus51-mechanic-r1/evidence/browser-smoke.json",
+    "launcher": "PLAY_OPUS_51.cmd --no-open 自动避开已占用端口并在 5185 返回 HTTP 200，标题匹配。",
+    "screenshots": [
+      "01-title-cdp.png",
+      "02-room-1.png",
+      "02b-explicit-solution.png",
+      "03-readable-failure.png",
+      "04-prism-court.png",
+      "04b-prism-action.png",
+      "05-city-heart-choice.png",
+      "05b-city-heart-action.png",
+      "06-ending.png"
+    ]
+  },
+  "gateRecommendation": "candidate_ready_for_human_gate2_playtest"
+}

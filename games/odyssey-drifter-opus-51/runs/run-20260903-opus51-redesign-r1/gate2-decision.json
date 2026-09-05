@@ -1,0 +1,38 @@
+{
+  "gate": "Gate 2 — Fun Lock",
+  "gameId": "odyssey-drifter-opus-51",
+  "runId": "run-20260903-opus51-redesign-r1",
+  "inputVersion": "opus51-graybox-human-playtest-r1",
+  "decisionMaker": "human_user",
+  "result": "rejected",
+  "decidedAt": "2026-09-03T17:10:55+08:00",
+  "reason": [
+    "核心循环退化为连线和等待，缺少需要推理的关卡决策。",
+    "节拍引导语义不明，阿迦动作没有与玩家操作建立可读因果。",
+    "角色、道具和环境缺少系统性交互。",
+    "点击/长按模式区分属于赘余，不服务核心玩法。",
+    "操作说明、设置和完整状态流程缺失或不直观。",
+    "视觉与资产不充分，但视觉生产必须等待玩法和交互完善。"
+  ],
+  "supportedRootCauses": [
+    "现有 world 生成与运行判定主要围绕平台、锚点、落点、线负载和同步窗口；没有能被阿迦操作并改变解题状态的机关图。",
+    "固定策略自动驾驶曾以 23 跨到达结局并取得 22 次同步，说明当前主要路线和节拍奖励不足以制造人工思考。",
+    "同步在实现中是奖励而非必要条件，却占据标题、演示、说明和 HUD 的高信息优先级，造成引导强度与玩法意义不匹配。",
+    "标题页同时暴露实机演示、六卡说明、场内提示和点击模式开关，但 screens 状态只覆盖 title、pause、ending，设置以散落 toggle 呈现，没有独立的完整流程。"
+  ],
+  "requiredBeforeResubmission": [
+    "删除节拍等待、点击模式、重复教程和 Gate 2 无尽模式。",
+    "用同一条线的路径、张力和光序建立至少三类可组合环境机关。",
+    "让阿迦以抓、推、压或携带直接改变机关状态。",
+    "完成五间手工谜题房与可玩的首房教学。",
+    "补齐标题、设置、暂停、失败、重试、成功和回到标题流程。",
+    "固定直连策略通过率低于 20%，最终房至少有两种合法解。",
+    "由用户本人再次试玩并明确批准。"
+  ],
+  "visualGate": {
+    "gate3": "blocked",
+    "directive": "玩法与交互通过 Gate 2 后，才开始 StyleBible、正式视觉与资产生产。"
+  },
+  "proposal": "games/odyssey-drifter-opus-51/context/gameplay-spec-v2-proposal.md",
+  "research": "games/odyssey-drifter-opus-51/docs/BENCHMARK_RESEARCH.md"
+}

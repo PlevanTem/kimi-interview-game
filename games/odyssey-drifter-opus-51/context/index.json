@@ -1,0 +1,45 @@
+{
+  "$schema": "../../../schemas/context-index.schema.json",
+  "contextVersion": "1.2.1",
+  "updatedAt": "2026-09-03T18:29:37+08:00",
+  "activeRunId": "run-20260903-opus51-mechanic-r1",
+  "productionState": "gate2_v2_candidate_awaiting_human_playtest",
+  "gateState": {
+    "gate1": "locked",
+    "gate2": "iterating",
+    "gate3": "blocked",
+    "gate4": "blocked"
+  },
+  "sources": {
+    "gameBrief": "games/odyssey-drifter-opus-51/context/game-brief.json",
+    "gameplaySpec": "games/odyssey-drifter-opus-51/context/gameplay-spec-v2-proposal.md",
+    "technologyDecision": "games/odyssey-drifter-opus-51/context/technology-decision.json",
+    "assetRegistry": "games/odyssey-drifter-opus-51/context/asset-registry.json",
+    "iterationLedger": "games/odyssey-drifter-opus-51/context/iterations.json",
+    "designNotes": "games/odyssey-drifter-opus-51/docs/DESIGN.md",
+    "artDirection": "games/odyssey-drifter-opus-51/docs/ART_DIRECTION.md",
+    "buildEvidence": "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/evidence/browser-smoke.json",
+    "latestGate2Decision": "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-redesign-r1/gate2-decision.json",
+    "latestEvalRun": "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/eval-run.json",
+    "researchReport": "games/odyssey-drifter-opus-51/docs/BENCHMARK_RESEARCH.md",
+    "inputSnapshot": "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/input-snapshot.json",
+    "sourceReport": "games/odyssey-drifter/docs/GAME_PROJECT_REPORT_LIGHTLINE.md",
+    "styleBible": null,
+    "styleBibleState": "blocked_by_gate2"
+  },
+  "readOrder": [
+    "games/odyssey-drifter-opus-51/context/game-brief.json",
+    "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-redesign-r1/gate2-decision.json",
+    "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/input-snapshot.json",
+    "games/odyssey-drifter-opus-51/context/gameplay-spec-v2-proposal.md",
+    "games/odyssey-drifter-opus-51/docs/BENCHMARK_RESEARCH.md",
+    "games/odyssey-drifter-opus-51/context/technology-decision.json",
+    "games/odyssey-drifter-opus-51/docs/DESIGN.md",
+    "games/odyssey-drifter-opus-51/docs/ART_DIRECTION.md",
+    "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/evidence/browser-smoke.json",
+    "games/odyssey-drifter-opus-51/runs/run-20260903-opus51-mechanic-r1/eval-run.json",
+    "games/odyssey-drifter-opus-51/context/asset-registry.json",
+    "games/odyssey-drifter-opus-51/context/iterations.json"
+  ],
+  "historyPolicy": "games/odyssey-drifter 的立项报告只作为创意参考。它的 Gate 记录、技术锁定与灰盒证据都不构成本工作区的有效验证。"
+}

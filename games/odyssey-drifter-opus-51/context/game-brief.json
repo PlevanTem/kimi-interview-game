@@ -1,0 +1,40 @@
+{
+  "$schema": "../../../schemas/game-brief.schema.json",
+  "gameId": "odyssey-drifter-opus-51",
+  "title": "光线之上",
+  "frozen": true,
+  "coreVerb": "驭线",
+  "pitch": "你按住、移动、随他的脚步松开，把一条会承重的余光交到阿迦脚下。线形决定空间，张力决定运动，松开时机决定节拍。",
+  "platform": "桌面浏览器（1280x720 起，鼠标或触控板；键盘等价输入）",
+  "sessionLength": "单次完整路线 4-6 分钟；通关后可进入无尽回响",
+  "audience": "喜欢动作与情绪叙事结合、不想读大量文本的 18-35 岁玩家",
+  "pillars": [
+    {
+      "id": "one-continuous-action",
+      "statement": "只有一个主动作。锚定、张弛、脉冲都从同一次按住—移动—松开里长出来，不拆成技能键。"
+    },
+    {
+      "id": "npc-is-the-other-half",
+      "statement": "阿迦不是任务发放者，是动作系统的另一半。他的目光、重心、脚尖两拍和张臂失衡就是玩法信息。"
+    },
+    {
+      "id": "failure-returns-time",
+      "statement": "失败不是读档黑屏，而是把时间和光线一并收回，并且必须退回到还留有助跑余量的位置。"
+    },
+    {
+      "id": "breathing-pacing",
+      "statement": "高压连续时间不超过 15 秒；每次跨越后必然有一段不需要精准输入的停息。"
+    },
+    {
+      "id": "code-is-the-art",
+      "statement": "没有一张位图。城市、天空、角色、声音全部程序化生成，视觉与玩法共用同一套确定性数据。"
+    }
+  ],
+  "nonGoals": [
+    "技能树与数值成长",
+    "多结局与善恶分数",
+    "联网、账户、内购",
+    "需要阅读的大段文本"
+  ],
+  "updatedAt": "2026-09-03T18:40:00+08:00"
+}

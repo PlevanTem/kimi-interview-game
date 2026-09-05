@@ -1,0 +1,639 @@
+{
+  "source": "games/nostos/runs/run-20260904-nostos-build/gate3/nostos-black-figure-motifs-4x4-v1.png",
+  "sourceSha256": "6580cf295133dfb05bd73f24f8c4a1b0d0ad1deb9da65506333079484a0109a8",
+  "sourceDimensions": [
+    1254,
+    1254
+  ],
+  "xDividersInclusive": [
+    [
+      0,
+      13
+    ],
+    [
+      334,
+      336
+    ],
+    [
+      626,
+      627
+    ],
+    [
+      918,
+      920
+    ],
+    [
+      1241,
+      1253
+    ]
+  ],
+  "yDividersInclusive": [
+    [
+      0,
+      13
+    ],
+    [
+      318,
+      319
+    ],
+    [
+      622,
+      623
+    ],
+    [
+      903,
+      905
+    ],
+    [
+      1240,
+      1253
+    ]
+  ],
+  "alphaMapping": {
+    "opaqueAtOrBelowLuma": 60,
+    "transparentAtOrAboveLuma": 145,
+    "interpolation": "smoothstep"
+  },
+  "outputSize": 512,
+  "contentFit": 432,
+  "cellInset": 4,
+  "cleanup": "8-connected components: <=6 pixels, or thin fragments confined to a cell edge",
+  "assets": [
+    {
+      "kind": "galley",
+      "file": "games/nostos/assets/memory-motifs/galley.png",
+      "sourceCell": [
+        18,
+        18,
+        330,
+        314
+      ],
+      "sourceInkBoundsInCell": [
+        0,
+        60,
+        312,
+        282
+      ],
+      "removedNoisePixels": 18,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 58625,
+      "sha256": "afc323ff64e88102b6deeeb3de273fed44100c07d97febfc053b807cce424b89",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 74960,
+      "occupancy": 0.28595,
+      "outputInkBounds": [
+        40,
+        102,
+        472,
+        409
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "rower",
+      "file": "games/nostos/assets/memory-motifs/rower.png",
+      "sourceCell": [
+        341,
+        18,
+        622,
+        314
+      ],
+      "sourceInkBoundsInCell": [
+        13,
+        32,
+        281,
+        289
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 46959,
+      "sha256": "35eae1b3672b1ff5faf14db8cb9cb94c95ab7ff21dfda8e4ceeeb008bac120b2",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 77594,
+      "occupancy": 0.295998,
+      "outputInkBounds": [
+        40,
+        49,
+        472,
+        463
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "standing",
+      "file": "games/nostos/assets/memory-motifs/standing.png",
+      "sourceCell": [
+        632,
+        18,
+        914,
+        314
+      ],
+      "sourceInkBoundsInCell": [
+        13,
+        9,
+        245,
+        296
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 43579,
+      "sha256": "2c5ce7d329a97acc5b0ec6aaff025467efee9eadf2468ec50bd9cdcff6a2d893",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 58084,
+      "occupancy": 0.221573,
+      "outputInkBounds": [
+        81,
+        40,
+        430,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "reaching",
+      "file": "games/nostos/assets/memory-motifs/reaching.png",
+      "sourceCell": [
+        925,
+        18,
+        1237,
+        314
+      ],
+      "sourceInkBoundsInCell": [
+        14,
+        38,
+        284,
+        290
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 50468,
+      "sha256": "88e6d6579826a80560da5356536d4ba7af93d11e21df14cc51f032b02dd22a35",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 54601,
+      "occupancy": 0.208286,
+      "outputInkBounds": [
+        40,
+        54,
+        472,
+        457
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "bound",
+      "file": "games/nostos/assets/memory-motifs/bound.png",
+      "sourceCell": [
+        18,
+        324,
+        330,
+        618
+      ],
+      "sourceInkBoundsInCell": [
+        77,
+        0,
+        248,
+        287
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 48679,
+      "sha256": "ba6d53e590415cdda9d448628de8ef8664ab0f11c014b3d0e8cf12e8b475c6f9",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 62285,
+      "occupancy": 0.237598,
+      "outputInkBounds": [
+        127,
+        40,
+        383,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "kneeling",
+      "file": "games/nostos/assets/memory-motifs/kneeling.png",
+      "sourceCell": [
+        341,
+        324,
+        622,
+        618
+      ],
+      "sourceInkBoundsInCell": [
+        6,
+        41,
+        247,
+        262
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 54826,
+      "sha256": "af0dd10a32992521759f77ebaff2c54ecb7876dc9c06db6896e51b9af433f569",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 87431,
+      "occupancy": 0.333523,
+      "outputInkBounds": [
+        40,
+        58,
+        472,
+        454
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "eye",
+      "file": "games/nostos/assets/memory-motifs/eye.png",
+      "sourceCell": [
+        632,
+        324,
+        914,
+        618
+      ],
+      "sourceInkBoundsInCell": [
+        0,
+        12,
+        282,
+        285
+      ],
+      "removedNoisePixels": 52,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 73047,
+      "sha256": "c9a78d251880c7d54575a6d3dd698a3e97181f7443d2fa4272a648105d9d5065",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 155271,
+      "occupancy": 0.592312,
+      "outputInkBounds": [
+        40,
+        47,
+        472,
+        465
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "hand",
+      "file": "games/nostos/assets/memory-motifs/hand.png",
+      "sourceCell": [
+        925,
+        324,
+        1237,
+        618
+      ],
+      "sourceInkBoundsInCell": [
+        1,
+        23,
+        305,
+        266
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 40992,
+      "sha256": "3aa9884b75a43384d3af8f64006133f66b786a0926ff8f8f295151efe39d48d0",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 81711,
+      "occupancy": 0.311703,
+      "outputInkBounds": [
+        40,
+        83,
+        472,
+        428
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "siren",
+      "file": "games/nostos/assets/memory-motifs/siren.png",
+      "sourceCell": [
+        18,
+        628,
+        330,
+        899
+      ],
+      "sourceInkBoundsInCell": [
+        13,
+        13,
+        300,
+        262
+      ],
+      "removedNoisePixels": 1,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 68207,
+      "sha256": "f62697680e8426f8491192f8b431a245406301c430d2f35dd995c22c6c0e67e9",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 86363,
+      "occupancy": 0.329449,
+      "outputInkBounds": [
+        40,
+        68,
+        472,
+        443
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "loom",
+      "file": "games/nostos/assets/memory-motifs/loom.png",
+      "sourceCell": [
+        341,
+        628,
+        622,
+        899
+      ],
+      "sourceInkBoundsInCell": [
+        9,
+        6,
+        245,
+        265
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 66125,
+      "sha256": "e31853a434a1a6f08725f19a635231e0ab5ed28f0dd8122caabf919b5adf78ff",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 105395,
+      "occupancy": 0.40205,
+      "outputInkBounds": [
+        59,
+        40,
+        453,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "flock",
+      "file": "games/nostos/assets/memory-motifs/flock.png",
+      "sourceCell": [
+        632,
+        628,
+        914,
+        899
+      ],
+      "sourceInkBoundsInCell": [
+        0,
+        88,
+        280,
+        214
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 50614,
+      "sha256": "802304cefe7e08ce0bfb28983ae49d196a99628b8f1b4a03196e2fd8f99f7cfa",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 54761,
+      "occupancy": 0.208897,
+      "outputInkBounds": [
+        40,
+        159,
+        472,
+        353
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "shades",
+      "file": "games/nostos/assets/memory-motifs/shades.png",
+      "sourceCell": [
+        925,
+        628,
+        1237,
+        899
+      ],
+      "sourceInkBoundsInCell": [
+        1,
+        43,
+        303,
+        243
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 49355,
+      "sha256": "fbef200044bc0fef3d356b6d8415452c235e8255dfc22c186fd72ee1e9f7a496",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 72903,
+      "occupancy": 0.278103,
+      "outputInkBounds": [
+        40,
+        113,
+        472,
+        399
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "wreath",
+      "file": "games/nostos/assets/memory-motifs/wreath.png",
+      "sourceCell": [
+        18,
+        910,
+        330,
+        1236
+      ],
+      "sourceInkBoundsInCell": [
+        23,
+        22,
+        280,
+        281
+      ],
+      "removedNoisePixels": 0,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 67648,
+      "sha256": "83f38f083180a70ed9cac7a5bb4b353bb6a363f35947d5d51863124dfb09e1e0",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 59718,
+      "occupancy": 0.227806,
+      "outputInkBounds": [
+        41,
+        40,
+        470,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "threshold",
+      "file": "games/nostos/assets/memory-motifs/threshold.png",
+      "sourceCell": [
+        341,
+        910,
+        622,
+        1236
+      ],
+      "sourceInkBoundsInCell": [
+        4,
+        15,
+        273,
+        294
+      ],
+      "removedNoisePixels": 2,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 55069,
+      "sha256": "ed996eb81ab37354036438093df8c2e001029ce77bb8da05b649198b7e5ce6fb",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 128305,
+      "occupancy": 0.489445,
+      "outputInkBounds": [
+        47,
+        40,
+        464,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "wave",
+      "file": "games/nostos/assets/memory-motifs/wave.png",
+      "sourceCell": [
+        632,
+        910,
+        914,
+        1236
+      ],
+      "sourceInkBoundsInCell": [
+        0,
+        58,
+        282,
+        292
+      ],
+      "removedNoisePixels": 8,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 76814,
+      "sha256": "c4b3b708ab184ef5f5183e7b246c8ab81993bfc2081707183b463491a1baeb64",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 114235,
+      "occupancy": 0.435772,
+      "outputInkBounds": [
+        40,
+        77,
+        472,
+        435
+      ],
+      "nontransparentBorderPixels": 0
+    },
+    {
+      "kind": "flame",
+      "file": "games/nostos/assets/memory-motifs/flame.png",
+      "sourceCell": [
+        925,
+        910,
+        1237,
+        1236
+      ],
+      "sourceInkBoundsInCell": [
+        30,
+        9,
+        269,
+        297
+      ],
+      "removedNoisePixels": 11,
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 40803,
+      "sha256": "a832a98f33b52ac56fd685caed0275491d004aa8c0ffa10de3bca33770124532",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "nonzeroPixels": 75570,
+      "occupancy": 0.288277,
+      "outputInkBounds": [
+        77,
+        40,
+        435,
+        472
+      ],
+      "nontransparentBorderPixels": 0
+    }
+  ]
+}
