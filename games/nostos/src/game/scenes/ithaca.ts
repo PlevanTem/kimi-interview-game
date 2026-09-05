@@ -87,7 +87,9 @@ export const ithaca: Act = {
     ],
     vision: {
       id: 'ithaca.vision',
-      duration: 58,
+      // 58 → 70：终幕多了两拍（"脸我记不住" / "他们还是一片影子"），
+      // 后面每一拍都顺延，最后一句要放得完
+      duration: 70,
       stage: { x: 0, y: 0.5, z: -16 },
       beats: [
         {
@@ -111,28 +113,45 @@ export const ithaca: Act = {
         {
           at: 22.4,
           line: T.vision[4],
-          motif: { kind: 'galley', x: -9, y: 5.4, z: -20, size: 15, grow: 2.4, ink: 'shadow', opacity: 0.5, crumbleAt: 33 },
+          // crumbleAt 33 → 46：后面插了两拍，原来的崩解时刻会赶在它该在的时候之前
+          motif: { kind: 'galley', x: -9, y: 5.4, z: -20, size: 15, grow: 2.4, ink: 'shadow', opacity: 0.5, crumbleAt: 46 },
         },
         {
-          at: 28.2,
+          // "脸我记不住。那不是海拿走的，是我自己没有看。"
+          // 这一拍**刻意不给母题**：他正在说的是一件他手上没有的东西。
+          // 画面上什么也不浮现，才是"想不起来"本身。镜头微微往后退。
+          at: 28.4,
           line: T.vision[5],
-          motif: { kind: 'shades', x: 8.5, y: 2.8, z: -15, size: 11, grow: 3, ink: 'shadow', opacity: 0.55, crumbleAt: 38 },
-          camera: { yaw: 0.26, pitch: 0.02, ease: 4.5 },
+          camera: { yaw: 0, pitch: -0.05, fov: 3, ease: 4 },
         },
         {
+          // "他们还是一片影子。可这一次，我站住了。"
+          // 亡者的行列挪到这一拍来：台词说"一片影子"，画面就正好浮出一列剪影。
+          // 全作的视觉约定在这里被台词认领，也在这里散场。
           at: 35.6,
           line: T.vision[6],
-          camera: { yaw: 0, pitch: 0, fov: -12, ease: 3.5 },
+          motif: { kind: 'shades', x: 8.5, y: 2.8, z: -15, size: 11, grow: 3, ink: 'shadow', opacity: 0.55, crumbleAt: 60 },
+          camera: { yaw: 0.26, pitch: 0.02, ease: 4.5 },
         },
         {
           at: 42.4,
           line: T.vision[7],
+          camera: { yaw: 0, pitch: 0, fov: -8, ease: 4 },
+        },
+        {
+          at: 49.6,
+          line: T.vision[8],
+          camera: { yaw: 0, pitch: 0, fov: -12, ease: 3.5 },
+        },
+        {
+          at: 56.4,
+          line: T.vision[9],
           motif: { kind: 'wreath', x: 0, y: 3.2, z: -8, size: 5, grow: 1.6 },
           exposure: 1.22,
         },
         {
-          at: 49.0,
-          line: T.vision[8],
+          at: 63.0,
+          line: T.vision[10],
           camera: { yaw: 0, pitch: 0.04, fov: -16, ease: 3 },
         },
       ],

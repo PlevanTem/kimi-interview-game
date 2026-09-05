@@ -20,6 +20,7 @@ import { AUDIO, Soundscape } from '../../src/engine/audio';
 import { SURFACE, applyEnvToMaterials, tickMaterials } from '../../src/engine/materials';
 import { frescoTexture, meanderTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
 import { ACTS } from '../../src/game/scenes';
+import { holdFor } from '../../src/game/types';
 import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
 import * as P from '../../src/world/props';
 import { Terrain } from '../../src/world/terrain';
@@ -254,7 +255,7 @@ const TOC: Array<[string, string]> = [
   ['plant', '植物'],
   ['terrain', '地形'],
   ['audio', '音景'],
-  ['text', '文本'],
+  ['text', '剧本与交互'],
 ];
 const toc = el('nav', 'toc');
 for (const [id, label] of TOC) {
@@ -869,59 +870,274 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   main.append(s);
 }
 
-// ─────────────────────────────────────────── 十、文本
+// ─────────────────────────────────────────── 十、剧本与交互
 
+/**
+ * 这一节是整部作品的**剧本统筹台**：八幕的每一个交互点、它的全部台词、
+ * 它跟别的东西的关联、以及碰了它之后世界会发生什么，都在这里一次看完。
+ *
+ * 之所以不只是"把台词列出来"：台词单独看是读不懂的。
+ * 「你已经看了很多次了」这句喀耳刻的台词，只有知道它挂在"织机"上、
+ * 而织机就在核心记忆物件旁边三米、并且玩家此刻已经读过"藤爬了一个来回要一年"
+ * 之后，才知道它在说什么。所以说明、关联、影响必须和台词摆在一起。
+ */
 {
+  const KIND: Record<string, { label: string; color: string; effect: string }> = {
+    clue: {
+      label: '线索',
+      color: '#cbb89a',
+      effect: '读一两句旁白。不进任何清单，不改变任何状态，跳过它照样能走完全程。',
+    },
+    talk: {
+      label: '对话',
+      color: '#6e8c7a',
+      effect: '一段线性短对话，说完就结束。同样不改变状态。',
+    },
+    memory: {
+      label: '核心记忆',
+      color: '#e0a94e',
+      effect: '触发本幕的回忆幻象，并且**解锁岸边的离岛点**。这是本幕唯一的必经交互。',
+    },
+    depart: {
+      label: '离岛',
+      color: '#a6402c',
+      effect: '硬切进入下一幕。必须先看完本幕核心记忆才会亮起。',
+    },
+  };
+
   const s = section({
     id: 'text',
-    title: '十、文本',
-    count: ACTS.length + 2,
+    title: '十、剧本与交互',
+    count: ACTS.reduce((n, a) => n + a.def.interactables.length, 0),
     blurb:
-      '全部叙事文案。环境叙事是这部作品的绝对核心，所以文本本身就是最大的一件素材。' +
-      '下面按幕展开：线索旁白、NPC 对话、回忆幻象的逐拍旁白，加上开场引导与终幕收束。',
-    source: 'src/content/script.ts → TEXT',
+      '全作的台词、交互点与它们之间的关系。环境叙事是这部作品的绝对核心，' +
+      '所以剧本本身就是最大的一件素材——但台词单独列出来是读不懂的：' +
+      '它挂在哪件东西上、离核心记忆多远、碰了之后世界会发生什么，缺一样都读不出意思。' +
+      '下面每一幕都按「元数据 → 交互点（含影响与关联）→ 幻象逐拍时间轴」展开。',
+    source: 'src/content/script.ts（台词）+ src/game/scenes/*.ts（交互点与关联）',
   });
 
+  // ── 玩法边界：四种交互，各自的影响 ──
+  const legend = el('div', 'legend');
+  legend.append(el('div', 'sectionlabel', '四种交互，以及碰了它们会发生什么'));
+  for (const meta of Object.values(KIND)) {
+    const row = el('div', 'legend-row');
+    const badge = el('span', 'badge');
+    badge.textContent = meta.label;
+    badge.style.color = meta.color;
+    badge.style.borderColor = meta.color;
+    row.append(badge, el('span', 'legend-text', meta.effect.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>')));
+    legend.append(row);
+  }
+  legend.append(
+    el(
+      'p',
+      'note',
+      '全作只有这四种，不会有第五种——这条边界由 tests/scenes.test.ts 写死。' +
+        '进度只记两件事：走到第几幕、碰过哪些东西；没有数值、没有分支权重、没有结局解算。',
+    ),
+  );
+  s.append(legend);
+
+  // ── 全局一览表 ──
+  const overview = el('div', 'overview');
+  overview.append(el('div', 'sectionlabel', '八幕一览'));
+  const head = el('div', 'orow ohead');
+  for (const h of ['幕', '岛', '天候', '音景', '核心记忆', 'NPC', '线索', '幻象']) {
+    head.append(el('span', undefined, h));
+  }
+  overview.append(head);
+  for (const { def } of ACTS) {
+    const npc = def.interactables.find((i) => i.kind === 'talk');
+    const clues = def.interactables.filter((i) => i.kind === 'clue').length;
+    const row = el('div', 'orow');
+    row.append(
+      el('span', undefined, def.act === 0 ? '序' : String(def.act)),
+      el('span', undefined, def.title),
+      el('span', 'mono', def.env),
+      el('span', 'mono', def.audio),
+      el('span', undefined, MEMORY_LABELS[def.id] ?? '—'),
+      el('span', undefined, npc?.speaker ?? '—'),
+      el('span', 'mono', String(clues)),
+      el('span', 'mono', `${def.vision.duration}s`),
+    );
+    overview.append(row);
+  }
+  s.append(overview);
+
+  // ── 开场引导 ──
   const intro = el('details', 'act');
   const introSum = el('summary');
-  introSum.append(el('span', undefined, '开场引导'), el('span', 'k', `${TEXT.intro.lines.length} 句`));
+  introSum.append(
+    el('span', undefined, '开场引导'),
+    el('span', 'k', `${TEXT.intro.lines.length} 句 · 黑场 · 仅首次开始`),
+  );
   const introBody = el('div', 'body');
+  introBody.append(
+    el(
+      'p',
+      'note',
+      '全作唯一一次直接对玩家说话。说完就再也不解释——之后所有信息都由环境自己给出。' +
+        '从存档继续时不出现。',
+    ),
+  );
   const introLines = el('div', 'lines');
   for (const line of TEXT.intro.lines) introLines.append(el('p', undefined, line));
   introBody.append(introLines);
   intro.append(introSum, introBody);
   s.append(intro);
 
-  for (const { def } of ACTS) {
+  // ── 逐幕 ──
+  for (const act of ACTS) {
+    const def = act.def;
+    const memory = def.interactables.find((i) => i.id === def.memoryId);
     const d = el('details', 'act');
     const sum = el('summary');
     sum.append(
       el('span', undefined, `${def.act === 0 ? '序章' : `第 ${def.act} 幕`} · ${def.title}`),
-      el('span', 'k', `${MEMORY_LABELS[def.id] ?? ''} · ${def.interactables.length} 处交互`),
+      el('span', 'k', `${def.interactables.length} 处交互 · ${MEMORY_LABELS[def.id] ?? ''}`),
     );
-    const body = el('div', 'body');
-    body.append(el('p', 'note', `${def.subtitle} — ${def.tone}`));
 
-    const lines = el('div', 'lines');
+    const body = el('div', 'body');
+
+    // 元数据条
+    const meta = el('div', 'scriptmeta');
+    for (const [k, v] of [
+      ['副题', def.subtitle],
+      ['天候', def.env],
+      ['音景', def.audio],
+      ['地形 seed', String(act.terrain.seed)],
+      ['岛半径', `${act.terrain.radius} m`],
+      ['出生点', `x ${def.spawn.x} · z ${def.spawn.z}`],
+      ['登岸横摇', `${def.arrival.seconds}s`],
+    ] as const) {
+      const cell = el('div');
+      cell.append(el('dt', undefined, k), el('dd', undefined, v));
+      meta.append(cell);
+    }
+    body.append(meta);
+    body.append(el('p', 'tone', def.tone));
+
+    // 交互点
+    body.append(el('div', 'sectionlabel', '交互点'));
     for (const item of def.interactables) {
-      if (item.lines.length === 0) continue;
-      const label = item.speaker ? `${item.kind} · ${item.speaker}` : `${item.kind} · ${item.prompt}`;
-      lines.append(el('div', 'h', `${label}　[${item.id}]`));
-      for (const line of item.lines) lines.append(el('p', undefined, line));
+      const meta2 = KIND[item.kind]!;
+      const row = el('div', 'irow');
+
+      const headRow = el('div', 'ihead');
+      const badge = el('span', 'badge');
+      badge.textContent = meta2.label;
+      badge.style.color = meta2.color;
+      badge.style.borderColor = meta2.color;
+      headRow.append(badge, el('span', 'iprompt', item.prompt), el('span', 'id', item.id));
+      row.append(headRow);
+
+      const facts: string[] = [
+        `x ${item.x} · z ${item.z}${item.y !== undefined ? ` · 视线高 ${item.y}` : ''}`,
+        `触发半径 ${item.radius ?? 2.4} m`,
+      ];
+      if (memory && item.id !== def.memoryId) {
+        const dist = Math.hypot(item.x - memory.x, item.z - memory.z);
+        facts.push(`距核心记忆 ${dist.toFixed(1)} m`);
+      }
+      if (item.speaker) facts.push(`说话人 ${item.speaker}`);
+      if (item.motif) facts.push(`剪影母题 ${item.motif}`);
+      row.append(el('div', 'ifacts', facts.join('　·　')));
+
+      // 影响与关联——这是"看得懂"的关键，不能只列台词
+      const effect = el('div', 'ieffect');
+      if (item.kind === 'memory') {
+        effect.innerHTML =
+          '<b>影响</b>：触发幻象 <code>' +
+          def.vision.id +
+          '</code>（' +
+          def.vision.duration +
+          's），并解锁本幕离岛点。<br><b>关联</b>：本幕 <code>memoryId</code> 指向它；幻象舞台就摆在它前方 ' +
+          Math.hypot(def.vision.stage.x - item.x, def.vision.stage.z - item.z).toFixed(1) +
+          ' m 处，构图才对得上。';
+      } else if (item.kind === 'depart') {
+        effect.innerHTML =
+          '<b>影响</b>：1.8 秒推向过曝白，硬切下一幕。<br><b>关联</b>：' +
+          (item.requiresMemory
+            ? `<code>requiresMemory</code> — 必须先触碰「${MEMORY_LABELS[def.id] ?? def.memoryId}」，它才会亮起微光。`
+            : '无前置。');
+      } else {
+        effect.innerHTML = `<b>影响</b>：${meta2.effect}`;
+      }
+      row.append(effect);
+
+      if (item.lines.length > 0) {
+        const lines = el('div', 'lines');
+        for (const line of item.lines) lines.append(el('p', undefined, line));
+        row.append(lines);
+      } else {
+        row.append(el('p', 'note', '（无台词——离岛点不说话，走过去就是结束）'));
+      }
+      body.append(row);
     }
-    lines.append(el('div', 'h', `回忆幻象　[${def.vision.id}] · ${def.vision.duration}s`));
+
+    // 幻象时间轴
+    body.append(el('div', 'sectionlabel', `回忆幻象　${def.vision.id}　${def.vision.duration}s`));
+    body.append(
+      el(
+        'p',
+        'note',
+        `舞台中心 x ${def.vision.stage.x} · z ${def.vision.stage.z}。` +
+          '幻象里世界褪成壁画双色，遮幅收窄到 2.39:1，黑绘剪影随旁白一层层浮现。' +
+          '玩家全程仍可自由转头，镜头只是被轻轻推向该看的方向；`空格` 随时可跳过。',
+      ),
+    );
+    const timeline = el('div', 'timeline');
     for (const beat of def.vision.beats) {
-      if (beat.line) lines.append(el('p', undefined, `${beat.at.toFixed(1)}s　${beat.line}`));
+      const b = el('div', 'beat');
+      b.append(el('span', 'at', `${beat.at.toFixed(1)}s`));
+      const bodyCell = el('div', 'bcell');
+      if (beat.line) bodyCell.append(el('p', 'bline', beat.line));
+      const tags: string[] = [];
+      if (beat.motif) {
+        tags.push(
+          `剪影 ${beat.motif.kind}　size ${beat.motif.size}` +
+            (beat.motif.ink === 'shadow' ? '　影色' : '') +
+            (beat.motif.crumbleAt ? `　${beat.motif.crumbleAt}s 崩解` : ''),
+        );
+      }
+      if (beat.camera) {
+        const c = beat.camera;
+        tags.push(
+          '镜头 ' +
+            [
+              c.yaw !== undefined ? `yaw ${c.yaw}` : '',
+              c.pitch !== undefined ? `pitch ${c.pitch}` : '',
+              c.fov !== undefined ? `fov ${c.fov}` : '',
+            ]
+              .filter(Boolean)
+              .join(' · '),
+        );
+      }
+      if (beat.exposure !== undefined) tags.push(`曝光 ×${beat.exposure}`);
+      if (tags.length) bodyCell.append(el('div', 'btags', tags.join('　|　')));
+      b.append(bodyCell);
+      timeline.append(b);
     }
-    body.append(lines);
+    body.append(timeline);
+
     d.append(sum, body);
     s.append(d);
   }
 
+  // ── 终幕收束 ──
   const outro = el('details', 'act');
   const outroSum = el('summary');
   outroSum.append(el('span', undefined, '终幕收束'), el('span', 'k', '八段记忆全部苏醒之后'));
   const outroBody = el('div', 'body');
+  outroBody.append(
+    el(
+      'p',
+      'note',
+      '八段记忆是必经的——每一幕不看完核心记忆就上不了船，所以"全部解锁"等同于"走完全程"。' +
+        '终幕把八幕的岛名与记忆物件排成一列还给玩家，再压上全作唯一一次把账算清的那句话。',
+    ),
+  );
   const outroLines = el('div', 'lines');
   outroLines.append(el('div', 'h', '字卡'));
   outroLines.append(el('p', undefined, TEXT.ithaca.epitaph));
@@ -932,11 +1148,36 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   outro.append(outroSum, outroBody);
   s.append(outro);
 
+  // ── 体量统计 ──
+  let lineCount = 0;
+  let charCount = 0;
+  let seconds = 0;
+  const eat = (arr: readonly string[]): void => {
+    for (const l of arr) {
+      if (!l) continue;
+      lineCount += 1;
+      charCount += l.length;
+      seconds += holdFor(l);
+    }
+  };
+  eat(TEXT.intro.lines);
+  eat(TEXT.ithaca.epilogue);
+  for (const { def } of ACTS) {
+    for (const item of def.interactables) eat(item.lines);
+    eat(def.vision.beats.map((b) => b.line ?? '').filter(Boolean));
+  }
+  const stat = el('p', 'note');
+  stat.style.marginTop = '22px';
+  stat.innerHTML =
+    `全作共 <b>${lineCount}</b> 句台词、<b>${charCount}</b> 字，` +
+    `按 <code>holdFor()</code> 估算朗读时长约 <b>${Math.round(seconds / 60)}</b> 分钟。` +
+    '（一整周目约 50–70 分钟，其余时间是走路与看。）';
+  s.append(stat);
+
   main.append(s);
 }
 
 // ─────────────────────────────────────────── 页脚
-
 const foot = el('footer');
 foot.innerHTML =
   `生成于 ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC　·　` +

@@ -222,3 +222,90 @@ footer code { font-family: var(--mono); color: var(--plaster); }
 @media (max-width: 720px) {
   .masthead, .toc, main, footer { padding-left: 20px; padding-right: 20px; }
 }
+
+/* ── 剧本与交互 ───────────────────────────────────────────
+   这一节不是"把台词列出来"，而是把说明、关联、影响和台词摆在一起看，
+   所以排版要能承载四种密度不同的信息：徽标、坐标事实、影响说明、台词本身。 */
+
+.legend, .overview { margin: 0 0 26px; }
+
+.legend-row { display: flex; gap: 12px; align-items: baseline; padding: 6px 0; border-bottom: 1px dotted #2b2521; }
+.legend-text { font-size: 12px; color: var(--plaster); }
+
+.badge {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  border: 1px solid;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+/* 八幕一览：等宽网格，扫一眼就能横向比较 */
+.orow {
+  display: grid;
+  grid-template-columns: 2.2em 7em 8em 6em 9em 6em 3em 4em;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dotted #2b2521;
+  font-size: 12px;
+  align-items: baseline;
+}
+.orow.ohead { color: var(--dim); font-size: 10px; letter-spacing: 0.12em; border-bottom: 1px solid var(--line); }
+.orow .mono { font-family: var(--mono); font-size: 11px; color: var(--dim); }
+
+.scriptmeta {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 2px 16px;
+  margin: 14px 0 10px;
+  font-size: 11px;
+}
+.scriptmeta div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted #2b2521; }
+.scriptmeta dt { color: var(--dim); }
+.scriptmeta dd { margin: 0; color: var(--plaster); font-family: var(--mono); }
+
+.tone { color: var(--gold); font-size: 12px; margin: 10px 0 4px; opacity: 0.85; }
+
+/* 一个交互点 */
+.irow { border-left: 2px solid var(--line); padding: 10px 0 12px 14px; margin: 14px 0; }
+.ihead { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+.iprompt { font-size: 14px; letter-spacing: 0.06em; }
+.ifacts { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-top: 5px; }
+.ieffect { font-size: 11px; color: var(--plaster); margin-top: 7px; line-height: 1.65; }
+.ieffect b { color: var(--gold); font-weight: 400; }
+.ieffect code { font-family: var(--mono); font-size: 10px; color: var(--dim); }
+
+/* 幻象逐拍时间轴 */
+.timeline { margin-top: 10px; }
+.beat { display: flex; gap: 14px; padding: 7px 0; border-bottom: 1px dotted #2b2521; }
+.beat .at {
+  flex: none;
+  width: 3.6em;
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gold);
+  opacity: 0.7;
+  padding-top: 2px;
+}
+.bcell { flex: 1; min-width: 0; }
+.bline { margin: 0; color: var(--bone); font-size: 13px; }
+.btags { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-top: 3px; }
+
+@media (max-width: 820px) {
+  .orow { grid-template-columns: 2em 1fr 1fr; }
+  .orow span:nth-child(n + 4) { display: none; }
+  .orow.ohead span:nth-child(n + 4) { display: none; }
+}
+
+/* 小节标题：比 h2 轻，但要能把一幕内部切成几块 */
+.sectionlabel {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  opacity: 0.8;
+  margin: 22px 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+}
