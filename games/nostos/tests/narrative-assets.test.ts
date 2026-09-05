@@ -48,6 +48,7 @@ describe('第1、2幕程序化叙事资产', () => {
         vertices += pos.count;
         expect(Array.from(pos.array).every(Number.isFinite)).toBe(true);
         expect(normals.count).toBe(pos.count);
+        expect(Array.from(normals.array).every(Number.isFinite)).toBe(true);
         expect(Array.from(pos.array)).toEqual(Array.from(b[i]!.geometry.getAttribute('position').array));
         p.geometry.computeBoundingBox();
         expect(p.geometry.boundingBox!.max.y).toBeGreaterThan(0);

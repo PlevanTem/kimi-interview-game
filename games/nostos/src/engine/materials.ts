@@ -365,6 +365,10 @@ export function setVisionAmount(amount: number): void {
 
 /** 常用材质预设，保证全作的表面语言只有这几种。 */
 export const SURFACE = {
+  ochreSkin: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0xb09a74, shadowTint: 0x6b5a49, detailScale: 0.8, roughBreakup: 0.45, rimStrength: 0.15 }),
+  weatheredLinen: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0xc9b291, shadowTint: 0x7d6a54, detailScale: 0.65, roughBreakup: 0.45, rimStrength: 0.18, side: THREE.DoubleSide }),
   limestone: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: PIGMENT.bone, detailScale: 0.14, roughBreakup: 0.6 }),
   weatheredMarble: (): THREE.ShaderMaterial =>

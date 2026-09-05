@@ -87,8 +87,8 @@ export const lotus: Act = {
         prompt: '和他说话',
         lines: T.talk,
         speaker: T.npcName,
-        motif: 'kneeling',
-        motifSize: 1.85,
+        modelAsset: 'game.nostos.character.lotus_crewman',
+        modelHeight: 1.48,
         x: 19.6,
         z: -3.4,
         y: 1,
@@ -187,6 +187,8 @@ export const lotus: Act = {
   },
 
   dress(d) {
+    const crewman = lotus.def.interactables.find((p) => p.id === 'lotus.crewman')!;
+    placeNarrativeAsset(d, crewman.modelAsset!, { x: crewman.x, z: crewman.z, yaw: -0.8, block: 0.48 });
     // ── 倒下的酒瓮，口朝下 ──
     placeNarrativeAsset(d, 'game.nostos.prop.abandoned_vessels', { x: -12, z: 16, yaw: 0.7 }, 300);
     d.place(pithos(1.6, 302), 'terracotta', { x: -15.4, z: 17.6, lift: -0.5, yaw: 0.4, block: 1 });

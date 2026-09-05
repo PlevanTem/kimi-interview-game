@@ -81,12 +81,18 @@ describe('八幕内容契约', () => {
     }
   });
 
-  it('全作只有四位 NPC，每位都有名字、剪影与一段短对话', () => {
+  it('全作只有四位 NPC，每位都有名字、一种实体表示与短对话', () => {
     const talkers = ACTS.flatMap(({ def }) => def.interactables.filter((item) => item.kind === 'talk'));
     expect(talkers).toHaveLength(4);
     for (const npc of talkers) {
       expect(npc.speaker).toBeTruthy();
-      expect(npc.motif && MOTIF_KINDS.includes(npc.motif)).toBe(true);
+      if (npc.id === 'lotus.crewman') {
+        expect(npc.modelAsset).toBe('game.nostos.character.lotus_crewman');
+        expect(npc.motif).toBeUndefined();
+      } else {
+        expect(npc.motif && MOTIF_KINDS.includes(npc.motif)).toBe(true);
+        expect(npc.modelAsset).toBeUndefined();
+      }
       expect(npc.lines.length).toBeGreaterThanOrEqual(4);
       expect(npc.lines.length).toBeLessThanOrEqual(8);
       // 一段短对话：说得完，但不能拖成一场戏

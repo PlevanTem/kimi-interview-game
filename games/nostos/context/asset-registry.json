@@ -1,8 +1,41 @@
 {
   "$schema": "../../../schemas/asset-registry.schema.json",
-  "version": 5,
+  "version": 6,
   "styleBibleVersion": 2,
   "assets": [
+    {
+      "id": "game.nostos.character.lotus_crewman",
+      "type": "procedural-geometry",
+      "locator": { "kind": "source", "value": "games/nostos/src/world/lotus-crewman.ts#lotusCrewman" },
+      "version": 1,
+      "source": "project-authored",
+      "license": "project-owned",
+      "promptHash": null,
+      "styleTags": ["kneeling-adult", "folded-linen", "ochre", "world-only"],
+      "sizeBudgetBytes": 640000,
+      "vertexBudget": 20000,
+      "dependencies": ["game.nostos.material.ochre_skin", "game.nostos.material.weathered_linen", "game.nostos.material.burnt_wood"],
+      "approval": "pending",
+      "consumers": ["games/nostos/src/game/scenes/lotus.ts", "games/nostos/tools/assets/main.ts"],
+      "pivot": "ground-centre; metres; +Y up; +Z forward; 1.48m kneeling adult",
+      "collision": "0.48m scene circle; static batched sculpture; no skeletal animation"
+    },
+    {
+      "id": "game.nostos.material.ochre_skin",
+      "type": "procedural-material",
+      "locator": { "kind": "source", "value": "games/nostos/src/engine/materials.ts#SURFACE.ochreSkin" },
+      "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null,
+      "styleTags": ["existing-ochre-pigment", "low-rim", "fresco"],
+      "sizeBudgetBytes": 4096, "dependencies": [], "approval": "pending"
+    },
+    {
+      "id": "game.nostos.material.weathered_linen",
+      "type": "procedural-material",
+      "locator": { "kind": "source", "value": "games/nostos/src/engine/materials.ts#SURFACE.weatheredLinen" },
+      "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null,
+      "styleTags": ["existing-linen-pigment", "low-rim", "fresco"],
+      "sizeBudgetBytes": 4096, "dependencies": [], "approval": "pending"
+    },
     {
       "id": "game.nostos.prop.orchard_tree",
       "type": "procedural-geometry",

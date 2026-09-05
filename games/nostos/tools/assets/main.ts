@@ -694,8 +694,8 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
 // Asset console and scenes resolve exactly the same typed IDs / factories / materials.
 {
   const s = section({
-    id: 'act12-hero-assets', title: '六点六、第1、2幕场景与道具', count: Object.keys(NARRATIVE_ASSETS).length,
-    blurb: '程序化叙事资产：开放树冠、空瓮、白灰、解带头盔、宽叶桨、三进层岩洞窟与烧尖木桩。与场景共用稳定ID。',
+    id: 'act12-hero-assets', title: '六点六、第1、2幕人物、场景与道具', count: Object.keys(NARRATIVE_ASSETS).length,
+    blurb: '跪坐水手与七件环境叙事模型。人物为实体3D，回忆继续使用黑绘；全部与场景共用稳定ID。',
     source: 'src/world/narrative-assets.ts · src/game/scenes/lotus.ts · cyclops.ts',
   });
   const grid = el('div', 'grid hero-grid');
@@ -704,7 +704,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     cap.append(el('div', 'name', NARRATIVE_ASSETS[id].name), el('div', 'id', id));
     c.append(cv, cap); grid.append(c);
     shootParts(resolveNarrativeAsset(id).map((p) => ({ geometry: p.geometry, material: SURFACE[p.surface]() })), cv,
-      { elevation: id.includes('tree') || id.includes('cave') ? 0.18 : 0.7 });
+      { elevation: id.includes('tree') || id.includes('cave') || id.includes('character') ? 0.18 : 0.7 });
   }
   s.append(grid); main.append(s);
 }

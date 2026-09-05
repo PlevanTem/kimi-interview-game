@@ -1,0 +1,26 @@
+{
+  "runId": "run-20260905-nostos-character-theatre-r1",
+  "entries": [
+    {
+      "id": "cyclops-theatre-01",
+      "issue": "独眼回忆的手、眼、门槛和后续场景堆叠",
+      "evidence": "用户2026-09-05附图；cyclops.ts原始排布与crumbleAt缺省行为",
+      "rootCause": "剪影默认持续到结尾；多件大尺寸资产投影重合，深度排序不能恢复被不透明区域盖住的轮廓",
+      "change": "仅修改本幕数据：有限退场、分段留白、火眼与船人左右分区、收敛推近镜头",
+      "verification": "cyclops-staging.test.ts + @cyclops-theatre完整播放及七张固定时间截图",
+      "before": "后段多层累计；手和中心眼/门槛形成同一黑块",
+      "after": "七个冻结时间检查点全部目视通过；火眼、船人分区清晰，手/羊/最后独眼/海浪单独呈现；84秒自然结束、离岛及暂停恢复通过。",
+      "status": "verified"
+    },
+    {
+      "id": "lotus-crewman-01",
+      "issue": "第一幕世界人物仍为旧平面剪影",
+      "rootCause": "先前环境资产升级不改变Stage.addNpc的motif表示",
+      "change": "新增类型化人物资产、折褶衣身、解剖式头手与果实；场景批处理放置，移除该NPC的motif入口",
+      "verification": "几何预算/确定性/实地通行测试、@act12正侧面实拍与E对话",
+      "before": "相机朝向billboard，没有实体侧面",
+      "after": "首轮发现膝盖最低点高于基底8厘米；第二轮压实并修整袖口/发际，最终正侧面、E对话与离岛复测通过。人物18600顶点，场景238650顶点。",
+      "status": "verified"
+    }
+  ]
+}

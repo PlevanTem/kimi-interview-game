@@ -1,0 +1,40 @@
+{
+  "checkpoints": [
+    {
+      "target": 7.5,
+      "actual": 7.899999999999977,
+      "screenshot": "cyclops-theatre-7.5.jpg"
+    },
+    {
+      "target": 21,
+      "actual": 21.15000000000008,
+      "screenshot": "cyclops-theatre-21.jpg"
+    },
+    {
+      "target": 31,
+      "actual": 31.283333333332838,
+      "screenshot": "cyclops-theatre-31.jpg"
+    },
+    {
+      "target": 42,
+      "actual": 42.38333333333221,
+      "screenshot": "cyclops-theatre-42.jpg"
+    },
+    {
+      "target": 56,
+      "actual": 56.44999999999808,
+      "screenshot": "cyclops-theatre-56.jpg"
+    },
+    {
+      "target": 66,
+      "actual": 66.31666666666419,
+      "screenshot": "cyclops-theatre-66.jpg"
+    },
+    {
+      "target": 76,
+      "actual": 76.01666666666364,
+      "screenshot": "cyclops-theatre-76.jpg"
+    }
+  ],
+  "errors": []
+}

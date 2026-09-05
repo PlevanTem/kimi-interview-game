@@ -1,6 +1,7 @@
 import type { AudioProfileName } from '../engine/audio';
 import type { EnvName } from '../content/palette';
 import type { MotifKind } from '../world/silhouette';
+import type { NarrativeAssetId } from '../world/narrative-assets';
 
 /**
  * 玩法数据契约。
@@ -52,11 +53,14 @@ export interface InteractableDef {
   speaker?: string;
   /**
    * 对话专用：这位 NPC 在世界里的剪影母题。
-   * 全作的活人也是黑绘剪影——叙述者已经无法把他们看成完整的人了。
+   * 尚未升级的世界 NPC 使用黑绘；回忆母题始终使用黑绘。
    */
   motif?: MotifKind;
   /** 剪影高度（米），默认 1.9 */
   motifSize?: number;
+  /** 实体人物由场景通过资产 resolver 放置，与 motif 二选一。 */
+  modelAsset?: NarrativeAssetId;
+  modelHeight?: number;
 }
 
 /** 幻象里浮现的一片剪影。 */

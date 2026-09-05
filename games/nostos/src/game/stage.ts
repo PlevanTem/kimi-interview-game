@@ -96,7 +96,7 @@ export class Stage {
     const glint = new Glint(color, size);
     glint.mesh.layers.set(NO_SHADOW_LAYER);
     // 对话对象的微光浮在头顶，其余浮在物件上方一点点
-    const lift = def.kind === 'talk' ? (def.motifSize ?? 1.9) + 0.35 : (def.y ?? 1) + 0.4;
+    const lift = def.kind === 'talk' ? (def.modelHeight ?? def.motifSize ?? 1.9) + 0.35 : (def.y ?? 1) + 0.4;
     glint.mesh.position.set(def.x, ground + lift, def.z);
     this.scene.add(glint.mesh);
     this.glints.set(def.id, glint);

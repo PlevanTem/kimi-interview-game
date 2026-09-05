@@ -212,6 +212,8 @@ for (const act of ['lotus', 'cyclops'] as const) test(`${act} 建模实拍、全
     { name: 'pottery', x: -10.5, z: 18.5, yaw: 0.54, pitch: -0.4 },
     { name: 'fruit', x: 12, z: -8.5, yaw: -0.6, pitch: -0.06 },
     { name: 'helmet', x: -6, z: -16.5, yaw: 0, pitch: -0.45 },
+    { name: 'crewman-front', x: 17.4, z: -0.9, yaw: -0.72, pitch: -0.28 },
+    { name: 'crewman-side', x: 22, z: -2.7, yaw: 1.287, pitch: -0.3 },
   ] : [
     { name: 'entry', x: 4, z: 30, yaw: 0.1, pitch: 0.04 },
     { name: 'cave', x: 0, z: -12, yaw: 0, pitch: 0.13 },
@@ -248,6 +250,43 @@ for (const act of ['lotus', 'cyclops'] as const) test(`${act} 建模实拍、全
   await touch(page, arrived.departId!);
   await page.waitForFunction((n) => window.__nostos!.state().act === n + 1, arrived.act);
   expect(await page.evaluate(() => localStorage.getItem('nostos.progress.v1'))).toBe('{"act":4,"triggered":["keep"]}');
+  expect(errors).toEqual([]);
+});
+
+test('独眼回忆完整小剧场逐段实拍且自然交还控制 @cyclops-theatre', async ({ page }) => {
+  test.setTimeout(600_000);
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  await page.goto('/?preview=cyclops');
+  await waitForPhase(page, 'roaming');
+  await page.evaluate(() => window.__nostos!.view({ x: 0, z: -24.7, yaw: 0, pitch: 0 }));
+  await waitForFocus(page, 'cyclops.stake');
+  await page.keyboard.press('e');
+  await page.evaluate(() => window.__nostos!.skipNarration());
+  await waitForPhase(page, 'vision');
+  const checkpoints: Array<{ target: number; actual: number; screenshot: string }> = [];
+  for (const t of [7.5, 21, 31, 42, 56, 66, 76]) {
+    await page.waitForFunction((t) => {
+      if (window.__nostos!.state().visionTime < t) return false;
+      window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', key: 'Escape' }));
+      return true;
+    }, t, { timeout: 180_000 });
+    const actual = (await state(page)).visionTime;
+    expect(actual).toBeLessThan(t + 1);
+    const screenshot = `cyclops-theatre-${t}.jpg`;
+    // Pause freezes timeline/camera; only hide its menu in the captured image, not game content.
+    await page.screenshot({ path: `${SHOTS}${screenshot}`, type: 'jpeg', quality: 82,
+      style: '.pausepanel { visibility: hidden !important; }' });
+    expect((await state(page)).visionTime).toBe(actual);
+    checkpoints.push({ target: t, actual, screenshot });
+    await page.keyboard.press('Escape');
+    console.log(`cyclops theatre frozen checkpoint ${t}: actual ${actual.toFixed(2)}`);
+  }
+  await waitForPhase(page, 'roaming');
+  expect((await state(page)).triggered).toBe(1);
+  await touch(page, 'cyclops.depart');
+  await page.waitForFunction(() => window.__nostos!.state().act === 3);
+  writeFileSync(`${SHOTS}cyclops-theatre-checkpoints.json`, JSON.stringify({ checkpoints, errors }, null, 2));
   expect(errors).toEqual([]);
 });
 

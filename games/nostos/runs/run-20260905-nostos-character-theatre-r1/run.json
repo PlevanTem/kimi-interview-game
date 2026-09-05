@@ -1,0 +1,8 @@
+{
+  "runId": "run-20260905-nostos-character-theatre-r1",
+  "input": "input-snapshot.json",
+  "output": "第一幕实体跪坐水手与独眼回忆四段编排",
+  "verification": "verification.json",
+  "humanGates": { "gate3": null, "gate4": null },
+  "status": "verified_for_local_art_review"
+}

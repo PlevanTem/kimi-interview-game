@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { lotusCrewman } from './lotus-crewman';
 import { createRng, fbm2 } from '../engine/noise';
 import { boulder, brokenOar, corinthianHelmet, erode, mergeSimple, plank } from './props';
 import type { Dresser, PlaceOptions, SurfaceName } from '../game/scenes/dresser';
@@ -132,6 +133,7 @@ function burnedStake(seed: number): NarrativePart[] {
 }
 
 export const NARRATIVE_ASSETS = {
+  'game.nostos.character.lotus_crewman': { name: '留下的人 · 跪坐水手与忘食果', make: lotusCrewman },
   'game.nostos.prop.orchard_tree': { name: '忘食果树 · 开放树冠与低垂果枝', make: orchardTree },
   'game.nostos.prop.abandoned_vessels': { name: '倒伏空瓮 · 中空器壁与陶片', make: abandonedVessels },
   'game.nostos.prop.cold_hearth': { name: '冷却火塘 · 白灰与焦木', make: coldHearth },
