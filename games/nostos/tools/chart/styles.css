@@ -1,0 +1,351 @@
+/*
+ * 暂停面板研究页。
+ *
+ * 这里的样式是**候选实现**，不是最终 styles.css：它先把三块的布局与
+ * 海图的观感摆出来给人看，评审通过之后再并回 src/styles.css。
+ * 色值与字体一律沿用游戏本体的那几个变量，不新起一套。
+ */
+
+:root {
+  --bone: #e7d9be;
+  --plaster: #cbb89a;
+  --terracotta: #a6402c;
+  --ochre: #c98a3b;
+  --ink: #14100e;
+  --dusk: #e0a94e;
+  --serif: 'Songti SC', 'Noto Serif CJK SC', 'Source Han Serif SC', 'STSong', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #070605;
+  color: var(--bone);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ── 身后那一帧被冻住的世界 ──
+   真机上这里是暂停瞬间的画面：压暗、去饱和、轻微模糊，但**不清空**。
+   「停下来」不该是把海关掉。 */
+.stage {
+  position: fixed;
+  inset: 0;
+}
+
+.frozen {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 62% 38%, rgba(224, 169, 78, 0.16), transparent 55%),
+    linear-gradient(180deg, #1b2740 0%, #24303f 38%, #2f2a24 62%, #120e0c 100%);
+  filter: saturate(0.45) brightness(0.42) blur(7px);
+}
+
+.frozen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image: repeating-conic-gradient(rgba(255, 255, 255, 0.5) 0% 25%, transparent 0% 50%);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+}
+
+/* ── 面板 ── */
+.panel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: 3.4vh 3.2vw 2.6vh;
+  background: radial-gradient(ellipse at 50% 46%, rgba(18, 14, 12, 0.52), rgba(7, 5, 4, 0.9));
+}
+
+.panel > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 1.6vh;
+  border-bottom: 1px solid rgba(231, 217, 190, 0.13);
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-indent: 0.34em;
+}
+
+.whereami {
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  color: rgba(224, 169, 78, 0.78);
+}
+
+/* 三块：航程占主，调校与舵法收在右侧窄栏 */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 3vw;
+  min-height: 0;
+  padding: 2.2vh 0;
+}
+
+.sectionlabel {
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  color: rgba(224, 169, 78, 0.72);
+  margin-bottom: 10px;
+}
+
+/* ── 航程 ── */
+.voyage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+#chart {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: block;
+  cursor: default;
+}
+
+#chart.pointing {
+  cursor: pointer;
+}
+
+/* 悬停一枚走过的章时浮出来的那张卡：岛名 / 记忆物件 / 那一句基调。
+   八段 tone 写得很好，可现在玩家一句都看不到——这里给它一个家。 */
+.card {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  max-width: 30ch;
+  padding: 14px 18px 16px;
+  border-left: 1px solid rgba(224, 169, 78, 0.55);
+  background: linear-gradient(90deg, rgba(12, 9, 8, 0.9), rgba(12, 9, 8, 0.35));
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease;
+  pointer-events: none;
+}
+
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card .ordinal {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: rgba(224, 169, 78, 0.8);
+}
+
+.card .name {
+  margin: 4px 0 2px;
+  font-size: 20px;
+  letter-spacing: 0.18em;
+}
+
+.card .memory {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(231, 217, 190, 0.72);
+}
+
+.card .tone {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  letter-spacing: 0.04em;
+  color: rgba(231, 217, 190, 0.5);
+}
+
+
+/* ── 右栏：调校 + 舵法 ── */
+aside {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: rgba(231, 217, 190, 0.7);
+}
+
+.row .value {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--dusk);
+  font-variant-numeric: tabular-nums;
+}
+
+.row input[type='range'] {
+  grid-column: 1 / -1;
+  width: 100%;
+  accent-color: var(--ochre);
+  height: 2px;
+}
+
+.toggle {
+  padding: 3px 13px;
+  border: 1px solid rgba(231, 217, 190, 0.35);
+  background: none;
+  color: rgba(231, 217, 190, 0.78);
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+}
+
+.toggle[data-on='true'] {
+  border-color: var(--ochre);
+  color: var(--dusk);
+}
+
+/* 舵法：按键做成石刻小方块，和世界里 E 提示的读法一致 */
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.key {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: rgba(231, 217, 190, 0.66);
+}
+
+.key b {
+  justify-self: start;
+  min-width: 2.2em;
+  padding: 3px 7px;
+  border: 1px solid rgba(231, 217, 190, 0.28);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-align: center;
+  color: rgba(231, 217, 190, 0.9);
+}
+
+.key.accent b {
+  border-color: rgba(224, 169, 78, 0.7);
+  color: var(--dusk);
+}
+
+.key.accent i {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: rgba(231, 217, 190, 0.42);
+  margin-top: 3px;
+}
+
+/* ── 页脚 ── */
+.panel > footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 1.8vh;
+  border-top: 1px solid rgba(231, 217, 190, 0.13);
+}
+
+button.link {
+  appearance: none;
+  background: none;
+  border: 0;
+  padding: 8px 26px;
+  color: rgba(231, 217, 190, 0.75);
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  cursor: pointer;
+  transition:
+    color 240ms ease,
+    letter-spacing 240ms ease;
+}
+
+button.link:hover {
+  color: var(--dusk);
+  letter-spacing: 0.42em;
+}
+
+/* ── 研究页自己的控制条：不属于面板设计，评审时用来切状态 ── */
+.lab {
+  position: fixed;
+  left: 14px;
+  bottom: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  border: 1px solid rgba(231, 217, 190, 0.18);
+  background: rgba(7, 5, 4, 0.86);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: rgba(231, 217, 190, 0.6);
+}
+
+.lab input[type='range'] {
+  width: 168px;
+  accent-color: var(--terracotta);
+}
+
+.lab b {
+  color: var(--dusk);
+  font-weight: 400;
+}
+
+.lab .hint {
+  color: rgba(231, 217, 190, 0.32);
+}
+
+@media (max-width: 1080px) {
+  .body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  aside {
+    flex-direction: row;
+    gap: 34px;
+  }
+  aside > div {
+    flex: 1;
+  }
+}

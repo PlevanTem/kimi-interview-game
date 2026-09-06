@@ -62,22 +62,65 @@ export interface TerrainParams {
   basins?: Basin[];
 }
 
+/** 未填项的缺省值。构造函数与 `terrainHeight()` 共用同一份，避免两处漂移。 */
+const TERRAIN_DEFAULTS = {
+  size: 240,
+  segments: 200,
+  frequency: 0.045,
+  dome: 3,
+  ridge: 0,
+  waterLevel: 0,
+  detail: 'stone',
+} as const;
+
+/**
+ * 某点的地面高度。
+ *
+ * 这是一个**纯函数**，故意不挂在 Terrain 上：网格、行走检测、
+ * 以及暂停面板里那八枚地形浮雕（`ui/chart`）都读它。
+ * 海图上的岛必须和玩家真的走过的岛是同一个形状——
+ * 一旦美术侧另捏一份轮廓，玩家看到的"航程"就在说谎。
+ */
+export function terrainHeight(params: TerrainParams, x: number, z: number): number {
+  const p = { ...TERRAIN_DEFAULTS, ...params } as Required<TerrainParams>;
+  const dist = Math.hypot(x, z);
+  const t = dist / p.radius;
+
+  // 岛形：t = 1 处正好是水线，所以 radius 就是"走到这里该看见岸了"的半径。
+  // 指数 0.62 让内陆是缓坡、岸边收得快——地中海小岛的剖面就是这样。
+  const inside = clamp(1 - t, 0, 1);
+  let h = p.dome * Math.pow(inside, 0.62);
+
+  // 越靠岸噪声越弱，沙滩才是平的
+  const rough = smoothstep(1.0, 0.55, t);
+  h += (fbm2(x * p.frequency, z * p.frequency, 4, p.seed) - 0.5) * 2 * p.amplitude * rough;
+  if (p.ridge > 0) {
+    h += (ridge2(x * p.frequency * 0.8, z * p.frequency * 0.8, 4, p.seed + 991) - 0.4) * p.ridge * rough;
+  }
+
+  // 岛外一路沉到水下，海雾会在这之前就吃掉视线
+  h -= 8 * smoothstep(1.0, 1.3, t);
+
+  for (const plateau of p.plateaus ?? []) {
+    const d = Math.hypot(x - plateau.x, z - plateau.z);
+    const w = smoothstep(plateau.radius, plateau.radius * 0.55, d);
+    h = lerp(h, plateau.height, w);
+  }
+  for (const basin of p.basins ?? []) {
+    const d = Math.hypot(x - basin.x, z - basin.z);
+    const w = smoothstep(basin.radius, basin.radius * 0.3, d);
+    h -= basin.depth * w;
+  }
+  return h;
+}
+
 export class Terrain implements GroundSampler {
   readonly mesh: THREE.Mesh;
   readonly params: Required<Pick<TerrainParams, 'radius' | 'waterLevel'>> & TerrainParams;
   private readonly material: THREE.ShaderMaterial;
 
   constructor(params: TerrainParams) {
-    this.params = {
-      size: 240,
-      segments: 200,
-      frequency: 0.045,
-      dome: 3,
-      ridge: 0,
-      waterLevel: 0,
-      detail: 'stone',
-      ...params,
-    } as Terrain['params'];
+    this.params = { ...TERRAIN_DEFAULTS, ...params } as Terrain['params'];
 
     const { size, segments } = this.params as Required<TerrainParams>;
     const geometry = new THREE.PlaneGeometry(size, size, segments, segments);
@@ -117,36 +160,7 @@ export class Terrain implements GroundSampler {
 
   /** 世界坐标处的地面高度。网格与碰撞共用这一个函数。 */
   heightAt(x: number, z: number): number {
-    const p = this.params as Required<TerrainParams>;
-    const dist = Math.hypot(x, z);
-    const t = dist / p.radius;
-
-    // 岛形：t = 1 处正好是水线，所以 radius 就是"走到这里该看见岸了"的半径。
-    // 指数 0.62 让内陆是缓坡、岸边收得快——地中海小岛的剖面就是这样。
-    const inside = clamp(1 - t, 0, 1);
-    let h = p.dome * Math.pow(inside, 0.62);
-
-    // 越靠岸噪声越弱，沙滩才是平的
-    const rough = smoothstep(1.0, 0.55, t);
-    h += (fbm2(x * p.frequency, z * p.frequency, 4, p.seed) - 0.5) * 2 * p.amplitude * rough;
-    if (p.ridge > 0) {
-      h += (ridge2(x * p.frequency * 0.8, z * p.frequency * 0.8, 4, p.seed + 991) - 0.4) * p.ridge * rough;
-    }
-
-    // 岛外一路沉到水下，海雾会在这之前就吃掉视线
-    h -= 8 * smoothstep(1.0, 1.3, t);
-
-    for (const plateau of p.plateaus ?? []) {
-      const d = Math.hypot(x - plateau.x, z - plateau.z);
-      const w = smoothstep(plateau.radius, plateau.radius * 0.55, d);
-      h = lerp(h, plateau.height, w);
-    }
-    for (const basin of p.basins ?? []) {
-      const d = Math.hypot(x - basin.x, z - basin.z);
-      const w = smoothstep(basin.radius, basin.radius * 0.3, d);
-      h -= basin.depth * w;
-    }
-    return h;
+    return terrainHeight(this.params, x, z);
   }
 
   /** 能不能站在这。水面以下与太陡的地方不行。 */
