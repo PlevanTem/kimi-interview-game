@@ -222,6 +222,9 @@ export class Overlay {
     this.chartCard.append(el('div', 'ordinal'), el('div', 'name'), el('div', 'memory'), el('div', 'tone'));
     voyage.append(this.chartCard);
 
+    // 八行名字。宽屏下它们**压在海图上**，各自贴在自己那枚章下面；
+    // 窄屏（海图收起）时退回一列普通的列表。
+    // 单独在旁边摆一栏文字等于把同一件事说两遍，还把海图挤小了。
     voyage.append(el('div', 'voyage'));
     body.append(voyage);
 
@@ -464,6 +467,7 @@ export class Overlay {
       const ordinal = index === 0 ? '序章' : `第${'一二三四五六七'[index - 1]}幕`;
       const label = `${ordinal} · ${act.def.title}`;
       row.append(el('span', 'name', label));
+      // 记忆物件只在窄屏那份列表里铺开；宽屏下海图已经很满，它归悬停卡管
       const memory = index < currentAct ? (MEMORY_LABELS[act.def.id] ?? '') : '';
       row.append(el('span', 'memory', memory));
       // 名字列表与海图互指：停在一行上，图上那一枚也抬起来
@@ -476,9 +480,14 @@ export class Overlay {
     this.progressList.append(summary);
 
     const here = CHART[Math.max(0, Math.min(CHART.length - 1, currentAct))];
-    this.whereami.textContent = here
-      ? `${here.ordinal} · ${here.title}  ·  ${currentAct + 1} / ${ACTS.length}`
-      : '';
+    this.whereami.innerHTML = '';
+    if (here) {
+      this.whereami.append(
+        el('span', undefined, `${here.ordinal} · ${here.title}  ·  ${currentAct + 1} / ${ACTS.length} 幕`),
+        // 触碰数在窄屏收起：那儿的汇总行已经写着同一句，页头再挤就会折行
+        el('span', 'touched', `  ·  已触碰 ${touched} 处`),
+      );
+    }
     this.chart?.setProgress(currentAct);
   }
 
@@ -592,6 +601,28 @@ export class Overlay {
       if (!this.chart) this.ensureChart();
       this.chart?.update(dt);
       this.chart?.render();
+      this.placeVoyageLabels();
     }
+  }
+
+  /**
+   * 把八行名字摆到各自那枚章的下面。
+   *
+   * 章在呼吸、镜头有视差，所以每帧都要重摆——标签一旦和章脱开，
+   * 它就从"这座岛叫什么"退回成"旁边的一份清单"。
+   *
+   * 窄屏下海图是收起来的（画布宽度为 0），这时什么也不做，
+   * CSS 让那八行退回普通列表。
+   */
+  private placeVoyageLabels(): void {
+    if (!this.chart || !this.chartCanvas.clientWidth) return;
+    const anchors = this.chart.labelAnchors();
+    const rows = this.progressList.querySelectorAll<HTMLElement>('.voyage-row');
+    rows.forEach((row, index) => {
+      const anchor = anchors[index];
+      if (!anchor) return;
+      row.style.left = `${anchor.x.toFixed(1)}px`;
+      row.style.top = `${(anchor.y + anchor.scale * 0.16 + 6).toFixed(1)}px`;
+    });
   }
 }

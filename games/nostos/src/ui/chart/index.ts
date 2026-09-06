@@ -6,9 +6,9 @@ import { CHART, stateFor, type ChartIsland, type IslandState } from './atlas';
 import {
   PLINTH_WALL,
   RELIEF_EXAGGERATION,
-  buildBlank,
   buildRelief,
   chartScale,
+  dormantColors,
 } from './geometry';
 import { buildLandmarks } from './landmarks';
 
@@ -45,8 +45,9 @@ interface IslandNode {
   island: ChartIsland;
   group: THREE.Group;
   relief: THREE.Mesh;
-  blank: THREE.Mesh;
   landmarks: THREE.Mesh | null;
+  /** 点亮 / 未激活两套顶点色，切状态时整条替换 */
+  palettes: Array<{ geometry: THREE.BufferGeometry; lit: THREE.BufferAttribute; dormant: THREE.BufferAttribute }>;
   smoke: THREE.Points | null;
   halo: THREE.Mesh;
   light: THREE.PointLight;
@@ -126,10 +127,11 @@ export class IslandChart {
     // 全图共用一个材质：顶点色扛掉全部色彩，八枚章只有 16 个 draw call
     this.surface = new THREE.MeshLambertMaterial({ vertexColors: true });
 
-    // 半球光只托底，**绝不能给大**。它按法线的 y 分量给光，而一枚浅穹顶的
+    // 半球光托底，也负责让**未激活**的那几枚章读得出是石头而不是影子。
+    // 但它仍然不能给大：它按法线的 y 分量给光，而一枚浅穹顶的
     // 法线几乎处处朝上——开到 0.9 就等于把八枚章的形体统一照平，
     // 无论浮雕做多高都读成一块饼。形体全部交给下面那盏主光。
-    this.scene.add(new THREE.HemisphereLight(0xa8bcc8, 0x2e2620, 0.45));
+    this.scene.add(new THREE.HemisphereLight(0xa8bcc8, 0x2e2620, 0.62));
     const key = new THREE.DirectionalLight(PIGMENT.bone, 1.55);
     // 与 geometry.ts 的 HILLSHADE_LIGHT 同向：烘进颜色的明暗和实时投影
     // 必须指同一个太阳。塑形交给晕渲，这盏灯只负责地标投在地形上的影子。
@@ -269,19 +271,26 @@ export class IslandChart {
     group.rotation.y = island.slot.yaw;
 
     const relief = buildRelief(island);
-    const blank = buildBlank(island);
     const scale = chartScale(island);
 
     const reliefMesh = new THREE.Mesh(relief.geometry, this.surface);
-    const blankMesh = new THREE.Mesh(blank.geometry, this.surface);
-    for (const mesh of [reliefMesh, blankMesh]) {
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      // 章会被 group 抬起、呼吸，三方的包围球对不上就会整枚被剔除掉。
-      // 八枚静态小网格，关掉视锥剔除比维护包围球划算得多。
-      mesh.frustumCulled = false;
-    }
-    group.add(reliefMesh, blankMesh);
+    reliefMesh.castShadow = true;
+    reliefMesh.receiveShadow = true;
+    // 章会被 group 抬起、呼吸，包围球对不上就会整枚被剔除掉。
+    // 八枚静态小网格，关掉视锥剔除比维护包围球划算得多。
+    reliefMesh.frustumCulled = false;
+    group.add(reliefMesh);
+
+    const palettes: IslandNode['palettes'] = [];
+    const registerPalette = (geometry: THREE.BufferGeometry): void => {
+      const lit = geometry.getAttribute('color') as THREE.BufferAttribute;
+      palettes.push({
+        geometry,
+        lit,
+        dormant: new THREE.Float32BufferAttribute(dormantColors(lit), 3),
+      });
+    };
+    registerPalette(relief.geometry);
 
     // 地标：世界米坐标 → 图版单位。贴地用的是同一个高度函数，
     // 所以一件东西在章上的高度，就是玩家走到它跟前时脚下的高度。
@@ -300,6 +309,7 @@ export class IslandChart {
       landmarks.receiveShadow = true;
       landmarks.frustumCulled = false;
       group.add(landmarks);
+      registerPalette(landmarkGeometry);
     }
 
     // 贴地的一层天候雾：这枚章自己的地平线色
@@ -343,8 +353,8 @@ export class IslandChart {
       island,
       group,
       relief: reliefMesh,
-      blank: blankMesh,
       landmarks,
+      palettes,
       smoke,
       halo,
       light,
@@ -401,11 +411,13 @@ export class IslandChart {
     for (const node of this.nodes) {
       const state = stateFor(node.island.act, this.currentAct);
       node.state = state;
-      const revealed = state !== 'locked';
-      node.relief.visible = revealed;
-      node.blank.visible = !revealed;
-      if (node.landmarks) node.landmarks.visible = revealed;
-      if (node.smoke) node.smoke.visible = revealed;
+      // 八枚**始终刻着**。走没走过的区别在于点没点亮：
+      // 未激活的换上去色压暗的那套顶点色，天候灯与地面雾一并熄掉。
+      const lit = state !== 'locked';
+      for (const palette of node.palettes) {
+        palette.geometry.setAttribute('color', lit ? palette.lit : palette.dormant);
+      }
+      if (node.smoke) node.smoke.visible = lit;
       const material = node.halo.material as THREE.MeshBasicMaterial;
       material.opacity = state === 'current' ? 0.5 : state === 'done' ? 0.22 : 0;
       node.light.intensity =
@@ -468,13 +480,39 @@ export class IslandChart {
   }
 
   /**
+   * 每一枚章的名字该贴在画布的哪个像素上。
+   *
+   * 名字不再单独占一栏，而是压在各自那枚章下面——一列文字摆在海图旁边，
+   * 等于把同一件事说两遍，还把海图挤小了。
+   *
+   * 返回的是**相对画布的 CSS 像素**，overlay 直接拿去摆 DOM。
+   * 每帧算一次：章在呼吸、镜头在视差，标签必须跟着走。
+   */
+  labelAnchors(): Array<{ x: number; y: number; scale: number }> {
+    const width = this.canvas.clientWidth;
+    const height = this.canvas.clientHeight;
+    const centre = new THREE.Vector3();
+    const edge = new THREE.Vector3();
+    return this.nodes.map((node) => {
+      // 取章的前缘（+Z 一侧）而不是圆心：标签压在岛的下方，不盖住浮雕
+      centre.set(0, 0, 0).applyMatrix4(node.group.matrixWorld).project(this.camera);
+      edge.set(0, 0, node.radius).applyMatrix4(node.group.matrixWorld).project(this.camera);
+      const cx = (centre.x * 0.5 + 0.5) * width;
+      const ex = (edge.x * 0.5 + 0.5) * width;
+      const ey = (-edge.y * 0.5 + 0.5) * height;
+      // 章在画面上的大小，用来给标签定字号与间距
+      const radiusPx = Math.max(1, Math.abs(ex - cx));
+      return { x: cx, y: ey, scale: radiusPx };
+    });
+  }
+
+  /**
    * 从外面点名某一枚章（名字列表停在某一行时用）。
    *
    * 和鼠标悬停走同一条抬起逻辑，所以列表与图上不会各抬各的。
    */
   setHighlight(index: number | null): void {
-    const node = index === null ? null : (this.nodes[index] ?? null);
-    this.setHovered(node && node.state !== 'locked' ? node : null);
+    this.setHovered(index === null ? null : (this.nodes[index] ?? null));
   }
 
   setReducedMotion(reduced: boolean): void {
@@ -521,7 +559,7 @@ export class IslandChart {
   private pick(): void {
     if (this.pointer.x < -1.5) return;
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    const targets = this.nodes.filter((n) => n.state !== 'locked').map((n) => n.picker);
+    const targets = this.nodes.map((n) => n.picker);
     const hit = this.raycaster.intersectObjects(targets, false)[0];
     if (!hit) {
       this.setHovered(null);

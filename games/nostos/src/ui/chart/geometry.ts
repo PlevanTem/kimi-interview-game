@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { PIGMENT } from '../../content/palette';
 import { clamp, fbm2, smoothstep } from '../../engine/noise';
 import { terrainHeight, type TerrainParams } from '../../world/terrain';
 import type { ChartCarve, ChartIsland } from './atlas';
@@ -284,80 +283,31 @@ export function buildRelief(island: ChartIsland): Relief {
 }
 
 /**
- * 未刻的石料。
+ * 未激活的配色。
  *
- * 没走到的幕，章上**什么也不刻**：没有地形、没有地标、没有名字，也没有天候。
- * `ART_BIBLE` 说未到的一律不揭示，而"一块还没动过凿子的石头"比八个 `？？？`
- * 说得更清楚——它不是缺了什么，是还没有发生。
+ * 没走到的幕，章**照样刻出来**——地形、海岸线、地标一件不少——
+ * 只是没有被点亮：颜色朝自身亮度收拢（去掉色相）、整体压暗。
+ * 读起来是"这块石头在那儿，还没轮到它"，不是"这里什么都没有"。
  *
- * 但它必须读得出是**石头**。第一版只给了一个近乎平的粗坯顶面，靠半球光托着，
- * 结果在序章（七枚全未刻）时整张图是一片黑斑——而那正是玩家第一次按下 Esc
- * 看到的画面。所以顶面改成**粗糙的凿面**：网格刻意取得很粗（6 环 × 18 扇），
- * 每一片三角按自己的法线定明暗，凿痕就是形体本身，不依赖场景里的灯。
+ * 早先的版本是一块未刻的粗坯。改法是评审时定的：粗坯在序章（七枚全未刻）
+ * 时整张图只剩一排灰饼，海图作为一张图的意义几乎不存在。
+ * 代价是**未走到的岛会被提前看见**，这一点记在 PAUSE_PANEL_ART_DIRECTION 第五节。
  *
- * 和已刻出的章的区别仍然一目了然：没有海岸线、没有水、没有地标、
- * 通体一种石色。它看着像料，不像岛。
+ * 做成一份**替换用的颜色数组**而不是第二个材质：材质上乘一个灰色只会整体压暗，
+ * 色相还在，八枚未激活的章仍然一个偏蓝一个偏金，看着像"点亮了但很暗"。
+ * 真正要的是去色。
  */
-export function buildBlank(island: ChartIsland): Relief {
-  const scale = chartScale(island);
-  const radius = island.terrain.radius * OVERSAMPLE * scale;
-  const rings = 6;
-  const sectors = 18;
-  const positions: number[] = [];
-  const colors: number[] = [];
-  const color = new THREE.Color();
-  const stone = new THREE.Color(island.terrain.colorSteep).lerp(new THREE.Color(PIGMENT.plaster), 0.28);
-
-  // 粗坯的高度：低频噪声 + 一点随环变化的收口，读起来像被凿过而不是被磨过
-  const crude = (i: number, j: number): number => {
-    const t = i / rings;
-    const a = (j / sectors) * Math.PI * 2;
-    const n = fbm2(Math.cos(a) * 1.7 + t * 2.3, Math.sin(a) * 1.7, 2, island.terrain.seed + 55) - 0.5;
-    return (0.055 + n * 0.09) * (1 - t * t * 0.55);
-  };
-  const at = (i: number, j: number): THREE.Vector3 => {
-    const r = (i / rings) * radius;
-    const a = (j / sectors) * Math.PI * 2;
-    return new THREE.Vector3(Math.cos(a) * r, crude(i, j), Math.sin(a) * r);
-  };
-
-  const face = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3, tint: number): void => {
-    // 每一片按自己的法线定明暗——凿痕就是形体，不靠场景的灯
-    const n = new THREE.Vector3()
-      .subVectors(b, a)
-      .cross(new THREE.Vector3().subVectors(c, a))
-      .normalize();
-    const shade = (0.34 + 0.5 * Math.max(0, n.dot(HILLSHADE_LIGHT))) * tint;
-    color.copy(stone).multiplyScalar(shade);
-    for (const v of [a, b, c]) {
-      positions.push(v.x, v.y, v.z);
-      colors.push(color.r, color.g, color.b);
-    }
-  };
-
-  const bottom = -PLINTH_WALL;
-  for (let j = 0; j < sectors; j += 1) {
-    const j2 = (j + 1) % sectors;
-    // 顶面凿痕
-    for (let i = 0; i < rings; i += 1) {
-      face(at(i, j), at(i + 1, j), at(i + 1, j2), 1);
-      face(at(i, j), at(i + 1, j2), at(i, j2), 1);
-    }
-    // 立面
-    const t1 = at(rings, j);
-    const t2 = at(rings, j2);
-    const b1 = new THREE.Vector3(t1.x, bottom, t1.z);
-    const b2 = new THREE.Vector3(t2.x, bottom, t2.z);
-    face(t1, b1, b2, 0.78);
-    face(t1, b2, t2, 0.78);
-    // 底面
-    face(new THREE.Vector3(0, bottom, 0), b2, b1, 0.5);
+export function dormantColors(source: THREE.BufferAttribute): Float32Array {
+  const out = new Float32Array(source.count * 3);
+  for (let i = 0; i < source.count; i += 1) {
+    const r = source.getX(i);
+    const g = source.getY(i);
+    const b = source.getZ(i);
+    // Rec.709 亮度，再朝它收 82%——留一丝色相，免得读成纯灰的塑料
+    const luma = r * 0.2126 + g * 0.7152 + b * 0.0722;
+    out[i * 3] = (r + (luma - r) * 0.82) * 0.74;
+    out[i * 3 + 1] = (g + (luma - g) * 0.82) * 0.74;
+    out[i * 3 + 2] = (b + (luma - b) * 0.82) * 0.74;
   }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-  geometry.computeVertexNormals();
-  geometry.computeBoundingSphere();
-  return { geometry, scale, radius };
+  return out;
 }
