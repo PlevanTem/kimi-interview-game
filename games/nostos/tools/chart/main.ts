@@ -39,7 +39,6 @@ app.innerHTML = `
             <div class="memory"></div>
             <div class="tone"></div>
           </div>
-          <div class="tally" data-role="tally"></div>
         </section>
 
         <aside>
@@ -173,7 +172,6 @@ const cardName = card.querySelector<HTMLElement>('.name')!;
 const cardMemory = card.querySelector<HTMLElement>('.memory')!;
 const cardTone = card.querySelector<HTMLElement>('.tone')!;
 const whereami = app.querySelector<HTMLElement>('[data-role="whereami"]')!;
-const tally = app.querySelector<HTMLElement>('[data-role="tally"]')!;
 
 let currentAct = 0;
 
@@ -202,7 +200,6 @@ function setProgress(act: number): void {
   chart.setProgress(act);
   const island = CHART[act]!;
   whereami.textContent = `${island.ordinal} · ${island.title}  ·  ${act + 1} / ${CHART.length}`;
-  tally.textContent = `八枚章，刻出 ${act} 枚 · 悬停可以看那一幕留下的是什么`;
   labAct.textContent = String(act + 1);
 }
 

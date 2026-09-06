@@ -135,16 +135,22 @@ export class IslandChart {
     // 必须指同一个太阳。塑形交给晕渲，这盏灯只负责地标投在地形上的影子。
     key.position.set(-4.2, 2.4, 2.6);
     key.castShadow = true;
-    key.shadow.mapSize.set(1024, 1024);
+    key.shadow.mapSize.set(2048, 2048);
+    // 视锥收到刚好罩住八枚章，别浪费纹素——1024 摊在 ±4.6 上时，
+    // 一个纹素接近一厘米，最平那几枚章立刻开始自遮挡。
     const frustum = key.shadow.camera as THREE.OrthographicCamera;
-    frustum.left = -4.6;
-    frustum.right = 4.6;
-    frustum.top = 3.6;
-    frustum.bottom = -3.6;
+    frustum.left = -4.2;
+    frustum.right = 4.2;
+    frustum.top = 3.4;
+    frustum.bottom = -3.4;
     frustum.near = 0.1;
-    frustum.far = 14;
-    key.shadow.bias = -0.0016;
-    key.shadow.normalBias = 0.012;
+    frustum.far = 16;
+    // bias 必须走 normalBias，不能走 bias。
+    // 原来给的是 bias = -0.0016，结果亡者之岸——全作最平的一枚——整个顶面
+    // 自遮挡成一片黑：掠射光打在近乎水平的面上，深度差本来就小于那个偏移量。
+    // 越平的岛越容易翻车，而这张图上恰好有三枚是平的。
+    key.shadow.bias = 0;
+    key.shadow.normalBias = 0.035;
     frustum.updateProjectionMatrix();
     this.scene.add(key);
 
@@ -271,6 +277,9 @@ export class IslandChart {
     for (const mesh of [reliefMesh, blankMesh]) {
       mesh.castShadow = true;
       mesh.receiveShadow = true;
+      // 章会被 group 抬起、呼吸，三方的包围球对不上就会整枚被剔除掉。
+      // 八枚静态小网格，关掉视锥剔除比维护包围球划算得多。
+      mesh.frustumCulled = false;
     }
     group.add(reliefMesh, blankMesh);
 
@@ -289,6 +298,7 @@ export class IslandChart {
       landmarks.scale.setScalar(scale);
       landmarks.castShadow = true;
       landmarks.receiveShadow = true;
+      landmarks.frustumCulled = false;
       group.add(landmarks);
     }
 
@@ -449,8 +459,10 @@ export class IslandChart {
     const { halfW, halfD } = IslandChart.BOUNDS;
     const vfov = (this.camera.fov * Math.PI) / 180;
     const hfov = 2 * Math.atan(Math.tan(vfov / 2) * this.camera.aspect);
-    // 俯瞰时纵深会被压扁，按 sin(pitch) 折算它在画面竖直方向上占的高度
-    const needWidth = halfW / Math.tan(hfov / 2);
+    // 俯瞰时纵深会被压扁，按 sin(pitch) 折算它在画面竖直方向上占的高度。
+    // 宽度还要再放 1.14：近的那一排离镜头更近，透视下比注视平面上大约一成，
+    // 不算这一项时最外侧那枚章会正好压在画布边缘上。
+    const needWidth = (halfW * 1.14) / Math.tan(hfov / 2);
     const needDepth = (halfD * Math.sin(IslandChart.PITCH) + 0.5) / Math.tan(vfov / 2);
     this.dolly = Math.max(needWidth, needDepth) * 1.04;
   }

@@ -176,12 +176,6 @@ body {
   color: rgba(231, 217, 190, 0.5);
 }
 
-.tally {
-  margin-top: 10px;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  color: rgba(231, 217, 190, 0.34);
-}
 
 /* ── 右栏：调校 + 舵法 ── */
 aside {
