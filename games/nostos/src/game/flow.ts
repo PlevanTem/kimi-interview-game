@@ -169,7 +169,7 @@ export class Game {
     this.walker.reducedMotion = settings.reducedMotion;
     this.walker.sensitivity = settings.sensitivity;
     this.viewport.baseFov = settings.fov;
-    this.sound.setMuted(settings.muted);
+    this.sound.setVolume(settings.volume);
   }
 
   private loadAct(index: number, fadeFrom = 0xf3ead6): void {

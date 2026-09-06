@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { PIGMENT } from '../../content/palette';
 import { clamp, fbm2, smoothstep } from '../../engine/noise';
 import { terrainHeight, type TerrainParams } from '../../world/terrain';
 import type { ChartCarve, ChartIsland } from './atlas';
@@ -285,55 +286,72 @@ export function buildRelief(island: ChartIsland): Relief {
 /**
  * 未刻的石料。
  *
- * 没走到的幕，章上**什么也不刻**：只有那圈石料立面和一个粗坯顶面，
- * 没有地形、没有地标、没有名字。`ART_BIBLE` 说未到的一律不揭示，
- * 而"一块还没动过凿子的石头"比八个 `？？？` 说得更清楚——
- * 它不是缺了什么，它是还没有发生。
+ * 没走到的幕，章上**什么也不刻**：没有地形、没有地标、没有名字，也没有天候。
+ * `ART_BIBLE` 说未到的一律不揭示，而"一块还没动过凿子的石头"比八个 `？？？`
+ * 说得更清楚——它不是缺了什么，是还没有发生。
+ *
+ * 但它必须读得出是**石头**。第一版只给了一个近乎平的粗坯顶面，靠半球光托着，
+ * 结果在序章（七枚全未刻）时整张图是一片黑斑——而那正是玩家第一次按下 Esc
+ * 看到的画面。所以顶面改成**粗糙的凿面**：网格刻意取得很粗（6 环 × 18 扇），
+ * 每一片三角按自己的法线定明暗，凿痕就是形体本身，不依赖场景里的灯。
+ *
+ * 和已刻出的章的区别仍然一目了然：没有海岸线、没有水、没有地标、
+ * 通体一种石色。它看着像料，不像岛。
  */
 export function buildBlank(island: ChartIsland): Relief {
   const scale = chartScale(island);
   const radius = island.terrain.radius * OVERSAMPLE * scale;
+  const rings = 6;
+  const sectors = 18;
   const positions: number[] = [];
   const colors: number[] = [];
   const color = new THREE.Color();
+  const stone = new THREE.Color(island.terrain.colorSteep).lerp(new THREE.Color(PIGMENT.plaster), 0.28);
 
-  const rough = (a: number): number =>
-    (fbm2(Math.cos(a) * 2.1, Math.sin(a) * 2.1, 3, island.terrain.seed + 55) - 0.5) * 0.06;
-  const top = (j: number): THREE.Vector3 => {
-    const a = (j / SECTORS) * Math.PI * 2;
-    return new THREE.Vector3(Math.cos(a) * radius, 0.035 + rough(a), Math.sin(a) * radius);
+  // 粗坯的高度：低频噪声 + 一点随环变化的收口，读起来像被凿过而不是被磨过
+  const crude = (i: number, j: number): number => {
+    const t = i / rings;
+    const a = (j / sectors) * Math.PI * 2;
+    const n = fbm2(Math.cos(a) * 1.7 + t * 2.3, Math.sin(a) * 1.7, 2, island.terrain.seed + 55) - 0.5;
+    return (0.055 + n * 0.09) * (1 - t * t * 0.55);
+  };
+  const at = (i: number, j: number): THREE.Vector3 => {
+    const r = (i / rings) * radius;
+    const a = (j / sectors) * Math.PI * 2;
+    return new THREE.Vector3(Math.cos(a) * r, crude(i, j), Math.sin(a) * r);
   };
 
-  const push = (v: THREE.Vector3, shade: number): void => {
-    positions.push(v.x, v.y, v.z);
-    color.setHex(island.terrain.colorSteep).multiplyScalar(shade);
-    colors.push(color.r, color.g, color.b);
+  const face = (a: THREE.Vector3, b: THREE.Vector3, c: THREE.Vector3, tint: number): void => {
+    // 每一片按自己的法线定明暗——凿痕就是形体，不靠场景的灯
+    const n = new THREE.Vector3()
+      .subVectors(b, a)
+      .cross(new THREE.Vector3().subVectors(c, a))
+      .normalize();
+    const shade = (0.34 + 0.5 * Math.max(0, n.dot(HILLSHADE_LIGHT))) * tint;
+    color.copy(stone).multiplyScalar(shade);
+    for (const v of [a, b, c]) {
+      positions.push(v.x, v.y, v.z);
+      colors.push(color.r, color.g, color.b);
+    }
   };
 
-  const centre = new THREE.Vector3(0, 0.075, 0);
-  for (let j = 0; j < SECTORS; j += 1) {
-    const j2 = (j + 1) % SECTORS;
-    const t1 = top(j);
-    const t2 = top(j2);
-    // 粗坯顶面
-    push(centre, 0.62);
-    push(t1, 0.56);
-    push(t2, 0.56);
+  const bottom = -PLINTH_WALL;
+  for (let j = 0; j < sectors; j += 1) {
+    const j2 = (j + 1) % sectors;
+    // 顶面凿痕
+    for (let i = 0; i < rings; i += 1) {
+      face(at(i, j), at(i + 1, j), at(i + 1, j2), 1);
+      face(at(i, j), at(i + 1, j2), at(i, j2), 1);
+    }
     // 立面
-    const b1 = new THREE.Vector3(t1.x, -PLINTH_WALL, t1.z);
-    const b2 = new THREE.Vector3(t2.x, -PLINTH_WALL, t2.z);
-    const streak = fbm2(j * 0.42, 0, 2, island.terrain.seed + 733);
-    const shade = 0.34 + streak * 0.2;
-    push(t1, shade);
-    push(b1, shade);
-    push(b2, shade);
-    push(t1, shade);
-    push(b2, shade);
-    push(t2, shade);
+    const t1 = at(rings, j);
+    const t2 = at(rings, j2);
+    const b1 = new THREE.Vector3(t1.x, bottom, t1.z);
+    const b2 = new THREE.Vector3(t2.x, bottom, t2.z);
+    face(t1, b1, b2, 0.78);
+    face(t1, b2, t2, 0.78);
     // 底面
-    push(new THREE.Vector3(0, -PLINTH_WALL, 0), 0.26);
-    push(b2, 0.26);
-    push(b1, 0.26);
+    face(new THREE.Vector3(0, bottom, 0), b2, b1, 0.5);
   }
 
   const geometry = new THREE.BufferGeometry();

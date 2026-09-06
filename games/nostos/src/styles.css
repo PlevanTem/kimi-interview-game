@@ -300,22 +300,6 @@ button.link:focus-visible {
   outline: none;
 }
 
-.settings {
-  display: grid;
-  grid-template-columns: auto 190px;
-  gap: 14px 20px;
-  align-items: center;
-  margin-top: 10px;
-  font-size: 14px;
-  letter-spacing: 0.16em;
-  color: rgba(231, 217, 190, 0.68);
-}
-
-.settings input[type='range'] {
-  width: 100%;
-  accent-color: var(--ochre);
-}
-
 .settings .toggle {
   justify-self: start;
   padding: 4px 14px;
@@ -450,45 +434,242 @@ button.link:focus-visible {
   color: rgba(224, 169, 78, 0.65);
 }
 
-/* 暂停面板要装下设置 + 八幕航程，720p 下必须收紧并允许滚动 */
+/* 暂停时把游玩用的 HUD 全部收起来。
+   面板背景是半透明的，幕卡与字幕会从底下透上来压在航程的名字上。 */
+.overlay.is-paused .reticle,
+.overlay.is-paused .prompt,
+.overlay.is-paused .subtitle,
+.overlay.is-paused .actcard,
+.overlay.is-paused .skiphint,
+.overlay.is-paused .guidehint,
+.overlay.is-paused .tutorial,
+.overlay.is-paused .introcard {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── 暂停面板：调校 / 舵法 / 航程 三块 ──
+   从前这里是一根竖列，五个设置项压在最上面、八幕航程垫在最下面，720p 下还要滚动。
+   现在左边约六成给航程，右侧窄栏收工具；1024px 以下退化成单列，海图收起来。 */
 .panel.pausepanel {
-  gap: 12px;
-  padding: 4vh 4vw;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0;
+  padding: 3.4vh 3.2vw 2.4vh;
+  justify-content: stretch;
+  align-items: stretch;
+  background: radial-gradient(ellipse at 50% 46%, rgba(18, 14, 12, 0.52), rgba(7, 5, 4, 0.9));
+}
+
+.panel.pausepanel > header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 1.5vh;
+  border-bottom: 1px solid rgba(231, 217, 190, 0.13);
+}
+
+.panel.pausepanel h2 {
+  font-size: clamp(21px, 2.3vw, 30px);
+}
+
+.whereami {
+  font-size: 12px;
+  letter-spacing: 0.26em;
+  color: rgba(224, 169, 78, 0.78);
+  text-align: right;
+}
+
+.pausebody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 288px;
+  gap: 3vw;
+  min-height: 0;
+  padding: 2vh 0;
+}
+
+.voyage-block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 海图：航程的图示。真正可读的进度是它下面那八行。 */
+canvas.chart {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  display: block;
+}
+
+/* 停在一枚走过的章上时浮出来：岛名 / 记忆物件 / 那一句基调。
+   八段基调写得很好，从前玩家一句都看不到。 */
+.chartcard {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  max-width: 30ch;
+  padding: 13px 18px 15px;
+  border-left: 1px solid rgba(224, 169, 78, 0.55);
+  background: linear-gradient(90deg, rgba(12, 9, 8, 0.92), rgba(12, 9, 8, 0.35));
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 260ms ease,
+    transform 260ms ease;
+  pointer-events: none;
+}
+
+.chartcard.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chartcard .ordinal {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  color: rgba(224, 169, 78, 0.8);
+}
+
+.chartcard .name {
+  margin: 4px 0 2px;
+  font-size: 19px;
+  letter-spacing: 0.18em;
+}
+
+.chartcard .memory {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(231, 217, 190, 0.72);
+}
+
+.chartcard .tone {
+  margin-top: 9px;
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: rgba(231, 217, 190, 0.5);
+}
+
+.pauserail {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: 0;
   overflow-y: auto;
-  justify-content: flex-start;
-  background: radial-gradient(ellipse at 50% 45%, rgba(20, 16, 14, 0.9), rgba(6, 5, 4, 0.97));
+  padding-right: 4px;
 }
 
-.panel.pausepanel .footnote {
-  position: static;
-  margin-top: 14px;
-}
-
-/* ── 暂停面板里的航程 ── */
 .sectionlabel {
-  margin-top: 12px;
   font-size: 11px;
   letter-spacing: 0.5em;
   text-indent: 0.5em;
-  color: rgba(224, 169, 78, 0.75);
+  color: rgba(224, 169, 78, 0.72);
+  margin-bottom: 10px;
 }
 
+/* 调校：每根滑杆都带读数——从前一根都没有，玩家是盲拖 */
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 5px 12px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: rgba(231, 217, 190, 0.7);
+}
+
+.settings .row .value {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--dusk);
+  font-variant-numeric: tabular-nums;
+}
+
+.settings .row input[type='range'] {
+  grid-column: 1 / -1;
+  width: 100%;
+  height: 2px;
+  accent-color: var(--ochre);
+}
+
+/* 舵法：按键做成石刻小方块，和世界里 E 提示的读法一致。
+   H 独占一行加半句说明——它是全作唯一的引导机制。 */
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.key {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  color: rgba(231, 217, 190, 0.66);
+}
+
+.key b {
+  justify-self: start;
+  min-width: 2.2em;
+  padding: 3px 7px;
+  border: 1px solid rgba(231, 217, 190, 0.28);
+  font-weight: 400;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-align: center;
+  color: rgba(231, 217, 190, 0.9);
+}
+
+.key.accent b {
+  border-color: rgba(224, 169, 78, 0.7);
+  color: var(--dusk);
+}
+
+.key.accent i {
+  display: block;
+  font-style: normal;
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  color: rgba(231, 217, 190, 0.42);
+  margin-top: 3px;
+}
+
+/* ── 八行名字：航程的另一种表达 ──
+   海图负责"你走过的是这些地方"，这八行负责窄屏、读屏，
+   以及任何海图画不出来的时候。一块进度不该只存在于一张 3D 画布里。 */
 .voyage {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  width: min(420px, 76vw);
-  margin-top: 4px;
+  gap: 1px;
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(231, 217, 190, 0.1);
 }
 
 .voyage-row {
   display: grid;
-  grid-template-columns: 16px 1fr auto;
+  grid-template-columns: 16px auto 1fr;
   align-items: center;
-  gap: 12px;
-  padding: 2px 0;
-  font-size: 14px;
-  letter-spacing: 0.14em;
+  gap: 10px;
+  padding: 1px 0;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+.voyage-row.hover .name {
+  color: var(--dusk);
 }
 
 .voyage-row i {
@@ -520,22 +701,56 @@ button.link:focus-visible {
 
 .voyage-row[data-state='locked'] .name {
   color: rgba(231, 217, 190, 0.48);
-  letter-spacing: 0.14em;
 }
 
 .voyage-row .memory {
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: rgba(231, 217, 190, 0.42);
 }
 
 .voyage-summary {
-  margin-top: 10px;
+  margin-top: 8px;
   font-size: 11px;
   letter-spacing: 0.28em;
   color: rgba(231, 217, 190, 0.34);
 }
 
+.panel.pausepanel > .menu {
+  flex-direction: row;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 1.4vh;
+  border-top: 1px solid rgba(231, 217, 190, 0.13);
+}
+
+/* 窄屏与矮屏：海图收起来，只留八行名字。
+   一块 260 像素宽的 3D 画布读不出任何形体，留着只是挡路。 */
+@media (max-width: 1023px), (max-height: 620px) {
+  .pausebody {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    overflow-y: auto;
+  }
+  canvas.chart,
+  .chartcard {
+    display: none;
+  }
+  .voyage {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .pauserail {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 26px;
+    overflow: visible;
+  }
+  .pauserail > div {
+    flex: 1 1 240px;
+  }
+}
 /* ── 终幕：八段记忆总览与最后那段话 ── */
 .panel.endpanel {
   justify-content: flex-start;

@@ -2,6 +2,7 @@ import { MEMORY_LABELS, TEXT } from '../content/script';
 import { ACTS } from '../game/scenes';
 import type { Caption } from '../game/types';
 import { navigationMark } from './navigation-mark';
+import { CHART, IslandChart, stateFor, type ChartIsland } from './chart';
 
 /**
  * 界面层。
@@ -16,7 +17,8 @@ export interface Settings {
   subtitleScale: number;
   sensitivity: number;
   fov: number;
-  muted: boolean;
+  /** 0–1。0 等同静音——这部作品的声音玩家往往想要"小一点"，不是"没有" */
+  volume: number;
 }
 
 export interface OverlayHandlers {
@@ -45,7 +47,7 @@ export class Overlay {
     subtitleScale: 1,
     sensitivity: 1,
     fov: 62,
-    muted: false,
+    volume: 1,
   };
 
   private readonly root: HTMLElement;
@@ -67,6 +69,12 @@ export class Overlay {
   private readonly guideHint: HTMLElement;
   private readonly introCard: HTMLElement;
   private readonly progressList: HTMLElement;
+  private chartCanvas!: HTMLCanvasElement;
+  private chartCard!: HTMLElement;
+  private whereami!: HTMLElement;
+  /** 航程海图。第一次按下 Esc 时才建，不给从不暂停的玩家付这份钱。 */
+  private chart: IslandChart | null = null;
+  private currentAct = 0;
   private readonly continueButton: HTMLButtonElement;
   private readonly tutorial: HTMLElement;
   private readonly introProgress: HTMLElement;
@@ -178,64 +186,57 @@ export class Overlay {
     return panel;
   }
 
+  /**
+   * 暂停面板：调校 / 舵法 / 航程 三块。
+   *
+   * 从前这里是一根竖列——五个设置项压在最上面，八幕的航程垫在最下面，
+   * 720p 下还要滚动。顺序反了：最没有感情的东西占了视觉第一位。
+   *
+   * 现在左边约六成给航程（唯一带情绪的一块），右侧窄栏收工具。
+   * 航程有**两种表达同时在场**：上面是八枚地形浮雕组成的海图，
+   * 下面是八行名字。海图负责"你走过的是这些地方"，
+   * 名字负责窄屏、读屏，以及任何海图画不出来的时候——
+   * 一块进度不该只存在于一张 3D 画布里。
+   */
   private buildPause(): HTMLElement {
     const panel = el('div', 'panel pausepanel hidden');
-    panel.append(el('h2', undefined, U.paused));
 
-    const grid = el('div', 'settings');
+    const header = el('header');
+    header.append(el('h2', undefined, U.paused));
+    this.whereami = el('div', 'whereami');
+    header.append(this.whereami);
+    panel.append(header);
 
-    const motionLabel = el('span', undefined, U.reducedMotion);
-    const motionToggle = el('button', 'toggle', this.settings.reducedMotion ? 'ON' : 'OFF');
-    motionToggle.dataset.on = String(this.settings.reducedMotion);
-    motionToggle.addEventListener('click', () => {
-      this.settings.reducedMotion = !this.settings.reducedMotion;
-      motionToggle.textContent = this.settings.reducedMotion ? 'ON' : 'OFF';
-      motionToggle.dataset.on = String(this.settings.reducedMotion);
-      this.applySettings();
-    });
+    const body = el('div', 'pausebody');
 
-    const muteLabel = el('span', undefined, U.mute);
-    const muteToggle = el('button', 'toggle', this.settings.muted ? 'ON' : 'OFF');
-    muteToggle.dataset.on = String(this.settings.muted);
-    muteToggle.addEventListener('click', () => {
-      this.settings.muted = !this.settings.muted;
-      muteToggle.textContent = this.settings.muted ? 'ON' : 'OFF';
-      muteToggle.dataset.on = String(this.settings.muted);
-      this.applySettings();
-    });
+    // ── 航程 ──
+    const voyage = el('section', 'voyage-block');
+    voyage.append(el('div', 'sectionlabel', U.progressTitle));
+    this.chartCanvas = el('canvas', 'chart');
+    // 海图是航程的**图示**，真正可读的进度在下面那八行里；
+    // 读屏软件读那八行就够了，不必让它去描述一张画布。
+    this.chartCanvas.setAttribute('aria-hidden', 'true');
+    voyage.append(this.chartCanvas);
 
-    const slider = (min: number, max: number, step: number, value: number, apply: (v: number) => void): HTMLInputElement => {
-      const input = el('input') as HTMLInputElement;
-      input.type = 'range';
-      input.min = String(min);
-      input.max = String(max);
-      input.step = String(step);
-      input.value = String(value);
-      input.addEventListener('input', () => {
-        apply(Number(input.value));
-        this.applySettings();
-      });
-      return input;
-    };
+    this.chartCard = el('div', 'chartcard');
+    this.chartCard.append(el('div', 'ordinal'), el('div', 'name'), el('div', 'memory'), el('div', 'tone'));
+    voyage.append(this.chartCard);
 
-    grid.append(
-      motionLabel,
-      motionToggle,
-      muteLabel,
-      muteToggle,
-      el('span', undefined, U.subtitleSize),
-      slider(0.8, 1.6, 0.05, this.settings.subtitleScale, (v) => (this.settings.subtitleScale = v)),
-      el('span', undefined, U.sensitivity),
-      slider(0.4, 2.2, 0.05, this.settings.sensitivity, (v) => (this.settings.sensitivity = v)),
-      el('span', undefined, U.fov),
-      slider(50, 80, 1, this.settings.fov, (v) => (this.settings.fov = v)),
-    );
-    panel.append(grid);
+    voyage.append(el('div', 'voyage'));
+    body.append(voyage);
 
-    // 航程：八幕走到哪儿了。做成一条竖列而不是百分比进度条——
-    // 玩家记得的是"亡者之岸那只空碗"，不是"已完成 50%"
-    panel.append(el('div', 'sectionlabel', U.progressTitle));
-    panel.append(el('div', 'voyage'));
+    // ── 调校 + 舵法 ──
+    const rail = el('aside', 'pauserail');
+    const tuning = el('div');
+    tuning.append(el('div', 'sectionlabel', U.tuning));
+    tuning.append(this.buildSettings());
+    const helm = el('div');
+    helm.append(el('div', 'sectionlabel', U.helm));
+    helm.append(this.buildKeys());
+    rail.append(tuning, helm);
+    body.append(rail);
+
+    panel.append(body);
 
     const menu = el('div', 'menu');
     const resume = el('button', 'link', U.back);
@@ -244,8 +245,103 @@ export class Overlay {
     restart.addEventListener('click', () => this.handlers.onRestart());
     menu.append(resume, restart);
     panel.append(menu);
-    panel.append(el('div', 'footnote', U.controls));
     return panel;
+  }
+
+  /**
+   * 调校。
+   *
+   * 每根滑杆都带读数。从前一根都没有——玩家是盲拖，
+   * 把视野从 62 拉到哪儿了只能靠眼睛猜。
+   */
+  private buildSettings(): HTMLElement {
+    const grid = el('div', 'settings');
+
+    const row = (label: string): HTMLElement => {
+      const node = el('div', 'row');
+      node.append(el('span', undefined, label));
+      grid.append(node);
+      return node;
+    };
+
+    const motionRow = row(U.reducedMotion);
+    const motionToggle = el('button', 'toggle', this.settings.reducedMotion ? 'ON' : 'OFF');
+    motionToggle.dataset.on = String(this.settings.reducedMotion);
+    motionToggle.addEventListener('click', () => {
+      this.settings.reducedMotion = !this.settings.reducedMotion;
+      motionToggle.textContent = this.settings.reducedMotion ? 'ON' : 'OFF';
+      motionToggle.dataset.on = String(this.settings.reducedMotion);
+      this.chart?.setReducedMotion(this.settings.reducedMotion);
+      this.applySettings();
+    });
+    motionRow.append(motionToggle);
+
+    const slider = (
+      label: string,
+      min: number,
+      max: number,
+      step: number,
+      value: number,
+      format: (v: number) => string,
+      apply: (v: number) => void,
+    ): void => {
+      const node = row(label);
+      const readout = el('span', 'value', format(value));
+      const input = el('input') as HTMLInputElement;
+      input.type = 'range';
+      input.min = String(min);
+      input.max = String(max);
+      input.step = String(step);
+      input.value = String(value);
+      input.setAttribute('aria-label', label);
+      input.addEventListener('input', () => {
+        const next = Number(input.value);
+        readout.textContent = format(next);
+        apply(next);
+        this.applySettings();
+      });
+      node.append(readout, input);
+    };
+
+    slider(U.volume, 0, 1, 0.05, this.settings.volume, (v) => String(Math.round(v * 100)),
+      (v) => (this.settings.volume = v));
+    slider(U.subtitleSize, 0.8, 1.6, 0.05, this.settings.subtitleScale, (v) => `${v.toFixed(2)}×`,
+      (v) => (this.settings.subtitleScale = v));
+    slider(U.sensitivity, 0.4, 2.2, 0.05, this.settings.sensitivity, (v) => `${v.toFixed(2)}×`,
+      (v) => (this.settings.sensitivity = v));
+    slider(U.fov, 50, 80, 1, this.settings.fov, (v) => `${v.toFixed(0)}°`,
+      (v) => (this.settings.fov = v));
+
+    return grid;
+  }
+
+  /**
+   * 舵法。
+   *
+   * 从前是一行 12px 的脚注，七个键挤在一起，`H` 和别的键一样大——
+   * 而 `H` 是全作唯一的引导机制，世界里专门为它做了引路的光和角落提示。
+   * 这里给它一整行，外加半句说明。
+   */
+  private buildKeys(): HTMLElement {
+    const list = el('div', 'keys');
+    const entries: Array<[string, string, string?]> = [
+      ['W A S D', '走'],
+      ['Shift', '快跑'],
+      ['鼠标', '看'],
+      ['E', '触碰'],
+      ['H', '呼唤引路的光', U.guideNote],
+      ['空格', '跳过这段回忆'],
+      ['Esc', U.paused],
+    ];
+    for (const [key, label, note] of entries) {
+      const row = el('div', note ? 'key accent' : 'key');
+      row.append(el('b', undefined, key));
+      const text = el('span', undefined, label);
+      if (note) text.append(el('i', undefined, note));
+      row.append(text);
+      list.append(row);
+    }
+    return list;
   }
 
   private buildEnd(): HTMLElement {
@@ -357,22 +453,49 @@ export class Overlay {
    * 八幕名称始终可见，作为航程结构；核心记忆仍只在真正走过后揭示。
    */
   setProgress(currentAct: number, touched: number): void {
+    this.currentAct = currentAct;
     this.progressList.innerHTML = '';
     ACTS.forEach((act, index) => {
       const row = el('div', 'voyage-row');
-      const state = index < currentAct ? 'done' : index === currentAct ? 'current' : 'locked';
+      const state = stateFor(index, currentAct);
       row.dataset.state = state;
+      row.dataset.act = String(index);
       row.append(el('i'));
       const ordinal = index === 0 ? '序章' : `第${'一二三四五六七'[index - 1]}幕`;
       const label = `${ordinal} · ${act.def.title}`;
       row.append(el('span', 'name', label));
       const memory = index < currentAct ? (MEMORY_LABELS[act.def.id] ?? '') : '';
       row.append(el('span', 'memory', memory));
+      // 名字列表与海图互指：停在一行上，图上那一枚也抬起来
+      row.addEventListener('pointerenter', () => this.chart?.setHighlight(index));
+      row.addEventListener('pointerleave', () => this.chart?.setHighlight(null));
       this.progressList.append(row);
     });
     const summary = el('div', 'voyage-summary');
     summary.textContent = `第 ${currentAct + 1} / ${ACTS.length} 幕 · 已触碰 ${touched} 处`;
     this.progressList.append(summary);
+
+    const here = CHART[Math.max(0, Math.min(CHART.length - 1, currentAct))];
+    this.whereami.textContent = here
+      ? `${here.ordinal} · ${here.title}  ·  ${currentAct + 1} / ${ACTS.length}`
+      : '';
+    this.chart?.setProgress(currentAct);
+  }
+
+  /** 悬停某一枚章时浮出的那张卡：岛名 / 记忆物件 / 那一句基调。 */
+  private showChartCard(island: ChartIsland | null): void {
+    if (!island) {
+      this.chartCard.classList.remove('visible');
+      return;
+    }
+    const done = stateFor(island.act, this.currentAct) === 'done';
+    (this.chartCard.querySelector('.ordinal') as HTMLElement).textContent =
+      `${island.ordinal} · ${island.subtitle}`;
+    (this.chartCard.querySelector('.name') as HTMLElement).textContent = island.title;
+    // 记忆物件只在真的走过之后才写出来：当前这一幕还在走，不剧透
+    (this.chartCard.querySelector('.memory') as HTMLElement).textContent = done ? island.memory : '';
+    (this.chartCard.querySelector('.tone') as HTMLElement).textContent = island.tone;
+    this.chartCard.classList.add('visible');
   }
 
   showTitle(hasSave: boolean): void {
@@ -391,7 +514,37 @@ export class Overlay {
     this.pausePanel.classList.toggle('hidden', !paused);
     this.pausePanel.inert = !paused;
     this.root.classList.toggle('is-paused', paused);
-    if (paused) this.pausePanel.querySelector<HTMLButtonElement>('button')?.focus();
+    if (!paused) {
+      this.showChartCard(null);
+      return;
+    }
+    this.ensureChart();
+    this.chart?.resize();
+    this.chart?.setProgress(this.currentAct);
+    this.pausePanel.querySelector<HTMLButtonElement>('button')?.focus();
+  }
+
+  /**
+   * 第一次按下 Esc 时才建海图。
+   *
+   * 它自带一个 WebGL 上下文，不复用游戏的 `Viewport`——这一条是权衡过的：
+   * 游戏的渲染器输出线性色（唯一一次 sRGB 编码交给 `post.ts` 的合成 pass），
+   * 而且全作**没有任何地方开阴影**。共用同一个渲染器，就得为海图开启
+   * shadowMap 并临时改 outputColorSpace，两者都会让整幕的材质重新编译，
+   * 代价落在正常游玩的那 99% 时间里，只为了一块暂停面板。
+   *
+   * 窄屏下画布被 CSS 收起来（`display:none`），此时不建也不渲染。
+   */
+  private ensureChart(): void {
+    if (this.chart || !this.chartCanvas.clientWidth) return;
+    this.chart = new IslandChart(this.chartCanvas, {
+      onHover: (island) => {
+        this.showChartCard(island);
+        const rows = this.progressList.querySelectorAll<HTMLElement>('.voyage-row');
+        rows.forEach((row) => row.classList.toggle('hover', row.dataset.act === String(island?.act)));
+      },
+    });
+    this.chart.setReducedMotion(this.settings.reducedMotion);
   }
 
   showEnd(
@@ -433,6 +586,12 @@ export class Overlay {
     if (this.actCardTimer > 0) {
       this.actCardTimer -= dt;
       if (this.actCardTimer <= 0) this.actcard.classList.remove('visible');
+    }
+    // 海图只在面板真的开着的时候跑。恢复游玩后它一帧都不画。
+    if (!this.pausePanel.classList.contains('hidden')) {
+      if (!this.chart) this.ensureChart();
+      this.chart?.update(dt);
+      this.chart?.render();
     }
   }
 }
