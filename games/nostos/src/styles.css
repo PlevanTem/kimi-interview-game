@@ -645,39 +645,42 @@ canvas.chart {
   margin-top: 3px;
 }
 
-/* ── 八行名字：航程的另一种表达 ──
-   海图负责"你走过的是这些地方"，这八行负责窄屏、读屏，
-   以及任何海图画不出来的时候。一块进度不该只存在于一张 3D 画布里。 */
+/* ── 八行名字：压在海图上 ──
+   宽屏下每一行绝对定位到自己那枚章的下面（位置由 overlay 每帧从三维投影算出来）。
+   单独在旁边摆一栏文字，等于把同一件事说两遍，还把海图挤小了。
+   窄屏（海图收起）时它们退回一列普通列表——那时它是进度的唯一载体。 */
 .voyage {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  width: 100%;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(231, 217, 190, 0.1);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
 .voyage-row {
-  display: grid;
-  grid-template-columns: 16px auto 1fr;
+  position: absolute;
+  display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 1px 0;
-  font-size: 13px;
-  letter-spacing: 0.12em;
+  gap: 7px;
+  padding: 2px 7px;
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  pointer-events: auto;
+  cursor: default;
+  transition: color 200ms ease;
 }
 
-.voyage-row.hover .name {
-  color: var(--dusk);
+/* 海图上不铺记忆物件——图已经很满，它归悬停卡管 */
+.voyage .voyage-row .memory {
+  display: none;
 }
 
 .voyage-row i {
-  width: 7px;
-  height: 7px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   border: 1px solid rgba(231, 217, 190, 0.35);
-  justify-self: center;
+  flex: none;
 }
 
 .voyage-row[data-state='done'] i {
@@ -691,29 +694,31 @@ canvas.chart {
   animation: guide-breathe 2.6s ease-in-out infinite;
 }
 
+.voyage-row .name {
+  /* 一点点描边：名字压在浮雕上，纯文字会被地形的明暗吃掉 */
+  text-shadow: 0 1px 3px rgba(6, 5, 4, 0.95), 0 0 8px rgba(6, 5, 4, 0.8);
+}
+
 .voyage-row[data-state='done'] .name {
-  color: rgba(231, 217, 190, 0.86);
+  color: rgba(231, 217, 190, 0.88);
 }
 
 .voyage-row[data-state='current'] .name {
   color: var(--dusk);
 }
 
+/* 未激活：章刻着，只是没点亮。名字跟着一起收下去 */
 .voyage-row[data-state='locked'] .name {
-  color: rgba(231, 217, 190, 0.48);
+  color: rgba(231, 217, 190, 0.4);
 }
 
-.voyage-row .memory {
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: rgba(231, 217, 190, 0.42);
+.voyage-row.hover .name,
+.voyage-row:hover .name {
+  color: var(--dusk);
 }
 
 .voyage-summary {
-  margin-top: 8px;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  color: rgba(231, 217, 190, 0.34);
+  display: none;
 }
 
 .panel.pausepanel > .menu {
@@ -736,10 +741,45 @@ canvas.chart {
   .chartcard {
     display: none;
   }
+  /* 海图收起，八行名字退回普通列表——这时它是进度的唯一载体，
+     所以记忆物件与汇总行都要回来。 */
   .voyage {
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .voyage-row {
+    position: static;
+    display: grid;
+    grid-template-columns: 16px auto 1fr;
+    gap: 10px;
+    transform: none;
+    padding: 1px 0;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+  .voyage-row i {
+    justify-self: center;
+  }
+  .voyage-row .name {
+    text-shadow: none;
+  }
+  .voyage .voyage-row .memory {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: rgba(231, 217, 190, 0.42);
+  }
+  .whereami .touched {
+    display: none;
+  }
+  .voyage-summary {
+    display: block;
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: rgba(231, 217, 190, 0.34);
   }
   .pauserail {
     flex-direction: row;
