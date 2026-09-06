@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { clamp, fbm2, smoothstep } from '../../engine/noise';
-import { terrainHeight } from '../../world/terrain';
+import { terrainHeight, type TerrainParams } from '../../world/terrain';
 import type { ChartCarve, ChartIsland } from './atlas';
 
 /**
@@ -22,14 +22,30 @@ import type { ChartCarve, ChartIsland } from './atlas';
  *    大小差别还读得出来，但每一枚都还能看清。
  */
 
-/** 竖向夸张倍数。改这一个值就能整体调节浮雕的"高低对比"。 */
-export const RELIEF_EXAGGERATION = 1.8;
+/**
+ * 竖向夸张倍数。
+ *
+ * 6 倍看着很大，是实测出来的：八座岛的平均坡度只有**六度**
+ * （中央隆起 1.4–5.5 米，半径却有 26–44 米），一比一缩到章上，
+ * 任何光照方案都只能得到八块饼——这一版先后试过调灯与晕渲，都救不回来。
+ * 立体地形图用到二三十倍夸张是常规做法，6 倍已经相当克制。
+ *
+ * 关键是**八枚共用同一个倍数**：亡者之岸缩完仍然是平的，独眼岬仍然是最高的，
+ * 岛与岛之间的高低关系没有被改写。逐岛归一化才是说谎。
+ */
+export const RELIEF_EXAGGERATION = 6;
 
 /** 一枚章在图版上的基准半径（图版单位）。 */
-export const PLINTH_RADIUS = 0.46;
+export const PLINTH_RADIUS = 0.6;
 
-/** 石料立面的高度（图版单位）。 */
-export const PLINTH_WALL = 0.2;
+/**
+ * 石料立面的高度（图版单位）。
+ *
+ * 这个值必须**小于**最平那几枚章自身的起伏，否则侧壁会盖过浮雕，
+ * 八枚一律读成"圆饼 + 一圈厚边"。忘食岸的中央隆起在图上约 0.10，
+ * 所以立面压到 0.11——刚好还能看出这是一块有厚度的石料，又不喧宾夺主。
+ */
+export const PLINTH_WALL = 0.11;
 
 /** 顶面采样密度：径向环数 × 周向扇数。 */
 const RINGS = 30;
@@ -65,6 +81,36 @@ function carveAt(carve: ChartCarve | undefined, x: number, z: number): number {
 }
 
 /**
+ * 晕渲的光向。
+ *
+ * 和场景里那盏主光同向（`ui/chart/index.ts` 的 key），这样烘进颜色的明暗
+ * 和实时投影指的是同一个太阳，不会互相打架。
+ */
+const HILLSHADE_LIGHT = new THREE.Vector3(-4.2, 2.4, 2.6).normalize();
+
+/** 求坡向用的差分步长（世界米）。太小会把噪声的高频抖成雪花。 */
+const SLOPE_STEP = 1.6;
+
+/**
+ * 晕渲。
+ *
+ * 这是地貌图做了一百年的事，也是这张海图上**唯一**能让缓坡读出形体的手段：
+ * 八座岛的最大坡度只有二十度上下，实时光照在这种缓坡上的明暗差不到一成，
+ * 无论把灯调多亮都是一块饼（这一版真的先试过调灯，没用）。
+ *
+ * 所以坡向直接烘进顶点色：法线按竖向夸张后的地形求，和 HILLSHADE_LIGHT 点乘，
+ * 再压进 [0.58, 1.30]。实时那盏主光仍然留着——它负责地标投在地形上的影子，
+ * 那是烘不进去的。
+ */
+function hillshade(params: TerrainParams, x: number, z: number): number {
+  const d = SLOPE_STEP;
+  const dx = (terrainHeight(params, x + d, z) - terrainHeight(params, x - d, z)) / (2 * d);
+  const dz = (terrainHeight(params, x, z + d) - terrainHeight(params, x, z - d)) / (2 * d);
+  const n = new THREE.Vector3(-dx * RELIEF_EXAGGERATION, 1, -dz * RELIEF_EXAGGERATION).normalize();
+  return 0.58 + 0.72 * Math.max(0, n.dot(HILLSHADE_LIGHT));
+}
+
+/**
  * 顶面的颜色。
  *
  * 刻意照抄 `materials.ts` 里壁画着色器那几行：同样的 0.62 / 0.86 陡面阈值，
@@ -96,6 +142,8 @@ function surfaceColor(
   out.lerp(new THREE.Color(p.colorSteep), steep);
   const high = smoothstep(p.heightStart ?? 3.5, p.heightEnd ?? 11, height + jitter * 2);
   out.lerp(new THREE.Color(p.colorHigh), high);
+  // 壁画三色是给带后期分级的场景配的，章上没有那条链子，直接用会偏暗
+  out.multiplyScalar(1.28);
 }
 
 /** 石料立面的颜色：一层比顶面暗的素石，带竖向凿痕。 */
@@ -154,7 +202,11 @@ export function buildRelief(island: ChartIsland): Relief {
     const r = (i / RINGS) * worldOuter;
     const a = (j / SECTORS) * Math.PI * 2;
     const jitter = fbm2(Math.cos(a) * r * 0.09, Math.sin(a) * r * 0.09, 3, p.seed + 17) - 0.5;
+    const wx = Math.cos(a) * r;
+    const wz = Math.sin(a) * r;
     surfaceColor(island, at(i, j), normal.y, jitter, color);
+    // 水面不参与晕渲：它是平的，晕渲只会给它一层莫名其妙的斜向明暗
+    if (at(i, j) > (p.waterLevel ?? 0)) color.multiplyScalar(hillshade(p, wx, wz));
     colors.push(color.r, color.g, color.b);
   };
 

@@ -133,7 +133,7 @@ type Builder = (carver: Carver, item: Landmark, rng: () => number) => void;
 
 const BUILDERS: Record<LandmarkKind, Builder> = {
   /** 散架的木筏：他十年来的全部家当，五块板交错倒在沙上 */
-  raft(c, item, rng) {
+  raft(c, _item, rng) {
     for (let i = 0; i < 5; i += 1) {
       c.add(box(3.6 + rng() * 1.4, 0.16, 0.42), INK.wood, mat({
         x: (rng() - 0.5) * 1.8,
@@ -165,7 +165,7 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
    * 章上没有人会撞头，但形体规矩要一致——一棵冠贴着地的树，
    * 缩到章上就是一个蘑菇，认不出是果树。
    */
-  fruitTree(c, item, rng) {
+  fruitTree(c, _item, rng) {
     c.add(cyl(0.16, 0.26, 2.4, 6), INK.wood, mat({ yaw: rng() * 3 }), 0.9);
     c.add(rock(1.35), INK.leaf, mat({ y: 3.1, scale: [1.15, 0.62, 1.15], yaw: rng() * 3 }), 0.95);
     c.add(rock(0.9), INK.leaf, mat({ x: 0.6, y: 2.6, z: -0.4, scale: [1, 0.55, 1] }), 0.8);
@@ -218,7 +218,7 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
    * 不是在石壁上画一块黑，是**三层退进去的石阶围出一个真的负形**：
    * 光进不去的地方自己就是黑的。章转到侧面时能看见洞是有深度的。
    */
-  caveMouth(c, item, rng) {
+  caveMouth(c, _item, rng) {
     for (let k = 0; k < 3; k += 1) {
       const w = 7.4 - k * 1.5;
       const h = 5.2 - k * 0.9;
@@ -348,7 +348,7 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
   },
 
   /** 堆好却没点的柴：所有东西都准备好了，就是没有开始 */
-  unlitPyre(c, item, rng) {
+  unlitPyre(c, _item, rng) {
     for (let i = 0; i < 9; i += 1) {
       const a = (i / 9) * Math.PI * 2;
       c.add(cyl(0.11, 0.14, 2.6, 5), INK.wood, mat({
@@ -362,7 +362,7 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
   },
 
   /** 祭酒碗，与它旁边空着的那个位置 */
-  libationBowl(c, item) {
+  libationBowl(c) {
     c.add(cyl(0.85, 0.5, 0.5, 12), INK.clay, mat({}), 0.95);
     c.add(cyl(0.72, 0.4, 0.42, 12), INK.burnt, mat({ y: 0.12 }), 0.5);
     // 空着的位置：地上一圈浅浅的印
@@ -505,7 +505,7 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
   },
 
   /** 那棵橄榄树：全作最后一件被触碰的活物 */
-  oliveTree(c, item, rng) {
+  oliveTree(c, _item, rng) {
     c.add(cyl(0.38, 0.62, 2.2, 7), INK.wood, mat({ tilt: 0.07 }), 0.86);
     c.add(rock(1.8), INK.leaf, mat({ y: 3.3, scale: [1.2, 0.72, 1.1], yaw: rng() * 3 }), 0.9);
     c.add(rock(1.15), INK.leaf, mat({ x: -1.1, y: 2.9, z: 0.5, scale: [1, 0.6, 1] }), 0.76);
@@ -518,6 +518,15 @@ const BUILDERS: Record<LandmarkKind, Builder> = {
  * 返回的几何在**世界米**坐标系里，原点是岛心，y 是相对地面的高度；
  * 贴地与缩放由 chart 统一处理——地标不该知道自己被缩到多小。
  */
+/**
+ * 地标的全局增益。
+ *
+ * `atlas.ts` 里每件地标各自的 scale 管的是"这件比那件大多少"，
+ * 这个常数管的是"整套地标在章上占多大"。分开两级是为了调整体密度时
+ * 不必去动二十几条数据。
+ */
+const LANDMARK_GAIN = 1.55;
+
 export function buildLandmarks(
   landmarks: readonly Landmark[],
   seed: number,
@@ -531,7 +540,7 @@ export function buildLandmarks(
     const local = new Carver();
     builder(local, item, rng);
     if (local.empty) continue;
-    const scale = item.scale ?? 1.8;
+    const scale = (item.scale ?? 1.8) * LANDMARK_GAIN;
     carver.merge(
       local.build(),
       new THREE.Matrix4().compose(

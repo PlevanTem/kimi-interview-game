@@ -191,6 +191,7 @@ function showCard(island: ChartIsland | null): void {
   card.classList.add('visible');
 }
 
+const DEBUG_WIRE = new URLSearchParams(location.search).has('wire');
 const chart = new IslandChart(canvas, {
   onHover: showCard,
   onSelect: (island) => chart.setFocus(island.act),
@@ -221,6 +222,7 @@ labMotion.addEventListener('change', () => chart.setReducedMotion(labMotion.chec
 
 setProgress(4);
 labProgress.value = '4';
+if (DEBUG_WIRE) chart.debugWireframe(true);
 
 // ─────────────────────────────────────────── 循环
 

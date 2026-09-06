@@ -110,20 +110,42 @@ export class IslandChart {
       new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'low-power' });
     this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    // 浮雕靠投影读形体。没有影子的话，一枚章无论起伏多大都是一块平饼——
+    // 这是整张图上最值钱的一盏灯，值得开一张 1024 的阴影图。
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    this.camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
-    // 低角度俯瞰：太高就成了平面图，看不见章的侧壁与浮雕的投影；
-    // 太低则后面几枚被前面挡住。32° 上下是两者的交界。
-    this.camera.position.set(0, 3.05, 4.35);
+    this.camera = new THREE.PerspectiveCamera(30, 1, 0.1, 80);
+    // 机位由 frameAll() 按八枚章的实际包围盒算出来，不写死：
+    // 面板宽高比从 21:9 到竖屏都可能，写死的距离一定会切掉两头的章。
+    this.camera.position.set(0, 6.2, 9.4);
 
-    this.scene.fog = new THREE.FogExp2(BED, 0.115);
+    // 雾只负责让最远的一两枚章沉下去，不该把中景也吃掉
+    this.scene.fog = new THREE.FogExp2(BED, 0.028);
 
     // 全图共用一个材质：顶点色扛掉全部色彩，八枚章只有 16 个 draw call
     this.surface = new THREE.MeshLambertMaterial({ vertexColors: true });
 
-    this.scene.add(new THREE.HemisphereLight(0x8fa6b4, 0x241d18, 0.42));
-    const key = new THREE.DirectionalLight(PIGMENT.bone, 0.62);
-    key.position.set(-2.4, 4.2, 2.8);
+    // 半球光只托底，**绝不能给大**。它按法线的 y 分量给光，而一枚浅穹顶的
+    // 法线几乎处处朝上——开到 0.9 就等于把八枚章的形体统一照平，
+    // 无论浮雕做多高都读成一块饼。形体全部交给下面那盏主光。
+    this.scene.add(new THREE.HemisphereLight(0xa8bcc8, 0x2e2620, 0.45));
+    const key = new THREE.DirectionalLight(PIGMENT.bone, 1.55);
+    // 与 geometry.ts 的 HILLSHADE_LIGHT 同向：烘进颜色的明暗和实时投影
+    // 必须指同一个太阳。塑形交给晕渲，这盏灯只负责地标投在地形上的影子。
+    key.position.set(-4.2, 2.4, 2.6);
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    const frustum = key.shadow.camera as THREE.OrthographicCamera;
+    frustum.left = -4.6;
+    frustum.right = 4.6;
+    frustum.top = 3.6;
+    frustum.bottom = -3.6;
+    frustum.near = 0.1;
+    frustum.far = 14;
+    key.shadow.bias = -0.0016;
+    key.shadow.normalBias = 0.012;
+    frustum.updateProjectionMatrix();
     this.scene.add(key);
 
     this.scene.add(this.buildBed());
@@ -145,18 +167,19 @@ export class IslandChart {
 
   /** 图版：一块比八枚章大一圈的深色底板，边缘自己沉进雾里。 */
   private buildBed(): THREE.Mesh {
-    const geometry = new THREE.CircleGeometry(9, 64).rotateX(-Math.PI / 2);
+    const geometry = new THREE.CircleGeometry(16, 64).rotateX(-Math.PI / 2);
     const colors: number[] = [];
     const position = geometry.getAttribute('position') as THREE.BufferAttribute;
     const colour = new THREE.Color();
     for (let i = 0; i < position.count; i += 1) {
-      const d = Math.hypot(position.getX(i), position.getZ(i)) / 9;
+      const d = Math.hypot(position.getX(i), position.getZ(i)) / 16;
       colour.setHex(0x2a211b).multiplyScalar(1 - d * 0.75);
       colors.push(colour.r, colour.g, colour.b);
     }
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     const mesh = new THREE.Mesh(geometry, this.surface);
     mesh.position.y = -PLINTH_WALL - 0.005;
+    mesh.receiveShadow = true;
     return mesh;
   }
 
@@ -175,7 +198,8 @@ export class IslandChart {
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(0), 3));
     const material = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.95 });
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.y = -PLINTH_WALL + 0.004;
+    // 贴着图版画，但抬到侧壁的一半高：压在图版上会被前排的章整条挡掉
+    mesh.position.y = -PLINTH_WALL * 0.42;
     mesh.renderOrder = 1;
     return mesh;
   }
@@ -184,8 +208,8 @@ export class IslandChart {
     const positions: number[] = [];
     const colors: number[] = [];
     const gold = new THREE.Color(PIGMENT.duskGold);
-    const groove = new THREE.Color(0x1c1613);
-    const half = 0.018;
+    const groove = new THREE.Color(0x2b2119);
+    const half = 0.042;
 
     for (let i = 0; i < CHART.length - 1; i += 1) {
       const a = CHART[i]!.slot;
@@ -216,7 +240,7 @@ export class IslandChart {
             [p.x + n.x, p.y + n.y],
           ] as const;
           // 两端淡出，别让金线直直地戳进章的侧壁
-          const fade = Math.sin(t * Math.PI) * 0.6 + 0.4;
+          const fade = Math.sin(t * Math.PI) * 0.45 + 0.55;
           const c = travelled ? gold.clone().multiplyScalar(fade) : groove;
           for (const [x, z] of quad) {
             positions.push(x, 0, z);
@@ -244,6 +268,10 @@ export class IslandChart {
 
     const reliefMesh = new THREE.Mesh(relief.geometry, this.surface);
     const blankMesh = new THREE.Mesh(blank.geometry, this.surface);
+    for (const mesh of [reliefMesh, blankMesh]) {
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+    }
     group.add(reliefMesh, blankMesh);
 
     // 地标：世界米坐标 → 图版单位。贴地用的是同一个高度函数，
@@ -259,12 +287,14 @@ export class IslandChart {
     if (landmarkGeometry) {
       landmarks = new THREE.Mesh(landmarkGeometry, this.surface);
       landmarks.scale.setScalar(scale);
+      landmarks.castShadow = true;
+      landmarks.receiveShadow = true;
       group.add(landmarks);
     }
 
     // 贴地的一层天候雾：这枚章自己的地平线色
     const halo = new THREE.Mesh(
-      new THREE.PlaneGeometry(relief.radius * 4.4, relief.radius * 4.4).rotateX(-Math.PI / 2),
+      new THREE.PlaneGeometry(relief.radius * 2.9, relief.radius * 2.9).rotateX(-Math.PI / 2),
       new THREE.MeshBasicMaterial({
         map: haloMap,
         color: island.weather.horizon,
@@ -279,8 +309,10 @@ export class IslandChart {
 
     // 这枚章自己的太阳。distance 收得紧，免得邻岛互相串色——
     // 八枚排开时天候节奏要一眼读得出，串了就糊成一片。
-    const light = new THREE.PointLight(island.weather.key, 0, 1.15, 2);
-    light.position.set(0, 0.52, 0.22);
+    // 天候灯只负责**染色**，不负责塑形：它从正上方来，压过主光就会把
+    // 形体重新照平。位置按这一幕太阳的方位角偏出去，让染色也有方向感。
+    const light = new THREE.PointLight(island.weather.key, 0, 1.35, 2);
+    light.position.set(Math.cos(island.weather.azimuth) * 0.34, 0.46, Math.sin(island.weather.azimuth) * 0.34);
     group.add(light);
 
     // 拾取用一个看不见的圆柱，不去打浮雕那几万个三角
@@ -367,18 +399,60 @@ export class IslandChart {
       const material = node.halo.material as THREE.MeshBasicMaterial;
       material.opacity = state === 'current' ? 0.5 : state === 'done' ? 0.22 : 0;
       node.light.intensity =
-        state === 'current' ? 1.5 * node.island.weather.intensity : state === 'done' ? 0.62 : 0;
+        state === 'current' ? 0.95 * node.island.weather.intensity : state === 'done' ? 0.42 : 0;
       node.liftTarget = state === 'current' ? 0.085 : 0;
     }
     this.rebuildRoute();
     this.setFocus(this.currentAct);
   }
 
-  /** 把镜头的注视点挪到某一枚章上。 */
+  /**
+   * 注视点。
+   *
+   * **八枚章始终全部在画面里**——航程的意义在于一眼看见全程，
+   * 只框住当前那一枚就退化成了一个"你在这里"的指示器。
+   * 所以注视点是图版中心，只朝当前幕偏 22%：够让视线知道该看哪儿，
+   * 又不至于把两头的章挤出画。
+   */
   setFocus(index: number): void {
-    const slot = CHART[clamp(index, 0, CHART.length - 1)]!.slot;
-    // 不完全对准：注视点往图版中心拉回一点，八枚章才不会有半数出画
-    this.focusTarget.set(slot.x * 0.62, 0, slot.z * 0.5);
+    // 注视点固定在图版中心。曾经让它朝当前幕偏 22%，结果是**镜头挪了、
+    // 取景宽度没跟着变**，走到最后一幕时最左边那枚章被挤出画面。
+    // 当前幕本来就靠抬起、点亮自己的天候、以及呼吸来指认，不必再动镜头。
+    void index;
+    const centre = IslandChart.BOUNDS;
+    this.focusTarget.set(centre.x, 0, centre.z);
+  }
+
+  /**
+   * 八枚章的包围盒中心与半幅。用来算机位——面板的宽高比从 21:9 到竖屏
+   * 都可能，距离写死一定会切掉两头的章。
+   */
+  private static readonly BOUNDS = (() => {
+    const xs = CHART.map((i) => i.slot.x);
+    const zs = CHART.map((i) => i.slot.z);
+    const pad = 0.86;
+    return {
+      x: (Math.min(...xs) + Math.max(...xs)) / 2,
+      z: (Math.min(...zs) + Math.max(...zs)) / 2,
+      halfW: (Math.max(...xs) - Math.min(...xs)) / 2 + pad,
+      halfD: (Math.max(...zs) - Math.min(...zs)) / 2 + pad,
+    };
+  })();
+
+  /** 俯瞰角。太高成平面图，看不见侧壁与浮雕的投影；太低后排被前排挡住。 */
+  private static readonly PITCH = 0.72;
+
+  /** 让八枚章全部入画所需的机距。resize() 时按当前宽高比重算。 */
+  private dolly = 9.4;
+
+  private frameAll(): void {
+    const { halfW, halfD } = IslandChart.BOUNDS;
+    const vfov = (this.camera.fov * Math.PI) / 180;
+    const hfov = 2 * Math.atan(Math.tan(vfov / 2) * this.camera.aspect);
+    // 俯瞰时纵深会被压扁，按 sin(pitch) 折算它在画面竖直方向上占的高度
+    const needWidth = halfW / Math.tan(hfov / 2);
+    const needDepth = (halfD * Math.sin(IslandChart.PITCH) + 0.5) / Math.tan(vfov / 2);
+    this.dolly = Math.max(needWidth, needDepth) * 1.04;
   }
 
   setReducedMotion(reduced: boolean): void {
@@ -442,6 +516,7 @@ export class IslandChart {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
+    this.frameAll();
   }
 
   update(dt: number): void {
@@ -462,15 +537,16 @@ export class IslandChart {
       node.group.position.y = node.lift + breathe;
       if (node.state === 'current') {
         const pulse = this.reducedMotion ? 1 : 0.9 + Math.sin((this.clock / 2.6) * Math.PI * 2) * 0.12;
-        node.light.intensity = 1.5 * node.island.weather.intensity * pulse;
+        node.light.intensity = 0.95 * node.island.weather.intensity * pulse;
       }
       if (node.smoke?.visible) this.driftSmoke(node, dt);
     }
 
+    const pitch = IslandChart.PITCH;
     this.camera.position.set(
       this.focus.x + this.parallax.x,
-      3.05 + this.parallax.y * 0.5,
-      this.focus.z + 4.35 - this.parallax.y * 0.8,
+      this.dolly * Math.sin(pitch) + this.parallax.y * 0.6,
+      this.focus.z + this.dolly * Math.cos(pitch) - this.parallax.y * 0.9,
     );
     this.camera.lookAt(this.focus.x, 0.05, this.focus.z);
   }
@@ -494,6 +570,11 @@ export class IslandChart {
       position.setZ(i, base[2]);
     }
     position.needsUpdate = true;
+  }
+
+  /** 研究用：把表面切成线框，确认浮雕真的有起伏。 */
+  debugWireframe(on: boolean): void {
+    this.surface.wireframe = on;
   }
 
   render(): void {
