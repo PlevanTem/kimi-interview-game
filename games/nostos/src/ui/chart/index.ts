@@ -467,6 +467,16 @@ export class IslandChart {
     this.dolly = Math.max(needWidth, needDepth) * 1.04;
   }
 
+  /**
+   * 从外面点名某一枚章（名字列表停在某一行时用）。
+   *
+   * 和鼠标悬停走同一条抬起逻辑，所以列表与图上不会各抬各的。
+   */
+  setHighlight(index: number | null): void {
+    const node = index === null ? null : (this.nodes[index] ?? null);
+    this.setHovered(node && node.state !== 'locked' ? node : null);
+  }
+
   setReducedMotion(reduced: boolean): void {
     this.reducedMotion = reduced;
     if (reduced) {

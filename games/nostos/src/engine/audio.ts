@@ -173,9 +173,20 @@ export class Soundscape {
   }
 
   setMuted(muted: boolean): void {
-    this.muted = muted;
+    this.setVolume(muted ? 0 : 1);
+  }
+
+  /**
+   * 音量。0 等同静音。
+   *
+   * 暂停面板给的是一根滑杆而不是一个开关：这部作品的声音只有海、风和一点低鸣，
+   * 玩家想要的往往是"小一点"，不是"没有"。
+   */
+  setVolume(volume: number): void {
+    const level = Math.max(0, Math.min(1, volume));
+    this.muted = level <= 0;
     if (this.master && this.ctx) {
-      this.master.gain.setTargetAtTime(muted ? 0 : 0.9, this.ctx.currentTime, 0.15);
+      this.master.gain.setTargetAtTime(level * 0.9, this.ctx.currentTime, 0.15);
     }
   }
 
