@@ -5,7 +5,7 @@
  * 或者双击直接打开——不需要起服务器，也不需要带着一个 assets/ 目录。
  * 游戏本体没有这个需求（它由 Pages 托管），所以只有这个工具这么打。
  */
-import { readFileSync, writeFileSync, rmSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, rmSync, existsSync, mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -39,6 +39,12 @@ if (merged.includes('src="') || merged.includes('<link rel="stylesheet"')) {
 }
 
 writeFileSync(out, merged, 'utf8');
+// Keep the production preview's Esc link in sync with the standalone export.
+const gameDist = join(here, '..', '..', 'dist');
+if (existsSync(join(gameDist, 'index.html'))) {
+  mkdirSync(join(gameDist, 'docs'), { recursive: true });
+  writeFileSync(join(gameDist, 'docs', 'asset-library.html'), merged, 'utf8');
+}
 rmSync(dist, { recursive: true, force: true });
 
 const kb = (Buffer.byteLength(merged, 'utf8') / 1024).toFixed(0);

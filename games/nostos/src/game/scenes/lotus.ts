@@ -1,15 +1,17 @@
 import { TEXT } from '../../content/script';
 import {
   footprint,
-  boatHull,
-  boulder,
-  columnDrum,
-  flutedColumn,
-  pithos,
   pole,
   statueTorso,
-  stoneBlock,
 } from '../../world/props';
+import { COASTAL_ASSETS } from '../../world/sea-worn';
+const boulder = COASTAL_ASSETS['game.nostos.environment.sea_rock'];
+const stoneBlock = COASTAL_ASSETS['game.nostos.prop.cut_stone'];
+const pithos = COASTAL_ASSETS['game.nostos.prop.salt_pithos'];
+const coastalLeaves = COASTAL_ASSETS['game.nostos.environment.coastal_leaves'];
+const boatHull = COASTAL_ASSETS['game.nostos.prop.coastal_boat'];
+const flutedColumn = COASTAL_ASSETS['game.nostos.prop.mineral_column'];
+const columnDrum = COASTAL_ASSETS['game.nostos.prop.mineral_drum'];
 import { placeNarrativeAsset } from '../../world/narrative-assets';
 import type { Act } from './types';
 
@@ -191,7 +193,7 @@ export const lotus: Act = {
     placeNarrativeAsset(d, crewman.modelAsset!, { x: crewman.x, z: crewman.z, yaw: -0.8, block: 0.48 });
     // ── 倒下的酒瓮，口朝下 ──
     placeNarrativeAsset(d, 'game.nostos.prop.abandoned_vessels', { x: -12, z: 16, yaw: 0.7 }, 300);
-    d.place(pithos(1.6, 302), 'terracotta', { x: -15.4, z: 17.6, lift: -0.5, yaw: 0.4, block: 1 });
+    d.place(pithos(1.6, 302), 'paintedClay', { x: -15.4, z: 17.6, lift: -0.5, yaw: 0.4, block: 1 });
 
     // ── 半埋的桨 ──
     placeNarrativeAsset(d, 'game.nostos.prop.shore_oar', { x: 11, z: 19, yaw: -0.8, tiltZ: 0.04 }, 310);
@@ -200,6 +202,7 @@ export const lotus: Act = {
     placeNarrativeAsset(d, 'game.nostos.prop.cold_hearth', { x: -18, z: -6 }, 320);
 
     // ── 果树：低矮、伸手就够得到，光从叶缝里切下来 ──
+    placeNarrativeAsset(d, 'game.nostos.prop.harvest_basket', { x: 13.55, z: -10.3, yaw: -0.3 }, 339);
     const trees: Array<[number, number, number]> = [
       [15.6, -11.6, 4.4],
       [21, -8, 3.9],
@@ -290,15 +293,18 @@ export const lotus: Act = {
     d.place(columnDrum(0.44, 0.9, 390), 'limestone', { x: 3.2, z: -24.5, tiltX: 1.4, yaw: 0.9, block: 0.6 });
     d.place(columnDrum(0.44, 1.1, 391), 'limestone', { x: 5.6, z: -26.2, tiltZ: 1.5, yaw: 0.3, block: 0.6 });
 
-    // Eroded courtyard fragments: discontinuous, ground-conforming, never a raised collision floor.
-    for (let row = 0; row < 5; row++) for (let col = 0; col < 7; col++) {
-      if ((row * 3 + col * 5) % 7 < 2) continue;
-      const x = 6 + col * 1.65 + (row % 2) * 0.7, z = -5 - row * 1.7;
-      const g = stoneBlock(1.45, 0.09, 1.48, 1800 + row * 7 + col, 0.08);
+    // Three broken arcs: the orchard opens into sand instead of a courtyard grid.
+    for (let i = 0; i < 11; i++) {
+      const a = -0.7 + i * 0.18, radius = i < 4 ? 6.4 : i < 8 ? 9.8 : 13.2;
+      const x = 17 + Math.sin(a) * radius, z = -10 + Math.cos(a) * radius;
+      const g = stoneBlock(1.15 + (i % 3) * 0.4, 0.09, 0.55 + (i % 2) * 0.35, 1800 + i, 0.08);
       const pos = g.getAttribute('position'), base = d.terrain.heightAt(x, z);
       for (let j = 0; j < pos.count; j++) pos.setY(j, pos.getY(j) + d.terrain.heightAt(x + pos.getX(j), z + pos.getZ(j)) - base);
       g.computeVertexNormals();
       d.place(g, 'weatheredMarble', { x, z, lift: -0.045 });
+    }
+    for (const [i, x, z] of [[0, 10, -9], [1, 23, -16], [2, 25, 0], [3, 7, -13], [4, 17, -22]]) {
+      d.place(coastalLeaves(1.3, 1870 + i!), 'olive', { x: x!, z: z!, yaw: i!, lift: -0.02 });
     }
 
     // ── 登岸口的地标：一对倒下的断柱与一段矮墙，

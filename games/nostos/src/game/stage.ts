@@ -67,6 +67,9 @@ export class Stage {
     const committed = this.dresser.commit();
     this.blockers = this.dresser.blockers;
     this.vertexCount = committed.vertexCount;
+    const sculpture = act.def.interactables.find((item) => item.modelAsset);
+    sharedUniforms.uSculptureAnchor.value.set(sculpture?.x ?? 0,
+      sculpture ? this.terrain.heightAt(sculpture.x, sculpture.z) : -100, sculpture?.z ?? 0);
 
     for (const def of act.def.interactables) {
       this.addGlint(def);

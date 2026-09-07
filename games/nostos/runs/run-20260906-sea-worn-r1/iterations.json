@@ -1,0 +1,43 @@
+{
+  "runId": "run-20260906-sea-worn-r1",
+  "entries": [
+    {
+      "id": "sea-worn-geometry-01",
+      "issue": "木板等宽、重复平冠、地砖网格、洞口柱梁与高rim形成程序化感",
+      "evidence": [
+        "before/00-prologue-b-线索.jpg",
+        "before/act12-lotus-orchard.jpg",
+        "before/act12-cyclops-cave.jpg"
+      ],
+      "rootCause": "资产依赖等距基本体与统一高反差纹理，轮廓缺少主次；表面光把重复结构放大",
+      "change": "方向性撕裂板件、绳结与断丝、三种树冠枝势、少量弧带铺石、偏心连续洞壳、彩绘水手、空心陶器与船、雕刻岩石和断柱、宽苇采集篮",
+      "verification": "87项单元测试、最终4项完整交互E2E及1项1080p固定镜头测试均exit 0，0页错误/Shader错误",
+      "before": "lotus 238650 / cyclops 72792 batched vertices",
+      "after": "最终lotus 122367 / cyclops 42138 batched vertices；只是布景顶点，不是全部帧成本",
+      "status": "verified_candidate_pending_human_review"
+    },
+    {
+      "id": "sea-worn-surface-02",
+      "issue": "首轮实拍仍有中央太阳过亮、巨幅裂纹抢焦点及树梢裸露",
+      "evidence": [
+        "games/nostos/docs/screenshots/act12-lotus-orchard.jpg",
+        "games/nostos/docs/screenshots/act12-cyclops-cave.jpg"
+      ],
+      "rootCause": "天空有独立宽光晕；裂纹还被盐层蒙版复用并朝绝对浅色插值，在暗岩上重新放大黑线；主干高于低枝冠",
+      "change": "偏移日光并收窄光晕，纹理值域收窄；地形与盐层用低频场，盐层相对底色提亮；降低主干，补头盔内侧与披布",
+      "verification": "固定1280x720和1920x1080镜头，低动态，完整回忆与离岛",
+      "status": "visual_rechecked_pass_candidate"
+    },
+    {
+      "id": "sea-worn-water-03",
+      "issue": "洞前低地被海浪偶发覆盖",
+      "evidence": ["games/nostos/docs/screenshots/act12-cyclops-cave.jpg"],
+      "rootCause": "无限海面的Gerstner位移没有岛内包络，低地高程小于最高浪峰",
+      "change": "仅前三幕从岸线半径0.68到1.08倍渐变恢复海浪位移，内部衰减；不改变地形通路",
+      "verification": "after/cyclops-cave.jpg和cyclops-stake.jpg已审阅；最终4项完整交互E2E通过，exit 0",
+      "before": "蓝色海面遮挡焦木和洞前地面",
+      "after": "固定审阅镜头地面连续、焦木和木桩可读；不声称全海岸全波相穷举",
+      "status": "visual_rechecked_pass_candidate"
+    }
+  ]
+}

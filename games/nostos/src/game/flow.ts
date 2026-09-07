@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { sharedUniforms } from '../engine/materials';
 import { Soundscape } from '../engine/audio';
 import { Walker } from '../engine/controller';
 import { GameLoop } from '../engine/loop';
@@ -145,7 +146,7 @@ export class Game {
     this.beginRun(createProgress());
   }
 
-  private resume(): void {
+  private resume(lockPointer = true): void {
     if (!this.started) {
       const saved = load();
       this.beginRun(saved ?? createProgress());
@@ -153,7 +154,9 @@ export class Game {
     }
     this.paused = false;
     this.overlay.setPaused(false);
-    this.walker.requestPointerLock();
+    // Escape restores the simulation, but is not a pointer-lock activation gesture.
+    // The existing canvas click handler (or the Return button) acquires the mouse.
+    if (lockPointer) this.walker.requestPointerLock();
   }
 
   private pause(): void {
@@ -167,6 +170,7 @@ export class Game {
 
   private applySettings(settings: Settings): void {
     this.walker.reducedMotion = settings.reducedMotion;
+    sharedUniforms.uArtMotion.value = settings.reducedMotion ? 0 : 1;
     this.walker.sensitivity = settings.sensitivity;
     this.viewport.baseFov = settings.fov;
     this.sound.setVolume(settings.volume);
@@ -239,7 +243,7 @@ export class Game {
   private readonly onKeyDown = (event: KeyboardEvent): void => {
     if (event.code === 'Escape') {
       event.preventDefault();
-      if (this.paused) this.resume();
+      if (this.paused) this.resume(false);
       else this.pause();
       return;
     }
@@ -626,6 +630,8 @@ export class Game {
     focus: string | null;
     vertexCount: number;
     frames: number;
+    artStyle: number;
+    artMotion: number;
     visionTime: number;
     memoryId: string;
     departId: string | null;
@@ -652,6 +658,8 @@ export class Game {
       focus: this.focus?.id ?? null,
       vertexCount: this.stage.vertexCount,
       frames: this.loop.frames,
+      artStyle: sharedUniforms.uSculptedStyle.value,
+      artMotion: sharedUniforms.uArtMotion.value,
       visionTime: this.timeline?.time ?? 0,
       memoryId: act.def.memoryId,
       departId: act.def.interactables.find((item) => item.kind === 'depart')?.id ?? null,

@@ -1,0 +1,46 @@
+{
+  "runId": "run-20260907-review-r3",
+  "status": "requested-revision-verified-pending-human-review",
+  "environment": "Windows Chromium SwiftShader",
+  "requestedRevision": {
+    "revision": "2026.09.07-r3",
+    "build": "dist/assets/index-C8y5-l2p.js",
+    "commands": [
+      { "command": "npm run test:nostos", "exitCode": 0, "result": "95 passed; 11 files" },
+      { "command": "npm run build:nostos", "exitCode": 0 },
+      { "command": "npm run assets:nostos", "exitCode": 0 },
+      { "command": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@review-r3'", "exitCode": 0, "result": "1 passed (4.8m); fixed art captures, shield interaction, Esc settings sync, workbench popup, return and 60-second resource observation" },
+      { "command": "node node_modules/eslint/bin/eslint.js games/nostos/src games/nostos/tests/review-r3.test.ts games/nostos/tests/e2e/review-r3.spec.ts games/nostos/tools/assets/main.ts games/nostos/tools/assets/build.mjs games/nostos/vite.config.ts", "exitCode": 0 },
+      { "command": "npm run validate:library", "exitCode": 0 },
+      { "command": "npm run validate:context", "exitCode": 0 },
+      { "command": "npm run audit:assets", "exitCode": 0 },
+      { "command": "git diff --check", "exitCode": 0 }
+    ],
+    "priorRegression": "Lotus and cyclops @act12 each passed full interaction and departure traversal on the first r3 build. Final placement and Esc changes then passed unit and focused browser retests.",
+    "retestHistory": [
+      "Initial combined browser command exited 1: @act12 passed twice; r3 assertion misused toBeHidden for opacity-based panels. Replaced with actual CSS/state assertions.",
+      "Second r3 command exited 1: actual pointer-lock activation error on Escape after workbench return. Fixed Escape resume to defer locking until a click; no console error filtering.",
+      "Final r3 command exited 0."
+    ],
+    "evidence": ["after/crewman-front.jpg", "after/crewman-side.jpg", "after/pottery-clearance.jpg", "after/shield-engraving.jpg", "after/esc-864p.jpg", "after/esc-720p.jpg", "after/workbench-r3.jpg", "after/report.json"],
+    "visualReview": "Inspected character front/side, separated pottery, final complete shield face, fully visible Esc and updated hero-asset cards.",
+    "geometryClearance": { "vesselGapMeters": 0.24, "oldShieldMinimumMeters": -0.074273, "newShieldMinimumMeters": 0.012 },
+    "resourceObservation": { "elapsedMs": 60247, "consoleErrors": 0, "geometriesStartEnd": [22, 22], "texturesStartEnd": [10, 10], "observedSoftwareFps": 2.224 },
+    "previewPorts": [4175, 4176],
+    "workbenchSourceExportSha256": "D8935EFD22115840DBF4EFB4FBEE09BAC611185F60B9D4C6237184A6FA7E6595",
+    "limitations": ["SwiftShader frame rate does not meet a hardware release performance gate; no hardware certification claimed", "No Gate 3/4 approval inferred", "Parallel MOTIF16 workbench record preserved separately, not claimed as this task's implementation"],
+    "merge": "not performed"
+  },
+  "motif16Workbench": {
+    "sourcePage": "http://127.0.0.1:4176/tools/assets/index.html",
+    "exportPage": "http://127.0.0.1:4175/docs/asset-library.html",
+    "assertions": [
+      "each page exposes 16 #motif img.motif-image nodes",
+      "all 16 images report natural size 512x512",
+      "each #motif section contains zero canvas nodes"
+    ],
+    "evidence": "games/nostos/runs/run-20260907-review-r3/after/workbench-motif-png.jpg",
+    "standaloneExport": "PNG sources are inlined as data:image/png URLs in the 1812KB export",
+    "visualReview": "not completed: desktop visual automation kernel reset twice before a screenshot could be inspected; requires human visual review"
+  }
+}

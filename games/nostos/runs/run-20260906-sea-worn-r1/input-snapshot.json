@@ -1,0 +1,31 @@
+{
+  "runId": "run-20260906-sea-worn-r1",
+  "gameId": "nostos",
+  "recordedAt": "2026-09-06T23:49:00+08:00",
+  "requests": [
+    "现实NPC全面3D化，资产只关注前三幕，审美体验优先",
+    "从上述审美到工程落地高质量完成设计迭新",
+    "一次性完成1–9、石头、陶器、植被等次级资产的翻新细化"
+  ],
+  "sourceVersion": {
+    "styleBible": 3,
+    "assetRegistry": 6
+  },
+  "scope": [
+    "prologue",
+    "lotus",
+    "cyclops"
+  ],
+  "authority": "user_directed_visual_implementation",
+  "constraints": [
+    "现实NPC全作3D方向已确定，但当前前三幕只有lotus.crewman；不添加新的剧情NPC",
+    "保持交互物坐标、台词、章节与玩法",
+    "现有回忆16张PNG保留，只改世界到回忆的视觉过渡",
+    "不把用户实现授权伪造为目标关键帧和Gate3通过"
+  ],
+  "baseline": {
+    "build": "npm run build:nostos: exit 0",
+    "e2e": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@act12$|@prologue-visual': 3 passed, exit 0",
+    "screenshots": "before/"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "runId": "run-20260907-review-r2",
+  "status": "passed-scoped-validation-awaiting-human-aesthetic-review",
+  "environment": "Windows Chromium ANGLE SwiftShader; no hardware FPS certification",
+  "commands": [
+    { "command": "npm run build:nostos", "exitCode": 0, "result": "TypeScript and Vite build passed; 52 modules" },
+    { "command": "npm run test:nostos", "exitCode": 0, "result": "90 tests, 10 files passed" },
+    { "command": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@review-r2|@act12$|@prologue-visual'", "exitCode": 0, "result": "4 passed (8.1m); prologue, lotus and cyclops interactions plus full memory timeline" },
+    { "command": "node node_modules/eslint/bin/eslint.js games/nostos/src games/nostos/tests/review-r2.test.ts games/nostos/tests/e2e/review-r2.spec.ts games/nostos/tools/assets/main.ts games/nostos/tools/assets/verify-r2.mjs", "exitCode": 0 },
+    { "command": "npm run assets:nostos", "exitCode": 0, "result": "645 kB standalone HTML rebuilt" },
+    { "command": "node games/nostos/tools/assets/verify-r2.mjs", "exitCode": 0, "result": "Source and standalone pages: 8 coastal, 8 textures, 3 prologue cards; no browser errors" },
+    { "command": "npm run validate:library", "exitCode": 0 },
+    { "command": "npm run validate:context", "exitCode": 0 },
+    { "command": "npm run audit:assets", "exitCode": 0 },
+    { "command": "git diff --check", "exitCode": 0 }
+  ],
+  "evidence": ["after/report.json", "after/workbench-report.json", "after/lotus-sunny.jpg", "after/lotus-pottery.jpg", "after/name-and-glint.jpg", "after/memory-4.jpg", "after/memory-11.8.jpg", "after/memory-18.jpg", "after/memory-23.jpg", "after/memory-30.jpg", "after/workbench-coastal-assets.jpg", "after/workbench-prologue-hero-assets.jpg", "after/workbench-texture.jpg"],
+  "visualInspection": "Reviewed sunny coast, in-scene pottery, exposed carving and glint, fleet at 11.8 seconds, rowers at 23 seconds and asset workbench captures.",
+  "limitations": ["No Gate 3 or Gate 4 approval inferred", "No hardware FPS certification", "Shared glint change has first-three-act coverage; later-five-act full traversal not repeated"],
+  "merge": "not performed; pending explicit human approval"
+}

@@ -1,0 +1,15 @@
+{
+  "runId": "run-20260906-sea-worn-r1",
+  "gameId": "nostos",
+  "input": "input-snapshot.json",
+  "output": [
+    "games/nostos/docs/SEA_WORN_IMPLEMENTATION.md",
+    "games/nostos/context/style-bible.json",
+    "games/nostos/context/asset-registry.json"
+  ],
+  "humanGates": {
+    "gate3": null,
+    "gate4": null
+  },
+  "status": "verified_candidate_pending_human_visual_lock"
+}

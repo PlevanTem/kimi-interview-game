@@ -38,6 +38,8 @@ export type PigmentName = keyof typeof PIGMENT;
 
 /** 一个天候预设完整描述一幕的光、天、雾、海。 */
 export interface EnvPreset {
+  /** First-three-scene polychrome candidate; later acts retain their current rendering. */
+  sculptedStyle: number;
   /** 太阳方位角（弧度，0 = +X 方向）与仰角（弧度，0 = 地平线） */
   sunAzimuth: number;
   sunElevation: number;
@@ -104,6 +106,7 @@ export interface EnvPreset {
 
 /** 以黄昏为基准的预设原型，其余天候只覆盖差异项。 */
 const BASE: EnvPreset = {
+  sculptedStyle: 0,
   sunAzimuth: -0.6,
   sunElevation: 0.17,
   sunColor: PIGMENT.duskGold,
@@ -157,13 +160,14 @@ function preset(patch: Partial<EnvPreset>): EnvPreset {
 export const ENV = {
   /** 序章 · 无名之海：黎明前，一切都还没有名字 */
   dawnAtSea: preset({
+    sculptedStyle: 1,
     sunAzimuth: 1.9,
     sunElevation: -0.04,
     sunColor: 0x6f7fa8,
-    sunIntensity: 0.5,
-    skyAmbient: 0x2c3d5c,
+    sunIntensity: 0.68,
+    skyAmbient: 0x53658f,
     groundAmbient: 0x14202f,
-    ambientIntensity: 0.49,
+    ambientIntensity: 0.62,
     horizonColor: 0x44526f,
     zenithColor: 0x0d1424,
     cloudiness: 0.5,
@@ -191,40 +195,50 @@ export const ENV = {
     grain: 0.035,
   }),
 
-  /** 第一幕 · 忘食岸：蜜金黄昏，静得让人不想走 */
+  /** 第一幕 · 忘食岸：明净晴日，美好得让人忘记归航。保留键名以兼容场景。 */
   honeyDusk: preset({
-    sunElevation: 0.15,
-    sunIntensity: 1.5,
-    cloudiness: 0.22,
-    fogColor: 0xe0bd85,
-    fogDensity: 0.0085,
-    shadowTint: 0x8a5b42,
-    horizonColor: 0xf0c274,
-    zenithColor: 0x4a6a86,
-    seaShallow: 0x3f6b70,
+    sculptedStyle: 1,
+    sunAzimuth: 0.08,
+    sunElevation: 0.62,
+    sunIntensity: 1.08,
+    sunColor: PIGMENT.bone,
+    skyAmbient: 0x8fbacb,
+    groundAmbient: PIGMENT.plaster,
+    ambientIntensity: 0.72,
+    cloudiness: 0.08,
+    fogColor: 0xb5d4db,
+    fogDensity: 0.0045,
+    shadowTint: 0x71839f,
+    fogSunAmount: 0.12,
+    horizonColor: 0xb5d4db,
+    zenithColor: 0x548da9,
+    seaShallow: 0x4c929a,
+    seaDeep: 0x28586e,
     waveHeight: 0.18,
     waveChop: 0.7,
-    saturation: 0.9,
-    halation: 0.22,
-    vignette: 0.3,
-    grain: 0.035,
+    saturation: 1.06,
+    exposure: 0.96,
+    halation: 0.06,
+    vignette: 0.16,
+    grain: 0.023,
   }),
 
   /** 第二幕 · 独眼岬：雷暴逆光，洞口是唯一的亮 */
   thunderCape: preset({
+    sculptedStyle: 1,
     sunAzimuth: 2.5,
     sunElevation: 0.2,
     sunColor: 0xbfd0e8,
     sunIntensity: 1.15,
-    skyAmbient: 0x4a5266,
+    skyAmbient: 0x71839f,
     groundAmbient: 0x2a2b33,
-    ambientIntensity: 0.5,
+    ambientIntensity: 0.65,
     horizonColor: 0x6e7686,
     zenithColor: 0x24262f,
     cloudiness: 0.92,
     cloudSpeed: 0.05,
     fogColor: 0x4d5361,
-    fogDensity: 0.016,
+    fogDensity: 0.0105,
     fogHeightFalloff: 0.04,
     fogSunColor: 0x9fb0c6,
     fogSunAmount: 0.9,
@@ -236,7 +250,7 @@ export const ENV = {
     waveChop: 1.6,
     exposure: 1,
     saturation: 0.78,
-    halation: 0.24,
+    halation: 0.12,
     halationTint: 0xc9dcff,
     vignette: 0.36,
     grain: 0.04,

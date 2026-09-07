@@ -1,13 +1,27 @@
 {
   "$schema": "../../../schemas/asset-registry.schema.json",
-  "version": 6,
-  "styleBibleVersion": 2,
+  "version": 9,
+  "styleBibleVersion": 6,
   "assets": [
+    { "id": "game.nostos.prop.engraved_shield", "type": "procedural-geometry", "locator": { "kind": "source", "value": "games/nostos/src/world/engraved-shield.ts#engravedShield" }, "version": 1, "source": "project-authored; navigationMark four-point-star; metalworking references in HUMAN_REVIEW_R3.md", "license": "project-owned", "promptHash": null, "styleTags": ["bronze", "incised-homeward-star", "broken-concentric-bands"], "sizeBudgetBytes": 640000, "vertexBudget": 20000, "dependencies": ["game.nostos.material.burnt_wood"], "approval": "pending" },
+    { "id": "game.nostos.texture.wood_grain", "type": "procedural-texture", "locator": { "kind": "source", "value": "games/nostos/src/engine/textures.ts#woodGrainTexture" }, "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null, "styleTags": ["directional-fibre", "linear-data", "512-square"], "sizeBudgetBytes": 1048576, "dependencies": [], "approval": "pending" },
+    { "id": "game.nostos.texture.pottery_paint", "type": "procedural-texture", "locator": { "kind": "source", "value": "games/nostos/src/engine/textures.ts#potteryPaintTexture" }, "version": 1, "source": "project-authored-original-ornament; museum-research-in-HUMAN_REVIEW_R2.md", "license": "project-owned", "promptHash": null, "styleTags": ["meander", "leaf-frieze", "sRGB-alpha", "1024-square"], "sizeBudgetBytes": 4194304, "dependencies": [], "approval": "pending" },
+    { "id": "game.nostos.material.painted_clay", "type": "procedural-material", "locator": { "kind": "source", "value": "games/nostos/src/engine/materials.ts#SURFACE.paintedClay" }, "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null, "styleTags": ["terracotta", "black-painted-registers"], "sizeBudgetBytes": 4096, "dependencies": ["game.nostos.texture.pottery_paint"], "approval": "pending" },
+    { "id": "game.nostos.vfx.interaction_glint", "type": "procedural-material", "locator": { "kind": "source", "value": "games/nostos/src/world/glint.ts#Glint" }, "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null, "styleTags": ["world-space", "depth-tested", "contrast-shoulder"], "sizeBudgetBytes": 4096, "dependencies": [], "approval": "pending" },
+    { "id": "game.nostos.prop.harvest_basket", "type": "procedural-geometry", "locator": { "kind": "source", "value": "games/nostos/src/world/narrative-assets.ts#harvestBasket" }, "version": 1, "source": "project-authored", "license": "project-owned", "promptHash": null, "styleTags": ["sea-worn-polychrome", "woven-reeds", "lotus-fruit"], "sizeBudgetBytes": 640000, "vertexBudget": 20000, "dependencies": [], "approval": "pending" },
+{"id":"game.nostos.environment.sea_rock","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#seaRock"},"version":1,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.cut_stone","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#cutStone"},"version":1,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.salt_pithos","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#saltPithos"},"version": 2,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies": ["game.nostos.material.painted_clay"],"approval":"pending"},
+{"id":"game.nostos.environment.coastal_leaves","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#coastalLeaves"},"version":1,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.carved_board","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#carvedBoard"},"version": 2,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.coastal_boat","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#coastalBoat"},"version": 2,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.mineral_column","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#mineralColumn"},"version":1,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
+{"id":"game.nostos.prop.mineral_drum","type":"procedural-geometry","locator":{"kind":"source","value":"games/nostos/src/world/sea-worn.ts#mineralDrum"},"version":1,"source":"project-authored","license":"project-owned","promptHash":null,"styleTags":["sea-worn-polychrome","first-three-scenes","sculpted-facets"],"sizeBudgetBytes":640000,"vertexBudget":20000,"dependencies":[],"approval":"pending"},
     {
       "id": "game.nostos.character.lotus_crewman",
       "type": "procedural-geometry",
       "locator": { "kind": "source", "value": "games/nostos/src/world/lotus-crewman.ts#lotusCrewman" },
-      "version": 1,
+      "version": 3,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -43,7 +57,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#orchardTree"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -71,7 +85,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#abandonedVessels"
       },
-      "version": 1,
+      "version": 4,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -81,7 +95,7 @@
       ],
       "sizeBudgetBytes": 640000,
       "vertexBudget": 20000,
-      "dependencies": [],
+      "dependencies": ["game.nostos.material.painted_clay"],
       "approval": "pending",
       "consumers": [
         "games/nostos/src/game/scenes/lotus.ts"
@@ -96,7 +110,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#coldHearth"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -121,7 +135,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#abandonedHelmet"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -174,7 +188,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#caveMouth"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -202,7 +216,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#burnedStake"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -231,7 +245,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/narrative-assets.ts#stratifiedRock"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -375,7 +389,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/props.ts#wreckedRaft"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -419,7 +433,7 @@
         "kind": "source",
         "value": "games/nostos/src/world/props.ts#weatheredNamePlank"
       },
-      "version": 1,
+      "version": 3,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -481,7 +495,7 @@
         "kind": "source",
         "value": "games/nostos/src/engine/materials.ts#SURFACE.saltWood"
       },
-      "version": 1,
+      "version": 2,
       "source": "project-authored",
       "license": "project-owned",
       "promptHash": null,
@@ -491,7 +505,7 @@
         "rough-breakup"
       ],
       "sizeBudgetBytes": 0,
-      "dependencies": [],
+      "dependencies": ["game.nostos.texture.wood_grain"],
       "approval": "pending"
     },
     {

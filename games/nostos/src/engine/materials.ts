@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type { EnvPreset } from '../content/palette';
 import { PIGMENT } from '../content/palette';
 import { SHADOW_GLSL } from './shadow';
-import { weatheringTexture, sandTexture, frescoTexture, fleeceTexture } from './textures';
+import { weatheringTexture, sandTexture, frescoTexture, fleeceTexture, woodGrainTexture, potteryPaintTexture } from './textures';
 
 /**
  * 壁画材质：全作唯一的表面着色模型。
@@ -16,6 +16,9 @@ import { weatheringTexture, sandTexture, frescoTexture, fleeceTexture } from './
 /** 所有材质共享的一组 uniform 对象（按引用共享，改一次全场生效）。 */
 export const sharedUniforms = {
   uTime: { value: 0 },
+  uSculptedStyle: { value: 0 },
+  uArtMotion: { value: 1 },
+  uSculptureAnchor: { value: new THREE.Vector3(0, -100, 0) },
   uCameraPos: { value: new THREE.Vector3() },
 
   uSunDir: { value: new THREE.Vector3(0.5, 0.3, 0.5).normalize() },
@@ -46,6 +49,11 @@ export const sharedUniforms = {
 export type SharedUniforms = typeof sharedUniforms;
 
 const VERT = /* glsl */ `
+  uniform float uTime;
+  uniform float uSculptedStyle;
+  uniform float uArtMotion;
+  uniform float uFoliageMotion;
+  uniform vec3 uSculptureAnchor;
   varying vec3 vWorldPos;
   varying vec3 vWorldNormal;
   varying vec2 vUv;
@@ -53,6 +61,12 @@ const VERT = /* glsl */ `
   void main() {
     vUv = uv;
     vec4 world = modelMatrix * vec4(position, 1.0);
+    float move = uSculptedStyle * uArtMotion;
+    float upper = smoothstep(0.4, 1.25, world.y - uSculptureAnchor.y);
+    float nearBody = 1.0 - smoothstep(0.65, 0.9, length(world.xz - uSculptureAnchor.xz));
+    world.y += sin(uTime * 1.25) * 0.004 * upper * nearBody * move;
+    float breeze = sin(uTime * 0.55 - world.x * 0.23 + world.z * 0.13);
+    world.x += breeze * 0.024 * uFoliageMotion * move;
     vWorldPos = world.xyz;
     vWorldNormal = normalize(mat3(modelMatrix) * normal);
     gl_Position = projectionMatrix * viewMatrix * world;
@@ -66,6 +80,7 @@ const FRAG = /* glsl */ `
 
   uniform float uTime;
   uniform vec3 uCameraPos;
+  uniform float uSculptedStyle;
 
   uniform vec3 uSunDir;
   uniform vec3 uSunColor;
@@ -96,6 +111,7 @@ const FRAG = /* glsl */ `
   uniform float uRimStrength;
   uniform float uDetailScale;
   uniform float uDetailStrength;
+  uniform float uDetailUv;
   uniform float uRoughBreakup;
   uniform float uShoreWetRadius;
   uniform float uShoreWetWidth;
@@ -133,7 +149,9 @@ const FRAG = /* glsl */ `
 
     // --- 反照率：底色 × 风化 ---
     float wear = triplanar(uDetail, vWorldPos, N, uDetailScale).r;
-    wear = mix(1.0, wear, uDetailStrength);
+    wear = mix(wear, texture2D(uDetail, vUv).r, uDetailUv * uSculptedStyle);
+    wear = mix(wear, clamp(wear, mix(0.62, 0.28, uDetailUv), 0.96), uSculptedStyle);
+    wear = mix(1.0, wear, uDetailStrength * mix(1.0, 0.72, uSculptedStyle));
 
     // 地形用得上：陡面换成岩色，高处换成第三种色。
     // 阈值故意做得很硬，沙与岩之间是一条画出来的线，不是渐变。
@@ -142,6 +160,7 @@ const FRAG = /* glsl */ `
       float steep = 1.0 - smoothstep(0.62, 0.86, N.y);
       // 噪声扰动这条分界线，避免出现等高线一样的机械边缘
       float jitter = (triplanar(uDetail, vWorldPos, N, uDetailScale * 0.35).r - 0.5) * 0.35;
+      jitter = mix(jitter, sin(vWorldPos.x * 0.11 + cos(vWorldPos.z * 0.13)) * 0.045, uSculptedStyle);
       steep = clamp(steep + jitter, 0.0, 1.0);
       baseColor = mix(baseColor, uColorSteep, steep * uSlopeBlend);
       float high = smoothstep(uHeightStart, uHeightEnd, vWorldPos.y + jitter * 2.0);
@@ -164,6 +183,14 @@ const FRAG = /* glsl */ `
       baseColor = mix(baseColor, uShoreWetColor, shoreWet);
     }
     vec3 albedo = baseColor * wear;
+    // A broad windward pigment loss, independent of triangle count and view direction.
+    float mineral = triplanar(uDetail, vWorldPos, N, 0.045).r;
+    // Do not reuse the crack map as a salt mask: on dark basalt an absolute
+    // plaster tint amplifies its dark gaps even after albedo wear is clamped.
+    mineral = mix(mineral, 0.65 + 0.15 * sin(vWorldPos.x * 0.1 + sin(vWorldPos.z * 0.08) + vWorldPos.y * 0.14), uSculptedStyle);
+    float windward = smoothstep(-0.25, 0.75, dot(N, normalize(vec3(-0.7, 0.3, 0.4))));
+    float salt = smoothstep(0.58, 0.88, mineral) * windward * uRoughBreakup * uSculptedStyle;
+    albedo = mix(albedo, albedo * 1.12 + vec3(0.006, 0.005, 0.004), salt);
 
     // 朝上的面被日晒被雨冲，比侧面更白一点；这一条让断柱立刻有体积
     float upFace = smoothstep(0.2, 0.9, N.y);
@@ -176,7 +203,8 @@ const FRAG = /* glsl */ `
     float band = 0.18 + 0.37 * s1 + 0.45 * s2;
 
     // 影里不是纯黑，而是被地面反弹的暖赭色染过
-    vec3 shaded = mix(albedo * uShadowTint, albedo, band);
+    vec3 tintedShadow = mix(albedo * uShadowTint, albedo * 0.52 + uSkyAmbient * 0.10, uSculptedStyle);
+    vec3 shaded = mix(tintedShadow, albedo, band);
 
     // 谁挡住了谁：低角度侧光下，断柱在沙上拖出的长影是这部作品的签名
     float shadow = sunShadow(vWorldPos, N, uSunDir);
@@ -189,7 +217,7 @@ const FRAG = /* glsl */ `
     // --- 逆光轮廓：黑绘陶器的那一条边线 ---
     float fres = pow(1.0 - max(dot(N, -V), 0.0), uRimPower);
     float backlit = pow(max(dot(uSunDir, -V) * 0.5 + 0.5, 0.0), 2.0);
-    color += uRimColor * fres * backlit * uRimStrength * mix(0.35, 1.0, shadow);
+    color += uRimColor * fres * backlit * mix(uRimStrength, min(uRimStrength, 0.22), uSculptedStyle) * mix(0.35, 1.0, shadow);
 
     // --- 高度雾 ---
     // 视线穿过的雾量按高度指数衰减做解析积分，避免爬坡时雾突然变薄
@@ -218,7 +246,12 @@ const FRAG = /* glsl */ `
       vec3 ink = mix(uVisionShadow, uVisionGround, clamp(fresco, 0.0, 1.0));
       // 雾在幻象里也保留，但雾色换成石灰底，远处于是"化进纸里"
       ink = mix(ink, uVisionGround, clamp(fogAmount * 0.85, 0.0, 1.0));
-      color = mix(color, ink, uVision);
+      // First expose sparse mineral seams, then let the world recede behind the black figures.
+      float seam = 1.0 - smoothstep(0.018, 0.065, abs(mineral - 0.65));
+      float engraving = sin(clamp(uVision, 0.0, 1.0) * 3.14159) * uSculptedStyle;
+      color = mix(color, uVisionShadow, seam * engraving * 0.24);
+      ink = mix(ink, uVisionGround, uSculptedStyle * 0.36);
+      color = mix(color, ink, smoothstep(0.0, 1.0, uVision));
     }
 
     gl_FragColor = vec4(color, uOpacity);
@@ -226,6 +259,7 @@ const FRAG = /* glsl */ `
 `;
 
 export interface FrescoOptions {
+  foliageMotion?: number;
   color: number;
   /** 陡坡色（仅地形用） */
   colorSteep?: number;
@@ -254,7 +288,7 @@ export interface FrescoOptions {
   shoreWetColor?: number;
   shoreWetStrength?: number;
   /** 使用哪张细节图 */
-  detail?: 'stone' | 'sand' | 'fresco' | 'fleece';
+  detail?: 'stone' | 'sand' | 'fresco' | 'fleece' | 'wood';
   /**
    * 可选的反照率贴图，按 UV 采样。用它的网格必须有真的 UV
    * （PlaneGeometry 有；props.ts 里那些程序化几何没有可靠的 UV，别用）。
@@ -278,6 +312,7 @@ function detailTexture(kind: FrescoOptions['detail']): THREE.Texture {
   if (kind === 'sand') return sandTexture();
   if (kind === 'fresco') return frescoTexture();
   if (kind === 'fleece') return fleeceTexture();
+  if (kind === 'wood' && sharedUniforms.uSculptedStyle.value > 0) return woodGrainTexture();
   return weatheringTexture();
 }
 
@@ -290,6 +325,7 @@ export function createFrescoMaterial(options: FrescoOptions): THREE.ShaderMateri
     side: options.side ?? THREE.FrontSide,
     uniforms: {
       ...sharedUniforms,
+      uFoliageMotion: { value: options.foliageMotion ?? 0 },
       uColor: { value: new THREE.Color(options.color) },
       uAlbedoMap: { value: options.albedoMap ?? null },
       uAlbedoMapAmount: { value: options.albedoMap ? (options.albedoMapAmount ?? 1) : 0 },
@@ -304,6 +340,7 @@ export function createFrescoMaterial(options: FrescoOptions): THREE.ShaderMateri
       uRimStrength: { value: options.rimStrength ?? 0.55 },
       uDetailScale: { value: options.detailScale ?? 0.12 },
       uDetailStrength: { value: options.detailStrength ?? 0.85 },
+      uDetailUv: { value: options.detail === 'wood' ? 1 : 0 },
       uRoughBreakup: { value: options.roughBreakup ?? 0.5 },
       uShoreWetRadius: { value: options.shoreWetRadius ?? 0 },
       uShoreWetWidth: { value: options.shoreWetWidth ?? 1 },
@@ -326,6 +363,7 @@ export function releaseFrescoMaterial(material: THREE.ShaderMaterial): void {
 /** 一幕开始时把天候写进共享 uniform。 */
 export function applyEnvToMaterials(env: EnvPreset): void {
   const u = sharedUniforms;
+  u.uSculptedStyle.value = env.sculptedStyle;
   const ca = Math.cos(env.sunAzimuth);
   const sa = Math.sin(env.sunAzimuth);
   const ce = Math.cos(env.sunElevation);
@@ -389,10 +427,12 @@ export const SURFACE = {
     createFrescoMaterial({ color: 0xd8c7a6, detail: 'fresco', detailScale: 0.06, detailStrength: 1, roughBreakup: 0.2 }),
   terracotta: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0x8f4732, detailScale: 0.2, roughBreakup: 0.4 }),
+  paintedClay: (): THREE.ShaderMaterial =>
+    createFrescoMaterial({ color: 0x8f4732, detailScale: 0.8, detailStrength: 0.65, roughBreakup: 0.4, albedoMap: potteryPaintTexture() }),
   driftwood: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0x6b5a49, shadowTint: 0x40342c, detailScale: 0.22, roughBreakup: 0.45 }),
   saltWood: (): THREE.ShaderMaterial =>
-    createFrescoMaterial({ color: 0x9a8872, shadowTint: 0x354052, detailScale: 0.28, detailStrength: 0.9, roughBreakup: 0.72 }),
+    createFrescoMaterial({ color: 0x9a8872, shadowTint: 0x354052, detail: 'wood', detailScale: 0.28, detailStrength: 0.9, roughBreakup: 0.72 }),
   rope: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0xb09a74, shadowTint: 0x4e4b52, detailScale: 0.7, detailStrength: 0.65, roughBreakup: 0.5, rimStrength: 0.78 }),
   charredWood: (): THREE.ShaderMaterial =>
@@ -402,7 +442,7 @@ export const SURFACE = {
   bone: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0xe4dcc8, detailScale: 0.26, roughBreakup: 0.6 }),
   olive: (): THREE.ShaderMaterial =>
-    createFrescoMaterial({ color: 0x5f6b4e, shadowTint: 0x3a4232, detailScale: 0.35, roughBreakup: 0.3 }),
+    createFrescoMaterial({ color: 0x5f6b4e, shadowTint: 0x3a4232, detailScale: 0.35, roughBreakup: 0.3, foliageMotion: 1 }),
   cloth: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0xc9b291, shadowTint: 0x7d6a54, detailScale: 0.3, side: THREE.DoubleSide }),
   ash: (): THREE.ShaderMaterial =>

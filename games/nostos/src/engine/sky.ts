@@ -37,7 +37,8 @@ const FRAG = /* glsl */ `
   uniform float uStarIntensity;
   uniform vec3 uGuideStarDir;
   uniform float uGuideStarIntensity;
-  uniform float uSunIntensity;
+    uniform float uSunIntensity;
+    uniform float uSculptedStyle;
   uniform float uVision;
   uniform vec3 uVisionGround;
   uniform vec3 uVisionShadow;
@@ -85,8 +86,8 @@ const FRAG = /* glsl */ `
     float sd = dot(dir, uSunDir);
     float glow = pow(max(sd, 0.0), 26.0);
     float wide = pow(max(sd, 0.0), 4.0);
-    color += uSunColor * glow * 1.5 * uSunIntensity;
-    color += uSunColor * wide * 0.22 * uSunIntensity;
+    color += uSunColor * glow * mix(1.5, 0.65, uSculptedStyle) * uSunIntensity;
+    color += uSunColor * wide * mix(0.22, 0.08, uSculptedStyle) * uSunIntensity;
     float disc = smoothstep(0.99955, 0.99985, sd);
     color = mix(color, uSunColor * (1.6 + uSunIntensity), disc * smoothstep(-0.05, 0.05, uSunDir.y));
 
@@ -141,6 +142,7 @@ export class Sky {
         uSunDir: sharedUniforms.uSunDir,
         uSunColor: sharedUniforms.uSunColor,
         uSunIntensity: sharedUniforms.uSunIntensity,
+        uSculptedStyle: sharedUniforms.uSculptedStyle,
         uFogColor: sharedUniforms.uFogColor,
         uHorizon: { value: new THREE.Color(0xe0a94e) },
         uZenith: { value: new THREE.Color(0x35506b) },

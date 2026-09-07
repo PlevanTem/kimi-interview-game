@@ -14,6 +14,8 @@ export default defineConfig({
   base: './',
   build: {
     target: 'es2022',
+    // The standalone review export must retain its PNGs when opened from file://.
+    assetsInlineLimit: 100_000,
     outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,

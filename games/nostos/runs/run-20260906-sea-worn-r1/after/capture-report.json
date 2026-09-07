@@ -1,0 +1,437 @@
+{
+  "viewport": [
+    1920,
+    1080
+  ],
+  "reducedMotion": true,
+  "renderer": "Chromium ANGLE SwiftShader; not hardware performance certification",
+  "errors": [],
+  "reports": [
+    {
+      "view": {
+        "act": 1,
+        "name": "lotus-orchard",
+        "x": 2,
+        "z": 0,
+        "yaw": -0.8,
+        "pitch": 0.04
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 26,
+          "textures": 7
+        },
+        "act": 1,
+        "actId": "lotus",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 122367,
+        "frames": 83,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "lotus.helmet",
+        "departId": "lotus.depart",
+        "interactableIds": [
+          "lotus.amphora",
+          "lotus.oar",
+          "lotus.footprints",
+          "lotus.hearth",
+          "lotus.fruit",
+          "lotus.crewman",
+          "lotus.helmet",
+          "lotus.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 2,
+          "z": 0,
+          "yaw": -0.8,
+          "pitch": 0.04
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 1,
+        "name": "lotus-crewman",
+        "x": 17.4,
+        "z": -0.9,
+        "yaw": -0.72,
+        "pitch": -0.28
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 26,
+          "textures": 7
+        },
+        "act": 1,
+        "actId": "lotus",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 122367,
+        "frames": 111,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "lotus.helmet",
+        "departId": "lotus.depart",
+        "interactableIds": [
+          "lotus.amphora",
+          "lotus.oar",
+          "lotus.footprints",
+          "lotus.hearth",
+          "lotus.fruit",
+          "lotus.crewman",
+          "lotus.helmet",
+          "lotus.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 17.4,
+          "z": -0.9,
+          "yaw": -0.72,
+          "pitch": -0.28
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 1,
+        "name": "lotus-pottery",
+        "x": -10.5,
+        "z": 18.5,
+        "yaw": 0.54,
+        "pitch": -0.4
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 26,
+          "textures": 7
+        },
+        "act": 1,
+        "actId": "lotus",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 122367,
+        "frames": 140,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "lotus.helmet",
+        "departId": "lotus.depart",
+        "interactableIds": [
+          "lotus.amphora",
+          "lotus.oar",
+          "lotus.footprints",
+          "lotus.hearth",
+          "lotus.fruit",
+          "lotus.crewman",
+          "lotus.helmet",
+          "lotus.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": -10.5,
+          "z": 18.5,
+          "yaw": 0.54,
+          "pitch": -0.4
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 1,
+        "name": "lotus-helmet",
+        "x": -6,
+        "z": -16.5,
+        "yaw": 0,
+        "pitch": -0.45
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 26,
+          "textures": 7
+        },
+        "act": 1,
+        "actId": "lotus",
+        "triggered": 0,
+        "focus": "lotus.helmet",
+        "vertexCount": 122367,
+        "frames": 169,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "lotus.helmet",
+        "departId": "lotus.depart",
+        "interactableIds": [
+          "lotus.amphora",
+          "lotus.oar",
+          "lotus.footprints",
+          "lotus.hearth",
+          "lotus.fruit",
+          "lotus.crewman",
+          "lotus.helmet",
+          "lotus.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": -6,
+          "z": -16.5,
+          "yaw": 0,
+          "pitch": -0.45
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 1,
+        "name": "lotus-basket",
+        "x": 12,
+        "z": -8.5,
+        "yaw": -0.7,
+        "pitch": -0.4
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 26,
+          "textures": 7
+        },
+        "act": 1,
+        "actId": "lotus",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 122367,
+        "frames": 197,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "lotus.helmet",
+        "departId": "lotus.depart",
+        "interactableIds": [
+          "lotus.amphora",
+          "lotus.oar",
+          "lotus.footprints",
+          "lotus.hearth",
+          "lotus.fruit",
+          "lotus.crewman",
+          "lotus.helmet",
+          "lotus.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 12,
+          "z": -8.5,
+          "yaw": -0.7,
+          "pitch": -0.4
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 2,
+        "name": "cyclops-cave",
+        "x": 0,
+        "z": -12,
+        "yaw": 0,
+        "pitch": 0.13
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 22,
+          "textures": 8
+        },
+        "act": 2,
+        "actId": "cyclops",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 42138,
+        "frames": 263,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "cyclops.stake",
+        "departId": "cyclops.depart",
+        "interactableIds": [
+          "cyclops.pen",
+          "cyclops.bone",
+          "cyclops.shield",
+          "cyclops.wool",
+          "cyclops.char",
+          "cyclops.stake",
+          "cyclops.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 0,
+          "z": -12,
+          "yaw": 0,
+          "pitch": 0.13
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 2,
+        "name": "cyclops-stake",
+        "x": 0,
+        "z": -24.5,
+        "yaw": 0,
+        "pitch": -0.43
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 22,
+          "textures": 8
+        },
+        "act": 2,
+        "actId": "cyclops",
+        "triggered": 0,
+        "focus": "cyclops.stake",
+        "vertexCount": 42138,
+        "frames": 292,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "cyclops.stake",
+        "departId": "cyclops.depart",
+        "interactableIds": [
+          "cyclops.pen",
+          "cyclops.bone",
+          "cyclops.shield",
+          "cyclops.wool",
+          "cyclops.char",
+          "cyclops.stake",
+          "cyclops.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 0,
+          "z": -24.5,
+          "yaw": 0,
+          "pitch": -0.43
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 0,
+        "name": "prologue-raft",
+        "x": 0,
+        "z": 7.5,
+        "yaw": 0.63,
+        "pitch": -0.36
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 14,
+          "textures": 8
+        },
+        "act": 0,
+        "actId": "prologue",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 14322,
+        "frames": 341,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "prologue.oar",
+        "departId": "prologue.depart",
+        "interactableIds": [
+          "prologue.raft",
+          "prologue.plank",
+          "prologue.water",
+          "prologue.star",
+          "prologue.oar",
+          "prologue.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": 0,
+          "z": 7.5,
+          "yaw": 0.63,
+          "pitch": -0.36
+        }
+      }
+    },
+    {
+      "view": {
+        "act": 0,
+        "name": "prologue-boat",
+        "x": -8,
+        "z": 12.2,
+        "yaw": 0,
+        "pitch": -0.4
+      },
+      "state": {
+        "phase": "roaming",
+        "fade": 0,
+        "openingTime": 0,
+        "renderStats": {
+          "calls": 1,
+          "geometries": 14,
+          "textures": 8
+        },
+        "act": 0,
+        "actId": "prologue",
+        "triggered": 0,
+        "focus": null,
+        "vertexCount": 14322,
+        "frames": 371,
+        "artStyle": 1,
+        "artMotion": 0,
+        "visionTime": 0,
+        "memoryId": "prologue.oar",
+        "departId": "prologue.depart",
+        "interactableIds": [
+          "prologue.raft",
+          "prologue.plank",
+          "prologue.water",
+          "prologue.star",
+          "prologue.oar",
+          "prologue.depart"
+        ],
+        "narrating": false,
+        "player": {
+          "x": -8,
+          "z": 12.2,
+          "yaw": 0,
+          "pitch": -0.4
+        }
+      }
+    }
+  ]
+}

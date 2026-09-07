@@ -12,17 +12,29 @@
  * 用法：`npm run assets:nostos` → docs/asset-library.html（单文件，可直接双击打开）
  */
 import * as THREE from 'three';
+import { ART_REVISION, ART_REVISION_SUMMARY } from '../../src/content/revision';
 import './styles.css';
+
+document.title = 'NOSTOS 资产工作台 · ' + ART_REVISION;
+document.documentElement.dataset.revision = ART_REVISION;
+window.addEventListener('DOMContentLoaded', () => {
+  const revision = document.createElement('p');
+  revision.textContent = '美术预览 ' + ART_REVISION + ' · ' + ART_REVISION_SUMMARY;
+  revision.style.cssText = 'padding:16px 24px;color:#b8a17b;border-bottom:1px solid #514434';
+  document.body.prepend(revision);
+});
 
 import { ENV, PIGMENT, VISION_GRADE, type EnvName } from '../../src/content/palette';
 import { MEMORY_LABELS, TEXT } from '../../src/content/script';
 import { AUDIO, Soundscape } from '../../src/engine/audio';
 import { SURFACE, applyEnvToMaterials, tickMaterials } from '../../src/engine/materials';
-import { fleeceTexture, frescoTexture, meanderTexture, muralTexture, sandTexture, weatheringTexture } from '../../src/engine/textures';
+import { fleeceTexture, frescoTexture, meanderTexture, muralTexture, sandTexture, weatheringTexture, woodGrainTexture, potteryPaintTexture } from '../../src/engine/textures';
 import { ACTS } from '../../src/game/scenes';
 import { holdFor } from '../../src/game/types';
-import { MOTIF_KINDS, motifTexture, type MotifKind } from '../../src/world/silhouette';
+import { MEMORY_MOTIF_URLS } from '../../src/world/memory-silhouettes';
+import { MOTIF_KINDS, type MotifKind } from '../../src/world/silhouette';
 import * as P from '../../src/world/props';
+import { COASTAL_ASSETS } from '../../src/world/sea-worn';
 import { NARRATIVE_ASSETS, resolveNarrativeAsset, type NarrativeAssetId } from '../../src/world/narrative-assets';
 import { Terrain } from '../../src/world/terrain';
 
@@ -88,7 +100,7 @@ const camera = new THREE.PerspectiveCamera(38, RW / RH, 0.1, 200);
 // 看板光统一用「伊萨卡转晴」：它的环境光偏冷（天青）而太阳偏暖，
 // 冷暖分立才能把壁画材质的三档色带分开，形体和风化最容易看清楚。
 // 试过蜜金黄昏——暖光配暖影，整页糊成一片橘色，什么都判断不了。
-const KEY_LIGHT = ENV.ithacaClearing;
+const KEY_LIGHT = { ...ENV.ithacaClearing, sculptedStyle: 1 };
 applyEnvToMaterials(KEY_LIGHT);
 
 /** 玩家眼高，来自 engine/controller.ts。植物的"冠底离地"要跟它比 */
@@ -221,13 +233,13 @@ const tallies: Array<[number, string]> = [
   [Object.keys(SURFACE).length, '表面材质'],
   [Object.keys(ENV).length, '天候预设'],
   [MOTIF_KINDS.length, '黑绘母题'],
-  [6, '程序纹理'],
+  [8, '程序纹理'],
   [propNames.length, '构件几何'],
   [3, '序章英雄资产'],
   [5, '植物'],
   [Object.keys(AUDIO).length, '音景'],
   [totalActs, '幕 / 地形'],
-  [0, '二进制文件'],
+  [16, '回忆PNG'],
 ];
 
 const head = el('div', 'masthead');
@@ -268,6 +280,7 @@ const TOC: Array<[string, string]> = [
   ['props', '构件几何'],
   ['prologue-hero-assets', '第0幕英雄资产'],
   ['act12-hero-assets', '第1、2幕场景与道具'],
+  ['coastal-assets', '前三幕次级资产'],
   ['plant', '植物'],
   ['terrain', '地形'],
   ['audio', '音景'],
@@ -460,11 +473,10 @@ app.append(main);
     title: '四、黑绘母题 MOTIF',
     count: MOTIF_KINDS.length,
     blurb:
-      '十六片黑绘陶剪影，512×512，全部用 Canvas2D 画出来。它们既是回忆幻象里的人物，' +
-      '也是世界里四位活人的样子——叙述者已经无法把任何人看成完整的人了，' +
-      '活人和记忆里的人在他眼里长得一样。这同时让"没有骨骼动画"从技术限制变成风格：' +
-      '黑绘陶上的人本来就是不动的。',
-    source: 'src/world/silhouette.ts → PAINTERS',
+      '十六张已登记的 512×512 RGBA 黑绘母题 PNG。卡片直接显示 VisionStage 实际加载的文件，' +
+      '并以石灰底、墨色边框和留白还原回忆幻象的阅读条件。现实 NPC 不使用这组图，' +
+      '仍由各自的 3D 或 Canvas 管线负责。',
+    source: 'src/world/memory-silhouettes.ts → MEMORY_MOTIF_URLS → assets/memory-motifs/*.png',
   });
   const notes: Partial<Record<MotifKind, string>> = {
     galley: '长桨船', rower: '划桨的人', standing: '站立的人', reaching: '伸手的人',
@@ -475,19 +487,23 @@ app.append(main);
   const grid = el('div', 'grid g-tile');
   for (const kind of MOTIF_KINDS) {
     const c = card();
-    const cv = previewCanvas(260, 260);
-    const g = cv.getContext('2d')!;
-    // 母题是白底黑形的 alpha 图；铺一层壁画底再画，才是它在游戏里的样子
-    g.fillStyle = '#cbb89a';
-    g.fillRect(0, 0, cv.width, cv.height);
-    const source = motifTexture(kind).image as HTMLCanvasElement;
-    g.drawImage(source, 0, 0, cv.width, cv.height);
+    c.classList.add('motif-card');
+    const plate = el('div', 'motif-plate');
+    const image = document.createElement('img');
+    image.className = 'motif-image';
+    image.src = MEMORY_MOTIF_URLS[kind];
+    image.alt = `${notes[kind] ?? kind}，黑绘回忆母题`;
+    image.width = 512;
+    image.height = 512;
+    image.decoding = 'async';
+    plate.append(image, el('span', 'motif-file', '512 × 512 · RGBA PNG'));
     const cap = el('figcaption');
     cap.append(
       el('div', 'name', notes[kind] ?? kind),
-      el('div', 'id', kind),
+      el('div', 'note', '回忆幻象专用 · 透明底黑绘'),
+      el('div', 'id', `game.nostos.texture.memory_${kind}`),
     );
-    c.append(cv, cap);
+    c.append(plate, cap);
     grid.append(c);
   }
   s.append(grid);
@@ -500,10 +516,9 @@ app.append(main);
   const s = section({
     id: 'texture',
     title: '五、程序纹理',
-    count: 6,
+    count: 8,
     blurb:
-      '六张 Canvas2D 生成的贴图。前五张可平铺；壁画那张不平铺——它是一幅画，有确定的上下左右。前三张作为壁画材质的三平面细节图使用' +
-      '（石 / 沙 / 壁画），回纹用在地面与檐口的装饰带上。',
+      '八张Canvas贴图。新增木纤维沿板件本地UV取样，陶绘只贴器身外壁；保留大切面，补回有方向、有文化语法的表面细节。',
     source: 'src/engine/textures.ts',
   });
   const grid = el('div', 'grid g-tile');
@@ -512,6 +527,8 @@ app.append(main);
     ['沙 sand', sandTexture, '沙地与灰泥'],
     ['壁画 fresco', frescoTexture, '有笔触的上色墙面'],
     ['回纹 meander', meanderTexture, '希腊回纹装饰带'],
+    ['木纤维 wood-grain', woodGrainTexture, '512²线性灰度；纵向木纹，不是石头裂缝'],
+    ['陶绘 pottery-paint', potteryPaintTexture, '1024²透明纹带：下腹回纹、肩部叶饰；原创绘制，内壁不贴'],
     ['羊毛 fleece', fleeceTexture, '有方向的纤维，独眼岬石缝里的那几撮毛用它'],
     ['壁画 mural', muralTexture, '喀耳刻柱廊地上那幅：一排人弯着腰，越往后越不像人。剥了大半'],
   ];
@@ -579,7 +596,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     crushedShield: {
       make: () => P.crushedShield(1.15),
       call: 'crushedShield(1.15)',
-      note: '被踩扁的青铜圆盾，中央盾脐还在——「中央的纹章还在，是我们的」',
+      note: '压扁盾盘的底层几何；实景完整刻章见第1、2幕资产区「归航青铜盾」，这里不代表最终材质组合',
     },
     woolTuft: {
       make: () => P.woolTuft(0.3),
@@ -695,7 +712,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
 {
   const s = section({
     id: 'act12-hero-assets', title: '六点六、第1、2幕人物、场景与道具', count: Object.keys(NARRATIVE_ASSETS).length,
-    blurb: '跪坐水手与七件环境叙事模型。人物为实体3D，回忆继续使用黑绘；全部与场景共用稳定ID。',
+    blurb: '前三幕现实人物与叙事资产，含编织采集篮和陶绘器身；全部与场景共用稳定ID和新版材质。',
     source: 'src/world/narrative-assets.ts · src/game/scenes/lotus.ts · cyclops.ts',
   });
   const grid = el('div', 'grid hero-grid');
@@ -705,6 +722,29 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     c.append(cv, cap); grid.append(c);
     shootParts(resolveNarrativeAsset(id).map((p) => ({ geometry: p.geometry, material: SURFACE[p.surface]() })), cv,
       { elevation: id.includes('tree') || id.includes('cave') || id.includes('character') ? 0.18 : 0.7 });
+  }
+  s.append(grid); main.append(s);
+}
+
+// Current first-three-scene secondary family, never silently substituted with legacy P.*.
+{
+  const s = section({ id: 'coastal-assets', title: '六点七、前三幕次级资产', count: 8,
+    blurb: '当前海蚀切面家族；每项直接调用场景同一稳定ID。旧通用构件保留用于后五幕。', source: 'src/world/sea-worn.ts' });
+  const items: Array<[keyof typeof COASTAL_ASSETS, () => THREE.BufferGeometry, keyof typeof SURFACE]> = [
+    ['game.nostos.environment.sea_rock', () => COASTAL_ASSETS['game.nostos.environment.sea_rock'](1, 31), 'darkRock'],
+    ['game.nostos.prop.cut_stone', () => COASTAL_ASSETS['game.nostos.prop.cut_stone'](1.6, 0.3, 1, 7), 'limestone'],
+    ['game.nostos.prop.salt_pithos', () => COASTAL_ASSETS['game.nostos.prop.salt_pithos'](1.6, 302), 'paintedClay'],
+    ['game.nostos.environment.coastal_leaves', () => COASTAL_ASSETS['game.nostos.environment.coastal_leaves'](1, 17), 'olive'],
+    ['game.nostos.prop.carved_board', () => COASTAL_ASSETS['game.nostos.prop.carved_board'](2.75, 0.72, 0.15, 120), 'saltWood'],
+    ['game.nostos.prop.coastal_boat', () => COASTAL_ASSETS['game.nostos.prop.coastal_boat'](5.2, 150), 'saltWood'],
+    ['game.nostos.prop.mineral_column', () => COASTAL_ASSETS['game.nostos.prop.mineral_column']({ height: 4, radius: 0.4, broken: 0.3 }), 'limestone'],
+    ['game.nostos.prop.mineral_drum', () => COASTAL_ASSETS['game.nostos.prop.mineral_drum'](0.5, 0.6), 'limestone'],
+  ];
+  const grid = el('div', 'grid hero-grid');
+  for (const [id, make, surface] of items) {
+    const c = card(), cv = previewCanvas(300, 240);
+    c.append(cv, el('figcaption', 'id', id)); grid.append(c);
+    shoot(make(), SURFACE[surface](), cv);
   }
   s.append(grid); main.append(s);
 }
@@ -835,7 +875,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     dims.innerHTML =
       `宽 ${size.x.toFixed(1)} × 高 ${size.y.toFixed(1)} m` +
       (Number.isFinite(liftedMinY) && size.y > 2
-        ? `　·　冠底离地 <b style="color:${liftedMinY < EYE_HEIGHT ? '#a6402c' : '#6e8c7a'}">` +
+        ? ` · 冠底离地 <b style="color:${liftedMinY < EYE_HEIGHT ? '#a6402c' : '#6e8c7a'}">` +
           `${liftedMinY.toFixed(2)} m</b>（眼高 ${EYE_HEIGHT}）`
         : '');
     cap.append(dims);
@@ -1167,7 +1207,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
       }
       if (item.speaker) facts.push(`说话人 ${item.speaker}`);
       if (item.motif) facts.push(`剪影母题 ${item.motif}`);
-      row.append(el('div', 'ifacts', facts.join('　·　')));
+      row.append(el('div', 'ifacts', facts.join(' · ')));
 
       // 影响与关联——这是"看得懂"的关键，不能只列台词
       const effect = el('div', 'ieffect');
@@ -1202,7 +1242,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
     }
 
     // 幻象时间轴
-    body.append(el('div', 'sectionlabel', `回忆幻象　${def.vision.id}　${def.vision.duration}s`));
+    body.append(el('div', 'sectionlabel', `回忆幻象 ${def.vision.id} ${def.vision.duration}s`));
     body.append(
       el(
         'p',
@@ -1221,9 +1261,9 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
       const tags: string[] = [];
       if (beat.motif) {
         tags.push(
-          `剪影 ${beat.motif.kind}　size ${beat.motif.size}` +
-            (beat.motif.ink === 'shadow' ? '　影色' : '') +
-            (beat.motif.crumbleAt ? `　${beat.motif.crumbleAt}s 崩解` : ''),
+          `剪影 ${beat.motif.kind} size ${beat.motif.size}` +
+            (beat.motif.ink === 'shadow' ? ' 影色' : '') +
+            (beat.motif.crumbleAt ? ` ${beat.motif.crumbleAt}s 崩解` : ''),
         );
       }
       if (beat.camera) {
@@ -1240,7 +1280,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
         );
       }
       if (beat.exposure !== undefined) tags.push(`曝光 ×${beat.exposure}`);
-      if (tags.length) bodyCell.append(el('div', 'btags', tags.join('　|　')));
+      if (tags.length) bodyCell.append(el('div', 'btags', tags.join(' | ')));
       b.append(bodyCell);
       timeline.append(b);
     }
@@ -1268,7 +1308,7 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
   outroLines.append(el('p', undefined, TEXT.ithaca.epitaph));
   outroLines.append(el('p', undefined, TEXT.ithaca.epitaphSub));
   outroLines.append(el('div', 'h', '收束'));
-  for (const line of TEXT.ithaca.epilogue) outroLines.append(el('p', undefined, line || '　'));
+  for (const line of TEXT.ithaca.epilogue) outroLines.append(el('p', undefined, line || ' '));
   outroBody.append(outroLines);
   outro.append(outroSum, outroBody);
   s.append(outro);
@@ -1305,9 +1345,9 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
 // ─────────────────────────────────────────── 页脚
 const foot = el('footer');
 foot.innerHTML =
-  `生成于 ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC　·　` +
+  `生成于 ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC · ` +
   '由 <code>games/nostos/tools/assets/</code> 直接读取 <code>src/</code> 渲染，' +
-  '重新生成：<code>npm run assets:nostos</code>　·　' +
+  '重新生成：<code>npm run assets:nostos</code> · ' +
   '这一页不参与游戏构建，只是审阅用的镜子。';
 app.append(foot);
 

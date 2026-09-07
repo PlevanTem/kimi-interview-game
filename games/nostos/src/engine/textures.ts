@@ -230,6 +230,65 @@ export function meanderTexture(): THREE.Texture {
   });
 }
 
+/** Original painted ceramic atlas: bounded meander + leaf frieze, not a copied museum image.
+ * References and periods are documented in HUMAN_REVIEW_R2.md. Transparent clay areas
+ * preserve the material base; only the exterior cylindrical UV receives ornament. */
+export function potteryPaintTexture(): THREE.Texture {
+  return memo('pottery-paint', () => {
+    const size = 1024, { c, g } = canvas(size);
+    const rng = createRng(9072026);
+    g.strokeStyle = '#211911'; g.fillStyle = '#211911'; g.lineWidth = 6;
+    // Lower register: a linked right-angle key, framed by narrow horizontal lines.
+    for (const y of [625, 735, 228, 360]) { g.fillRect(0, y, size, 6); }
+    for (let i = 0; i < 12; i++) {
+      const x = i * size / 12, w = size / 12;
+      g.beginPath(); g.moveTo(x, 720); g.lineTo(x + w * 0.16, 720);
+      g.lineTo(x + w * 0.16, 646); g.lineTo(x + w * 0.78, 646);
+      g.lineTo(x + w * 0.78, 698); g.lineTo(x + w * 0.4, 698);
+      g.lineTo(x + w * 0.4, 672); g.lineTo(x + w * 0.58, 672); g.stroke();
+      // Shoulder: paired olive-like leaf strokes around a simple curving stem.
+      const cx = x + w * 0.5;
+      g.beginPath(); g.moveTo(cx, 346); g.quadraticCurveTo(cx - 8, 294, cx, 247); g.stroke();
+      for (const [side, y] of [[-1, 318], [1, 289], [-1, 264]]) {
+        g.beginPath(); g.moveTo(cx, y! + 9);
+        g.quadraticCurveTo(cx + side! * 36, y! + 2, cx + side! * 27, y! - 20);
+        g.quadraticCurveTo(cx + side! * 4, y! - 16, cx, y! + 9); g.fill();
+      }
+    }
+    // Pigment losses are small and finite: never erase the entire motif grammar.
+    g.globalCompositeOperation = 'destination-out';
+    for (let i = 0; i < 280; i++) {
+      g.globalAlpha = 0.25 + rng() * 0.45;
+      g.fillRect(rng() * size, 210 + rng() * 550, 2 + rng() * 9, 1 + rng() * 5);
+    }
+    g.globalAlpha = 1; g.globalCompositeOperation = 'source-over';
+    const tex = finish('pottery-paint', c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    return tex;
+  });
+}
+
+/** Longitudinal wood fibres; grayscale linear data, sampled in each plank's own UV. */
+export function woodGrainTexture(): THREE.Texture {
+  return memo('wood-grain', () => {
+    const size = 512, { c, g } = canvas(size), rng = createRng(90717);
+    g.fillStyle = '#dedede'; g.fillRect(0, 0, size, size);
+    for (let i = 0; i < 96; i++) {
+      const y = i / 96 * size, phase = rng() * Math.PI * 2;
+      g.strokeStyle = `rgba(42,42,42,${0.12 + rng() * 0.32})`;
+      g.lineWidth = i % 11 === 0 ? 2.3 : 0.7;
+      g.beginPath();
+      for (let x = 0; x <= size; x += 8) {
+        const yy = y + Math.sin(x / size * Math.PI * 2 + phase) * (1.5 + i % 4);
+        if (x === 0) g.moveTo(x, yy); else g.lineTo(x, yy);
+      }
+      g.stroke();
+    }
+    return finish('wood-grain', c);
+  });
+}
+
 /** 释放全部缓存纹理（场景切换不需要，页面销毁时用）。 */
 /**
  * 羊毛细节图：一绺一绺的纤维。

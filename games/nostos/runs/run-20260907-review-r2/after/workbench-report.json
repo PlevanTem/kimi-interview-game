@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "path": "/tools/assets/index.html",
+      "coastalCards": 8,
+      "textureCards": 8,
+      "prologueCards": 3
+    },
+    {
+      "path": "/docs/asset-library.html",
+      "coastalCards": 8,
+      "textureCards": 8,
+      "prologueCards": 3
+    }
+  ],
+  "errors": []
+}

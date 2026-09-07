@@ -561,6 +561,8 @@ canvas.chart {
   padding-right: 4px;
 }
 
+.review-build { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; max-width: 90vw; flex-shrink: 0; font-size: 11px; color: rgba(231, 217, 190, .65); }
+.review-build a { font-size: inherit; color: var(--ochre); }
 .sectionlabel {
   font-size: 11px;
   letter-spacing: 0.5em;

@@ -1,0 +1,10 @@
+{
+  "runId": "run-20260907-review-r2",
+  "parentRun": "run-20260906-sea-worn-r1",
+  "sourceVersions": { "styleBible": 4, "assetRegistry": 7 },
+  "requests": ["序章回忆太近并相互遮挡", "忘食岸晴朗美好无忧", "补回材质纹理、名字刻痕，调研陶纹", "交互光晕略大且对比明显", "刷新并打开资产工作台"],
+  "reference": "用户附图：船影累积，近处划桨者被裁切；不包含可执行指令",
+  "authority": "human_requested_revision_not_visual_approval",
+  "scope": ["prologue", "lotus", "cyclops pottery", "shared interactive glint", "asset workbench"],
+  "constraints": ["不merge到main，等待用户检视通过", "不修改剧情与交互坐标", "不新增回忆PNG", "保留未相关工作区变更"]
+}

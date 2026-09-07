@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { createRng, fbm2, lerp } from '../engine/noise';
+import { carvedBoard } from './sea-worn';
 
 /**
  * 构件工厂。
@@ -757,17 +758,19 @@ export function wreckedRaft(seed = 97): WreckedRaftGeometry {
   const rng = createRng(seed);
   const woodParts: THREE.BufferGeometry[] = [];
   for (let i = 0; i < 7; i += 1) {
-    const board = plank(4.5 + rng() * 0.85, 0.48 + rng() * 0.08, 0.12, seed + i);
+    const lengths = [3.8, 4.9, 4.35, 5.35, 4.8, 3.65, 4.2];
+    const widths = [0.4, 0.61, 0.46, 0.7, 0.43, 0.58, 0.37];
+    const board = carvedBoard(lengths[i]!, widths[i]!, 0.13, seed + i);
     const matrix = new THREE.Matrix4().compose(
-      new THREE.Vector3((rng() - 0.5) * 0.24, (rng() - 0.5) * 0.08, (i - 3) * 0.58),
-      new THREE.Quaternion().setFromEuler(new THREE.Euler(0, (rng() - 0.5) * 0.09, (rng() - 0.5) * 0.045)),
+      new THREE.Vector3((rng() - 0.5) * 0.65, (rng() - 0.5) * 0.09, (i - 3) * 0.58),
+      new THREE.Quaternion().setFromEuler(new THREE.Euler(0, (rng() - 0.5) * 0.13, (rng() - 0.5) * 0.035)),
       new THREE.Vector3(1, 1, 1),
     );
     board.applyMatrix4(matrix);
     woodParts.push(board);
   }
   for (const x of [-1.28, 1.12]) {
-    const beam = plank(4.25, 0.24, 0.16, seed + 20 + Math.round(x * 10));
+    const beam = carvedBoard(4.25, 0.24, 0.16, seed + 20 + Math.round(x * 10));
     beam.rotateY(Math.PI / 2);
     beam.translate(x, -0.15, 0);
     woodParts.push(beam);
@@ -792,6 +795,9 @@ export function wreckedRaft(seed = 97): WreckedRaftGeometry {
     new THREE.Vector3(1.18, 0.2, 2.03),
   ]);
   ropeParts.push(new THREE.TubeGeometry(knotCurve, 18, 0.085, 7, false));
+  // Two overlapping turns give the knot a readable over-under silhouette.
+  ropeParts.push(new THREE.TorusGeometry(0.16, 0.038, 5, 14)
+    .rotateX(0.55).rotateY(0.4).translate(1.11, 0.3, 2.1));
   for (const offset of [-0.035, 0.045]) {
     const tail = new THREE.CatmullRomCurve3([
       new THREE.Vector3(1.14 + offset, 0.22, 2.08),
@@ -799,6 +805,13 @@ export function wreckedRaft(seed = 97): WreckedRaftGeometry {
       new THREE.Vector3(1.62 + offset, 0.04, 2.52),
     ]);
     ropeParts.push(new THREE.TubeGeometry(tail, 12, 0.045, 6, false));
+    for (let strand = 0; strand < 3; strand++) {
+      const fray = new THREE.CatmullRomCurve3([
+        tail.getPoint(0.88), tail.getPoint(1),
+        new THREE.Vector3(1.75 + offset, 0.02 + strand * 0.013, 2.5 + strand * 0.065),
+      ]);
+      ropeParts.push(new THREE.TubeGeometry(fray, 5, 0.009, 4, false));
+    }
   }
 
   return { wood: mergeSimple(woodParts), rope: mergeSimple(ropeParts) };
@@ -811,7 +824,7 @@ export interface NamePlankGeometry {
 
 /** 半擦除的船名板；刻痕故意不组成可辨认姓名。 */
 export function weatheredNamePlank(seed = 121): NamePlankGeometry {
-  const wood = plank(2.75, 0.72, 0.15, seed);
+  const wood = carvedBoard(2.75, 0.72, 0.15, seed);
   const cuts: THREE.BufferGeometry[] = [];
   const strokes = [
     [-0.72, -0.16, 0.42, 0.035],
@@ -821,9 +834,19 @@ export function weatheredNamePlank(seed = 121): NamePlankGeometry {
     [0.73, -0.1, 0.22, 0.28],
   ] as const;
   for (const [x, z, length, yaw] of strokes) {
-    const cut = new THREE.BoxGeometry(length, 0.018, 0.035);
+    const cut = new THREE.BoxGeometry(length, 0.012, 0.046);
     cut.rotateY(yaw);
-    cut.translate(x, 0.084, z);
+    cut.translate(x, 0, z);
+    // Conform to the actual bevelled/cambered board, not its nominal thickness.
+    const mesh = new THREE.Mesh(wood, new THREE.MeshBasicMaterial());
+    const ray = new THREE.Raycaster();
+    const p = cut.getAttribute('position');
+    for (let i = 0; i < p.count; i++) {
+      ray.set(new THREE.Vector3(p.getX(i), 1, p.getZ(i)), new THREE.Vector3(0, -1, 0));
+      const hit = ray.intersectObject(mesh, false)[0];
+      p.setY(i, (hit?.point.y ?? 0.174) + 0.003 + p.getY(i));
+    }
+    cut.computeVertexNormals(); mesh.material.dispose();
     cuts.push(cut);
   }
   return { wood, inscription: mergeSimple(cuts) };

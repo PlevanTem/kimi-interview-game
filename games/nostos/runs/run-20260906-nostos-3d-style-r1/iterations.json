@@ -1,0 +1,21 @@
+{
+  "runId": "run-20260906-nostos-3d-style-r1",
+  "entries": [
+    {
+      "id": "technical-art-direction-v3",
+      "issue": "现有Art Bible说明了湿壁画气质，但3D polygon资产缺少统一的轮廓频率、倒角尺度、接缝语法、阅读距离、镜头与动画数值，难以稳定复现。",
+      "evidence": [
+        "序章木筏等宽平行板件读成程序化方条",
+        "忘食岸地砖网格、地表噪声和曝光与树及人物争焦点",
+        "独眼洞口的居中矩形和重复岩柱读成粗重柱廊",
+        "独眼回忆颗粒与背景黑块压低人物母题可读性"
+      ],
+      "rootCause": "宏观轮廓、中尺度结构和微观材质未分层治理；造型、构图、材质与镜头没有共享同一组可测约束。",
+      "change": "建立盐蚀切面壁画方向，锁定三种形状语言、三种材质语言、60/30/10密度、2/10/25米阅读距离、polygon预算、镜头/动画数值、目标关键帧和Gate 3检查清单。",
+      "verification": "npm run validate:library、npm run validate:context、npm run audit:assets 均 exit 0；git diff --check exit 0。本文仅验证结构与上下文一致性，未实现资产、未生成目标关键帧、未声称视觉改善。",
+      "before": "风格以情绪、颜色和shader描述为主，资产团队仍可能各自解释低模与风化。",
+      "after": "3D资产从轮廓、拓扑、材质、构图、动画到验收已有同一套工程语言；等待目标关键帧与人工Gate 3审阅。",
+      "status": "draft_verified_not_visual_locked"
+    }
+  ]
+}

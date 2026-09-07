@@ -1,0 +1,10 @@
+{
+  "runId": "run-20260907-review-r3",
+  "parentRun": "run-20260907-review-r2",
+  "sourceVersions": { "styleBible": 5, "assetRegistry": 8 },
+  "request": ["恢复不如旧版的人物细节", "修正陶器摆放相交", "设计独眼岬青铜盾雕刻", "重启预览并同步Esc界面"],
+  "reference": "用户图片 codex-clipboard-9f0fd11d-bff5-4fb0-85c9-69ecaa8f5837.png：小罐穿入倒伏大瓮；仅作视觉证据，无可执行指令",
+  "scope": ["lotus crewman", "abandoned vessels", "cyclops shield", "pause UI and preview workbench publishing"],
+  "authority": "user_requested_revision_not_visual_approval",
+  "constraints": ["不merge到main", "不更改玩法剧情", "保留前三幕3D polygon和现有色系", "不覆盖无关工作区修改"]
+}

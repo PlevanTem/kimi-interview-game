@@ -1,0 +1,64 @@
+{
+  "runId": "run-20260906-sea-worn-r1",
+  "status": "verified_candidate_pending_human_visual_lock",
+  "build": "dist/assets/index-DYktR2wl.js",
+  "evidence": {
+    "fixedViews": "after/capture-report.json",
+    "screenshotsReviewed": 10,
+    "consoleAndShaderErrors": 0,
+    "styleUniform": 1,
+    "reducedMotionUniform": 0,
+    "batchedVertices": { "lotus": 122367, "cyclops": 42138 },
+    "note": "1080p captures used index-B-JPnVj-.js; final build only adds unused-parameter acknowledgements and changes the cave display name, with no rendered behavior change."
+  },
+  "environment": "Windows / Chromium ANGLE SwiftShader",
+  "commands": [
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "npm run test:nostos",
+      "exitCode": 0,
+      "result": "Final: 87 passed, 9 files"
+    },
+    {
+      "command": "npm run build:nostos",
+      "exitCode": 0,
+      "result": "Final: TypeScript and production build PASS, 52 modules"
+    },
+    {
+      "command": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@act12$|@prologue-visual|@cyclops-theatre'",
+      "exitCode": 0,
+      "result": "Final build: 4 passed in 7.4 minutes; all interactions, departure, full cyclops theatre"
+    },
+    {
+      "command": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@sea-worn'",
+      "exitCode": 0,
+      "result": "1 passed in 6 minutes; nine asset views plus memory screenshot; runtime style/motion assertions and no console errors"
+    },
+    {
+      "command": "node node_modules/@playwright/test/cli.js test --config games/nostos/playwright.config.ts --grep '@act12$|@prologue-visual|@cyclops-theatre|@act12-perf|@sea-worn'",
+      "exitCode": 0,
+      "result": "Pre-final salt-mask/water correction: 6 passed in 16.3 minutes; repeated scene switches stabilize at lotus 26 geometries/cyclops 22 and 8 textures after warm-up; not final-build hardware performance certification"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js games/nostos/src games/nostos/tests/sea-worn.test.ts games/nostos/tests/e2e/sea-worn.spec.ts",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "npm run validate:context; npm run audit:assets; git diff --check",
+      "exitCode": 0,
+      "result": "PASS; root framework validation only. Additional active-NOSTOS check confirms all source/readOrder paths exist and 48 asset IDs are unique."
+    }
+  ],
+  "limitations": [
+    "软件渲染测试不作为真实GPU帧率认证",
+    "Gate3与Gate4保持未通过，视觉候选待用户审阅",
+    "后五幕三位NPC本轮没有制作",
+    "本轮没有全资产2/10/25米矩阵及40个seed视觉自交验收",
+    "木桩与船的部分固定近景有意裁切，不能代替完整轮廓远景验收"
+  ]
+}

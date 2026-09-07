@@ -1,0 +1,14 @@
+{
+  "runId": "run-20260906-nostos-3d-style-r1",
+  "gameId": "nostos",
+  "input": "input-snapshot.json",
+  "output": [
+    "games/nostos/docs/3D_ART_STYLE_DIRECTION.md",
+    "games/nostos/context/style-bible.json"
+  ],
+  "humanGates": {
+    "gate3": null,
+    "gate4": null
+  },
+  "status": "draft_ready_for_gate3_keyframe_review"
+}

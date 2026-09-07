@@ -1,0 +1,9 @@
+{
+  "runId": "run-20260907-review-r2",
+  "gameId": "nostos",
+  "status": "verified_candidate_pending_human_review",
+  "input": "input-snapshot.json",
+  "output": ["games/nostos/docs/HUMAN_REVIEW_R2.md", "games/nostos/docs/asset-library.html"],
+  "humanGates": { "gate3": null, "gate4": null },
+  "merge": "awaiting_explicit_human_review"
+}

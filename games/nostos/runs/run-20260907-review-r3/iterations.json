@@ -1,0 +1,53 @@
+{
+  "runId": "run-20260907-review-r3",
+  "entries": [
+    {
+      "issue": "main 已合并的 Esc 海图没有出现在本地完整游戏",
+      "evidence": "当前 art 分支 a65a39e 不含 main f334fe7；4175 正确读取 art 分支但返回旧 overlay",
+      "rootCause": "本地运行分支没有同步 main，不是缓存或 npm 启动入口错误",
+      "change": "保留 stash 备份，当前分支 fast-forward 到 main，再恢复全部美术修改；手动合并 overlay/styles 的海图与审阅入口，保留 Escape 恢复修复",
+      "verification": "main-integration/verification.md；98 项单测通过；独立生产预览 Esc 恢复再暂停回归 exit 0，60 秒资源稳定、无控制台错误；开发服组合测试受构建热重载污染的历史保留",
+      "status": "integration_verified_main_push_authorized"
+    },
+    {
+      "issue": "人物细节较旧版退化",
+      "evidence": "git diff HEAD:lotus-crewman.ts；删除手指、耳朵、眼睑、胡须，衣身截面48降至12",
+      "rootCause": "把风格化误落实为全身统一减面，删掉语义细节",
+      "change": "从同项目旧版恢复脸、手、衣褶及披带，保持现有材质与3D跪姿、程序呼吸",
+      "verification": "review-r3.test.ts成人尺度与20k顶点预算；实机正侧面截图",
+      "status": "verified-pending-human-review"
+    },
+    {
+      "issue": "陶罐相交",
+      "evidence": "用户图；abandonedVessels小罐局部(-0.8,0,-0.4)",
+      "rootCause": "倒伏大瓮变换后的器口位置和小罐固定位置冲突",
+      "change": "以真实几何包围盒布置小罐，器身间留0.24m，保留两器独立子件方便检测",
+      "verification": "五seed AABB间距测试；原问题视角实拍",
+      "status": "verified-pending-human-review"
+    },
+    {
+      "issue": "盾牌缺少叙事纹章且实拍发现局部穿地",
+      "evidence": "crushedShield仅盘面和盾脐；固定摆放最低点低于地面0.074273m",
+      "rootCause": "未实现图案层；宽薄盾盘的固定倾角没有匹配局部坡面",
+      "change": "四向归航星和断续同心刻带逐顶点贴合盾面；按地表法线和支承高度摆放",
+      "verification": "刻线贴面与整盾离地测试；最低间隙0.012m；最终实拍确认无旧缺口",
+      "status": "verified-pending-human-review"
+    },
+    {
+      "issue": "预览及Esc界面不同步风险",
+      "evidence": "标题motion与pause按钮独立初始化；生产dist未包含docs/asset-library.html",
+      "rootCause": "设置显示未集中刷新；导出无复制契约；从工作台返回后Escape恢复错误地请求无激活手势的pointer lock",
+      "change": "统一设置显示和版本，双向复制工作台到dist/docs，重启4175/4176；Esc仅恢复游戏，点击画面或返回按钮再锁定",
+      "verification": "Esc设置同步、720p/864p、同版工作台、关闭恢复及无过滤console错误检查",
+      "status": "verified-pending-human-review"
+    },
+    {
+      "issue": "MOTIF16 工作台与游戏的回忆母题资源不一致",
+      "evidence": "tools/assets/main.ts 调用 silhouette.ts:motifTexture() 现场绘制 Canvas；VisionStage 实际通过 memory-silhouettes.ts:MEMORY_MOTIF_URLS 载入 16 张已登记 PNG",
+      "rootCause": "工作台在 PNG 母题管线引入后仍保留旧的 Canvas2D 审阅实现与文案，导致审阅对象不是实际文件资产",
+      "change": "工作台 MOTIF16 改为直接使用 MEMORY_MOTIF_URLS；展示石灰底、留白、PNG 元数据与稳定资产 ID；导出构建把 100KB 以下 PNG 内联以维持单文件可双击打开",
+      "verification": "npm run typecheck:nostos (exit 0); npm run assets:nostos (exit 0); npm run test:nostos -- memory-silhouettes (2/2 pass); Playwright 检查源码页与导出页均为 16 个 img、512×512、0 个 MOTIF canvas；截图 after/workbench-motif-png.jpg",
+      "status": "automated_verified_pending_human_visual_review"
+    }
+  ]
+}

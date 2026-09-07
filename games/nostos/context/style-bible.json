@@ -1,77 +1,106 @@
 {
   "$schema": "../../../schemas/style-bible.schema.json",
-  "id": "nostos-prologue-visual-pilot",
-  "version": 2,
+  "id": "nostos-salt-cut-faceted-fresco",
+  "version": 6,
   "status": "draft",
   "approved": false,
-  "act12Extension": {
-    "direction": "games/nostos/docs/ACT12_ART_DIRECTION.md",
-    "authorization": "user_directed_implementation",
-    "lotus": "蜜金、枝叶负形、散落陶片、浅石铺；甜蜜的停留与被丢下的归途。",
-    "cyclops": "青灰逆光、连续层岩洞壳、巨骨与烧尖木桩；尺度压迫与人的代价。",
-    "materialRule": "只复用既有颜料。新增层岩/橄榄木/焦尖预设降低轮廓光，保留全作壁画着色。",
-    "shapeRule": "方向性长构件、侵蚀矿物体块、水平层带；树冠通过枝叶负形表达，不添加新剪影母题。"
-  },
   "conceptId": "nostos",
+  "direction": "games/nostos/docs/3D_ART_STYLE_DIRECTION.md",
+  "implementation": "games/nostos/docs/SEA_WORN_IMPLEMENTATION.md",
+  "reviewRevision": "games/nostos/docs/HUMAN_REVIEW_R3.md",
+  "displayName": "海蚀彩陶史诗 / Sea-Worn Polychrome Epic",
+  "implementationScope": ["prologue", "lotus", "cyclops"],
+  "npcDecision": "用户已确定现实NPC全面3D化；本轮只翻新前三幕现有的lotus.crewman，后五幕人物后续按同一规则迁移。",
+  "implementationStatus": "verified-candidate-pending-human-visual-lock",
   "keyframe": {
-    "scene": "prologue",
-    "status": "implementation-baseline",
-    "evidence": "games/nostos/docs/screenshots/00-prologue-a-登岸.jpg"
+    "scene": "lotus",
+    "shot": "orchard-sea-crewman-with-separate-helmet-closeup",
+    "status": "candidate-rendered-pending-human-review",
+    "viewport": "1920x1080",
+    "fovDegrees": 62,
+    "eyeHeightMeters": 1.68,
+    "evidence": "games/nostos/runs/run-20260906-sea-worn-r1/after/lotus-orchard.jpg",
+    "focalOrder": ["asymmetrical orchard voids", "kneeling crewman", "hazy sea horizon"],
+    "closeup": "games/nostos/runs/run-20260906-sea-worn-r1/after/lotus-helmet.jpg",
+    "compositionNote": "保留交互物坐标，采用环境镜头与头盔近景成对审阅；不声称原先单镜头同时满足头盔20%和人物10%投影的假设已实现。"
   },
   "mood": [
-    "黎明前的失重感",
-    "盐蚀残骸仍保留人的手艺",
-    "唯一导星给出微弱但明确的方向"
+    "归乡不是胜利，而是被海和时间磨损后的辨认",
+    "实体世界有重量、侧面、接缝与长影",
+    "回忆以黑绘剧场短暂夺取现实"
   ],
   "worldRules": [
-    "第0幕只使用程序化几何与现有壁画着色，不引入黑绘或音频新资产",
-    "木筏绳结为主焦点，断桨为次焦点，导星为远景焦点",
-    "残骸后方必须保留负形，船肋与卵石不得争夺主轮廓"
+    "现实世界首先是可绕行、可遮挡、可投影的轻量3D polygon体积，壁画语言只约束形体概括、分带受光与风化",
+    "每幕仅一个主焦点、一个次焦点和一个远景方向；随机散布必须让出主物负形",
+    "正常现实场景禁止用黑绘billboard代替地标、NPC、植物、岩石或叙事道具",
+    "细节按60%安静大面、30%中尺度结构、10%叙事细节分配；人物面部、手指与衣褶不跟随环境构件统一减面",
+    "实体颜料继续使用既有色系；用户本轮批准忘食岸晴蓝天与海青水的环境色调整，差异来自天候与光照，不扩展物体材质种类",
+    "允许有目的的贴图：木纹遵循局部UV，陶器纹带只在外壁；大面仍优先于噪点和装饰"
   ],
   "palette": {
     "dominant": ["#0d1424", "#26384c", "#9a8872"],
-    "support": ["#71839f", "#b09a74", "#e7d9be"],
-    "rule": "保持靛蓝、灰蓝、冷骨白与盐蚀木色，不扩充全作十二颜料体系"
+    "support": ["#71839f", "#b09a74", "#e7d9be", "#a6402c", "#6e8c7a"],
+    "rule": "实体颜料沿用原有色系及混合；忘食岸环境天海色按用户晴天反馈修订。"
   },
   "shapeLanguages": [
-    "方向性长构件：木板、残桨、船肋",
-    "低矮圆钝体块：潮线卵石与石锚",
-    "水平层带：湿岸、海面、雾与天际"
+    "方向性遗物：长宽比4:1–14:1的桨、板、船肋、柱、梁、木桩、绳与长骨；主轴承担视线和叙事动作",
+    "侵蚀体块：以5–12个大切面建立重量，再加入3–8%尺度缺口；材质噪声不进入主轮廓",
+    "水平层带与负形框架：岸/海/雾三层，以及不对称的树冠开口、洞口、柱间、门槛和船骸甬道"
   ],
   "materials": [
-    "盐蚀木与绳：较亮木面、深冷影、独立绳索色阶",
-    "湿干矿物岸：径向潮湿带与克制的掠射亮边",
-    "海雾天空：低饱和星场、唯一暖白导星、收敛的浪沫"
+    "多孔矿物：石灰岩、灰泥、沙、玄武岩、陶土与骨；干、吸光、切面明确",
+    "盐蚀纤维：木、绳、亚麻、枝叶与羊毛；细节沿生长或受力方向组织",
+    "潮湿与氧化界面：湿岸、浪沫、青铜、烧焦木与盐壳；亮度变化只发生于边界和掠射角"
   ],
   "compositionRules": [
-    "出生视线先落到木筏和可读绳结",
-    "断桨以宽桨叶和断口区别于普通杆件",
-    "导星不使用地面微光替身，必须通过真实抬头凝视触发",
-    "卵石减量并远离木筏背后的负形区"
+    "主焦点投影高度在漫游中为画面8–22%，核心物近看为18–35%",
+    "次焦点与主焦点至少相隔画面宽度18%，主物安全负形在1280x720下向外至少24px",
+    "地平线通常处于画面高度44–58%，压迫场景最高65%；禁止每幕居中对称",
+    "前景遮挡最多覆盖画面15%，只用于建立深度，不形成持续窥视框"
   ],
   "lighting": {
-    "preset": "dawnAtSea",
-    "ambientIntensity": 0.49,
-    "exposure": 1.16,
-    "halation": 0.16,
-    "vignette": 0.31,
-    "grain": 0.035
+    "model": "three-band non-PBR fresco shading",
+    "bands": [0.18, 0.55, 1.0],
+    "normalRimStrengthMax": 0.35,
+    "normalGrainRange": [0.025, 0.045],
+    "highlightPixelBudget": "normal gameplay pixels above 0.98 luma should remain below 3%",
+    "shadowRule": "2048² static shadow map per act; lotus now uses higher fair-weather sun (0.62 radians), other act profiles unchanged"
+  },
+  "geometryBudgets": {
+    "clueVertices": [300, 3000],
+    "heroPropRecommendedVertices": [3000, 12000],
+    "heroAssetHardMaxVertices": 20000,
+    "compositeLandmarkMaxVertices": 60000,
+    "actStaticMaxVertices": 300000,
+    "targetDrawCalls": 80,
+    "hardMaxDrawCalls": 250,
+    "reviewDistancesMeters": [2, 10, 25]
   },
   "uiTokens": {
     "bone": "#e7d9be",
     "copper": "#b8a17b",
     "deep": "#101c2b",
     "hairlineOpacity": 0.22,
-    "direction": "games/nostos/docs/OPENING_DIRECTION.md",
-    "layout": "左侧衬线标题，右侧真实木筏，原生键盘按钮，窄屏安全区域"
+    "layout": "最小HUD；衬线标题；世界内引导；不以屏幕标记补救3D资产可读性"
   },
   "motion": {
+    "arrivalSeconds": [7, 10],
     "openingSeconds": 15,
+    "departureSeconds": 1.8,
+    "visionEnterSeconds": 1.2,
+    "visionExitSeconds": 1.8,
+    "visionCrumbleSeconds": 2.6,
     "cameraCurve": "quintic smootherstep",
-    "uiEase": "cubic-bezier(.16,1,.3,1)",
-    "touchPulseMs": 650,
-    "reducedMotion": "静态机位、禁用漂移及UI动画、保留跳过和情境提示"
+    "focusFovDeltaDegrees": -2.2,
+    "environmentTiers": ["static relics", "shader sea-cloud-fog", "low-amplitude foliage-cloth-rope", "vision timeline"],
+    "reducedMotion": "禁用漂移、步伐摆动、低幅环境transform与UI动画；保留输入、字幕、跳过和状态提示"
   },
-  "promptPrefix": "NOSTOS 第0幕，黎明前靛蓝海面，盐蚀残骸，低饱和湿壁画色带，清晰叙事焦点与大片负形",
-  "negativePrompt": "随机亮点冒充导星，圆石铺满画面，塑料高光，同材质灰糊，过重暗角，过重颗粒，新增黑绘或音频资产"
+  "promptPrefix": "NOSTOS, first-person lightweight 3D polygon environment, salt-cut faceted fresco style, readable low-poly silhouettes with controlled medium-scale erosion, three-band non-PBR lighting, porous limestone and terracotta, salt-worn wood and linen, long weather-driven shadows, restrained film grain, broad negative space, authored 3D depth and side faces, 62-degree perspective camera",
+  "negativePrompt": "photorealistic PBR, glossy plastic, metallic gold shine, voxel blocks, uniform triangulation, random pebble carpet, tiled pavement grid, spherical tree crowns, dense foliage wall, centered sun, symmetrical temple facade, miniature diorama, black-figure silhouettes in the real world, HUD markers, excessive bloom, heavy grain, text, labels",
+  "act12Extension": {
+    "authorization": "user_directed_implementation_before_visual_lock",
+    "lotus": "重构为头盔—不对称果树负形—跪坐水手的三层焦点，删除棋盘式石铺与全屏同频地表细节。",
+    "cyclops": "重构为偏心楔形洞口、连续岩壳与斜向木桩；消除柱廊式对称和重复封口轮廓。",
+    "constraint": "用户授权前三幕实现与次级资产翻新；使用既有颜料及其混合与FrescoMaterial，仍为待人类目视批准的候选。"
+  }
 }

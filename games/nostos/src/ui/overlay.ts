@@ -3,6 +3,7 @@ import { ACTS } from '../game/scenes';
 import type { Caption } from '../game/types';
 import { navigationMark } from './navigation-mark';
 import { CHART, IslandChart, stateFor, type ChartIsland } from './chart';
+import { ART_REVISION, ART_REVISION_SUMMARY } from '../content/revision';
 
 /**
  * 界面层。
@@ -131,7 +132,7 @@ export class Overlay {
     this.root.addEventListener('keydown', (event) => {
       if (event.key !== 'Tab') return;
       const panel = this.root.querySelector<HTMLElement>('.panel:not(.hidden)');
-      const controls = panel ? [...panel.querySelectorAll<HTMLElement>('button:not([hidden]), input')].filter((node) => node.getClientRects().length) : [];
+      const controls = panel ? [...panel.querySelectorAll<HTMLElement>('button:not([hidden]), input, a[href]')].filter((node) => node.getClientRects().length) : [];
       if (!controls.length) return;
       const current = controls.indexOf(document.activeElement as HTMLElement);
       const next = (current + (event.shiftKey ? -1 : 1) + controls.length) % controls.length;
@@ -171,6 +172,7 @@ export class Overlay {
     footer.append(el('span', undefined, U.titleFootnote));
     const motion = el('button', 'motion-switch', '镜头 / 流动');
     motion.setAttribute('aria-label', '切换减弱镜头动态');
+    motion.dataset.setting = 'motion-title';
     motion.setAttribute('aria-pressed', String(this.settings.reducedMotion));
     motion.textContent = this.settings.reducedMotion ? '镜头 / 静止' : '镜头 / 流动';
     motion.addEventListener('click', () => {
@@ -243,11 +245,21 @@ export class Overlay {
 
     const menu = el('div', 'menu');
     const resume = el('button', 'link', U.back);
+    resume.dataset.role = 'resume';
     resume.addEventListener('click', () => this.handlers.onResume());
     const restart = el('button', 'link', U.restart);
     restart.addEventListener('click', () => this.handlers.onRestart());
     menu.append(resume, restart);
     panel.append(menu);
+    if (['127.0.0.1', 'localhost'].includes(window.location.hostname)) {
+      const review = el('div', 'review-build');
+      review.dataset.revision = ART_REVISION;
+      review.append(el('span', undefined, '美术预览 ' + ART_REVISION + ' · ' + ART_REVISION_SUMMARY));
+      const assets = el('a', 'link', '打开同版资产工作台');
+      assets.href = './docs/asset-library.html?rev=' + ART_REVISION;
+      assets.target = '_blank'; assets.rel = 'noopener';
+      review.append(assets); panel.append(review);
+    }
     return panel;
   }
 
@@ -269,12 +281,13 @@ export class Overlay {
 
     const motionRow = row(U.reducedMotion);
     const motionToggle = el('button', 'toggle', this.settings.reducedMotion ? 'ON' : 'OFF');
+    motionToggle.dataset.setting = 'motion-pause';
+    motionToggle.setAttribute('aria-label', U.reducedMotion);
     motionToggle.dataset.on = String(this.settings.reducedMotion);
     motionToggle.addEventListener('click', () => {
       this.settings.reducedMotion = !this.settings.reducedMotion;
       motionToggle.textContent = this.settings.reducedMotion ? 'ON' : 'OFF';
       motionToggle.dataset.on = String(this.settings.reducedMotion);
-      this.chart?.setReducedMotion(this.settings.reducedMotion);
       this.applySettings();
     });
     motionRow.append(motionToggle);
@@ -365,6 +378,14 @@ export class Overlay {
   }
 
   private applySettings(): void {
+    this.chart?.setReducedMotion(this.settings.reducedMotion);
+    this.root.querySelectorAll<HTMLButtonElement>('[data-setting]').forEach(button => {
+      const on = this.settings.reducedMotion;
+      button.setAttribute('aria-pressed', String(on));
+      button.dataset.on = String(on);
+      button.textContent = button.dataset.setting === 'motion-title'
+        ? (on ? '镜头 / 静止' : '镜头 / 流动') : (on ? 'ON' : 'OFF');
+    });
     document.documentElement.style.setProperty('--subtitle-scale', String(this.settings.subtitleScale));
     document.documentElement.dataset.motion = this.settings.reducedMotion ? 'reduced' : 'full';
     this.handlers.onSettingsChange(this.settings);
@@ -530,7 +551,8 @@ export class Overlay {
     this.ensureChart();
     this.chart?.resize();
     this.chart?.setProgress(this.currentAct);
-    this.pausePanel.querySelector<HTMLButtonElement>('button')?.focus();
+    this.applySettings();
+    this.pausePanel.querySelector<HTMLButtonElement>('[data-role="resume"]')?.focus();
   }
 
   /**

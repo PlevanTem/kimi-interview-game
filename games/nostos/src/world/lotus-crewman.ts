@@ -45,6 +45,7 @@ function tunic(): THREE.BufferGeometry {
 
 /** A grounded, slumped adult, +Z forward. Static sculpture; no billboard or new animation rig. */
 export function lotusCrewman(_seed: number): NarrativePart[] {
+  void _seed; // Named character: retain authored facial, finger and garment detail.
   const skin: THREE.BufferGeometry[] = [], linen = [tunic()], dark: THREE.BufferGeometry[] = [];
   // Folded shins and bare feet remain visible below the gathered linen.
   for (const side of [-1, 1]) {

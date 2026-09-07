@@ -1,0 +1,231 @@
+{
+  "revision": "2026.09.07-r3",
+  "errors": [],
+  "reports": [
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 357,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 378,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 399,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 418,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 438,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 22,
+        "textures": 10
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 459,
+      "artStyle": 1,
+      "artMotion": 0,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": 4.3,
+        "yaw": 0,
+        "pitch": 0
+      }
+    }
+  ],
+  "elapsedMs": 60247,
+  "observedFps": 2.2241771374508272,
+  "environment": "Chromium SwiftShader; no hardware FPS certification"
+}

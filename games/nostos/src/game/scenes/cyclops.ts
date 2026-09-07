@@ -1,5 +1,12 @@
 import { TEXT } from '../../content/script';
-import { boatHull, crushedShield, plank, pole, ribBone, stoneBlock, woolTuft } from '../../world/props';
+import { pole, ribBone, woolTuft } from '../../world/props';
+import { shieldPlacement } from '../../world/engraved-shield';
+import { COASTAL_ASSETS } from '../../world/sea-worn';
+const stoneBlock = COASTAL_ASSETS['game.nostos.prop.cut_stone'];
+const plank = COASTAL_ASSETS['game.nostos.prop.carved_board'];
+const saltPithos = COASTAL_ASSETS['game.nostos.prop.salt_pithos'];
+const coastalLeaves = COASTAL_ASSETS['game.nostos.environment.coastal_leaves'];
+const boatHull = COASTAL_ASSETS['game.nostos.prop.coastal_boat'];
 import type { Act } from './types';
 import { placeNarrativeAsset, stratifiedRock } from '../../world/narrative-assets';
 
@@ -230,7 +237,7 @@ export const cyclops: Act = {
     // 原来是一块压扁的卵石，而且 lift 给到 -0.6：盾面半高只有 15 厘米，
     // 整面盾沉在地下 45 厘米，玩家走到跟前也什么都看不见。
     // 现在用真的盾形（碟面 + 中央盾脐，纹章就在盾脐上），只略微陷进土里。
-    d.place(crushedShield(1.15, 640), 'bronze', { x: -6, z: 2, lift: -0.03, yaw: 0.6, tiltZ: 0.05 });
+    placeNarrativeAsset(d, 'game.nostos.prop.engraved_shield', shieldPlacement(d.terrain), 640);
 
     // Three recessed rock courses form a real dark volume, with a 9m clear approach.
     placeNarrativeAsset(d, 'game.nostos.environment.cyclops_cave', { x: 0, z: -25, y: 3.2 }, 650);
@@ -284,7 +291,11 @@ export const cyclops: Act = {
         tiltZ: (d.rng() - 0.5) * 0.6,
       });
     }
-    placeNarrativeAsset(d, 'game.nostos.prop.burned_stake', { x: 0, z: -27, yaw: 0.5 }, 690);
+    placeNarrativeAsset(d, 'game.nostos.prop.burned_stake', { x: 0, z: -27, yaw: 0.7, lift: 0.06 }, 690);
+    d.place(saltPithos(2.1, 695), 'paintedClay', { x: -7.2, z: -19.5, yaw: 0.4, lift: -0.15, block: 0.9 });
+    for (const [x, z] of [[-16, 12], [20, -7], [-18, -10]]) {
+      d.place(coastalLeaves(0.7, 696 + x!), 'olive', { x: x!, z: z!, yaw: 1.2 });
+    }
 
     // ── 礁石群：把海岸线咬得很碎，也让登岸那一眼有前景 ──
     d.scatter(26, {

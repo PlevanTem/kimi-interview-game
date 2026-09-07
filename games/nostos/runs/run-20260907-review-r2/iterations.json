@@ -1,0 +1,10 @@
+{
+  "runId": "run-20260907-review-r2",
+  "entries": [
+    { "issue": "序章近处母题裁切并遮挡", "evidence": "用户附图", "rootCause": "船影没有局部退场，划桨者深度11m而海浪仅7m，叠加推镜", "change": "三段船队/划桨者/海浪交接，距离至少24m，减小FOV收窄", "verification": "review-r2.test.ts和4/11.8/18/23/30秒实拍", "status": "verified-pending-human-review" },
+    { "issue": "忘食岸灰黄压抑", "evidence": "上一轮lotus-orchard.jpg与用户反馈", "rootCause": "低太阳、石灰色地平雾、低饱和叠加暗角", "change": "抬高日光，晴蓝天与海青水、减雾减暗角，保留暖砂", "verification": "lotus-sunny.jpg与交互回归", "status": "verified-pending-human-review" },
+    { "issue": "刻名消失且资产过于无纹理", "evidence": "用户实机反馈、船板几何对照", "rootCause": "固定高度刻线被新倒角和翘曲板埋住，统一风化clamp过窄；陶器仅有几何环", "change": "射线贴合刻线、受控灰度细节、局部UV木纤维与陶绘纹带", "verification": "刻线射线测试、工作台与实景近拍", "status": "verified-pending-human-review" },
+    { "issue": "可交互光晕太弱", "evidence": "用户反馈、Glint源码", "rootCause": "加色混合同时缩放RGB和alpha，低强度被近似平方衰减且亮底无对比", "change": "尺寸1.3倍、单次强度衰减、常规透明混合和深金边肩，保留触碰熄灭", "verification": "name-and-glint.jpg、前三幕交互回归", "status": "verified-pending-human-review" },
+    { "issue": "工作台未显示新版次级资产", "evidence": "main.ts仅旧P.*与NARRATIVE_ASSETS", "rootCause": "未枚举COASTAL_ASSETS，预览光style开关为0", "change": "补齐8项稳定ID与2张贴图，新风格预览，重新打包独立HTML", "verification": "verify-r2.mjs验证源码页及单文件页", "status": "verified-pending-human-review" }
+  ]
+}

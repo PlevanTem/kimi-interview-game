@@ -1,0 +1,83 @@
+{
+  "main": "f334fe7073ae46f61b8e293f7f8ebb3f6c83b370",
+  "build": "index-1aslOchB.js",
+  "errors": [],
+  "before": {
+    "phase": "roaming",
+    "fade": 0,
+    "openingTime": 0,
+    "renderStats": {
+      "calls": 1,
+      "geometries": 27,
+      "textures": 9
+    },
+    "act": 1,
+    "actId": "lotus",
+    "triggered": 0,
+    "focus": null,
+    "vertexCount": 137670,
+    "frames": 60,
+    "artStyle": 1,
+    "artMotion": 0,
+    "visionTime": 0,
+    "memoryId": "lotus.helmet",
+    "departId": "lotus.depart",
+    "interactableIds": [
+      "lotus.amphora",
+      "lotus.oar",
+      "lotus.footprints",
+      "lotus.hearth",
+      "lotus.fruit",
+      "lotus.crewman",
+      "lotus.helmet",
+      "lotus.depart"
+    ],
+    "narrating": false,
+    "player": {
+      "x": -4,
+      "z": 34,
+      "yaw": 0.3,
+      "pitch": 0
+    }
+  },
+  "after": {
+    "phase": "roaming",
+    "fade": 0,
+    "openingTime": 0,
+    "renderStats": {
+      "calls": 1,
+      "geometries": 27,
+      "textures": 9
+    },
+    "act": 1,
+    "actId": "lotus",
+    "triggered": 0,
+    "focus": null,
+    "vertexCount": 137670,
+    "frames": 193,
+    "artStyle": 1,
+    "artMotion": 0,
+    "visionTime": 0,
+    "memoryId": "lotus.helmet",
+    "departId": "lotus.depart",
+    "interactableIds": [
+      "lotus.amphora",
+      "lotus.oar",
+      "lotus.footprints",
+      "lotus.hearth",
+      "lotus.fruit",
+      "lotus.crewman",
+      "lotus.helmet",
+      "lotus.depart"
+    ],
+    "narrating": false,
+    "player": {
+      "x": -4,
+      "z": 34,
+      "yaw": 0.3,
+      "pitch": 0
+    }
+  },
+  "elapsedMs": 61640,
+  "environment": "isolated production preview; Chromium SwiftShader; not hardware performance certification"
+}

@@ -1,14 +1,16 @@
 import { TEXT } from '../../content/script';
 import {
-  boulder,
   pole,
   shipRib,
-  boatHull,
   stoneAnchor,
   wreckedRaft,
   weatheredNamePlank,
   brokenOar,
 } from '../../world/props';
+import { COASTAL_ASSETS } from '../../world/sea-worn';
+const boulder = COASTAL_ASSETS['game.nostos.environment.sea_rock'];
+const coastalLeaves = COASTAL_ASSETS['game.nostos.environment.coastal_leaves'];
+const boatHull = COASTAL_ASSETS['game.nostos.prop.coastal_boat'];
 import type { Act } from './types';
 
 const T = TEXT.prologue;
@@ -110,35 +112,35 @@ export const prologue: Act = {
         {
           at: 0.6,
           line: T.vision[0],
-          camera: { yaw: 0, pitch: 0.06, fov: -6, ease: 3 },
-          motif: { kind: 'galley', x: 0, y: 7, z: -26, size: 26, grow: 3.2 },
+          camera: { yaw: 0, pitch: 0.06, fov: -2, ease: 3 },
+          motif: { kind: 'galley', x: 0, y: 5.5, z: -34, size: 19, grow: 3.2, crumbleAt: 12 },
         },
         {
           at: 5.2,
           line: T.vision[1],
-          motif: { kind: 'galley', x: -17, y: 5.4, z: -33, size: 19, grow: 2.6, opacity: 0.75 },
+          motif: { kind: 'galley', x: -18, y: 4.8, z: -43, size: 12, grow: 2.6, opacity: 0.55, ink: 'shadow', crumbleAt: 12 },
         },
         {
           at: 9.6,
           line: T.vision[2],
-          motif: { kind: 'galley', x: 16, y: 5.8, z: -31, size: 20, grow: 2.6, opacity: 0.75 },
-          camera: { yaw: 0.1, pitch: 0.02, fov: -3, ease: 4 },
+          motif: { kind: 'galley', x: 18, y: 4.8, z: -43, size: 12, grow: 2.2, opacity: 0.55, ink: 'shadow', crumbleAt: 12 },
+          camera: { yaw: 0, pitch: 0.04, fov: 0, ease: 4 },
         },
         {
           at: 14.4,
           line: T.vision[3],
-          motif: { kind: 'rower', x: -5.5, y: 2.4, z: -11, size: 8, grow: 1.8 },
+          motif: { kind: 'rower', x: -4.5, y: 2.8, z: -24, size: 6.4, grow: 1.8, crumbleAt: 24.5 },
         },
         {
           at: 19.4,
           line: T.vision[4],
-          motif: { kind: 'rower', x: 5.2, y: 2.4, z: -12, size: 8, grow: 1.8 },
-          camera: { yaw: -0.06, pitch: -0.02, fov: -8, ease: 3.5 },
+          motif: { kind: 'rower', x: 4.5, y: 2.8, z: -25, size: 6.4, grow: 1.8, crumbleAt: 24.5 },
+          camera: { yaw: 0, pitch: 0.02, fov: -2, ease: 3.5 },
         },
         {
           at: 25.2,
           line: T.vision[5],
-          motif: { kind: 'wave', x: 0, y: 1.1, z: -7, size: 16, grow: 2.4, ink: 'shadow', opacity: 0.55 },
+          motif: { kind: 'wave', x: 0, y: 2.1, z: -30, size: 19, grow: 2.4, ink: 'shadow', opacity: 0.55 },
           exposure: 0.86,
         },
       ],
@@ -170,6 +172,9 @@ export const prologue: Act = {
     d.place(raft.wood, 'saltWood', { ...raftPlacement, block: 2.25 });
     d.place(raft.rope, 'rope', raftPlacement);
     d.place(stoneAnchor(1.1, 112), 'darkRock', { x: -5.4, z: 0.6, yaw: 0.9, tiltX: 1.2, block: 0.8 });
+    for (const [x, z, scale] of [[-14, 5, 0.8], [16, -10, 1.1], [-12, -15, 0.65]]) {
+      d.place(coastalLeaves(scale!, 170 + x!), 'olive', { x: x!, z: z!, lift: -0.025, yaw: 0.5 });
+    }
 
     // ── 刻过名字的船板 ──
     const namePlank = weatheredNamePlank(120);

@@ -50,7 +50,11 @@ const FRAG = /* glsl */ `
   varying vec2 vUv;
   void main() {
     float a = texture2D(uMap, vUv).a;
-    gl_FragColor = vec4(uColor * uIntensity, a * uIntensity);
+    // Do not multiply intensity twice via source colour and alpha blending.
+    // A thin dark-gold shoulder preserves contrast over sunlit sand.
+    float ring = (1.0 - smoothstep(0.34, 0.42, length(vUv - 0.5))) * smoothstep(0.23, 0.31, length(vUv - 0.5));
+    vec3 color = mix(uColor, vec3(0.22, 0.12, 0.045), ring * 0.7);
+    gl_FragColor = vec4(color, max(a, ring * 0.4) * uIntensity);
   }
 `;
 
@@ -67,12 +71,12 @@ export class Glint {
       fragmentShader: FRAG,
       transparent: true,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: THREE.NormalBlending,
       uniforms: {
         uMap: { value: glintTexture() },
         uColor: { value: new THREE.Color(color) },
         uIntensity: { value: 0 },
-        uSize: { value: size },
+        uSize: { value: size * 1.3 },
       },
     });
     this.mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.material);
@@ -100,7 +104,7 @@ export class Glint {
     }
     // 极慢的呼吸，靠得越近越明显
     const breath = 0.5 + 0.5 * Math.sin(elapsed * 0.9 + this.phase);
-    this.material.uniforms.uIntensity!.value = 0.07 + breath * 0.05 + this.focus * 0.22;
+    this.material.uniforms.uIntensity!.value = 0.3 + breath * 0.08 + this.focus * 0.38;
   }
 
   dispose(): void {

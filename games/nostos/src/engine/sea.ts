@@ -20,6 +20,9 @@ const VERT = /* glsl */ `
   uniform float uTime;
   uniform float uWaveHeight;
   uniform float uWaveChop;
+  uniform float uSculptedStyle;
+  uniform vec2 uShoreCenter;
+  uniform float uShoreRadius;
 
   varying vec3 vWorldPos;
   varying vec3 vNormal;
@@ -45,6 +48,10 @@ const VERT = /* glsl */ `
     o += gerstner(p, vec2(-0.2, -1.0), 0.06 * uWaveChop, 3.6, 1.55, crest);
     o.y *= uWaveHeight * 3.0;
     o.xz *= uWaveHeight * 1.6;
+    // Fade displacement under the island, keeping offshore storm motion intact.
+    // Without this envelope, the infinite ocean rises through low inland basins.
+    float offshore = smoothstep(uShoreRadius * 0.68, uShoreRadius * 1.08, length(p - uShoreCenter));
+    o *= mix(1.0, offshore, uSculptedStyle);
     return o;
   }
 
@@ -168,6 +175,7 @@ export class Sea {
       fragmentShader: FRAG,
       uniforms: {
         uTime: sharedUniforms.uTime,
+        uSculptedStyle: sharedUniforms.uSculptedStyle,
         uCameraPos: sharedUniforms.uCameraPos,
         uSunDir: sharedUniforms.uSunDir,
         uSunColor: sharedUniforms.uSunColor,
