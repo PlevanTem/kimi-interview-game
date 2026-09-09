@@ -1,0 +1,82 @@
+[
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "style-sync",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Later scenes inherited sculptedStyle=0, old rounded scatter and excessive grain/halation",
+    "change": "Enable the existing sculpted family for all later environments; use seaRock and focal clearings",
+    "evidence": "119 tests + full late-act browser pass; later all report sculptedStyle=1",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "circe",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Detached vine segments; sail cloth loom; legacy billboard NPC; column occlusion",
+    "change": "Continuous vine portal, warp-weighted loom, clothed 3D Circe offset from columns and loom focus",
+    "evidence": "circe-portal.jpg; circe-face-final.jpg; NPC and traversal contracts",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "memory",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Absolute stage height and close giant planes; first distance-only correction was too small",
+    "change": "Viewer-eye anchor; 26m minimum distance; normalized 11.5–13m subject size; clamped camera cues and retiring subjects",
+    "evidence": "all five aperture contracts; circe-memory-final.jpg",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "nekyia",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Unworked boulder boundary and undifferentiated billboard ghost",
+    "change": "Worked two-face boundary with erased central field and thin incision-detail geometry; short-tunic young sailor",
+    "evidence": "nekyia-boundary.jpg; nekyia-young-sailor.jpg; conversation browser pass",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "sirens",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Rope represented by five flattened boulders; random rocks occluded tail",
+    "change": "3D coil, knot, strand marks and frayed end on enlarged dark stone; clearing around clues",
+    "evidence": "sirens-rope.jpg; deterministic geometry and interaction checks",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "calypso",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "20 stumps plus an extra axe stump; absent water; robe was flat cloth; NPC inside cave wall; robe stand crossed plateau falloff",
+    "change": "20 shared stump placements including axe; four animated channels; volumetric hanging robe; visible named NPC; terrace flat core covers stand feet",
+    "evidence": "calypso-four-springs.jpg; calypso-cave-final.jpg; exact count, continuous rills, support-height and traversal tests",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "ithaca-ending",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "No smoke emitter; sealed plain roof; final vision jumped directly to end overlay",
+    "change": "Layered house details and roof-light opening; hearth smoke; 18-second axis approach with skip/pause/reduced-motion support",
+    "evidence": "ithaca-home-smoke.jpg; homecoming-start/mid/end.jpg; natural completion, pause and skip browser checks",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  },
+  {
+    "runId": "run-20260909-late-acts-r1",
+    "id": "verification-corrections",
+    "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+    "status": "verified_pending_human_review",
+    "rootCause": "Initial home detail erosion grids exceeded 20k; legacy tests assumed only first-three styles and billboard NPCs; robe support remained 6.4cm short at radius 11",
+    "change": "Use planar low-density beams; update contracts to explicit new user scope; compute support from plateau blend and widen to radius 12.5",
+    "evidence": "Final 120 tests passed; no budgets relaxed",
+    "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json"
+  }
+]

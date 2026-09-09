@@ -1,5 +1,7 @@
+import { seaRock as boulder } from '../../world/sea-worn';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
-import { boatHull, boulder, plank, pole, ribBone, sailCloth, shipRib, stoneBlock } from '../../world/props';
+import { boatHull, plank, pole, ribBone, sailCloth, shipRib, stoneBlock } from '../../world/props';
 import type { Act } from './types';
 
 const T = TEXT.sirens;
@@ -96,6 +98,7 @@ export const sirens: Act = {
       },
     ],
     vision: {
+      viewerAnchored: true,
       id: 'sirens.vision',
       duration: 82,
       stage: { x: 1, y: 0.6, z: -27 },
@@ -246,19 +249,13 @@ export const sirens: Act = {
     d.place(pole(4.6, 0.19, 1650), 'driftwood', { x: -3, z: -20, block: 0.6 });
     d.place(sailCloth(2.6, 3.2, 0.5, 1651), 'cloth', { x: -3.2, z: -20.3, lift: 3.2, yaw: 0.4 });
 
-    // ── 带牙印的绳（核心记忆）：盘在一块礁上 ──
-    d.place(stoneBlock(1.6, 0.55, 1.4, 1660, 0.08), 'basalt', { x: 1, z: -27 });
-    for (let i = 0; i < 5; i += 1) {
-      d.place(boulder(0.42 - i * 0.05, 1661 + i, 1), 'cloth', {
-        x: 1 + Math.cos(i * 1.3) * 0.25,
-        z: -27 + Math.sin(i * 1.3) * 0.25,
-        lift: 0.56 + i * 0.055,
-        scale: [1.5, 0.22, 1.5],
-      });
-    }
+    // 可辨认的编绳，盘圈之间保持负形。
+    d.place(stoneBlock(2.8, 0.55, 2.4, 1660, 0.04), 'basalt', { x: 1.25, z: -27 });
+    placeNarrativeAsset(d, 'game.nostos.prop.braided_rope', { x: 1, z: -27, lift: 0.56 });
 
     // ── 礁石：把水道两侧收紧，雾之外什么也看不见 ──
     d.scatter(64, {
+      exclude: sirens.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 16,
       outerRadius: 40,
       minSpacing: 2.6,

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "calypso-authored-space",
+    "problem": "Three enlarged cave rocks and a depth-aligned display of domestic objects did not express the approved direction",
+    "rootCause": "No habitable shell, no dedicated heightfield or coordinated layout",
+    "change": "Authored cave shell and wall collision proxies; shared meadow terrain for runtime/chart; separate loom, garment and host; grouped twenty stumps; five living cedars",
+    "verification": "calypso.test.ts; narrative-assets.test.ts; after/clearing.jpg; after/domestic.jpg",
+    "status": "implementation_candidate"
+  },
+  {
+    "id": "four-rills-and-paths",
+    "problem": "Four short water strips ended inland and repeated 224 bank stones",
+    "rootCause": "Independent decorative water paths sampled an unrelated noisy ground",
+    "change": "Four shared sampled routes with monotonic water elevations and sea outlets; broad traversable swales; sparse ground-following footpaths; owned moving glints only",
+    "firstTest": "Main path gradient 0.149 exceeded tan(8deg)=0.141",
+    "correction": "Widened bank transition, did not relax the gradient test",
+    "verification": "calypso.test.ts; after/four-rills.jpg; keyboard traversal in calypso-r1.spec.ts",
+    "status": "implementation_candidate"
+  },
+  {
+    "id": "calypso-identity-and-assets",
+    "problem": "Generic hair and mantle did not match caramel shoulder-front braid and sleeveless long dress",
+    "rootCause": "Shared generic character morphology instead of a dedicated silhouette",
+    "change": "Dedicated 10122-vertex figure; seven braid lobes; neckline, bare arms, gold-ochre belt; wall-hung completed garment, concave seat, two separated pottery vessels and worn axe",
+    "firstTest": "Stump geometry 528 exceeded its 500-vertex budget",
+    "correction": "Reduced ring tessellation to 456 vertices, without lowering acceptance requirements",
+    "verification": "calypso.test.ts; after/host.jpg; after/workbench-character.jpg",
+    "status": "implementation_candidate"
+  },
+  {
+    "id": "first-capture-corrections",
+    "problem": "Pale paths read as plaster, a square soot patch read as a window, cave exterior looked too regular",
+    "evidence": "first browser capture inspected during this turn",
+    "rootCause": "Path used plaster surface; soot was rectangular opaque geometry; cave lacked secondary silhouette breaks",
+    "change": "Scoped earth/water/linen pigment mixes; darker cave recess; removed square patch and added three sparse rock ledges",
+    "verification": "final fixed-camera screenshots and repeat browser run",
+    "status": "implementation_candidate"
+  },
+  {
+    "id": "test-contention",
+    "problem": "Unrelated exhaustive olive-tree test timed out at 5000ms during concurrent software-rendered browser and parallel test run",
+    "evidence": "Initial full suite: 131 passed, one timeout; no assertion failure in that test",
+    "rootCause": "CPU contention supported by isolated rerun completing the same test in 2100ms",
+    "change": "Run full suite with maxWorkers=1; no test timeout or assertion changed",
+    "after": "14 files / 132 tests passed",
+    "status": "verified"
+  },
+  {
+    "id":"whole-frame-performance-and-review",
+    "problem":"Draw-call counter reported the final post pass only; 1080p review timed out",
+    "rootCause":"Three.js info autoReset cleared each render call. Slow software rendering also affected browser review; its precise timeout cause is not fully isolated.",
+    "change":"Reset render info once per complete frame; finish test arrival at 720p before resizing to 1080p; keep runtime quality and test assertions unchanged",
+    "verification":"final typecheck/build; after/performance.json; after/workbench.json; after/clearing-1080.jpg",
+    "after":"1080p review passed (exit 0); whole-frame max calls 53; resources stable. SwiftShader median 1.5 FPS fails target; hardware GPU unknown.",
+    "status":"functional_verified_performance_unmet"
+  }
+]

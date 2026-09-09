@@ -124,6 +124,8 @@ export interface VisionBeat {
 }
 
 export interface VisionDef {
+  /** Later-act gallery anchored at the viewer eye; never absolute terrain height. */
+  viewerAnchored?: boolean;
   id: string;
   /** 总时长（秒） */
   duration: number;

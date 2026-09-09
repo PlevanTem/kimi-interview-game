@@ -1,0 +1,99 @@
+{
+  "runId": "run-20260909-late-acts-r1",
+  "verifiedAt": "2026-09-09T04:18:20.163Z",
+  "status": "verified_candidate_pending_human_review",
+  "revision": "2026.09.09-late-r1",
+  "styleBibleVersion": 7,
+  "checks": [
+    {
+      "command": "npm run test:nostos",
+      "exitCode": 0,
+      "result": "13 files; 120 tests passed (final terrain/geometry state)"
+    },
+    {
+      "command": "npm run assets:nostos",
+      "exitCode": 0,
+      "result": "20 shared narrative assets; generated asset-library.html"
+    },
+    {
+      "command": "npm run build:nostos",
+      "exitCode": 0,
+      "result": "TypeScript and production Vite build passed"
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT=4178; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts late-acts.spec.ts",
+      "exitCode": 0,
+      "result": "1 passed; later five acts, NPC interactions, memory, natural ending and pause freeze; 8.7m"
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT=4179; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts late-workbench.spec.ts",
+      "exitCode": 0,
+      "result": "2 passed; workbench all 20 cards, final face/memory/cave closeups and ending skip; 2.0m"
+    },
+    {
+      "command": "$env:NOSTOS_E2E_PORT=4179; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts late-workbench.spec.ts --grep \"final close-up\"",
+      "exitCode": 0,
+      "result": "1 passed on final terrain support correction; 2.4m"
+    },
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "npm run validate:context",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "npm run audit:assets",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "GET http://127.0.0.1:4175/src/content/revision.ts",
+      "exitCode": 0,
+      "result": "HTTP 200; 2026.09.09-late-r1"
+    }
+  ],
+  "evidenceDirectory": "games/nostos/runs/run-20260909-late-acts-r1/after/",
+  "browserErrors": [],
+  "actStaticVertices": [
+    {
+      "act": "circe",
+      "vertices": 158148,
+      "sculptedStyle": 1
+    },
+    {
+      "act": "nekyia",
+      "vertices": 49728,
+      "sculptedStyle": 1
+    },
+    {
+      "act": "sirens",
+      "vertices": 83544,
+      "sculptedStyle": 1
+    },
+    {
+      "act": "calypso",
+      "vertices": 70068,
+      "sculptedStyle": 1
+    },
+    {
+      "act": "ithaca",
+      "vertices": 45636,
+      "sculptedStyle": 1
+    }
+  ],
+  "limitations": [
+    "NPCs are authored 3D sculptural poses, not skeletal or lip-synced animation",
+    "Four rills are animated authored water ribbons, not a fluid simulation",
+    "Browser verification used software-rendered Chromium at 1280x720; no hardware FPS or Gate 4 certification",
+    "No merge or push in this run; human visual review remains required"
+  ]
+}

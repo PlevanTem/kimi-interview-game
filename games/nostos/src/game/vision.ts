@@ -1,3 +1,4 @@
+import { frameLateMemory } from './late-cinema';
 import * as THREE from 'three';
 import { PIGMENT, VISION_GRADE } from '../content/palette';
 import { NO_SHADOW_LAYER } from '../engine/shadow';
@@ -144,12 +145,14 @@ export class VisionStage {
   }
 
   /** 开演：按定义把所有剪影建好但不显示，等各自的拍号到了再"画"上去。 */
-  begin(def: VisionDef, facingYaw: number): VisionTimeline {
+  begin(def: VisionDef, facingYaw: number, eye?: THREE.Vector3): VisionTimeline {
+    if (def.viewerAnchored) def = frameLateMemory(def);
     this.clear();
     const timeline = new VisionTimeline(def);
     this.timeline = timeline;
 
     this.group.position.set(def.stage.x, def.stage.y, def.stage.z);
+    if (def.viewerAnchored && eye) this.group.position.copy(eye);
     // 舞台整体朝向玩家进入幻象时的视线，构图才成立
     this.group.rotation.set(0, facingYaw, 0);
     this.group.visible = true;

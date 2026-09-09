@@ -1,0 +1,14 @@
+{
+  "runId": "run-20260909-calypso-build-r1",
+  "request": "开始修改代码",
+  "date": "2026-09-09",
+  "decisionMaker": "human_user",
+  "authorization": "Implement the preceding Calypso R1 design on the existing Three.js runtime; no merge or release approval inferred",
+  "design": "games/nostos/docs/CALYPSO_ENVIRONMENT_ASSET_PLAN.md",
+  "assetPlan": "games/nostos/runs/run-20260909-calypso-design-r1/asset-plan.json",
+  "scope": "calypso scene, scoped terrain profile, dedicated assets, shared resolver, workbench and regressions",
+  "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+  "preExistingDirtyWork": true,
+  "gate3": "not_started; user-directed implementation candidate only",
+  "excluded": ["main merge", "new dialogue", "new mechanics", "other-scene redesign"]
+}

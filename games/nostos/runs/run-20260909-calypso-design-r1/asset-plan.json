@@ -1,0 +1,49 @@
+{
+  "runId": "run-20260909-calypso-design-r1",
+  "status": "candidate_not_implemented",
+  "units": "meters",
+  "scope": "calypso_only",
+  "camera": { "eyeHeight": 1.68, "defaultFov": 62, "testFov": [50, 62, 80] },
+  "spatialPolicy": { "islandRadiusApprox": 40, "mainPathWidth": [2.4, 3.2], "minSecondaryPathWidth": 1.5, "targetMaxSlopeDegrees": 8, "targetMaxStep": 0.12, "jumpRequired": false, "y": "resolve from new terrain; coordinates are proposals" },
+  "zones": [
+    { "id": "A", "name": "inhabited_cave", "centerXZ": [-12, -13] },
+    { "id": "B", "name": "four_rills_meadow", "centerXZ": [-12, 3] },
+    { "id": "C", "name": "seaward_solitude", "centerXZ": [24, 14] }
+  ],
+  "interactions": [
+    { "id": "calypso.hollow", "kind": "clue", "proposedXZ": [24, 14] },
+    { "id": "calypso.spring", "kind": "clue", "proposedXZ": [-12, 3] },
+    { "id": "calypso.stumps", "kind": "clue", "proposedXZ": [10, -5] },
+    { "id": "calypso.loom", "kind": "clue", "proposedXZ": [-14, -9] },
+    { "id": "calypso.robe", "kind": "clue", "proposedXZ": [-17, -13] },
+    { "id": "calypso.host", "kind": "talk", "proposedXZ": [-7, -9] },
+    { "id": "calypso.axe", "kind": "memory", "proposedXZ": [10, -19], "seconds": 66 },
+    { "id": "calypso.depart", "kind": "depart", "proposedXZ": [6, 36], "requiresMemory": true }
+  ],
+  "stumpGroups": [
+    { "centerXZ": [10, -5], "count": 6, "includesAxeStump": false },
+    { "centerXZ": [18, -11], "count": 7, "includesAxeStump": false },
+    { "centerXZ": [8, -17], "count": 7, "includesAxeStump": true }
+  ],
+  "rills": { "branchCount": 4, "directions": ["west", "north", "southwest", "east"], "sourceXZ": [-12, 3], "widthRange": [0.45, 0.8], "depthTargetRange": [0.08, 0.15], "endpointRule": "each branch reaches actual terrain/sea intersection", "heightRule": "non-increasing water elevation downstream; author channel and walkable crossings", "status": "requires terrain blockout validation" },
+  "assets": [
+    { "id": "game.nostos.environment.calypso_cave", "registration": "proposed_unallocated", "action": "new", "count": 1, "targetMaxVerticesTotal": 8000 },
+    { "id": "game.nostos.environment.calypso_four_rills", "registration": "proposed_unallocated", "action": "new_scene_layout", "count": 1, "targetMaxVerticesTotal": 6000 },
+    { "id": "game.nostos.environment.calypso_cedar", "registration": "proposed_unallocated", "action": "new", "countRange": [4, 6], "variants": 2, "targetMaxVerticesEach": 1200 },
+    { "id": "game.nostos.environment.coastal_leaves", "registration": "existing", "action": "reuse_recompose", "countRange": [8, 12] },
+    { "id": "game.nostos.environment.sea_rock", "registration": "existing", "action": "reuse_recompose", "groupCountRange": [6, 8], "perGroupRange": [1, 3] },
+    { "id": "game.nostos.prop.calypso_seat_rock", "registration": "proposed_unallocated", "action": "new", "count": 1, "targetMaxVerticesTotal": 2000 },
+    { "id": "game.nostos.prop.cedar_stump", "registration": "existing", "action": "revise_variants_placement", "count": 20, "variants": 3, "targetMaxVerticesEach": 500 },
+    { "id": "game.nostos.prop.calypso_axe", "registration": "proposed_unallocated", "action": "new_hero", "count": 1, "targetMaxVerticesTotal": 1500 },
+    { "id": "game.nostos.prop.weighted_loom", "registration": "existing", "action": "reuse_structure_restage_calypso", "count": 1, "regressionConsumers": ["circe", "asset_workbench"] },
+    { "id": "game.nostos.prop.unworn_robe", "registration": "existing", "action": "revise_hanging", "count": 1 },
+    { "id": "game.nostos.character.calypso", "registration": "existing", "action": "revise_calypso_only", "count": 1, "targetMaxVerticesTotal": 12000, "identity": ["caramel_hair", "single_braid_over_shoulder", "sleeveless_low_neck_long_greek_dress", "gold_ochre_belt"] },
+    { "id": "game.nostos.prop.calypso_domestic_set", "registration": "proposed_unallocated", "action": "new", "count": 1, "contents": { "hearth": 1, "folded_mat": 1, "pottery": 2, "weaving_tool_group": 1 }, "targetMaxVerticesTotal": 3000 },
+    { "id": "game.nostos.vfx.late_scene_effects", "registration": "existing", "action": "reuse_lifecycle_scene_specific_water", "regressionConsumers": ["ithaca", "pause", "reduced_motion", "dispose"] },
+    { "id": "game.nostos.texture.wood_grain", "registration": "existing", "action": "reuse_local_uv" },
+    { "id": "game.nostos.texture.pottery_paint", "registration": "existing", "action": "reuse_sparse_outer_band" },
+    { "id": "game.nostos.material.painted_clay", "registration": "existing", "action": "reuse" }
+  ],
+  "productionGate": "human visual review required before formal production",
+  "excluded": ["runtime edits", "global style changes", "new dialogue", "new quest gates", "sitting mechanic", "large seamless world", "unverified skeletal animation", "photoreal PBR", "automatic merge"]
+}

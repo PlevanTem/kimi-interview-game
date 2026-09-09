@@ -1,0 +1,27 @@
+{
+  "runId": "run-20260909-calypso-build-r1",
+  "recordedAt": "2026-09-09T16:01:00+08:00",
+  "decisionMaker": "human_user",
+  "request": "没问题推送合入",
+  "inputRevision": "2026.09.09-calypso-r1",
+  "styleBibleVersion": 7,
+  "reviewedPreview": "http://127.0.0.1:4175/?preview=calypso",
+  "result": "accept_current_visual_revision_and_authorize_main_integration",
+  "reason": "User accepted the local preview after the implementation and verification handoff.",
+  "scope": "Current NOSTOS later-act branch, including Calypso R1 and its previously requested shared later-act assets, scene integration and homecoming ending",
+  "sourceBranch": "codex/late-acts-art",
+  "targetBranch": "main",
+  "remoteBase": "10b4537576805dafefe7a5108119dad227e52202",
+  "excluded": [".agents/skills/disciplines", "games/nostos/docs/test-architecture.html", "Python cache files"],
+  "releaseCandidateApproved": false,
+  "performanceCaveat": "SwiftShader median approximately 1.5 FPS; hardware GPU unverified. Visual acceptance and merge permission do not mark Gate 4 passed.",
+  "priorVerification": "verification.json",
+  "preMergeChecks": [
+    {"command":"node node_modules/vitest/vitest.mjs run --config=games/nostos/vitest.config.ts --maxWorkers=1","exitCode":0,"result":"14 files; 132 passed; 27.37 seconds"},
+    {"command":"npm run build:nostos","exitCode":0,"result":"63 modules transformed; built in 5.55 seconds"},
+    {"command":"npm run validate:library","exitCode":0,"result":"PASS"},
+    {"command":"npm run validate:context","exitCode":0,"result":"PASS"},
+    {"command":"npm run audit:assets","exitCode":0,"result":"PASS"}
+  ],
+  "testMaintenance":"Two legacy workbench assertions now derive the expected card count from NARRATIVE_ASSETS, matching the already verified R1 workbench test."
+}

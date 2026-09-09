@@ -126,6 +126,7 @@ interface Part {
 }
 
 interface ShootOptions {
+  environment?: EnvName;
   /**
    * 镜头仰角系数，默认 0.38（略高于水平的四分之三视角）。
    * 高瘦的东西（树、柏、柱）要调低：从高处看树，树冠会把树干整个盖住，
@@ -199,6 +200,7 @@ function shootParts(
   camera.lookAt(0, 0, 0);
   camera.updateProjectionMatrix();
 
+  applyEnvToMaterials(options.environment ? ENV[options.environment] : KEY_LIGHT);
   tickMaterials(1.5, camera.position);
   renderer.render(scene, camera);
 
@@ -279,7 +281,7 @@ const TOC: Array<[string, string]> = [
   ['texture', '程序纹理'],
   ['props', '构件几何'],
   ['prologue-hero-assets', '第0幕英雄资产'],
-  ['act12-hero-assets', '第1、2幕场景与道具'],
+  ['act12-hero-assets', '全幕人物、场景与道具'],
   ['coastal-assets', '前三幕次级资产'],
   ['plant', '植物'],
   ['terrain', '地形'],
@@ -711,25 +713,27 @@ function PROPS_SPEC(): Record<string, { make: () => THREE.BufferGeometry; call: 
 // Asset console and scenes resolve exactly the same typed IDs / factories / materials.
 {
   const s = section({
-    id: 'act12-hero-assets', title: '六点六、第1、2幕人物、场景与道具', count: Object.keys(NARRATIVE_ASSETS).length,
-    blurb: '前三幕现实人物与叙事资产，含编织采集篮和陶绘器身；全部与场景共用稳定ID和新版材质。',
+    id: 'act12-hero-assets', title: '六点六、全幕人物、场景与叙事道具', count: Object.keys(NARRATIVE_ASSETS).length,
+    blurb: '卡吕普索 R1：洞居、四泉、足迹、雪松、凹岩、斧与专属肩前辫人物。其余幕保留现有模型；全部与游戏共用稳定ID。',
     source: 'src/world/narrative-assets.ts · src/game/scenes/lotus.ts · cyclops.ts',
   });
   const grid = el('div', 'grid hero-grid');
   for (const id of Object.keys(NARRATIVE_ASSETS) as NarrativeAssetId[]) {
     const c = card(), cv = previewCanvas(300, 240), cap = el('figcaption');
+    c.dataset.assetId = id;
     cap.append(el('div', 'name', NARRATIVE_ASSETS[id].name), el('div', 'id', id));
     c.append(cv, cap); grid.append(c);
     shootParts(resolveNarrativeAsset(id).map((p) => ({ geometry: p.geometry, material: SURFACE[p.surface]() })), cv,
-      { elevation: id.includes('tree') || id.includes('cave') || id.includes('character') ? 0.18 : 0.7 });
+      { elevation: id.includes('tree') || id.includes('cedar') || id.includes('cave') || id.includes('character') ? 0.18 : 0.7,
+        environment: id.includes('calypso') || id.includes('unworn_robe') || id.includes('cedar_stump') ? 'endlessDay' : undefined });
   }
   s.append(grid); main.append(s);
 }
 
 // Current first-three-scene secondary family, never silently substituted with legacy P.*.
 {
-  const s = section({ id: 'coastal-assets', title: '六点七、前三幕次级资产', count: 8,
-    blurb: '当前海蚀切面家族；每项直接调用场景同一稳定ID。旧通用构件保留用于后五幕。', source: 'src/world/sea-worn.ts' });
+  const s = section({ id: 'coastal-assets', title: '六点七、海蚀切面次级资产', count: 8,
+    blurb: '全八幕共享的海蚀切面家族；每项直接调用场景同一稳定ID。', source: 'src/world/sea-worn.ts' });
   const items: Array<[keyof typeof COASTAL_ASSETS, () => THREE.BufferGeometry, keyof typeof SURFACE]> = [
     ['game.nostos.environment.sea_rock', () => COASTAL_ASSETS['game.nostos.environment.sea_rock'](1, 31), 'darkRock'],
     ['game.nostos.prop.cut_stone', () => COASTAL_ASSETS['game.nostos.prop.cut_stone'](1.6, 0.3, 1, 7), 'limestone'],

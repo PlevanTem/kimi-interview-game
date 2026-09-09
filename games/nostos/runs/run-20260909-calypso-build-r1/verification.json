@@ -1,0 +1,33 @@
+{
+  "runId": "run-20260909-calypso-build-r1",
+  "revision": "2026.09.09-calypso-r1",
+  "status": "functional_checks_passed_visual_pending_performance_target_unmet",
+  "unitTests": {"command":"node node_modules/vitest/vitest.mjs run --config=games/nostos/vitest.config.ts --maxWorkers=1","exitCode":0,"files":14,"passed":132},
+  "workbenchBuild": {"command":"npm run assets:nostos","exitCode":0,"output":"asset-library: games/nostos/docs/asset-library.html (1833 kB, single file)"},
+  "typecheck": {"command":"npm run typecheck:nostos","exitCode":0},
+  "gameBuild": {"command":"npm run build:nostos","exitCode":0,"output":"63 modules transformed; index-_DwUzg_J.js"},
+  "library": {"command":"npm run validate:library","exitCode":0},
+  "browserInteraction": {
+    "command":"$env:NOSTOS_E2E_PORT='4180'; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts --grep=calypso-r1",
+    "testResult":"passed in final-art combined review run; whole combined command exited 1 because its separate 1080p test timed out",
+    "evidence":"after/browser.json",
+    "checks":["real W-key movement","five clues","NPC dialogue","Esc revision","memory aperture","paused memory clock","departure into Ithaca"],
+    "pageErrors":[],
+    "note":"Final art verified; later renderer.info-only fix was covered by final build, performance and 1080p review. A subsequent redundant combined run was cancelled and is not reported as passed."
+  },
+  "workbench1080": {
+    "command":"$env:NOSTOS_E2E_PORT='4180'; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts --grep=calypso-review",
+    "exitCode":0,"passed":1,"elapsedSeconds":43.1,"cards":27,"viewport":[1920,1080],
+    "evidence":["after/workbench.json","after/clearing-1080.jpg","after/workbench-character.jpg","after/workbench-assets.jpg"],
+    "firstAttempt":"Timed out during screenshot. Retry completes arrival at 720p, then resizes and waits for rendered frames at 1080p. No assertion, screenshot resolution or timeout relaxed."
+  },
+  "performance": {
+    "command":"$env:NOSTOS_E2E_PORT='4180'; node node_modules/@playwright/test/cli.js test --config=games/nostos/playwright.config.ts --grep=calypso-perf",
+    "testResult":"resource-stability assertions passed in combined run; combined command subsequently cancelled during redundant interaction test",
+    "evidence":"after/performance.json","renderer":"ANGLE SwiftShader software renderer","seconds":60.56,"medianFps":1.50015,"p95Ms":800,"maxWholeFrameDrawCalls":53,"geometryRange":[44,44],"textureRange":[9,9],"median55fpsMet":false,"hardwareGpuPerformance":"unverified"
+  },
+  "knownLimitations":["Human art approval pending: cave silhouette, facial expression and garment hanging","Software-rendered performance target unmet; no hardware GPU performance claim","Calypso remains a static model; no new character animation"],
+  "preview":"http://127.0.0.1:4175/?preview=calypso",
+  "humanVisualAcceptance": false,
+  "mergePerformed": false
+}

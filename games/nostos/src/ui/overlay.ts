@@ -435,7 +435,8 @@ export class Overlay {
     this.actCardTimer = seconds;
   }
 
-  setSkipHint(visible: boolean): void {
+  setSkipHint(visible: boolean, label: string = U.skipHint): void {
+    this.skipHint.textContent = label;
     this.skipHint.classList.toggle('visible', visible);
   }
 

@@ -1,0 +1,44 @@
+import { mkdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { test, expect } from '@playwright/test';
+import type {} from '../../src/probe';
+import { ART_REVISION } from '../../src/content/revision';
+import { NARRATIVE_ASSETS } from '../../src/world/narrative-assets';
+test('late-asset workbench renders final shared models @late-workbench',async({page})=>{
+ test.setTimeout(360000);
+ const dir=fileURLToPath(new URL('../../runs/run-20260909-late-acts-r1/after/',import.meta.url));mkdirSync(dir,{recursive:true});
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/docs/asset-library.html',{waitUntil:'domcontentloaded'});
+ await expect(page.locator('html')).toHaveAttribute('data-revision',ART_REVISION);
+ await expect(page.locator('#act12-hero-assets canvas')).toHaveCount(Object.keys(NARRATIVE_ASSETS).length);
+ await page.locator('#act12-hero-assets').scrollIntoViewIfNeeded();
+ await page.locator('#act12-hero-assets').screenshot({path:dir+'late-workbench.jpg',type:'jpeg',quality:90});
+ expect(errors).toEqual([]);
+});
+
+test('final close-up geometry and memory framing @late-final',async({page})=>{
+ test.setTimeout(360000);
+ const dir=fileURLToPath(new URL('../../runs/run-20260909-late-acts-r1/after/',import.meta.url));
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('/?preview=circe');await page.waitForFunction(()=>window.__nostos?.state().phase==='roaming');
+ await page.evaluate(()=>window.__nostos!.view({x:-12,z:-10.8,yaw:0,pitch:-.2}));
+ await page.waitForTimeout(1200);
+ await page.screenshot({path:dir+'circe-face-final.jpg',type:'jpeg',quality:90});
+ await page.evaluate(()=>window.__nostos!.teleport('circe.cup'));
+ await page.waitForFunction(()=>window.__nostos!.state().focus==='circe.cup');
+ await page.keyboard.press('e');await page.evaluate(()=>window.__nostos!.skipNarration());
+ await page.waitForFunction(()=>window.__nostos!.state().visionTime>3);
+ await page.screenshot({path:dir+'circe-memory-final.jpg',type:'jpeg',quality:90});
+ await page.keyboard.press('Space');await page.waitForFunction(()=>window.__nostos!.state().phase==='roaming');
+ await page.evaluate(()=>window.__nostos!.gotoAct(6));await page.waitForFunction(()=>window.__nostos!.state().phase==='roaming');
+ await page.evaluate(()=>window.__nostos!.view({x:-9,z:-12,yaw:0,pitch:-.12}));await page.waitForTimeout(1200);
+ await page.screenshot({path:dir+'calypso-cave-final.jpg',type:'jpeg',quality:90});
+ await page.evaluate(()=>window.__nostos!.gotoAct(7));await page.waitForFunction(()=>window.__nostos!.state().phase==='roaming');
+ await page.evaluate(()=>window.__nostos!.teleport('ithaca.threshold'));
+ await page.waitForFunction(()=>window.__nostos!.state().focus==='ithaca.threshold');
+ await page.keyboard.press('e');await page.evaluate(()=>window.__nostos!.skipNarration());
+ await page.waitForFunction(()=>window.__nostos!.state().phase==='vision');await page.keyboard.press('Space');
+ await page.waitForFunction(()=>window.__nostos!.state().phase==='epilogue');await page.keyboard.press('Space');
+ await page.waitForFunction(()=>window.__nostos!.state().phase==='ended');
+ expect(errors).toEqual([]);
+});

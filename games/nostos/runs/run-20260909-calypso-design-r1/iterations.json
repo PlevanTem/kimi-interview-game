@@ -1,0 +1,15 @@
+[
+  {
+    "runId": "run-20260909-calypso-design-r1",
+    "id": "reference-to-environment-assets-r1",
+    "status": "design_candidate_pending_human_review",
+    "problem": "Object counts alone do not express the simplified first-person reference or seven-year residence",
+    "evidence": ["input-snapshot.json", "games/nostos/src/game/scenes/calypso.ts", "games/nostos/src/world/late-assets.ts", "games/nostos/src/world/late-effects.ts"],
+    "rootCause": "Three enlarged cave rocks, domestic objects sharing one depth, repeated bank stones and generic character morphology replace authored spatial and identity design",
+    "minimumChange": "Design-only connected A/B/C zones, sparse nature, authored cave and character, explicit asset reuse/proposals and unchanged narrative contract",
+    "before": "No spatially explicit Calypso art specification; SCENES retains obsolete silhouette and overexposure direction",
+    "after": "Reference-backed candidate recorded; no runtime or aesthetic acceptance claimed",
+    "verification": "verification.json",
+    "remaining": ["human visual review", "terrain/water graybox", "first-person validation", "asset production", "runtime/workbench integration", "performance verification"]
+  }
+]

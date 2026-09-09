@@ -1,3 +1,4 @@
+import { LateEffects } from '../world/late-effects';
 import * as THREE from 'three';
 import { AUDIO, type Soundscape } from '../engine/audio';
 import { applyEnvToMaterials, sharedUniforms } from '../engine/materials';
@@ -34,6 +35,7 @@ export class Stage {
   vertexCount = 0;
 
   private dresser: Dresser | null = null;
+  private lateEffects: LateEffects | null = null;
   private readonly glints = new Map<string, Glint>();
   private readonly npcs = new Map<string, Motif>();
 
@@ -64,6 +66,8 @@ export class Stage {
 
     this.dresser = new Dresser(this.scene, this.terrain, act.terrain.seed);
     act.dress(this.dresser);
+    this.lateEffects = new LateEffects(act.def.id, this.terrain);
+    this.scene.add(this.lateEffects.group);
     const committed = this.dresser.commit();
     this.blockers = this.dresser.blockers;
     this.vertexCount = committed.vertexCount;
@@ -147,6 +151,7 @@ export class Stage {
     hintId: string | null,
     cameraPosition: THREE.Vector3,
   ): void {
+    this.lateEffects?.update(dt, sharedUniforms.uArtMotion.value > 0);
     this.sky.follow(cameraPosition);
     this.sea.follow(cameraPosition, this.act.terrain.waterLevel ?? 0);
     // 被引路光指着的那件东西，微光和被看着时一样亮起来
@@ -156,6 +161,8 @@ export class Stage {
   }
 
   unload(): void {
+    this.lateEffects?.dispose();
+    this.lateEffects = null;
     this.guide.clear();
     for (const glint of this.glints.values()) {
       this.scene.remove(glint.mesh);

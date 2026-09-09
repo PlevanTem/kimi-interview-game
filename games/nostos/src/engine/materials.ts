@@ -401,8 +401,27 @@ export function setVisionAmount(amount: number): void {
   sharedUniforms.uVision.value = amount;
 }
 
+/** A restrained local bounce for late-act sculpted figures, not a new sun or a new palette. */
+function figureMaterial(options: FrescoOptions): THREE.ShaderMaterial {
+  const m = createFrescoMaterial(options);
+  // Own these three uniforms: scene weather still drives sun, fog and color grading.
+  m.uniforms.uAmbientIntensity = { value: 1.05 };
+  m.uniforms.uGroundAmbient = { value: new THREE.Color(0xbdae8c) };
+  m.uniforms.uSkyAmbient = { value: new THREE.Color(0xdfd3ba) };
+  return m;
+}
 /** 常用材质预设，保证全作的表面语言只有这几种。 */
 export const SURFACE = {
+  // Calypso-only pigment mixes; no change to another character's shared materials.
+  calypsoCaramel: (): THREE.ShaderMaterial => figureMaterial({color:0x995d37,detailStrength:.2,roughBreakup:.16,rimStrength:.1}),
+  calypsoGold: (): THREE.ShaderMaterial => figureMaterial({color:0xb69a61,detailStrength:.18,roughBreakup:.12,rimStrength:.16}),
+  calypsoWater: (): THREE.ShaderMaterial => createFrescoMaterial({color:0x397f79,detailStrength:.1,roughBreakup:.08,rimStrength:.18,side:THREE.DoubleSide}),
+  calypsoEarth: (): THREE.ShaderMaterial => createFrescoMaterial({color:0xa59b75,detail:'sand',detailStrength:.28,roughBreakup:.15,rimStrength:.1}),
+  calypsoLinen: (): THREE.ShaderMaterial => figureMaterial({color:0xe7dfc9,detailStrength:.28,roughBreakup:.18,rimStrength:.1,side:THREE.DoubleSide}),
+  figureSkin: (): THREE.ShaderMaterial => figureMaterial({color:0xb09a74,detailScale:.8,detailStrength:.3,roughBreakup:.2,rimStrength:.1}),
+  figureLinen: (): THREE.ShaderMaterial => figureMaterial({color:0xc9b291,detailScale:.65,detailStrength:.5,roughBreakup:.3,rimStrength:.1,side:THREE.DoubleSide}),
+  figureOchre: (): THREE.ShaderMaterial => figureMaterial({color:0xa96540,detailScale:.65,detailStrength:.5,roughBreakup:.3,rimStrength:.1,side:THREE.DoubleSide}),
+
   ochreSkin: (): THREE.ShaderMaterial =>
     createFrescoMaterial({ color: 0xb09a74, shadowTint: 0x6b5a49, detailScale: 0.8, roughBreakup: 0.45, rimStrength: 0.15 }),
   weatheredLinen: (): THREE.ShaderMaterial =>

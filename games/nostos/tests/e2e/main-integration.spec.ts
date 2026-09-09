@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { expect, test } from '@playwright/test';
 import type {} from '../../src/probe';
 import { ART_REVISION } from '../../src/content/revision';
+import { NARRATIVE_ASSETS } from '../../src/world/narrative-assets';
 
 test('main 海图与本地美术修订共存 @main-integration', async ({ page, context }) => {
   test.setTimeout(900000);
@@ -54,7 +55,7 @@ test('main 海图与本地美术修订共存 @main-integration', async ({ page, 
   workbench.on('pageerror', e => errors.push(e.message));
   await workbench.waitForLoadState('domcontentloaded');
   await expect(workbench.locator('html')).toHaveAttribute('data-revision', ART_REVISION);
-  await expect(workbench.locator('#act12-hero-assets canvas')).toHaveCount(10);
+  await expect(workbench.locator('#act12-hero-assets canvas')).toHaveCount(Object.keys(NARRATIVE_ASSETS).length);
   console.log('Verified same-revision workbench');
   await workbench.close();
   await page.keyboard.press('Escape');

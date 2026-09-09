@@ -1,0 +1,30 @@
+{
+  "runId": "run-20260909-calypso-design-r1",
+  "status": "passed_design_contracts_only",
+  "scope": "design-only; not runtime or aesthetic verification",
+  "checks": [
+    {
+      "command": "node games/nostos/runs/run-20260909-calypso-design-r1/verify-design.mjs",
+      "exitCode": 0,
+      "output": {
+        "status": "PASS",
+        "assets": 16,
+        "existingIds": 10,
+        "proposedIds": 6,
+        "interactions": 8,
+        "stumps": 20,
+        "rills": 4,
+        "runtimeFilesUnchanged": 59,
+        "runtimeSha256": "d9608d705dc8587cf3813df64016223e0b220035ccf0f3a337ec7c4057787561"
+      }
+    },
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "output": "validate-library: PASS"
+    }
+  ],
+  "notVerified": ["terrain and water feasibility", "in-game visual quality", "runtime/workbench integration", "performance"],
+  "humanApproval": false,
+  "implementationPerformed": false
+}

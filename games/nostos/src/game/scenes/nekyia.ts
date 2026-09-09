@@ -1,5 +1,7 @@
+import { seaRock as boulder } from '../../world/sea-worn';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
-import { amphora, boatHull, boulder, boundaryStone, plank, pole, stoneBlock } from '../../world/props';
+import { amphora, boatHull, plank, pole, stoneBlock } from '../../world/props';
 import type { Act } from './types';
 
 const T = TEXT.nekyia;
@@ -83,8 +85,8 @@ export const nekyia: Act = {
         prompt: '听他说',
         lines: T.talk,
         speaker: T.npcName,
-        motif: 'standing',
-        motifSize: 1.8,
+        modelAsset: 'game.nostos.character.unburied',
+        modelHeight: 1.9,
         x: 12,
         z: -14,
         y: 1,
@@ -113,6 +115,7 @@ export const nekyia: Act = {
       },
     ],
     vision: {
+      viewerAnchored: true,
       id: 'nekyia.vision',
       duration: 78,
       stage: { x: -1, y: 0.6, z: -24 },
@@ -194,16 +197,13 @@ export const nekyia: Act = {
   },
 
   dress(d) {
-    // ── 界石：一排，两面都磨平了，上面没有字 ──
-    for (let i = 0; i < 6; i += 1) {
-      d.place(boundaryStone(1.8 + d.rng() * 0.5, 1300 + i), 'ash', {
-        x: 9 + Math.cos(i * 1.1) * 5.5,
-        z: 10 - i * 4.4,
-        yaw: i * 0.4,
-        tiltZ: (d.rng() - 0.5) * 0.06,
-        block: 0.55,
-      });
+    for (let i = 0; i < 6; i++) {
+      placeNarrativeAsset(d, 'game.nostos.prop.carved_boundary', {
+        x: i === 0 ? 12.6 : 9 + Math.cos(i * 1.1) * 5.5,
+        z: i === 0 ? 10.4 : 10 - i * 4.4, yaw: i * 0.4, block: 0.55,
+      }, 1300 + i);
     }
+    placeNarrativeAsset(d, 'game.nostos.character.unburied', { x: 12, z: -14, yaw: -0.25, block: 0.35 });
 
     // ── 堆好却没点的柴 ──
     for (let i = 0; i < 14; i += 1) {
@@ -239,6 +239,7 @@ export const nekyia: Act = {
 
     // ── 沉在雾里的礁石，作为唯一的空间参照 ──
     d.scatter(30, {
+      exclude: nekyia.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 14,
       outerRadius: 36,
       minSpacing: 3.4,

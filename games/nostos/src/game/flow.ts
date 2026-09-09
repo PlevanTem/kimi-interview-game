@@ -1,3 +1,4 @@
+import { homecomingPose } from './late-cinema';
 import * as THREE from 'three';
 import { sharedUniforms } from '../engine/materials';
 import { Soundscape } from '../engine/audio';
@@ -29,7 +30,7 @@ import type { InteractableDef } from './types';
  * 就这么多——多写一层抽象，就是在给不存在的复杂度收税。
  */
 
-type Phase = 'title' | 'intro' | 'arriving' | 'roaming' | 'vision' | 'departing' | 'ended';
+type Phase = 'title' | 'intro' | 'arriving' | 'roaming' | 'vision' | 'departing' | 'epilogue' | 'ended';
 
 /** 开场与序章从黑里出来；之后每一幕之间才是过曝白的硬切 */
 const INTRO_BLACK = 0x0a0806;
@@ -177,6 +178,7 @@ export class Game {
   }
 
   private loadAct(index: number, fadeFrom = 0xf3ead6): void {
+    this.walker.lookEnabled = true;
     this.overlay.hideIntroCard();
     this.overlay.setTutorial(null);
     this.tutorialActive = false;
@@ -252,6 +254,7 @@ export class Game {
     if (event.code === 'Space') {
       event.preventDefault();
       if (this.phase === 'intro') { this.finishIntro(); return; }
+      if (this.phase === 'epilogue') { this.finish(); return; }
       if (this.phase === 'vision') this.timeline?.skip();
       else if (this.narration) this.narration.next();
       return;
@@ -347,12 +350,13 @@ export class Game {
   }
 
   private pendingVision = false;
+  private homecomingTime = 0;
 
   private startVision(): void {
     this.pendingVision = false;
     const act = actAt(this.progress.act);
     this.phase = 'vision';
-    this.timeline = this.visionStage.begin(act.def.vision, this.walker.yaw);
+    this.timeline = this.visionStage.begin(act.def.vision, this.walker.yaw, this.walker.position);
     this.walker.movementEnabled = false;
     this.sound.setVision(true);
     this.overlay.setPrompt(null);
@@ -370,7 +374,12 @@ export class Game {
     this.overlay.setSkipHint(false);
 
     if (this.progress.act >= TOTAL_ACTS - 1) {
-      this.finish();
+      this.phase = 'epilogue';
+      this.homecomingTime = 0;
+      this.walker.lookEnabled = false;
+      this.viewport.setFovOffset(0);
+      this.overlay.setCaption(null);
+      this.overlay.setSkipHint(true, '空格  跳过归家镜头');
       return;
     }
     this.phase = 'roaming';
@@ -390,6 +399,8 @@ export class Game {
   }
 
   private finish(): void {
+    this.overlay.setSkipHint(false);
+    this.fade = 0; this.fadeTarget = 0;
     this.phase = 'ended';
     this.walker.movementEnabled = false;
     this.walker.exitPointerLock();
@@ -441,6 +452,10 @@ export class Game {
           yaw: OPENING.title.yaw + (this.walker.reducedMotion ? 0 : Math.sin(elapsed * 0.18) * 0.012 + this.titlePointer * 0.025),
         });
         break;
+      case 'epilogue':
+        this.homecomingTime += dt;
+        if (homecomingPose(this.homecomingTime).done) this.finish();
+        break;
       case 'ended':
         break;
     }
@@ -448,6 +463,11 @@ export class Game {
     this.walker.update(dt);
     if (this.phase === 'intro') {
       this.setOpeningPose(this.walker.reducedMotion ? OPENING.landing : openingPose(this.openingFrom, this.openingTime / OPENING.duration));
+    }
+    if (this.phase === 'epilogue') {
+      const pose = homecomingPose(this.homecomingTime, this.walker.reducedMotion);
+      this.setOpeningPose(pose);
+      this.fade = pose.fade; this.fadeTarget = pose.fade; this.fadeColor = 0x171713;
     }
     this.walker.applyTo(this.viewport.camera);
     const hintId = elapsed < this.hintUntil ? this.hintTargetId : null;
@@ -640,6 +660,7 @@ export class Game {
     player: { x: number; z: number; yaw: number; pitch: number };
     fade: number;
     openingTime: number;
+    homecomingTime: number;
     renderStats: { calls: number; geometries: number; textures: number };
   } {
     const act = actAt(this.progress.act);
@@ -647,6 +668,7 @@ export class Game {
       phase: this.phase,
       fade: this.fade,
       openingTime: this.openingTime,
+      homecomingTime: this.homecomingTime,
       renderStats: {
         calls: this.viewport.renderer.info.render.calls,
         geometries: this.viewport.renderer.info.memory.geometries,

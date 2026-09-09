@@ -1,0 +1,22 @@
+{
+  "runId": "run-20260909-late-acts-r1",
+  "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+  "source": "human request 2026-09-09",
+  "scope": [
+    "circe",
+    "nekyia",
+    "sirens",
+    "calypso",
+    "ithaca",
+    "homecoming epilogue"
+  ],
+  "styleBibleVersion": 6,
+  "constraints": [
+    "existing pigment palette",
+    "3D present-day NPCs",
+    "twenty stumps including axe support",
+    "four flowing channels",
+    "human review before merge"
+  ],
+  "gateApprovalGranted": false
+}

@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { createFrescoMaterial, releaseFrescoMaterial } from '../engine/materials';
 import { clamp, fbm2, lerp, ridge2, smoothstep } from '../engine/noise';
 import type { GroundSampler } from '../engine/controller';
+import { calypsoGroundHeight } from './calypso-layout';
 
 /**
  * 孤岛地形。
@@ -28,6 +29,9 @@ export interface Basin {
 }
 
 export interface TerrainParams {
+  /** Authored heightfield; still shared by render, controller and sea chart. */
+  heightProfile?: 'calypso';
+  detailStrength?: number;
   seed: number;
   /** 地形网格边长，通常 200；可行走区被岛半径限制在中间一小块 */
   size?: number;
@@ -82,6 +86,7 @@ const TERRAIN_DEFAULTS = {
  * 一旦美术侧另捏一份轮廓，玩家看到的"航程"就在说谎。
  */
 export function terrainHeight(params: TerrainParams, x: number, z: number): number {
+  if (params.heightProfile === 'calypso') return calypsoGroundHeight(x, z);
   const p = { ...TERRAIN_DEFAULTS, ...params } as Required<TerrainParams>;
   const dist = Math.hypot(x, z);
   const t = dist / p.radius;
@@ -145,7 +150,7 @@ export class Terrain implements GroundSampler {
       heightEnd: this.params.heightEnd ?? 11,
       detail: this.params.detail,
       detailScale: this.params.detail === 'sand' ? 0.13 : 0.1,
-      detailStrength: 0.92,
+      detailStrength: this.params.detailStrength ?? 0.92,
       roughBreakup: 0.32,
       rimStrength: 0.35,
       shoreWetRadius: this.params.radius,

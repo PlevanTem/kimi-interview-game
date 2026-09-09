@@ -41,7 +41,7 @@ describe('海蚀彩陶：几何、媒介与范围契约', () => {
     expect(npcs.map((npc) => npc.id)).toEqual(['lotus.crewman']);
     for (const npc of npcs) { expect(npc.modelAsset).toBeTruthy(); expect(npc.motif).toBeUndefined(); }
   });
-  it('新风格只作用于前三幕', () => {
-    ACTS.forEach((act, i) => expect(ENV[act.def.env].sculptedStyle).toBe(i < 3 ? 1 : 0));
+  it('按新一轮用户授权同步全八幕', () => {
+    ACTS.forEach(act => expect(ENV[act.def.env].sculptedStyle).toBe(1));
   });
 });

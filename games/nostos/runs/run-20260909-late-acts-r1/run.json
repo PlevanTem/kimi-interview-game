@@ -1,0 +1,10 @@
+{
+  "runId": "run-20260909-late-acts-r1",
+  "status": "verified_candidate_pending_human_review",
+  "scope": "user-directed later-act refinement",
+  "startedAt": "2026-09-09",
+  "verifiedAt": "2026-09-09T04:18:20.163Z",
+  "verification": "games/nostos/runs/run-20260909-late-acts-r1/verification.json",
+  "branch": "codex/late-acts-art",
+  "merged": false
+}

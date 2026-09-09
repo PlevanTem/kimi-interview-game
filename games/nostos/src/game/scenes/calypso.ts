@@ -1,12 +1,13 @@
+import { CALYPSO_CAVE, CALYPSO_TREES } from '../../world/calypso-layout';
+import { CALYPSO_CAVE_BLOCKERS } from '../../world/calypso-assets';
+import { COASTAL_ASSETS } from '../../world/sea-worn';
+import { CEDAR_STUMPS } from '../../world/late-assets';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
 import {
   boatHull,
-  boulder,
-  columnDrum,
-  cypress,
   pole,
   sailCloth,
-  stoneBlock,
 } from '../../world/props';
 import type { Act } from './types';
 
@@ -15,11 +16,8 @@ const T = TEXT.calypso;
 /**
  * 第六幕 · 卡吕普索之岛
  *
- * 永昼。太阳挂在高处不动，一切都被曝到发白，雪松在白光里是一列列黑竖线。
- * 这一幕的美是**过量的**——太亮、太安全、太完整，完整到让人喘不过气。
- *
- * 岛上唯一的"事件"是二十个树桩和海边一处被坐出来的岩石凹陷。
- * 七年的长度，用这两样东西量出来。
+ * 明朗永昼：洞居生活、四泉草地与面海独处。
+ * 空间开放，细节集中在七年生活与离开的证据上。
  */
 export const calypso: Act = {
   def: {
@@ -39,8 +37,8 @@ export const calypso: Act = {
         kind: 'clue',
         prompt: '坐下来看海',
         lines: T.clue.hollow,
-        x: 18,
-        z: 16,
+        x: 24,
+        z: 14,
         y: 0.7,
         radius: 3.4,
       },
@@ -49,8 +47,8 @@ export const calypso: Act = {
         kind: 'clue',
         prompt: '看四道泉',
         lines: T.clue.spring,
-        x: -14,
-        z: 6,
+        x: -12,
+        z: 3,
         y: 0.4,
         radius: 3.4,
       },
@@ -59,8 +57,8 @@ export const calypso: Act = {
         kind: 'clue',
         prompt: '数树桩',
         lines: T.clue.stumps,
-        x: 8,
-        z: -6,
+        x: 10,
+        z: -5,
         y: 0.5,
         radius: 3.6,
       },
@@ -69,8 +67,8 @@ export const calypso: Act = {
         kind: 'clue',
         prompt: '看织了一半的布',
         lines: T.clue.loom,
-        x: -9,
-        z: -19,
+        x: -14,
+        z: -9,
         y: 1.4,
       },
       {
@@ -78,20 +76,20 @@ export const calypso: Act = {
         kind: 'clue',
         prompt: '看那件衣服',
         lines: T.clue.robe,
-        x: -13,
-        z: -22,
+        x: -15.8,
+        z: -14.2,
         y: 1.5,
       },
       {
         id: 'calypso.host',
         kind: 'talk',
-        prompt: '和她说话',
+        prompt: '和卡吕普索说话',
         lines: T.talk,
         speaker: T.npcName,
-        motif: 'standing',
-        motifSize: 2.0,
-        x: -5,
-        z: -24,
+        modelAsset: 'game.nostos.character.calypso',
+        modelHeight: 1.9,
+        x: -7,
+        z: -9,
         y: 1.1,
         radius: 3.4,
       },
@@ -118,6 +116,7 @@ export const calypso: Act = {
       },
     ],
     vision: {
+      viewerAnchored: true,
       id: 'calypso.vision',
       duration: 66,
       stage: { x: 10, y: 0.6, z: -19 },
@@ -178,110 +177,34 @@ export const calypso: Act = {
   },
 
   terrain: {
-    seed: 20260701,
-    radius: 40,
-    amplitude: 2.8,
-    frequency: 0.034,
-    dome: 4.8,
-    ridge: 0.6,
-    detail: 'stone',
-    colorFlat: 0xbdae8c,
-    colorSteep: 0x8d7f62,
-    colorHigh: 0xd2c4a2,
-    heightStart: 4,
-    heightEnd: 10,
-    plateaus: [{ x: -8, z: -22, radius: 9, height: 4.2 }],
+    seed: 20260701, radius: 40, size: 96, segments: 240,
+    heightProfile: 'calypso', amplitude: 0, dome: 1.75, ridge: 0,
+    detail: 'sand', detailStrength: .28,
+    colorFlat: 0x829166, colorSteep: 0xabaa80, colorHigh: 0x9ca779,
+    heightStart: 2.5, heightEnd: 5,
   },
 
   dress(d) {
-    // ── 二十个树桩，正好够造一条船 ──
-    for (let i = 0; i < 20; i += 1) {
-      const a = (i / 20) * Math.PI * 1.6 - 0.5;
-      const r = 5 + (i % 4) * 2.4;
-      d.place(columnDrum(0.34 + d.rng() * 0.1, 0.5 + d.rng() * 0.3, 1900 + i), 'driftwood', {
-        x: 8 + Math.cos(a) * r,
-        z: -6 + Math.sin(a) * r,
-        yaw: d.rng() * Math.PI,
-        block: 0.4,
-      });
-    }
-
-    // ── 还站着的雪松：白光里的一列列黑竖线 ──
-    const cedars: Array<[number, number, number]> = [
-      [22, -4, 9],
-      [26, -12, 8.2],
-      [19, -16, 10],
-      [28, 2, 7.6],
-      [24, -22, 8.8],
-      [-20, -8, 9.4],
-      [-25, -16, 8],
-      [-18, -30, 9],
-      [16, -28, 7.4],
-      [-27, 2, 8.6],
-    ];
-    for (const [x, z, height] of cedars) {
-      d.place(cypress(height, 1950 + Math.floor(x * 3 + z)), 'olive', { x, z, block: 0.8 });
-    }
-
-    // ── 被坐出来的那处凹陷：一块朝海的岩石 ──
-    d.place(boulder(2.4, 1980), 'limestone', { x: 18, z: 16, scale: [1.4, 0.55, 1.2], block: 1.6 });
-    d.place(boulder(1.1, 1981), 'limestone', { x: 20.4, z: 17.6, block: 0.9 });
-
-    // ── 四道泉：从一处流出，分向四边（用浅色石带表示水路）──
-    for (let arm = 0; arm < 4; arm += 1) {
-      const a = arm * (Math.PI / 2) + 0.4;
-      for (let i = 1; i < 12; i += 1) {
-        d.place(boulder(0.26 + d.rng() * 0.12, 2000 + arm * 20 + i, 1), 'bone', {
-          x: -14 + Math.cos(a) * i * 1.6 + (d.rng() - 0.5) * 0.6,
-          z: 6 + Math.sin(a) * i * 1.6 + (d.rng() - 0.5) * 0.6,
-          lift: -0.14,
-          scale: [1.3, 0.35, 1.3],
-        });
-      }
-    }
-    d.place(boulder(1.3, 2090), 'limestone', { x: -14, z: 6, scale: [1.2, 0.5, 1.2], block: 1 });
-
-    // ── 洞口的织机与那件从没穿过的衣服 ──
-    const CAVE = 4.2;
-    d.place(pole(3.4, 0.1, 2100), 'driftwood', { x: -10.6, z: -19, y: CAVE, block: 0.4 });
-    d.place(pole(3.4, 0.1, 2101), 'driftwood', { x: -7.4, z: -19, y: CAVE, block: 0.4 });
-    d.place(stoneBlock(3.6, 0.14, 0.16, 2102, 0.05), 'driftwood', { x: -9, z: -19, y: CAVE + 3.3 });
-    d.place(sailCloth(3.0, 2.0, 0.3, 2103), 'cloth', { x: -9, z: -19.06, y: CAVE + 2.1 });
-
-    d.place(pole(2.6, 0.08, 2110), 'driftwood', { x: -13, z: -22, y: CAVE, block: 0.35 });
-    d.place(sailCloth(1.5, 2.0, 0.42, 2111), 'cloth', { x: -13, z: -22.1, y: CAVE + 1.5 });
-
-    // ── 洞：几块巨岩围出的半开空间，但这里的洞是亮的 ──
-    const cave: Array<[number, number, number, number]> = [
-      [-15.5, -27, 4.6, 2120],
-      [-4.5, -27.5, 4.8, 2121],
-      [-10, -31, 5.4, 2122],
-    ];
-    for (const [x, z, r, seed] of cave) {
-      d.place(boulder(r, seed), 'limestone', { x, z, y: CAVE - 1.2, block: r * 0.8 });
-    }
-
-    // ── 伐木的斧（核心记忆）：搁在一个树桩上 ──
-    d.place(columnDrum(0.42, 0.66, 2130), 'driftwood', { x: 10, z: -19, block: 0.5 });
-    d.place(stoneBlock(0.62, 0.1, 0.22, 2131, 0.2), 'bronze', { x: 10, z: -19, lift: 0.68, yaw: 0.6, tiltZ: 0.12 });
-    d.place(pole(0.8, 0.045, 2132), 'driftwood', { x: 10.15, z: -19.2, lift: 0.7, tiltX: 1.45, yaw: 0.6 });
-
-    // ── 卵石与低矮的灌木，把过曝的地面撑住 ──
-    d.scatter(44, {
-      innerRadius: 8,
-      outerRadius: 38,
-      minSpacing: 2.6,
-      minHeight: 0.5,
-      make: (_, rng) => ({
-        geometry: boulder(0.32 + rng() * 1.0, 2200 + Math.floor(rng() * 900)),
-        surface: 'limestone' as const,
-        place: { yaw: rng() * Math.PI, lift: -0.12 },
-      }),
-    });
-
-    // ── 他自己造的那条船 ──
-    d.place(boatHull(6.2, 2300), 'driftwood', { x: 6, z: 36, lift: 0.42, yaw: -0.28, tiltZ: 0.05 });
-    d.place(pole(4.4, 0.11, 2301), 'driftwood', { x: 6.2, z: 35.6, lift: 0.76, tiltX: 0.1 });
-    d.place(sailCloth(3.0, 3.0, 0.35, 2302), 'cloth', { x: 6.2, z: 35.5, lift: 3.2 });
+    // Exactly twenty felled trees, in three authored patches; index 19 supports the axe.
+    CEDAR_STUMPS.forEach(({x,z},i)=>placeNarrativeAsset(d,'game.nostos.prop.cedar_stump',{x,z,yaw:i*1.7,block:.42},1900+i));
+    CALYPSO_TREES.forEach(({x,z,scale},i)=>placeNarrativeAsset(d,'game.nostos.environment.calypso_cedar',{x,z,scale,yaw:i*.63,block:.3},1950+i));
+    placeNarrativeAsset(d,'game.nostos.environment.calypso_cave',{x:CALYPSO_CAVE.x,z:CALYPSO_CAVE.z,y:CALYPSO_CAVE.floor},2100);
+    d.blockers.push(...CALYPSO_CAVE_BLOCKERS);
+    placeNarrativeAsset(d,'game.nostos.environment.calypso_four_rills',{x:0,z:0,y:0});
+    placeNarrativeAsset(d,'game.nostos.environment.calypso_paths',{x:0,z:0,y:0});
+    placeNarrativeAsset(d,'game.nostos.prop.calypso_seat_rock',{x:24,z:14,yaw:-.5,block:1.15});
+    placeNarrativeAsset(d,'game.nostos.prop.weighted_loom',{x:-14,z:-9,y:CALYPSO_CAVE.floor,yaw:.42,block:.65},2100);
+    placeNarrativeAsset(d,'game.nostos.prop.unworn_robe',{x:-15.8,z:-14.2,y:CALYPSO_CAVE.floor,yaw:.65},2110);
+    placeNarrativeAsset(d,'game.nostos.character.calypso',{x:-7,z:-9,y:CALYPSO_CAVE.floor,yaw:.18,block:.3});
+    placeNarrativeAsset(d,'game.nostos.prop.calypso_domestic_set',{x:-12,z:-14.7,y:CALYPSO_CAVE.floor},2120);
+    placeNarrativeAsset(d,'game.nostos.prop.calypso_axe',{x:10,z:-19,lift:.59,yaw:.6},2131);
+    // Functional rock groups, not a random pebble carpet.
+    const rocks=[[-24,14,1.2],[-28,-5,1.3],[-4,-24,.9],[26,20,.9],[19,-23,1.1],[30,-12,.8],[13,27,.7]];
+    rocks.forEach(([x,z,r],i)=>d.place(COASTAL_ASSETS['game.nostos.environment.sea_rock'](r!,2200+i),'limestone',{x:x!,z:z!,lift:-.12,scale:[1.5,.65,1],yaw:i*.7,block:r!*.7}));
+    const plants=[[-18,8],[-23,10],[-19,-7],[-21,-18],[-2,-23],[25,-5],[28,4],[25,19],[14,25],[-10,23],[4,9],[14,11]];
+    plants.forEach(([x,z],i)=>d.place(COASTAL_ASSETS['game.nostos.environment.coastal_leaves'](1.5,2300+i),'olive',{x:x!,z:z!,yaw:i*1.8}));
+    d.place(boatHull(6.2,2300),'driftwood',{x:6,z:36,lift:.42,yaw:-.28,tiltZ:.05});
+    d.place(pole(4.4,.11,2301),'driftwood',{x:6.2,z:35.6,lift:.76,tiltX:.1});
+    d.place(sailCloth(3,3,.35,2302),'cloth',{x:6.2,z:35.5,lift:3.2});
   },
 };

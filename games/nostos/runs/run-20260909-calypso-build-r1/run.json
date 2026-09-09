@@ -1,0 +1,13 @@
+{
+  "runId": "run-20260909-calypso-build-r1",
+  "gameId": "nostos",
+  "date": "2026-09-09",
+  "status": "human_accepted_main_integration_authorized",
+  "authorization": "input-snapshot.json",
+  "previousRunId": "run-20260909-calypso-design-r1",
+  "revision": "2026.09.09-calypso-r1",
+  "gate3": "not_started",
+  "humanVisualAcceptance": true,
+  "mergeAuthorization": "human-merge-approval.json",
+  "performanceApproval": false
+}

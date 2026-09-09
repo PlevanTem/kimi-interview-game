@@ -1,3 +1,5 @@
+import { seaRock as boulder } from '../../world/sea-worn';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import * as THREE from 'three';
 import { PIGMENT } from '../../content/palette';
 import { TEXT } from '../../content/script';
@@ -6,14 +8,11 @@ import { muralTexture } from '../../engine/textures';
 import {
   amphora,
   boatHull,
-  boulder,
   columnDrum,
   doricCapital,
   flutedColumn,
-  oliveCanopy,
   oliveTree,
   pole,
-  sailCloth,
   statueTorso,
   stoneBlock,
 } from '../../world/props';
@@ -93,13 +92,13 @@ export const circe: Act = {
       {
         id: 'circe.host',
         kind: 'talk',
-        prompt: '和她说话',
+        prompt: '和喀耳刻说话',
         lines: T.talk,
         speaker: T.npcName,
-        motif: 'standing',
-        motifSize: 2.0,
-        x: -13,
-        z: -12,
+        modelAsset: 'game.nostos.character.circe',
+        modelHeight: 1.9,
+        x: -12,
+        z: -14,
         y: 1.1,
         radius: 3.4,
       },
@@ -126,6 +125,7 @@ export const circe: Act = {
       },
     ],
     vision: {
+      viewerAnchored: true,
       id: 'circe.vision',
       duration: 66,
       stage: { x: 0, y: 1, z: -22 },
@@ -286,11 +286,8 @@ export const circe: Act = {
       });
     }
 
-    // ── 立式织机：两根立柱 + 一张垂下来的布 ──
-    d.place(pole(3.2, 0.09, 980), 'driftwood', { x: -11.6, z: -12, y: FLOOR, block: 0.4 });
-    d.place(pole(3.2, 0.09, 981), 'driftwood', { x: -8.4, z: -12, y: FLOOR, block: 0.4 });
-    d.place(stoneBlock(3.6, 0.14, 0.16, 982, 0.05), 'driftwood', { x: -10, z: -12, y: FLOOR + 3.1 });
-    d.place(sailCloth(3.0, 2.2, 0.35, 983), 'cloth', { x: -10, z: -12.05, y: FLOOR + 1.85 });
+    placeNarrativeAsset(d, 'game.nostos.prop.weighted_loom', { x: -10, z: -12, y: FLOOR }, 980);
+    placeNarrativeAsset(d, 'game.nostos.character.circe', { x: -12, z: -14, y: FLOOR, yaw: 0.3, block: 0.35 });
 
     // ── 那排空杯子，摆得很齐 ──
     for (let i = 0; i < 8; i += 1) {
@@ -308,32 +305,9 @@ export const circe: Act = {
     d.place(stoneBlock(1.6, 0.5, 1.6, 1012, 0.04), 'weatheredMarble', { x: -4.5, z: -25.5, y: FLOOR - 0.5 });
     d.place(stoneBlock(1.6, 0.5, 1.6, 1013, 0.04), 'weatheredMarble', { x: 4.5, z: -25.5, y: FLOOR - 0.5 });
 
-    // ── 爬进来又爬回去的藤 ──
-    // 一根细木质藤蔓贴着地与柱子走，叶子是一小簇一小簇的。
-    // 团块必须小：藤是一条线，不是一串球。
-    for (let i = 0; i < 22; i += 1) {
-      const t = i / 21;
-      const x = -9.5 - Math.sin(t * 3.4) * 2.4;
-      const z = 14 - t * 8.5;
-      const lift = 0.05 + Math.max(0, Math.sin(t * 2.6)) * 1.1;
-      // 藤茎：一小段一小段接起来，比一根长管更像自然爬出来的
-      d.place(pole(0.55, 0.035, 1020 + i), 'driftwood', {
-        x,
-        z,
-        y: FLOOR,
-        lift,
-        tiltX: 1.1 + Math.sin(t * 5) * 0.35,
-        yaw: t * 3.4,
-      });
-      if (i % 2 === 0) {
-        d.place(oliveCanopy(0.2 + d.rng() * 0.1, 1060 + i), 'olive', {
-          x: x + (d.rng() - 0.5) * 0.5,
-          z: z + (d.rng() - 0.5) * 0.5,
-          y: FLOOR,
-          lift: lift + 0.18,
-        });
-      }
-    }
+    // 连续攀附门框，留出中央净空。
+    placeNarrativeAsset(d, 'game.nostos.environment.vine_portal', { x: -9.5, z: 14, y: FLOOR });
+    for (const side of [-1,1]) d.blockers.push({x:-9.5+side*1.65,z:14,radius:.4});
 
     // ── 台基之外：橄榄树与碎石，把柱廊框起来 ──
     const trees: Array<[number, number, number]> = [
@@ -350,6 +324,7 @@ export const circe: Act = {
     }
 
     d.scatter(40, {
+      exclude: circe.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 20,
       outerRadius: 38,
       minSpacing: 2.4,

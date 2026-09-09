@@ -1,0 +1,291 @@
+{
+  "revision": "2026.09.09-calypso-r1",
+  "viewport": [
+    1280,
+    720
+  ],
+  "states": [
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 58,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 4,
+        "z": 33,
+        "yaw": 0.32,
+        "pitch": 0.02
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 81,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0,
+        "z": 4,
+        "yaw": 0.58,
+        "pitch": 0.02
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": "calypso.host",
+      "vertexCount": 50148,
+      "frames": 105,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -5,
+        "z": -6.5,
+        "yaw": 0.675,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": "calypso.hollow",
+      "vertexCount": 50148,
+      "frames": 132,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 21,
+        "z": 14,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.14
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 155,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -10,
+        "z": 10,
+        "yaw": 0.3,
+        "pitch": -0.29
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 181,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -11,
+        "z": -9,
+        "yaw": 0.12,
+        "pitch": -0.12
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 208,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 15,
+        "z": 1,
+        "yaw": 0.05,
+        "pitch": -0.15
+      }
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "five clues",
+    "named NPC",
+    "keyboard traversal",
+    "memory aperture sample",
+    "pause frozen",
+    "departure unlocked"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "runId": "run-20260909-calypso-design-r1",
+  "gameId": "nostos",
+  "date": "2026-09-09",
+  "status": "design_candidate_pending_human_review",
+  "scope": "Calypso environment and asset design only",
+  "previousRunId": "run-20260909-late-acts-r1",
+  "baseCommit": "10b4537576805dafefe7a5108119dad227e52202",
+  "runtimeChanged": false,
+  "humanVisualApproval": false,
+  "deliverable": "games/nostos/docs/CALYPSO_ENVIRONMENT_ASSET_PLAN.md"
+}

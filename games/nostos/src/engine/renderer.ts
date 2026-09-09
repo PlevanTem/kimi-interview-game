@@ -33,6 +33,8 @@ export class Viewport {
     });
     this.renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
     this.renderer.toneMapping = THREE.NoToneMapping;
+    // Count the entire scene + post chain, not just its final fullscreen pass.
+    this.renderer.info.autoReset = false;
     this.renderer.setClearColor(0x000000, 1);
 
     // 高 DPI 屏上限制到 1.5，颗粒与色带在更高倍率下反而变弱
@@ -70,6 +72,7 @@ export class Viewport {
       this.camera.fov = fov;
       this.camera.updateProjectionMatrix();
     }
+    this.renderer.info.reset();
     this.post.render(scene, this.camera, time);
   }
 

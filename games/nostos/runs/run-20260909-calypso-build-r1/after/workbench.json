@@ -1,0 +1,44 @@
+{
+  "revision": "2026.09.09-calypso-r1",
+  "cards": 27,
+  "state": {
+    "phase": "roaming",
+    "fade": 0,
+    "openingTime": 0,
+    "homecomingTime": 0,
+    "renderStats": {
+      "calls": 36,
+      "geometries": 44,
+      "textures": 9
+    },
+    "act": 6,
+    "actId": "calypso",
+    "triggered": 0,
+    "focus": null,
+    "vertexCount": 50148,
+    "frames": 30,
+    "artStyle": 1,
+    "artMotion": 1,
+    "visionTime": 0,
+    "memoryId": "calypso.axe",
+    "departId": "calypso.depart",
+    "interactableIds": [
+      "calypso.hollow",
+      "calypso.spring",
+      "calypso.stumps",
+      "calypso.loom",
+      "calypso.robe",
+      "calypso.host",
+      "calypso.axe",
+      "calypso.depart"
+    ],
+    "narrating": false,
+    "player": {
+      "x": 0,
+      "z": 4,
+      "yaw": 0.58,
+      "pitch": 0.02
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,2399 @@
+{
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+  "seconds": 60.55989999997616,
+  "frames": 92,
+  "medianMs": 666.5999999999985,
+  "medianFps": 1.5001500150015035,
+  "p95Ms": 800,
+  "maxCalls": 53,
+  "geometryRange": [
+    44,
+    44
+  ],
+  "textureRange": [
+    9,
+    9
+  ],
+  "median55fpsMet": false,
+  "samples": [
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 50,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 21,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 4,
+        "z": 33,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 53,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 23,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 3.5216000000079477,
+        "z": 29.53160000005762,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 53,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 24,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 3.304933333341281,
+        "z": 27.960766666724286,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 49,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 26,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 2.83273333334128,
+        "z": 24.53731666672428,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 27,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 2.6049666666746134,
+        "z": 22.886008333390947,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 49,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 29,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 2.1327666666746143,
+        "z": 19.46255833339095,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 30,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 1.893900000007947,
+        "z": 17.730775000057616,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 45,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 31,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 1.6438666666746138,
+        "z": 15.918033333390952,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 41,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 33,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 1.2050333333412806,
+        "z": 12.736491666724284,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 41,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 34,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0.9883666666746138,
+        "z": 11.165658333390951,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 36,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0.5217333333412797,
+        "z": 7.7825666667242785,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 37,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0.28840000000794674,
+        "z": 6.090900000057616,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 39,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -0.18808333332339888,
+        "z": 3.6050250000208623,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 40,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -0.45891666665673236,
+        "z": 3.0362750000208623,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 42,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.063083333323399,
+        "z": 1.767525000020862,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 43,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.340833333323398,
+        "z": 1.1842500000208642,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 45,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.8755416666567326,
+        "z": 0.06136250002086152,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 46,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -2.1532916666567328,
+        "z": -0.5219124999791385,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 36,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 48,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -2.736624999990066,
+        "z": -1.746912499979139,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 36,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 49,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -3.035208333323398,
+        "z": -2.373937499979136,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 50,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -3.3407499999900656,
+        "z": -3.0155749999791386,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 52,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -3.9032083333234002,
+        "z": -4.19673749997914,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 53,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -4.194874999990067,
+        "z": -4.80923749997914,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 33,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 55,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -4.861499999990064,
+        "z": -6.209149999979136,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 56,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -4.805166666676602,
+        "z": -6.090850000020863,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 33,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 57,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -4.47183333334327,
+        "z": -5.3908500000208655,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 33,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 58,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -4.103791666676601,
+        "z": -4.617962500020863,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 60,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -3.4440833333432663,
+        "z": -3.2325750000208595,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 61,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -3.138541666676602,
+        "z": -2.590937500020864,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 36,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 62,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -2.8399583333432687,
+        "z": -1.9639125000208644,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 64,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -2.2288750000099333,
+        "z": -0.6806375000208602,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 34,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 65,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.909458333343268,
+        "z": -0.009862500020862974,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 66,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.610833333343269,
+        "z": 0.6172499999791352,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 68,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1.0552916666765988,
+        "z": 1.7838874999791425,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 69,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -0.7775416666765995,
+        "z": 2.3671624999791394,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 71,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -0.24975000000993397,
+        "z": 3.4755249999791396,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 72,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0.05932499995827767,
+        "z": 4.028249999980132,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 74,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 2.304924999958273,
+        "z": 5.097583333313463,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 76,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 4.433974999958288,
+        "z": 6.111416666646804,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 77,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 5.513024999958288,
+        "z": 6.625249999980137,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 79,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 7.729749999958276,
+        "z": 7.680833333313465,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 80,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 8.867249999958267,
+        "z": 8.222499999980126,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 82,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 10.967074999958282,
+        "z": 9.2224166666468,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 84,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 12.862849999958284,
+        "z": 10.125166666646802,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 86,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 14.875349999958281,
+        "z": 11.083499999980134,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 35,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 87,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 15.895949999958281,
+        "z": 11.569499999980135,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 39,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 89,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 18.025174999958274,
+        "z": 12.583416666646798,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 39,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 91,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 20.154399999958276,
+        "z": 13.597333333313465,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 37,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 92,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 20.858333333367117,
+        "z": 14.158333333295573,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 39,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 94,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 19.040325000033768,
+        "z": 16.190224999962258,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 39,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 96,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 17.340325000033776,
+        "z": 18.090224999962253,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 41,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 97,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 16.44329166670044,
+        "z": 19.092791666628923,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 49,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 99,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 14.507133333367108,
+        "z": 21.256733333295585,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 100,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 13.53912500003377,
+        "z": 22.338624999962256,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 102,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 11.815608333367114,
+        "z": 24.26490833329558,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 103,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 10.989266666700452,
+        "z": 25.18846666662891,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 47,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 105,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 9.407416666700438,
+        "z": 26.95641666662892,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 49,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 107,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 7.801908333367123,
+        "z": 28.75080833329557,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 51,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 109,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 6.125566666700447,
+        "z": 30.624366666628912,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 51,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 110,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 5.20473333336712,
+        "z": 31.65353333329557,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 51,
+        "geometries": 44,
+        "textures": 9
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50148,
+      "frames": 112,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 4,
+        "z": 33,
+        "yaw": 0.25,
+        "pitch": -0.04
+      }
+    }
+  ]
+}

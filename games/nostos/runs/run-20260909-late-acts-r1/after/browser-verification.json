@@ -1,0 +1,199 @@
+{
+  "revision": "2026.09.09-late-r1",
+  "reports": [
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 25,
+        "textures": 9
+      },
+      "act": 3,
+      "actId": "circe",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 158148,
+      "frames": 140,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "circe.cup",
+      "departId": "circe.depart",
+      "interactableIds": [
+        "circe.vine",
+        "circe.mural",
+        "circe.cups",
+        "circe.loom",
+        "circe.roof",
+        "circe.host",
+        "circe.cup",
+        "circe.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -12,
+        "z": -11.7,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 14,
+        "textures": 16
+      },
+      "act": 4,
+      "actId": "nekyia",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 49728,
+      "frames": 300,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "nekyia.bowl",
+      "departId": "nekyia.depart",
+      "interactableIds": [
+        "nekyia.sand",
+        "nekyia.marker",
+        "nekyia.pyre",
+        "nekyia.oarMark",
+        "nekyia.pit",
+        "nekyia.shade",
+        "nekyia.bowl",
+        "nekyia.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 12,
+        "z": -11.7,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 18,
+        "textures": 16
+      },
+      "act": 5,
+      "actId": "sirens",
+      "triggered": 0,
+      "focus": "sirens.rope",
+      "vertexCount": 83544,
+      "frames": 360,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "sirens.rope",
+      "departId": "sirens.depart",
+      "interactableIds": [
+        "sirens.wrecks",
+        "sirens.log",
+        "sirens.wax",
+        "sirens.bones",
+        "sirens.mast",
+        "sirens.rope",
+        "sirens.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 1,
+        "z": -24.4,
+        "yaw": 0,
+        "pitch": -0.45
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 41,
+        "textures": 16
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 1,
+      "focus": null,
+      "vertexCount": 70068,
+      "frames": 539,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -5,
+        "z": -16.7,
+        "yaw": 0,
+        "pitch": 0
+      }
+    },
+    {
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 1,
+        "geometries": 21,
+        "textures": 17
+      },
+      "act": 7,
+      "actId": "ithaca",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 45636,
+      "frames": 638,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "ithaca.threshold",
+      "departId": null,
+      "interactableIds": [
+        "ithaca.smoke",
+        "ithaca.olive",
+        "ithaca.dog",
+        "ithaca.cloth",
+        "ithaca.threshold"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0,
+        "z": -8,
+        "yaw": 0,
+        "pitch": 0.13
+      }
+    }
+  ],
+  "errors": [],
+  "ending": "natural completion; paused timer verified",
+  "viewport": "1280x720"
+}

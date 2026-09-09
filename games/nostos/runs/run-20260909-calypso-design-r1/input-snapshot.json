@@ -1,0 +1,34 @@
+{
+  "runId": "run-20260909-calypso-design-r1",
+  "request": "基于参考图重新修改卡吕普索那幕的环境设计以及资产方案",
+  "assumption": "Design only; no runtime implementation or Visual Lock",
+  "styleBibleVersion": 7,
+  "assetRegistryVersion": 10,
+  "reference": {
+    "role": "run_input_evidence_not_runtime_asset",
+    "path": "games/nostos/runs/run-20260909-calypso-design-r1/reference.png",
+    "originalPath": "C:/Users/17831/.codex/generated_images/01a076fc-7965-7010-a5c7-0d6f6b43c816/exec-de510711-63ba-46b2-8acb-3a22c50ca8b6.png",
+    "sha256": "40d9fb83195e51615dd12f8be4b4f7cf3710e58707b4e9d30ecf5e83dbbf1982",
+    "provenance": "Previously generated in this conversation with image_gen.imagegen",
+    "promptSummaryNotExactPrompt": "First-person 3D low-poly nature walking exploration; simplified Calypso environment",
+    "modelVersion": "not recorded",
+    "approval": "direction input, not approved production keyframe",
+    "shippingUse": false
+  },
+  "runtimeBefore": {
+    "root": "games/nostos/src",
+    "files": 59,
+    "sha256": "d9608d705dc8587cf3813df64016223e0b220035ccf0f3a337ec7c4057787561",
+    "algorithm": "SHA256(JSON.stringify(sorted [forward-slash relative path, SHA256(file)] pairs))"
+  },
+  "sources": [
+    "games/nostos/context/style-bible.json",
+    "games/nostos/context/asset-registry.json",
+    "games/nostos/docs/GAMEPLAY.md",
+    "games/nostos/src/game/scenes/calypso.ts",
+    "games/nostos/src/world/late-assets.ts",
+    "games/nostos/src/world/late-effects.ts",
+    "games/nostos/runs/run-20260909-late-acts-r1/input-snapshot.json",
+    "games/nostos/runs/run-20260909-late-acts-r1/iterations.json"
+  ]
+}

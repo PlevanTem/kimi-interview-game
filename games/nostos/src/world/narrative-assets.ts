@@ -1,3 +1,5 @@
+import { lateCharacter, weightedLoom, vinePortal, carvedBoundary, braidedRope, homeDetails } from './late-assets';
+import { calypsoCave, calypsoFourRills, calypsoCedar, calypsoSeatRock, calypsoAxe, calypsoCharacter, calypsoRobe, calypsoStump, calypsoDomesticSet, calypsoPaths } from './calypso-assets';
 import * as THREE from 'three';
 import { lotusCrewman } from './lotus-crewman';
 import { engravedShield } from './engraved-shield';
@@ -195,6 +197,23 @@ function burnedStake(seed: number): NarrativePart[] {
 }
 
 export const NARRATIVE_ASSETS = {
+  'game.nostos.environment.calypso_cave': { name: '卡吕普索洞居 · 横向岩檐与生活内室', make: calypsoCave },
+  'game.nostos.environment.calypso_four_rills': { name: '四泉水网 · 同源分流与四处入海', make: calypsoFourRills },
+  'game.nostos.environment.calypso_paths': { name: '洞居足迹 · 通向生活与海的磨损带', make: calypsoPaths },
+  'game.nostos.environment.calypso_cedar': { name: '岛上活雪松 · 分层开放树冠', make: calypsoCedar },
+  'game.nostos.prop.calypso_seat_rock': { name: '七年凹岩 · 磨出的面海坐处', make: calypsoSeatRock },
+  'game.nostos.prop.calypso_axe': { name: '离岛之斧 · 卷刃与磨亮木柄', make: calypsoAxe },
+  'game.nostos.prop.calypso_domestic_set': { name: '洞居生活 · 火塘坐席与两件陶器', make: calypsoDomesticSet },
+  'game.nostos.character.circe': { name: '喀耳刻 · 束发与折襟', make: () => lateCharacter('circe') },
+  'game.nostos.character.calypso': { name: '卡吕普索 · 焦糖肩前辫与无袖束腰长裙', make: calypsoCharacter },
+  'game.nostos.character.unburied': { name: '未归葬的年轻人 · 灰白面容与肩绳', make: () => lateCharacter('shade') },
+  'game.nostos.prop.weighted_loom': { name: '立式织机 · 经线、综杆与陶配重', make: weightedLoom },
+  'game.nostos.prop.unworn_robe': { name: '未穿过的成衣 · 壁挂双钉与空领', make: calypsoRobe },
+  'game.nostos.environment.vine_portal': { name: '归折藤门 · 连续攀附与通行净空', make: vinePortal },
+  'game.nostos.prop.carved_boundary': { name: '磨名界石 · 加工面与残存刻槽', make: carvedBoundary },
+  'game.nostos.prop.braided_rope': { name: '塞壬缚绳 · 编股、绳结与散头', make: braidedRope },
+  'game.nostos.prop.cedar_stump': { name: '伐木树桩 · 三种切口与粗年轮', make: calypsoStump },
+  'game.nostos.environment.home_details': { name: '归家厅堂 · 石基、木门与排烟天窗', make: homeDetails },
   'game.nostos.prop.engraved_shield': { name: '归航青铜盾 · 四向星刻章与断续环带', make: engravedShield },
   'game.nostos.prop.harvest_basket': { name: '采集篮 · 宽苇编织与遗留果实', make: harvestBasket },
   'game.nostos.character.lotus_crewman': { name: '留下的人 · 跪坐水手与忘食果', make: lotusCrewman },

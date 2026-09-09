@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { expect, test } from '@playwright/test';
 import type {} from '../../src/probe';
 import { ART_REVISION } from '../../src/content/revision';
+import { NARRATIVE_ASSETS } from '../../src/world/narrative-assets';
 
 test('r3 人物陶器盾章实拍与Esc同版工作台 @review-r3', async ({ page, context }) => {
   test.setTimeout(360000);
@@ -57,7 +58,7 @@ test('r3 人物陶器盾章实拍与Esc同版工作台 @review-r3', async ({ pag
   workbench.on('pageerror', e => errors.push(e.message));
   await workbench.waitForLoadState();
   await expect(workbench.locator('html')).toHaveAttribute('data-revision', ART_REVISION);
-  await expect(workbench.locator('#act12-hero-assets canvas')).toHaveCount(10);
+  await expect(workbench.locator('#act12-hero-assets canvas')).toHaveCount(Object.keys(NARRATIVE_ASSETS).length);
   await workbench.locator('#act12-hero-assets').screenshot({ path: folder + 'workbench-r3.jpg', type: 'jpeg', quality: 90 });
   await workbench.close();
   await page.keyboard.press('Escape');

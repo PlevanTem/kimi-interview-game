@@ -28,7 +28,7 @@ describe('第1、2幕程序化叙事资产', () => {
       expect(record, id).toBeDefined();
       const parts = resolveNarrativeAsset(id);
       const bytes = parts.reduce((sum, p) => sum + Object.values(p.geometry.attributes).reduce((n, a) => n + a.array.byteLength, 0), 0);
-      expect(bytes).toBeLessThanOrEqual(record!.sizeBudgetBytes);
+      expect(bytes, id).toBeLessThanOrEqual(record!.sizeBudgetBytes);
       parts.forEach((p) => p.geometry.dispose());
     }
   });
@@ -36,7 +36,7 @@ describe('第1、2幕程序化叙事资产', () => {
     expect(previewAct('http://127.0.0.1:4175/?preview=lotus')).toBe(1);
     expect(previewAct('http://localhost:4175/?preview=cyclops')).toBe(2);
     expect(previewAct('https://example.com/?preview=cyclops')).toBeNull();
-    expect(previewAct('http://localhost/?preview=ithaca')).toBeNull();
+    expect(previewAct('http://localhost/?preview=ithaca')).toBe(7);
     expect(previewAct()).toBeNull();
   });
   for (const id of Object.keys(NARRATIVE_ASSETS) as NarrativeAssetId[]) {
@@ -76,12 +76,13 @@ describe('第1、2幕程序化叙事资产', () => {
 });
 
 describe('两幕实地通行与线索接近', () => {
-  for (const act of ACTS.slice(1, 3)) it(`${act.def.id} 从出生点能走到所有交互范围，含随机布景碰撞`, () => {
+  for (const act of ACTS.slice(1)) it(`${act.def.id} 从出生点能走到所有交互范围，含随机布景碰撞`, () => {
     const terrain = Object.assign(Object.create(Terrain.prototype) as Terrain, {
       params: { frequency: 0.045, dome: 3, ridge: 0, waterLevel: 0, ...act.terrain },
     });
     const d = new Dresser(new THREE.Scene(), terrain, act.terrain.seed);
     // Execute the real scatter and placement/collision code without creating DOM materials.
+    d.attach = () => {}; // Fresco billboard DOM creation is covered in browser tests.
     act.dress(d);
     const r = act.terrain.radius, step = 0.75, cells = Math.ceil(r * 2 / step) + 1;
     const ok = (x: number, z: number) => terrain.walkable(x, z) &&

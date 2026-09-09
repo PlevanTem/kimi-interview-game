@@ -1,7 +1,8 @@
+import { seaRock as boulder } from '../../world/sea-worn';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
 import {
   boatHull,
-  boulder,
   brazier,
   flutedColumn,
   oliveTree,
@@ -86,6 +87,7 @@ export const ithaca: Act = {
       },
     ],
     vision: {
+      viewerAnchored: true,
       id: 'ithaca.vision',
       // 58 → 70：终幕多了两拍（"脸我记不住" / "他们还是一片影子"），
       // 后面每一拍都顺延，最后一句要放得完
@@ -201,14 +203,19 @@ export const ithaca: Act = {
     }
     d.place(stoneBlock(7.6, 0.7, 1.2, 2412, 0.04), 'limestone', { x: 0, z: -13.4, y: YARD + 4.4 });
     // 屋顶
-    d.place(stoneBlock(14.4, 0.5, 11.6, 2413, 0.03), 'limestone', { x: 0, z: -20, y: YARD + 4.2 });
+    // 四片屋面围出排烟口。
+    for (const side of [-1, 1]) {
+      d.place(stoneBlock(5.9, 0.5, 11.6, 2413, 0.01), 'limestone', { x: side * 4.25, z: -20, y: YARD + 4.2 });
+      d.place(stoneBlock(2.6, 0.5, 4.5, 2414, 0.01), 'limestone', { x: 0, z: -20 + side * 3.55, y: YARD + 4.2 });
+    }
+    placeNarrativeAsset(d, 'game.nostos.environment.home_details', { x: 0, z: -20, y: YARD });
 
     // ── 门槛石：中间被踩出一道（核心记忆）──
     d.place(stoneBlock(3.4, 0.42, 1.3, 2420, 0.02), 'weatheredMarble', { x: 0, z: -16, y: YARD });
     d.place(boulder(0.9, 2421, 2), 'weatheredMarble', { x: 0, z: -16, y: YARD + 0.42, scale: [1.7, 0.1, 0.65] });
 
     // ── 屋顶上的烟：一个还在烧的火盆，从院子里能看见 ──
-    d.place(brazier(0.75, 0.9, 2430), 'bronze', { x: 4, z: -14, y: YARD, block: 0.7 });
+    d.place(brazier(0.75, 0.9, 2430), 'bronze', { x: 0, z: -20, y: YARD, block: 0.7 });
 
     // ── 那条狗趴过的地方 ──
     for (let i = 0; i < 6; i += 1) {
@@ -256,6 +263,7 @@ export const ithaca: Act = {
     d.place(boatHull(5.6, 2500), 'driftwood', { x: -6, z: 33, lift: 0.4, yaw: 0.5, tiltZ: 0.1 });
 
     d.scatter(38, {
+      exclude: ithaca.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 16,
       outerRadius: 36,
       minSpacing: 2.6,

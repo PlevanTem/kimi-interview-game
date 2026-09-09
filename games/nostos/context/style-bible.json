@@ -1,16 +1,16 @@
 {
   "$schema": "../../../schemas/style-bible.schema.json",
   "id": "nostos-salt-cut-faceted-fresco",
-  "version": 6,
+  "version": 7,
   "status": "draft",
   "approved": false,
   "conceptId": "nostos",
   "direction": "games/nostos/docs/3D_ART_STYLE_DIRECTION.md",
   "implementation": "games/nostos/docs/SEA_WORN_IMPLEMENTATION.md",
-  "reviewRevision": "games/nostos/docs/HUMAN_REVIEW_R3.md",
+  "reviewRevision": "games/nostos/docs/LATE_ACTS_DIRECTION.md",
   "displayName": "海蚀彩陶史诗 / Sea-Worn Polychrome Epic",
-  "implementationScope": ["prologue", "lotus", "cyclops"],
-  "npcDecision": "用户已确定现实NPC全面3D化；本轮只翻新前三幕现有的lotus.crewman，后五幕人物后续按同一规则迁移。",
+  "implementationScope": ["prologue", "lotus", "cyclops", "circe", "nekyia", "sirens", "calypso", "ithaca"],
+  "npcDecision": "全四位现实叙事NPC均为3D；2026-09-09用户授权后五幕迁移，不新增剧情角色。",
   "implementationStatus": "verified-candidate-pending-human-visual-lock",
   "keyframe": {
     "scene": "lotus",
@@ -64,7 +64,7 @@
     "normalRimStrengthMax": 0.35,
     "normalGrainRange": [0.025, 0.045],
     "highlightPixelBudget": "normal gameplay pixels above 0.98 luma should remain below 3%",
-    "shadowRule": "2048² static shadow map per act; lotus now uses higher fair-weather sun (0.62 radians), other act profiles unchanged"
+    "shadowRule": "2048² static shadow map per act; lotus now uses higher fair-weather sun (0.62 radians), late-act sun directions retained; sculpted material mode unified; Calypso exposure reduced for cloth readability"
   },
   "geometryBudgets": {
     "clueVertices": [300, 3000],
@@ -97,6 +97,7 @@
   },
   "promptPrefix": "NOSTOS, first-person lightweight 3D polygon environment, salt-cut faceted fresco style, readable low-poly silhouettes with controlled medium-scale erosion, three-band non-PBR lighting, porous limestone and terracotta, salt-worn wood and linen, long weather-driven shadows, restrained film grain, broad negative space, authored 3D depth and side faces, 62-degree perspective camera",
   "negativePrompt": "photorealistic PBR, glossy plastic, metallic gold shine, voxel blocks, uniform triangulation, random pebble carpet, tiled pavement grid, spherical tree crowns, dense foliage wall, centered sun, symmetrical temple facade, miniature diorama, black-figure silhouettes in the real world, HUD markers, excessive bloom, heavy grain, text, labels",
+  "lateActsExtension": {"authorization":"user-directed 2026-09-09","direction":"games/nostos/docs/LATE_ACTS_DIRECTION.md","style":"same pigments; all acts sculptedStyle=1; restrained grain/halation; local figure bounce","ending":"18-second in-engine homecoming; skip, pause, reduced motion"},
   "act12Extension": {
     "authorization": "user_directed_implementation_before_visual_lock",
     "lotus": "重构为头盔—不对称果树负形—跪坐水手的三层焦点，删除棋盘式石铺与全屏同频地表细节。",
