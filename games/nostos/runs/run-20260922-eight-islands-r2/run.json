@@ -18,5 +18,7 @@
     "ithaca"
   ],
   "humanVisualAcceptance": false,
-  "physicalPhoneAcceptance": false
+  "physicalPhoneAcceptance": false,
+  "mergeAuthorization": "human-merge-approval.json",
+  "physicalPhoneTestingRequiredForDelivery": false
 }

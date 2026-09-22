@@ -567,5 +567,7 @@
     "No new gameplay, indoor life simulation, or day/night cycle"
   ],
   "humanVisualAcceptance": false,
-  "releaseGatePassed": false
+  "releaseGatePassed": false,
+  "mergeAuthorization": "human-merge-approval.json",
+  "physicalPhoneTestingRequiredForDelivery": false
 }

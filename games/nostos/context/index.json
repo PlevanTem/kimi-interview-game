@@ -1,9 +1,9 @@
 {
   "$schema": "../../../schemas/context-index.schema.json",
   "contextVersion": "1.0.0",
-  "updatedAt": "2026-09-22T04:30:49.839Z",
+  "updatedAt": "2026-09-22T04:43:51.245Z",
   "activeRunId": "run-20260922-eight-islands-r2",
-  "productionState": "eight_islands_candidate_verified_mobile_unaccepted",
+  "productionState": "eight_islands_web_merge_authorized",
   "gateState": {
     "gate1": "bypassed_by_user_brief",
     "gate2": "locked",
@@ -78,7 +78,8 @@
     "eightIslandsR2Input": "games/nostos/runs/run-20260922-eight-islands-r2/input-snapshot.json",
     "eightIslandsR2Spec": "games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md",
     "eightIslandsR2Verification": "games/nostos/runs/run-20260922-eight-islands-r2/verification.json",
-    "eightIslandsR2Implementation": "games/nostos/docs/EIGHT_ISLANDS_R2_IMPLEMENTATION.md"
+    "eightIslandsR2Implementation": "games/nostos/docs/EIGHT_ISLANDS_R2_IMPLEMENTATION.md",
+    "eightIslandsHumanMergeApproval": "games/nostos/runs/run-20260922-eight-islands-r2/human-merge-approval.json"
   },
   "readOrder": [
     "games/nostos/context/brief.md",
