@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { isBlocked } from './collision';
 
 /**
  * 第一人称行走控制器。
@@ -23,6 +24,8 @@ export interface Blocker {
   x: number;
   z: number;
   radius: number;
+  endX?: number;
+  endZ?: number;
 }
 
 const WALK_SPEED = 2.05;
@@ -58,6 +61,26 @@ export class Walker {
   private swayTime = 0;
   private locked = false;
   private sprintHeld = false;
+  private readonly touchMove = new THREE.Vector2();
+  touchMode = window.matchMedia?.('(pointer: coarse)').matches ?? false;
+
+  setTouchMove(x: number, forward: number): void {
+    this.touchMove.set(x, forward).clampLength(0, 1);
+  }
+
+  lookBy(dx: number, dy: number): void {
+    if (!this.lookEnabled) return;
+    this.yaw -= dx * 0.003 * this.sensitivity;
+    this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch - dy * 0.003 * this.sensitivity));
+  }
+
+  resetInput(): void {
+    this.keys.clear();
+    this.touchMove.set(0, 0);
+    this.padMove.set(0, 0);
+    this.velocity.set(0, 0, 0);
+    this.sprintHeld = false;
+  }
 
   private ground: GroundSampler | null = null;
   private blockers: Blocker[] = [];
@@ -83,6 +106,7 @@ export class Walker {
   }
 
   constructor(private readonly canvas: HTMLCanvasElement) {
+    document.addEventListener('pointerdown', this.onInputDevice, true);
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
     document.addEventListener('pointerlockchange', this.onPointerLockChange);
@@ -91,7 +115,7 @@ export class Walker {
   }
 
   requestPointerLock(): void {
-    if (!this.locked) void this.canvas.requestPointerLock();
+    if (!this.touchMode && !this.locked) void this.canvas.requestPointerLock?.();
   }
 
   exitPointerLock(): void {
@@ -129,6 +153,7 @@ export class Walker {
       if (this.keys.has('KeyA') || this.keys.has('ArrowLeft')) wish.x -= 1;
       if (this.keys.has('KeyD') || this.keys.has('ArrowRight')) wish.x += 1;
       wish.add(this.padMove);
+      wish.add(this.touchMove);
       if (wish.lengthSq() > 1) wish.normalize();
     }
 
@@ -201,6 +226,7 @@ export class Walker {
   }
 
   dispose(): void {
+    document.removeEventListener('pointerdown', this.onInputDevice, true);
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
     document.removeEventListener('pointerlockchange', this.onPointerLockChange);
@@ -209,6 +235,14 @@ export class Walker {
   }
 
   // --- 内部 ---
+
+  private readonly onInputDevice = (event: PointerEvent): void => {
+    if (event.pointerType !== 'touch' && event.pointerType !== 'mouse') return;
+    const touch = event.pointerType === 'touch';
+    if (this.touchMode !== touch) this.resetInput();
+    this.touchMode = touch;
+    if (touch) this.exitPointerLock();
+  };
 
   private readonly padMove = new THREE.Vector2();
   private padSprint = false;
@@ -235,9 +269,7 @@ export class Walker {
     const tryAxis = (nx: number, nz: number): boolean => {
       if (this.ground && !this.ground.walkable(nx, nz)) return false;
       for (const b of this.blockers) {
-        const ddx = nx - b.x;
-        const ddz = nz - b.z;
-        if (ddx * ddx + ddz * ddz < b.radius * b.radius) return false;
+        if (isBlocked(nx, nz, b)) return false;
       }
       return true;
     };
@@ -265,7 +297,7 @@ export class Walker {
   };
 
   private readonly onBlur = (): void => {
-    this.keys.clear();
+    this.resetInput();
   };
 
   private readonly onPointerLockChange = (): void => {

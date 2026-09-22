@@ -1,0 +1,37 @@
+[
+  {
+    "command": "npm run validate:library",
+    "exitCode": 0,
+    "log": "logs/0.log"
+  },
+  {
+    "command": "npm run validate:context",
+    "exitCode": 0,
+    "log": "logs/1.log"
+  },
+  {
+    "command": "npm run audit:assets",
+    "exitCode": 0,
+    "log": "logs/2.log"
+  },
+  {
+    "command": "npm run typecheck:nostos",
+    "exitCode": 0,
+    "log": "logs/3.log"
+  },
+  {
+    "command": "npm run test:nostos -- --maxWorkers=1",
+    "exitCode": 0,
+    "log": "logs/4.log"
+  },
+  {
+    "command": "npm run build:nostos",
+    "exitCode": 0,
+    "log": "logs/5.log"
+  },
+  {
+    "command": "npm run assets:nostos",
+    "exitCode": 0,
+    "log": "logs/6.log"
+  }
+]

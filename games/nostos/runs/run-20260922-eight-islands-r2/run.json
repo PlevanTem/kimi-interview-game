@@ -1,0 +1,24 @@
+{
+  "runId": "run-20260922-eight-islands-r2",
+  "gameId": "nostos",
+  "status": "candidate_verified_ready_for_github",
+  "startedAt": "2026-09-22T04:04:59.399Z",
+  "branch": "codex/nostos-eight-islands",
+  "parentRun": "run-20260922-eight-islands-r1",
+  "spec": "games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md",
+  "verifiedAt": "2026-09-22T04:30:49.839Z",
+  "implementedIslands": [
+    "prologue",
+    "lotus",
+    "cyclops",
+    "circe",
+    "nekyia",
+    "sirens",
+    "calypso",
+    "ithaca"
+  ],
+  "humanVisualAcceptance": false,
+  "physicalPhoneAcceptance": false,
+  "mergeAuthorization": "human-merge-approval.json",
+  "physicalPhoneTestingRequiredForDelivery": false
+}

@@ -1,0 +1,16 @@
+{
+  "runId": "run-20260922-eight-islands-r2",
+  "recordedAt": "2026-09-22T04:43:51.245Z",
+  "decisionMaker": "human_user",
+  "request": "合入 本来就是web项目 不用测试真实手机性能",
+  "approvedPullRequest": 12,
+  "reviewedImplementationCommit": "1df1d93d8300c03b7af26f5fde5c616d6c15bd12",
+  "result": "merge_and_web_deployment_authorized",
+  "physicalPhonePerformance": {
+    "requiredForThisDelivery": false,
+    "reason": "User explicitly removed physical-phone performance testing from acceptance",
+    "tested": false
+  },
+  "scope": "Merge PR #12 to main and verify the existing Pages deployment; retain completed web-browser checks",
+  "gateNote": "Explicit user merge authorization; no invented formal visual score or hardware performance pass"
+}

@@ -1,0 +1,40 @@
+{
+  "base": "0b89ed08d81ffd610a82883293618fd70dbfc9ad",
+  "proseUnchanged": true,
+  "results": [
+    {
+      "id": "prologue",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "lotus",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "cyclops",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "circe",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "nekyia",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "sirens",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "calypso",
+      "definitionUnchanged": true
+    },
+    {
+      "id": "ithaca",
+      "definitionUnchanged": true
+    }
+  ],
+  "passed": true,
+  "note": "Exact scene def comparison covers IDs, coordinates, NPC references, arrival and memory timelines; content script also identical."
+}

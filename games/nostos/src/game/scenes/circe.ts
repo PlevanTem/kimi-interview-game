@@ -10,13 +10,13 @@ import {
   boatHull,
   columnDrum,
   doricCapital,
-  flutedColumn,
   oliveTree,
   pole,
   statueTorso,
   stoneBlock,
 } from '../../world/props';
 import type { Act } from './types';
+import { PILOT_POSTS, PILOT_WALLS } from '../../world/pilot-architecture';
 
 const T = TEXT.circe;
 
@@ -196,6 +196,7 @@ export const circe: Act = {
     colorHigh: 0xb9a37c,
     heightStart: 3,
     heightEnd: 8,
+    walkSurfaces: [{ minX: -17, maxX: 17, minZ: -26, maxZ: 14, height: 3.4, blend: 3 }],
     plateaus: [{ x: 0, z: -6, radius: 24, height: 3.4 }],
   },
 
@@ -238,36 +239,28 @@ export const circe: Act = {
       return mural;
     });
     d.place(stoneBlock(36, 0.4, 42, 901, 0.03), 'weatheredMarble', { x: 0, z: -6, y: FLOOR - 0.95 });
-
-    // ── 两排列柱：光被切成一根根竖条 ──
-    for (let row = 0; row < 2; row += 1) {
-      const x = row === 0 ? -13 : 13;
-      for (let i = 0; i < 7; i += 1) {
-        const z = 10 - i * 5.2;
-        const seed = 910 + row * 20 + i;
-        // 越往里越完整，越靠海越残——废墟是有方向的
-        const broken = i < 2 ? 0.45 - i * 0.12 : i > 4 ? 0.1 : 0;
-        const height = 5.6;
-        d.place(flutedColumn({ height, radius: 0.55, seed, broken }), 'weatheredMarble', {
-          x: x + (d.rng() - 0.5) * 0.2,
-          z,
-          y: FLOOR,
-          block: 0.75,
-          tiltZ: (d.rng() - 0.5) * 0.02,
-        });
-        if (broken === 0) {
-          d.place(doricCapital(0.55, seed + 100), 'weatheredMarble', { x, z, y: FLOOR + height });
-          // 楣石只在完整柱之间搭着
-          if (i > 2 && i < 6) {
-            d.place(stoneBlock(1.5, 0.75, 5.2, seed + 200, 0.05), 'weatheredMarble', {
-              x,
-              z: z + 2.6,
-              y: FLOOR + height + 0.62,
-            });
-          }
-        }
-      }
+    // Retaining skirt descends to local bedrock at the slab perimeter. Short
+    // segments follow the coast instead of leaving a single floating platform.
+    for (const side of [-1,1]) for (let z=-26;z<=14;z+=2) {
+      const x=side*17, bottom=Math.min(FLOOR-.95,d.terrain.heightAt(x,z)-.25);
+      d.place(stoneBlock(.8,FLOOR-bottom,2.15,2700+z+side,.015),'weatheredMarble',{x,z,y:bottom});
     }
+    for (const z of [-26,14]) for (let x=-16;x<=16;x+=2) {
+      const bottom=Math.min(FLOOR-.95,d.terrain.heightAt(x,z)-.25);
+      d.place(stoneBlock(2.15,FLOOR-bottom,.8,2800+x+z,.015),'weatheredMarble',{x,z,y:bottom});
+    }
+
+
+    // Habitable galleries replace the old disconnected colonnade. The centre stays open sky.
+    placeNarrativeAsset(d, 'game.nostos.environment.circe_courtyard', { x: 0, z: 0, y: FLOOR });
+    for (const wall of PILOT_WALLS.circe) d.wall(...wall);
+    d.blockers.push(...PILOT_POSTS);
+    d.wall(6.45,-7.75,6.45,-7.25,.7);
+    d.wall(-15.2,-20.6,-9.5,-20.6,1.1);
+    d.wall(10.3,-6.5,14.1,-6.5,.8); d.wall(10.3,-3.5,14.1,-3.5,.8);
+    // Pool lips are physical; the mural route passes to the west with >3m clear width.
+    d.wall(1.9,-5.8,5.7,-5.8,.28); d.wall(1.9,-9.2,5.7,-9.2,.28);
+    d.wall(1.9,-5.8,1.9,-9.2,.28); d.wall(5.7,-5.8,5.7,-9.2,.28);
 
     // ── 滚落的柱鼓与柱头 ──
     d.place(columnDrum(0.56, 1.3, 960), 'weatheredMarble', { x: -8.5, z: 9, y: FLOOR, tiltX: 1.5, yaw: 0.7, block: 0.8 });

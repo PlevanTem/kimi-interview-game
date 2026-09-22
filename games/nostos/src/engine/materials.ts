@@ -15,6 +15,11 @@ import { weatheringTexture, sandTexture, frescoTexture, fleeceTexture, woodGrain
 
 /** 所有材质共享的一组 uniform 对象（按引用共享，改一次全场生效）。 */
 export const sharedUniforms = {
+  uWind: { value: new THREE.Vector2(1, 0) },
+  uWetness: { value: 0 },
+  uShelterCount: { value: 0 },
+  uShelters: { value: Array.from({length:4},()=>new THREE.Vector4()) },
+  uShelterRoofs: { value: new THREE.Vector4() },
   uTime: { value: 0 },
   uSculptedStyle: { value: 0 },
   uArtMotion: { value: 1 },
@@ -53,6 +58,7 @@ const VERT = /* glsl */ `
   uniform float uSculptedStyle;
   uniform float uArtMotion;
   uniform float uFoliageMotion;
+  uniform vec2 uWind;
   uniform vec3 uSculptureAnchor;
   varying vec3 vWorldPos;
   varying vec3 vWorldNormal;
@@ -66,7 +72,7 @@ const VERT = /* glsl */ `
     float nearBody = 1.0 - smoothstep(0.65, 0.9, length(world.xz - uSculptureAnchor.xz));
     world.y += sin(uTime * 1.25) * 0.004 * upper * nearBody * move;
     float breeze = sin(uTime * 0.55 - world.x * 0.23 + world.z * 0.13);
-    world.x += breeze * 0.024 * uFoliageMotion * move;
+    world.xz += uWind * breeze * 0.024 * uFoliageMotion * move;
     vWorldPos = world.xyz;
     vWorldNormal = normalize(mat3(modelMatrix) * normal);
     gl_Position = projectionMatrix * viewMatrix * world;
@@ -85,6 +91,10 @@ const FRAG = /* glsl */ `
   uniform vec3 uSunDir;
   uniform vec3 uSunColor;
   uniform float uSunIntensity;
+  uniform float uWetness;
+  uniform int uShelterCount;
+  uniform vec4 uShelters[4];
+  uniform vec4 uShelterRoofs;
   uniform vec3 uSkyAmbient;
   uniform vec3 uGroundAmbient;
   uniform float uAmbientIntensity;
@@ -196,6 +206,17 @@ const FRAG = /* glsl */ `
     float upFace = smoothstep(0.2, 0.9, N.y);
     albedo = mix(albedo, albedo * 1.12 + 0.02, upFace * uRoughBreakup);
 
+    float shelter = 0.0;
+    for(int i=0;i<4;i++) {
+      if(i>=uShelterCount) break;
+      vec4 b=uShelters[i];
+      vec2 inside=min(vWorldPos.xz-b.xy,b.zw-vWorldPos.xz);
+      float edge=smoothstep(0.0,0.5,min(inside.x,inside.y));
+      shelter=max(shelter,edge*step(vWorldPos.y,uShelterRoofs[i]));
+    }
+    float rainWet=uWetness*(1.0-shelter)*smoothstep(-0.2,0.8,N.y);
+    albedo*=1.0-rainWet*0.22;
+
     // --- 三阶色带光照 ---
     float ndl = dot(N, uSunDir) * 0.5 + 0.5;
     float s1 = smoothstep(0.40, 0.48, ndl);
@@ -209,10 +230,11 @@ const FRAG = /* glsl */ `
     // 谁挡住了谁：低角度侧光下，断柱在沙上拖出的长影是这部作品的签名
     float shadow = sunShadow(vWorldPos, N, uSunDir);
     vec3 hemi = mix(uGroundAmbient, uSkyAmbient, N.y * 0.5 + 0.5) * uAmbientIntensity;
+    hemi *= mix(1.0,0.64,shelter);
     vec3 color = shaded * (hemi + uSunColor * uSunIntensity * band * shadow);
     // 湿沙只在掠射角浮出一道冷亮边；保持壁画色带，不引入完整 PBR。
     float wetGlance = pow(1.0 - max(dot(N, -V), 0.0), 3.0) * shoreWet;
-    color += uSkyAmbient * wetGlance * 0.28;
+    color += uSkyAmbient * (wetGlance + rainWet * pow(1.0-max(dot(N,-V),0.0),4.0)) * 0.28;
 
     // --- 逆光轮廓：黑绘陶器的那一条边线 ---
     float fres = pow(1.0 - max(dot(N, -V), 0.0), uRimPower);
@@ -363,6 +385,8 @@ export function releaseFrescoMaterial(material: THREE.ShaderMaterial): void {
 /** 一幕开始时把天候写进共享 uniform。 */
 export function applyEnvToMaterials(env: EnvPreset): void {
   const u = sharedUniforms;
+  u.uWind.value.set(...(env.wind ?? [1,0]));
+  u.uWetness.value = env.wetness ?? 0;
   u.uSculptedStyle.value = env.sculptedStyle;
   const ca = Math.cos(env.sunAzimuth);
   const sa = Math.sin(env.sunAzimuth);

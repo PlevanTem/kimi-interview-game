@@ -1,7 +1,8 @@
+import { SIRENS_TERRAIN, COASTAL_WALLS } from '../../world/coastal-environments';
 import { seaRock as boulder } from '../../world/sea-worn';
 import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
-import { boatHull, plank, pole, ribBone, sailCloth, shipRib, stoneBlock } from '../../world/props';
+import { boatHull, plank, pole, ribBone, sailCloth, stoneBlock } from '../../world/props';
 import type { Act } from './types';
 
 const T = TEXT.sirens;
@@ -169,63 +170,11 @@ export const sirens: Act = {
     },
   },
 
-  terrain: {
-    seed: 20260601,
-    radius: 40,
-    amplitude: 3.4,
-    frequency: 0.066,
-    dome: 2.6,
-    ridge: 2.8,
-    detail: 'stone',
-    colorFlat: 0x6d7178,
-    colorSteep: 0x484d54,
-    colorHigh: 0x7d818a,
-    heightStart: 3.5,
-    heightEnd: 9,
-  },
+  terrain: SIRENS_TERRAIN,
 
   dress(d) {
-    // ── 沉船甬道：船头全部朝里（-Z），排成一条把玩家往里带的路 ──
-    const wrecks: Array<[number, number, number]> = [
-      [-12, 22, 0.15],
-      [13, 20, -0.2],
-      [-15, 12, 0.1],
-      [14, 8, -0.12],
-      [-13, 0, 0.08],
-      [15, -4, -0.18],
-      [-11, -12, 0.05],
-      [12, -16, -0.1],
-    ];
-    wrecks.forEach(([x, z, yaw], index) => {
-      const seed = 1500 + index * 10;
-      // 龙骨
-      d.place(plank(9, 1.1, 0.4, seed), 'charredWood', { x, z, lift: 0.2, yaw, tiltZ: (d.rng() - 0.5) * 0.2 });
-      // 肋骨：一具船的骨架
-      for (let i = 0; i < 7; i += 1) {
-        const t = (i - 3) * 1.15;
-        for (const side of [-1, 1]) {
-          d.place(shipRib(2.6 - Math.abs(t) * 0.16, side * 1.5, seed + i * 2 + (side > 0 ? 1 : 0)), 'charredWood', {
-            x: x + Math.sin(yaw) * -t,
-            z: z + Math.cos(yaw) * t,
-            lift: 0.25,
-            yaw: yaw + (side > 0 ? 0 : Math.PI),
-            tiltX: 0.1,
-            block: 0.5,
-          });
-        }
-      }
-      // 断桅
-      if (index % 2 === 0) {
-        d.place(pole(4.2 + d.rng() * 1.5, 0.13, seed + 30), 'charredWood', {
-          x: x + 0.6,
-          z,
-          lift: 0.4,
-          tiltX: 0.25 + d.rng() * 0.5,
-          yaw,
-          block: 0.5,
-        });
-      }
-    });
+    placeNarrativeAsset(d, 'game.nostos.environment.sirens_channel', { x: 0, z: 0, y: 0 });
+    for (const [ax, az, bx, bz, thickness] of COASTAL_WALLS.sirens) d.wall(ax, az, bx, bz, thickness);
 
     // ── 记航板：别人的，刻到一半 ──
     d.place(plank(2.4, 0.8, 0.14, 1600), 'driftwood', { x: 11, z: 9, lift: 0.15, yaw: -0.5, tiltZ: 0.1 });
@@ -254,7 +203,7 @@ export const sirens: Act = {
     placeNarrativeAsset(d, 'game.nostos.prop.braided_rope', { x: 1, z: -27, lift: 0.56 });
 
     // ── 礁石：把水道两侧收紧，雾之外什么也看不见 ──
-    d.scatter(64, {
+    d.scatter(18, {
       exclude: sirens.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 16,
       outerRadius: 40,

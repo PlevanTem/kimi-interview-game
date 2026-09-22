@@ -34,6 +34,7 @@ const FRAG = /* glsl */ `
   uniform vec3 uFogColor;
   uniform float uCloudiness;
   uniform float uCloudSpeed;
+  uniform vec2 uWind;
   uniform float uStarIntensity;
   uniform vec3 uGuideStarDir;
   uniform float uGuideStarIntensity;
@@ -96,7 +97,7 @@ const FRAG = /* glsl */ `
       // 把方向投影到一个"天穹平面"，云带在头顶才展开，靠近地平线被压扁
       vec2 cp = dir.xz / max(up + 0.22, 0.06);
       cp *= 0.9;
-      cp += vec2(uTime * uCloudSpeed, uTime * uCloudSpeed * 0.35);
+      cp -= uTime * uCloudSpeed * (uWind + vec2(0.0,0.35));
       float n = fbm(cp * 0.85, 5);
       float shape = smoothstep(0.62 - uCloudiness * 0.42, 0.78 - uCloudiness * 0.30, n);
 
@@ -139,6 +140,7 @@ export class Sky {
       depthTest: false,
       uniforms: {
         uTime: sharedUniforms.uTime,
+        uWind: sharedUniforms.uWind,
         uSunDir: sharedUniforms.uSunDir,
         uSunColor: sharedUniforms.uSunColor,
         uSunIntensity: sharedUniforms.uSunIntensity,

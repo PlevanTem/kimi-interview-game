@@ -1,0 +1,79 @@
+{
+  "scope": "Desktop Edge, 15 seconds per pilot per revision, rotating camera; NOT physical-phone acceptance",
+  "runs": [
+    {
+      "revision": "before",
+      "id": "circe",
+      "transitionWallMs": 8001,
+      "note": "Transition wall time includes authored fade and browser-control latency; kept outside frame sample",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "frames": 2550,
+      "medianFps": 169.49152542373926,
+      "p95FrameMs": 6,
+      "maxCalls": 28,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 0,
+        "samples": 2551
+      }
+    },
+    {
+      "revision": "before",
+      "id": "cyclops",
+      "transitionWallMs": 13092,
+      "note": "Transition wall time includes authored fade and browser-control latency; kept outside frame sample",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "frames": 2550,
+      "medianFps": 169.49152542368702,
+      "p95FrameMs": 6,
+      "maxCalls": 25,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 1,
+        "samples": 2551
+      }
+    },
+    {
+      "revision": "after",
+      "id": "circe",
+      "transitionWallMs": 8016,
+      "note": "Transition wall time includes authored fade and browser-control latency; kept outside frame sample",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "frames": 2550,
+      "medianFps": 169.49152542373926,
+      "p95FrameMs": 6,
+      "maxCalls": 54,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 2,
+        "samples": 2551
+      }
+    },
+    {
+      "revision": "after",
+      "id": "cyclops",
+      "transitionWallMs": 12993,
+      "note": "Transition wall time includes authored fade and browser-control latency; kept outside frame sample",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "frames": 2550,
+      "medianFps": 169.49152542368702,
+      "p95FrameMs": 6,
+      "maxCalls": 39,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 3,
+        "samples": 2551
+      }
+    }
+  ],
+  "review": {
+    "title": "NOSTOS · 八岛环境设计与实机样板",
+    "images": 12,
+    "sections": 8,
+    "valid": true
+  }
+}

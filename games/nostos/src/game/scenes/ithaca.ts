@@ -3,8 +3,6 @@ import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
 import {
   boatHull,
-  brazier,
-  flutedColumn,
   oliveTree,
   pole,
   ribBone,
@@ -12,6 +10,7 @@ import {
   stoneBlock,
 } from '../../world/props';
 import type { Act } from './types';
+import { HOME_WALLS } from '../../world/domestic-environments';
 
 const T = TEXT.ithaca;
 
@@ -173,49 +172,33 @@ export const ithaca: Act = {
     colorHigh: 0xb2a37a,
     heightStart: 3.5,
     heightEnd: 9,
+    walkSurfaces: [{minX:-7.3,maxX:11.5,minZ:-25.7,maxZ:-5,height:4.6,blend:3}],
     plateaus: [{ x: 0, z: -12, radius: 14, height: 4.6 }],
   },
 
   dress(d) {
     const YARD = 4.6;
 
-    // ── 屋：全作唯一一座完整的建筑 ──
-    // 台基
-    // 台基顶面与院子地面齐平，玩家才不会半个身子陷进石板里
-    d.place(stoneBlock(14, 0.6, 11, 2400, 0.02), 'limestone', { x: 0, z: -20, y: YARD - 0.6 });
-    // 墙
-    d.place(stoneBlock(14, 4.2, 0.8, 2401, 0.03), 'paintedPlaster', { x: 0, z: -25, y: YARD, block: 3 });
-    d.place(stoneBlock(0.8, 4.2, 10, 2402, 0.03), 'paintedPlaster', { x: -6.6, z: -20, y: YARD, block: 2.4 });
-    d.place(stoneBlock(0.8, 4.2, 10, 2403, 0.03), 'paintedPlaster', { x: 6.6, z: -20, y: YARD, block: 2.4 });
-    // 正面：两段墙留出中间的门
-    d.place(stoneBlock(4.6, 4.2, 0.8, 2404, 0.03), 'paintedPlaster', { x: -4.7, z: -15.6, y: YARD, block: 1.8 });
-    d.place(stoneBlock(4.6, 4.2, 0.8, 2405, 0.03), 'paintedPlaster', { x: 4.7, z: -15.6, y: YARD, block: 1.8 });
-    // 门楣
-    d.place(stoneBlock(6.4, 0.8, 1.0, 2406, 0.04), 'limestone', { x: 0, z: -15.6, y: YARD + 4.2 });
-    // 门廊的两根柱
-    for (const side of [-1, 1]) {
-      d.place(flutedColumn({ height: 4.4, radius: 0.34, seed: 2410 + side, broken: 0 }), 'limestone', {
-        x: side * 2.6,
-        z: -13.4,
-        y: YARD,
-        block: 0.5,
-      });
+    placeNarrativeAsset(d,'game.nostos.environment.ithaca_home',{x:0,z:0,y:YARD});
+    for(const w of HOME_WALLS)d.wall(...w);
+    for(const x of[-2.5,2.5])d.blockers.push({x,z:-13.4,radius:.3});
+    d.wall(-5.9,-23.4,-3.5,-23.4,.7);d.wall(-5.9,-21.8,-3.5,-21.8,.7);
+    d.wall(8.8,-20.4,8.8,-19.6,1.6);
+    // Ground-following yard boundary embraces the living olive with two open gates.
+    for(const [ax,az,bx,bz]of[[-17,6,-10,9],[-6,9,-1,7],[-17,6,-18,-2],[-18,-6,-13,-10]]){
+      const length=Math.hypot(bx!-ax!,bz!-az!),count=Math.ceil(length/1.5);
+      for(let i=0;i<count;i++){const t=(i+.5)/count,x=ax!+(bx!-ax!)*t,z=az!+(bz!-az!)*t;d.place(stoneBlock(.55,.8,length/count+.06,3000+i,.04),'limestone',{x,z,lift:-.12,yaw:Math.atan2(bx!-ax!,bz!-az!)});}
+      d.wall(ax!,az!,bx!,bz!,.55);
     }
-    d.place(stoneBlock(7.6, 0.7, 1.2, 2412, 0.04), 'limestone', { x: 0, z: -13.4, y: YARD + 4.4 });
-    // 屋顶
-    // 四片屋面围出排烟口。
-    for (const side of [-1, 1]) {
-      d.place(stoneBlock(5.9, 0.5, 11.6, 2413, 0.01), 'limestone', { x: side * 4.25, z: -20, y: YARD + 4.2 });
-      d.place(stoneBlock(2.6, 0.5, 4.5, 2414, 0.01), 'limestone', { x: 0, z: -20 + side * 3.55, y: YARD + 4.2 });
+    // Foundation courses descend into the same terrain sampled by the walker.
+    for(const [ax,az,bx,bz]of[[-7,-25.5,11.5,-25.5],[-7,-25.5,-7,-14.5],[11.5,-25.5,11.5,-17]]){
+      const length=Math.hypot(bx!-ax!,bz!-az!),count=Math.ceil(length/1.6);
+      for(let i=0;i<count;i++){const t=(i+.5)/count,x=ax!+(bx!-ax!)*t,z=az!+(bz!-az!)*t,bottom=Math.min(YARD-.6,d.terrain.heightAt(x,z)-.2);d.place(stoneBlock(.8,YARD-bottom,length/count+.05,3020+i,.02),'limestone',{x,z,y:bottom,yaw:Math.atan2(bx!-ax!,bz!-az!)});}
     }
-    placeNarrativeAsset(d, 'game.nostos.environment.home_details', { x: 0, z: -20, y: YARD });
 
     // ── 门槛石：中间被踩出一道（核心记忆）──
-    d.place(stoneBlock(3.4, 0.42, 1.3, 2420, 0.02), 'weatheredMarble', { x: 0, z: -16, y: YARD });
-    d.place(boulder(0.9, 2421, 2), 'weatheredMarble', { x: 0, z: -16, y: YARD + 0.42, scale: [1.7, 0.1, 0.65] });
-
-    // ── 屋顶上的烟：一个还在烧的火盆，从院子里能看见 ──
-    d.place(brazier(0.75, 0.9, 2430), 'bronze', { x: 0, z: -20, y: YARD, block: 0.7 });
+    // Worn sill stays below a normal walking step; the interior is now traversable.
+    d.place(stoneBlock(3.4, 0.08, 1.3, 2420, 0.012), 'weatheredMarble', { x: 0, z: -16, y: YARD });
 
     // ── 那条狗趴过的地方 ──
     for (let i = 0; i < 6; i += 1) {

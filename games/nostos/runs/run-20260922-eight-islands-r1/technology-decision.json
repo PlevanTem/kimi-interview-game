@@ -1,0 +1,16 @@
+{
+  "runId": "run-20260922-eight-islands-r1",
+  "decisionMaker": "human_user",
+  "recordedAt": "2026-09-22T03:24:15.836Z",
+  "result": "retain_existing_stack_user_approved_plan",
+  "technology": "Three.js / WebGL2 / TypeScript / Vite",
+  "reason": "User explicitly approved plan retaining runtime and implementing mobile quality tiers; no historical comparative Tech Fit review claimed.",
+  "scope": "eight-island upgrade candidate",
+  "validationCommands": [
+    "npm run validate:library",
+    "npm run typecheck:nostos",
+    "npm run test:nostos",
+    "npm run build:nostos",
+    "npm run test:e2e:nostos"
+  ]
+}

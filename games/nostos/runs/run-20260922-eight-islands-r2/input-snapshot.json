@@ -1,0 +1,34 @@
+{
+  "runId": "run-20260922-eight-islands-r2",
+  "recordedAt": "2026-09-22T04:04:59.399Z",
+  "decisionMaker": "human_user",
+  "request": "继续完成后续场景的设计优化，列出细粒度的优化项spec描述再执行，完成后更新github",
+  "baseCommit": "0b89ed08d81ffd610a82883293618fd70dbfc9ad",
+  "parentRun": "run-20260922-eight-islands-r1",
+  "authorization": "Continue remaining six scene candidates after fine-grained spec; verify and update GitHub implementation branch. This supersedes prior wait-before-six-production, not visual or physical-phone acceptance.",
+  "spec": "games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md",
+  "scope": [
+    "ithaca",
+    "lotus",
+    "sirens",
+    "calypso",
+    "prologue",
+    "nekyia",
+    "shared directed climate",
+    "eight-island regression",
+    "GitHub branch and review delivery"
+  ],
+  "unchanged": [
+    "story IDs and prose",
+    "four real NPCs",
+    "first-person narrative play",
+    "island ordering",
+    "Three.js runtime"
+  ],
+  "notAuthorized": [
+    "main merge",
+    "Pages production deployment"
+  ],
+  "humanVisualAcceptance": false,
+  "physicalPhoneAcceptance": false
+}

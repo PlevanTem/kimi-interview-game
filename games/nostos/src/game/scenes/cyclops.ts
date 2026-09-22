@@ -8,6 +8,7 @@ const saltPithos = COASTAL_ASSETS['game.nostos.prop.salt_pithos'];
 const coastalLeaves = COASTAL_ASSETS['game.nostos.environment.coastal_leaves'];
 const boatHull = COASTAL_ASSETS['game.nostos.prop.coastal_boat'];
 import type { Act } from './types';
+import { PILOT_WALLS } from '../../world/pilot-architecture';
 import { placeNarrativeAsset, stratifiedRock } from '../../world/narrative-assets';
 
 const T = TEXT.cyclops;
@@ -202,6 +203,7 @@ export const cyclops: Act = {
     shoreWetWidth: 5,
     shoreWetColor: 0x26384c,
     shoreWetStrength: 0.5,
+    walkSurfaces: [{ minX: -5, maxX: 5, minZ: -32, maxZ: -22, height: 3.2, blend: 2 }],
     plateaus: [{ x: 0, z: -30, radius: 13, height: 3.2 }],
     basins: [{ x: 0, z: -14, radius: 12, depth: 1.6 }],
   },
@@ -219,6 +221,19 @@ export const cyclops: Act = {
         tiltZ: (d.rng() - 0.5) * 0.12,
         block: 1.1,
       });
+    }
+
+    // A continuous sheep drive narrows toward the cave. Blocks sample the actual
+    // terrain at each end, so the retaining kerbs have no floating long spans.
+    for (let i = 0; i < 12; i++) {
+      const z = 17 - i * 2.9;
+      const x = -10 + i * .43;
+      const y = Math.min(d.terrain.heightAt(x,z),d.terrain.heightAt(x,z-2.6)) - .2;
+      d.place(stoneBlock(.7,.7,2.9,2600+i,.08),'layeredBasalt',{x,z:z-1.3,y,yaw:-.147});
+      d.wall(x,z,x+.4,z-2.6,.7);
+      // Narrow sediment strip marks runoff beside the livestock path, without a
+      // fictitious uphill water surface or a trench players could become stuck in.
+      d.place(stoneBlock(.5,.035,2.7,2630+i,.025),'darkRock',{x:x-.8,z:z-1.3,y:d.terrain.heightAt(x-.8,z-1.3)+.02,yaw:-.147});
     }
 
     // ── 巨兽的肋骨：这一幕的尺度锚 ──
@@ -251,6 +266,9 @@ export const cyclops: Act = {
         x: side * (15 + i * 3.8), z: -23 + i * 3, lift: -0.3, yaw: side * 0.2, block: 2.8,
       });
     }
+
+    placeNarrativeAsset(d, 'game.nostos.environment.cyclops_husbandry', { x: 0, z: 0, y: 3.2 });
+    for (const wall of PILOT_WALLS.cyclops) d.wall(...wall);
 
     // ── 石缝里的羊毛 ──
     //

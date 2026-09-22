@@ -2,7 +2,6 @@ import { TEXT } from '../../content/script';
 import {
   footprint,
   pole,
-  statueTorso,
 } from '../../world/props';
 import { COASTAL_ASSETS } from '../../world/sea-worn';
 const boulder = COASTAL_ASSETS['game.nostos.environment.sea_rock'];
@@ -10,10 +9,9 @@ const stoneBlock = COASTAL_ASSETS['game.nostos.prop.cut_stone'];
 const pithos = COASTAL_ASSETS['game.nostos.prop.salt_pithos'];
 const coastalLeaves = COASTAL_ASSETS['game.nostos.environment.coastal_leaves'];
 const boatHull = COASTAL_ASSETS['game.nostos.prop.coastal_boat'];
-const flutedColumn = COASTAL_ASSETS['game.nostos.prop.mineral_column'];
-const columnDrum = COASTAL_ASSETS['game.nostos.prop.mineral_drum'];
 import { placeNarrativeAsset } from '../../world/narrative-assets';
 import type { Act } from './types';
+import { ORCHARD_BAYS, orchardPoint, orchardWalls, lotusRill } from '../../world/domestic-environments';
 
 const T = TEXT.lotus;
 
@@ -183,6 +181,7 @@ export const lotus: Act = {
     colorHigh: 0xa89268,
     heightStart: 2.4,
     heightEnd: 6.5,
+    walkSurfaces:[{minX:-4,maxX:16.3,minZ:-28,maxZ:-2.8,height:3.2,blend:3},{minX:20,maxX:27,minZ:-15,maxZ:-4,height:2.8,blend:3}],
     shoreWetWidth: 4,
     shoreWetColor: 0x8d7454,
     shoreWetStrength: 0.35,
@@ -267,31 +266,17 @@ export const lotus: Act = {
       yaw: 0.3,
     }, 371);
 
-    // ── 岛心的一段断柱廊：这里从前有人住过 ──
-    for (let i = 0; i < 5; i += 1) {
-      const x = -2 + i * 3.4;
-      const z = -28 - i * 0.6;
-      const height = 5.5 - i * 0.52;
-      d.place(flutedColumn({ height, radius: 0.48, seed: 380 + i, broken: 0.12 + i * 0.11 }), 'limestone', {
-        x,
-        z,
-        block: 0.62,
-        tiltZ: (d.rng() - 0.5) * 0.05,
-      });
-      d.place(stoneBlock(1.35, 0.23, 1.35, 1400 + i), 'limestone', { x, z, lift: -0.04 });
-      // Two surviving lintels establish architecture; the rest is deliberately missing.
-      if (i < 2) {
-        const top0 = d.terrain.heightAt(x, z) + height * (0.88 - i * 0.11);
-        const top1 = d.terrain.heightAt(x + 3.4, z - 0.6) + (height - 0.52) * (0.77 - i * 0.11);
-        const span = Math.hypot(3.4, 0.6), rise = top1 - top0;
-        d.place(stoneBlock(Math.hypot(span, rise) + 0.55, 0.48, 1.05, 1410 + i, 0.1), 'limestone', {
-          x: x + 1.7, z: z - 0.3, y: (top0 + top1) / 2 - 0.08,
-          yaw: Math.atan2(0.6, 3.4), tiltZ: Math.atan2(rise, span),
-        });
-      }
+    // Low farm buildings replace the unrelated ruined colonnade.
+    placeNarrativeAsset(d,'game.nostos.environment.lotus_orchard',{x:0,z:0,y:0});
+    for(const w of orchardWalls())d.wall(...w);
+    for(const p of ORCHARD_BAYS)for(const x of[-2.3,2.3])for(const z of[-3,3]){const at=orchardPoint(p,x,z);d.blockers.push({...at,radius:.23});}
+    // Two terrace lips indicate slope without closing a path across the orchard.
+    for(const [x,z,y]of[[-3.2,-12,3.2],[20.5,-13,2.8]])for(let i=0;i<4;i++){
+      d.place(stoneBlock(.65,.55,1.9,3300+i,.045),'limestone',{x:x!,z:z!+i*1.8,y:y!-.5});
+
     }
-    d.place(columnDrum(0.44, 0.9, 390), 'limestone', { x: 3.2, z: -24.5, tiltX: 1.4, yaw: 0.9, block: 0.6 });
-    d.place(columnDrum(0.44, 1.1, 391), 'limestone', { x: 5.6, z: -26.2, tiltZ: 1.5, yaw: 0.3, block: 0.6 });
+
+    for(const p of lotusRill((x,z)=>d.terrain.heightAt(x,z)))d.place(p.geometry,p.surface,{x:0,z:0,y:0});
 
     // Three broken arcs: the orchard opens into sand instead of a courtyard grid.
     for (let i = 0; i < 11; i++) {
@@ -306,57 +291,6 @@ export const lotus: Act = {
     for (const [i, x, z] of [[0, 10, -9], [1, 23, -16], [2, 25, 0], [3, 7, -13], [4, 17, -22]]) {
       d.place(coastalLeaves(1.3, 1870 + i!), 'olive', { x: x!, z: z!, yaw: i!, lift: -0.02 });
     }
-
-    // ── 登岸口的地标：一对倒下的断柱与一段矮墙，
-    //    让玩家一上岸就有一个"这里从前有人"的读法，而不是一片空沙 ──
-    d.place(flutedColumn({ height: 4.2, radius: 0.46, seed: 402, broken: 0.3 }), 'limestone', {
-      x: 6.5,
-      z: 22,
-      block: 0.7,
-      tiltZ: 0.06,
-    });
-    d.place(columnDrum(0.46, 1.5, 403), 'limestone', { x: 8.6, z: 19.5, tiltX: 1.5, yaw: 0.8, block: 0.75 });
-    d.place(columnDrum(0.46, 1.2, 404), 'limestone', { x: 4.2, z: 18.2, tiltZ: 1.5, yaw: 2.1, block: 0.7 });
-    // 一段塌了一半的矮墙：两皮石，上一皮缺了两块。
-    // 拆成小块砌是为了让它读成"砌体"，而不是一块立在沙上的褐色板子。
-    for (let i = 0; i < 7; i += 1) {
-      const x = -4 + i * 1.35;
-      const z = 24.4 - i * 0.42;
-      d.place(stoneBlock(1.15, 0.52, 0.72, 405 + i, 0.16), 'limestone', {
-        x,
-        z,
-        yaw: 0.12 + (d.rng() - 0.5) * 0.22,
-        tiltZ: (d.rng() - 0.5) * 0.09,
-        block: 0.7,
-      });
-      // 上面这一皮：错缝，并且中间两块已经掉了
-      if (i < 6 && i !== 2 && i !== 3) {
-        d.place(stoneBlock(1.0, 0.46, 0.68, 415 + i, 0.2), 'limestone', {
-          x: x + 0.66,
-          z: z - 0.2,
-          lift: 0.52,
-          yaw: 0.12 + (d.rng() - 0.5) * 0.3,
-          tiltZ: (d.rng() - 0.5) * 0.16,
-        });
-      }
-    }
-    // 掉下来的那两块，就滚在墙脚
-    d.place(stoneBlock(0.95, 0.44, 0.66, 425, 0.24), 'limestone', {
-      x: -0.4,
-      z: 22.6,
-      yaw: 1.1,
-      tiltZ: 1.45,
-      block: 0.6,
-    });
-    d.place(stoneBlock(0.9, 0.42, 0.62, 426, 0.24), 'limestone', {
-      x: 1.2,
-      z: 22.2,
-      yaw: 0.4,
-      tiltX: 1.5,
-      block: 0.6,
-    });
-    d.place(statueTorso(1.0, 410), 'limestone', { x: -9, z: 8, yaw: 0.9, block: 0.6 });
-    d.place(stoneBlock(1.4, 0.45, 1.4, 411, 0.05), 'limestone', { x: -9, z: 8, lift: -0.45 });
 
     // ── 岸边的船 ──
     d.place(boatHull(5.6, 400), 'driftwood', { x: -6, z: 37, lift: 0.4, yaw: -0.25, tiltZ: 0.07 });

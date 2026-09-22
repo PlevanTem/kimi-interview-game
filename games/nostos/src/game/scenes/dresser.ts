@@ -33,7 +33,7 @@ export interface PlaceOptions {
 
 export class Dresser {
   readonly blockers: Blocker[] = [];
-  private readonly batches = new Map<SurfaceName, GeometryBatch>();
+  private readonly batches = new Map<string, { surface: SurfaceName; batch: GeometryBatch }>();
   private readonly materials = new Map<SurfaceName, THREE.ShaderMaterial>();
   private readonly meshes: THREE.Mesh[] = [];
   /** 不进合批、但同样由本装配器持有的网格 */
@@ -73,17 +73,26 @@ export class Dresser {
 
     matrix.compose(new THREE.Vector3(options.x, y, options.z), quaternion, scaleVector);
 
-    let batch = this.batches.get(surface);
-    if (!batch) {
-      batch = new GeometryBatch();
-      this.batches.set(surface, batch);
+    // Keep distant parts independently cullable. Large authored buildings stay intact.
+    geometry.computeBoundingBox();
+    const center = geometry.boundingBox!.getCenter(new THREE.Vector3()).applyMatrix4(matrix);
+    const key = `${surface}:${Math.floor(center.x / 24)}:${Math.floor(center.z / 24)}`;
+    let entry = this.batches.get(key);
+    if (!entry) {
+      entry = { surface, batch: new GeometryBatch() };
+      this.batches.set(key, entry);
     }
-    batch.add(geometry, matrix);
+    entry.batch.add(geometry, matrix);
     geometry.dispose();
 
     if (options.block && options.block > 0) {
       this.blockers.push({ x: options.x, z: options.z, radius: options.block });
     }
+  }
+
+  /** A solid wall with 28 cm player clearance; gaps remain authored openings. */
+  wall(ax: number, az: number, bx: number, bz: number, thickness: number): void {
+    this.blockers.push({ x: ax, z: az, endX: bx, endZ: bz, radius: thickness / 2 + 0.28 });
   }
 
   /**
@@ -135,7 +144,7 @@ export class Dresser {
   /** 把所有批次烘成 Mesh 加进场景。dress() 结束后调用一次。 */
   commit(): { meshes: THREE.Mesh[]; vertexCount: number } {
     let vertexCount = 0;
-    for (const [surface, batch] of this.batches) {
+    for (const { surface, batch } of this.batches.values()) {
       const geometry = batch.build();
       if (!geometry) continue;
       vertexCount += batch.vertexCount;

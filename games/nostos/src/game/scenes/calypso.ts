@@ -1,5 +1,6 @@
 import { CALYPSO_CAVE, CALYPSO_TREES } from '../../world/calypso-layout';
 import { CALYPSO_CAVE_BLOCKERS } from '../../world/calypso-assets';
+import { COASTAL_WALLS } from '../../world/coastal-environments';
 import { COASTAL_ASSETS } from '../../world/sea-worn';
 import { CEDAR_STUMPS } from '../../world/late-assets';
 import { placeNarrativeAsset } from '../../world/narrative-assets';
@@ -185,6 +186,8 @@ export const calypso: Act = {
   },
 
   dress(d) {
+    placeNarrativeAsset(d,'game.nostos.environment.calypso_living',{x:0,z:0,y:0});
+    for(const [ax,az,bx,bz,thickness] of COASTAL_WALLS.calypso)d.wall(ax,az,bx,bz,thickness);
     // Exactly twenty felled trees, in three authored patches; index 19 supports the axe.
     CEDAR_STUMPS.forEach(({x,z},i)=>placeNarrativeAsset(d,'game.nostos.prop.cedar_stump',{x,z,yaw:i*1.7,block:.42},1900+i));
     CALYPSO_TREES.forEach(({x,z,scale},i)=>placeNarrativeAsset(d,'game.nostos.environment.calypso_cedar',{x,z,scale,yaw:i*.63,block:.3},1950+i));

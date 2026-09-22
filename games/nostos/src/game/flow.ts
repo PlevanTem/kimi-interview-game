@@ -9,6 +9,7 @@ import { Viewport } from '../engine/renderer';
 import { ENV, VISION_GRADE } from '../content/palette';
 import { MEMORY_LABELS, TEXT } from '../content/script';
 import { Overlay, type Settings } from '../ui/overlay';
+import { MobileControls } from '../ui/mobile-controls';
 import { findFocus } from './interact';
 import { OPENING, openingPose, type OpeningPose } from './opening';
 import { canDepart, clear as clearSave, createProgress, hasTriggered, load, markTriggered, save } from './progress';
@@ -41,6 +42,7 @@ export class Game {
   private readonly viewport: Viewport;
   private readonly overlay: Overlay;
   private readonly walker: Walker;
+  private readonly mobile: MobileControls;
   private readonly sound = new Soundscape();
   private readonly stage = new Stage();
   private readonly visionStage: VisionStage;
@@ -90,6 +92,15 @@ export class Game {
     });
 
     this.overlay.showTitle(load() !== null);
+    this.mobile = new MobileControls(container, {
+      move: (x, forward) => this.walker.setTouchMove(x, forward),
+      look: (dx, dy) => { if (!this.paused) this.walker.lookBy(dx, dy); },
+      interact: () => this.interact(),
+      pause: () => this.pause(),
+      skip: () => this.skip(),
+      guide: () => this.callGuide(),
+      reset: () => this.walker.resetInput(),
+    });
 
     this.loop = new GameLoop(
       (dt, elapsed) => this.update(dt, elapsed),
@@ -98,9 +109,11 @@ export class Game {
 
     window.addEventListener('resize', this.onResize);
     window.addEventListener('keydown', this.onKeyDown);
-    this.viewport.canvas.addEventListener('mousedown', this.onMouseDown);
+    this.viewport.canvas.addEventListener('pointerdown', this.onMouseDown);
     document.addEventListener('pointerlockchange', this.onPointerLockChange);
     window.addEventListener('pointermove', this.onTitlePointer);
+    window.addEventListener('blur', this.onSuspend);
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
 
     // 标题界面也要有画面：先把第一幕装好，让玩家隔着面板看见海
     this.stage.load(actAt(0), this.viewport, this.sound);
@@ -163,6 +176,7 @@ export class Game {
   private pause(): void {
     if (!this.started || this.phase === 'ended') return;
     this.paused = true;
+    this.mobile.reset();
     this.overlay.setProgress(this.progress.act, this.progress.triggered.length);
     this.overlay.setGuideHint(false);
     this.overlay.setPaused(true);
@@ -178,6 +192,7 @@ export class Game {
   }
 
   private loadAct(index: number, fadeFrom = 0xf3ead6): void {
+    this.mobile.reset();
     this.walker.lookEnabled = true;
     this.overlay.hideIntroCard();
     this.overlay.setTutorial(null);
@@ -222,18 +237,24 @@ export class Game {
   // ── 输入 ──
 
   private readonly onResize = (): void => this.viewport.resize();
+  private readonly onSuspend = (): void => { if (this.started) this.pause(); };
+  private readonly onVisibilityChange = (): void => {
+    if (document.hidden) this.onSuspend();
+  };
   private readonly onTitlePointer = (event: PointerEvent): void => {
     if (this.phase === 'title') this.titlePointer = event.clientX / window.innerWidth - 0.5;
   };
 
   private readonly onPointerLockChange = (): void => {
+    if (this.walker.touchMode) return;
     // 玩家按了浏览器的 Esc 退出鼠标锁定：视为暂停
     if (this.started && !this.walker.pointerLocked && !this.paused && this.phase !== 'ended') {
       this.pause();
     }
   };
 
-  private readonly onMouseDown = (): void => {
+  private readonly onMouseDown = (event: PointerEvent): void => {
+    if (event.pointerType !== 'mouse' || this.walker.touchMode) return;
     if (!this.started || this.paused) return;
     if (!this.walker.pointerLocked) {
       this.walker.requestPointerLock();
@@ -253,10 +274,7 @@ export class Game {
 
     if (event.code === 'Space') {
       event.preventDefault();
-      if (this.phase === 'intro') { this.finishIntro(); return; }
-      if (this.phase === 'epilogue') { this.finish(); return; }
-      if (this.phase === 'vision') this.timeline?.skip();
-      else if (this.narration) this.narration.next();
+      this.skip();
       return;
     }
     if (event.code === 'KeyE' || event.code === 'Enter') {
@@ -269,6 +287,14 @@ export class Game {
       this.callGuide();
     }
   };
+
+  private skip(): void {
+    if (!this.started || this.paused) return;
+    if (this.phase === 'intro') { this.finishIntro(); return; }
+    if (this.phase === 'epilogue') { this.finish(); return; }
+    if (this.phase === 'vision') this.timeline?.skip();
+    else this.narration?.next();
+  }
 
   /**
    * 呼唤引路光。
@@ -426,6 +452,9 @@ export class Game {
 
   private update(dt: number, elapsed: number): void {
     this.overlay.update(dt);
+    this.mobile.setState(this.walker.touchMode && this.started && !this.paused && this.phase !== 'ended',
+      this.phase === 'intro' || this.phase === 'vision' || this.phase === 'epilogue' || this.narration !== null,
+      this.phase === 'intro' || (this.phase === 'roaming' && (this.focus !== null || this.narration !== null)));
     if (this.paused) {
       this.viewport.post.setFade(this.fadeColor, this.fade);
       return;
@@ -571,13 +600,14 @@ export class Game {
 
     const busy = this.narration !== null;
     this.overlay.setReticle(true, this.focus !== null && !busy);
-    this.overlay.setPrompt(this.focus && !busy ? this.focus.prompt : null);
+    this.overlay.setPrompt(this.focus && !busy ? this.focus.prompt : null, this.walker.touchMode ? '触碰' : 'E');
     this.tutorialTime += dt;
     if (this.tutorialActive && hasTriggered(this.progress, 'prologue.raft')) this.tutorialActive = false;
     const looked = Math.abs(this.walker.yaw - OPENING.landing.yaw) + Math.abs(this.walker.pitch - OPENING.landing.pitch) > 0.12;
     const tip = this.tutorialActive && !busy
-      ? this.focus ? TEXT.ui.tutorialTouch
-        : this.tutorialTime < 5 && !looked ? TEXT.ui.tutorialLook : TEXT.ui.tutorialWalk
+      ? this.focus ? (this.walker.touchMode ? '轻按「触碰」听见它的故事' : TEXT.ui.tutorialTouch)
+        : this.tutorialTime < 5 && !looked ? (this.walker.touchMode ? '右侧拖动，看看四周' : TEXT.ui.tutorialLook)
+          : (this.walker.touchMode ? '左侧拖动行走 · 引路按钮呼唤光' : TEXT.ui.tutorialWalk)
       : null;
     this.overlay.setTutorial(tip);
     this.overlay.setGuideHint(!busy && (!this.tutorialActive || this.tutorialTime > 20));
@@ -662,10 +692,12 @@ export class Game {
     openingTime: number;
     homecomingTime: number;
     renderStats: { calls: number; geometries: number; textures: number };
+    quality: Viewport['quality'] & Viewport['metrics'];
   } {
     const act = actAt(this.progress.act);
     return {
       phase: this.phase,
+      quality: { ...this.viewport.quality, ...this.viewport.metrics },
       fade: this.fade,
       openingTime: this.openingTime,
       homecomingTime: this.homecomingTime,
@@ -748,9 +780,12 @@ export class Game {
     window.removeEventListener('resize', this.onResize);
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('pointermove', this.onTitlePointer);
+    window.removeEventListener('blur', this.onSuspend);
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     document.removeEventListener('pointerlockchange', this.onPointerLockChange);
-    this.viewport.canvas.removeEventListener('mousedown', this.onMouseDown);
+    this.viewport.canvas.removeEventListener('pointerdown', this.onMouseDown);
     this.walker.dispose();
+    this.mobile.dispose();
     this.visionStage.dispose();
     this.stage.dispose();
     this.sound.dispose();

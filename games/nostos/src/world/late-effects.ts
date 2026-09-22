@@ -1,4 +1,5 @@
-import { releaseFrescoMaterial } from '../engine/materials';
+import { releaseFrescoMaterial, sharedUniforms } from '../engine/materials';
+import { resolveQuality } from '../engine/quality';
 import * as THREE from 'three';
 import { springPath, springWaterHeight } from './calypso-layout';
 export { springPath } from './calypso-layout';
@@ -34,19 +35,20 @@ export class LateEffects {
     const c=canvas.getContext('2d')!;const g=c.createRadialGradient(32,32,0,32,32,32);
     g.addColorStop(0,'rgba(255,255,255,.7)');g.addColorStop(.35,'rgba(255,255,255,.48)');g.addColorStop(1,'rgba(255,255,255,0)');
     c.fillStyle=g;c.fillRect(0,0,64,64);this.texture=new THREE.CanvasTexture(canvas);
-    for(let i=0;i<14;i++){
+    for(let i=0;i<Math.round(14*resolveQuality().environmentDensity);i++){
       const mat=new THREE.SpriteMaterial({map:this.texture,color:0x665d4e,opacity:.55,depthWrite:false,fog:true});
       this.materials.add(mat);const puff=new THREE.Sprite(mat);puff.name='hearth-smoke-'+i;
       this.smoke.push(puff);this.group.add(puff);
     }
     const ember=new THREE.Mesh(new THREE.SphereGeometry(.38,9,6).scale(1,.4,1),this.material(0xbb6937));
-    ember.position.set(0,5.55,-20);ember.name='home-hearth-ember';this.group.add(ember);
+    ember.position.set(8.8,5.1,-20);ember.name='home-hearth-ember';this.group.add(ember);
   }
   update(dt:number, motion:boolean) {
     if(motion)this.clock+=dt;
     this.smoke.forEach((p,i)=>{
-      const t=(i/14+this.clock*.07)%1;
-      p.position.set(t*1.8+Math.sin(t*8)*.16,9.65+t*6.5,-20+t*.6);
+      const t=(i/this.smoke.length+this.clock*.07)%1;
+      const wind=sharedUniforms.uWind.value;
+      p.position.set(8.8+t*wind.x*10+Math.sin(t*8)*.1,9.1+t*6.5,-20+t*wind.y*10);
       p.scale.setScalar(.85+t*2.6);
       p.material.opacity=.48*Math.sin(Math.PI*Math.min(.95,t+.08));
     });

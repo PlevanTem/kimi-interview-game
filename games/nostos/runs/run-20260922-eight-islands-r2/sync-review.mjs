@@ -1,0 +1,11 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const path=new URL('../../tools/build-eight-islands-review.mjs',import.meta.url);
+let text=readFileSync(path,'utf8');
+text=text.replaceAll("${id==='circe'||id==='cyclops'?'实机样板 · 待审阅':'设计完成 · 待样板审阅后制作'}",'实机候选 · 待视觉验收');
+text=text.replace("${['circe','cyclops'].includes(id)?`",'${`').replace("</div>`:''}</section>",'</div>`}</section>');
+text=text.replaceAll('run-20260922-eight-islands-r1/','run-20260922-eight-islands-r2/');
+text=text.replace('本页包含八岛空间设计示意与两个样板的真实前后截图。六岛尚未改造；图纸不是实机完成声明。真实手机 30 帧性能仍待验收。样板审阅后再展开全量制作。','本页包含八岛空间设计示意与24组同机位实机前后对照。八岛环境候选均已实现；图纸是空间组织示意，不是施工图。真实手机30帧持续性能仍未验收，视觉候选不代表发布放行。');
+text=text.replace('ENVIRONMENT STUDY 01','ENVIRONMENT STUDY 02');
+text=text.replace('<a href="EIGHT_ISLANDS_DESIGN.md">完整设计规格 ↗</a>','<a href="EIGHT_ISLANDS_R2_SPEC.md">后续六岛细化规格 ↗</a> · <a href="EIGHT_ISLANDS_R2_IMPLEMENTATION.md">实现与验证对照 ↗</a> · <a href="EIGHT_ISLANDS_DESIGN.md">初始设计规格 ↗</a>');
+text=text.replace('8 plans + 8 sections + 6 before/after pairs.','8 plans + 8 sections + 24 before/after pairs.');
+writeFileSync(path,text);

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { EnvPreset } from '../content/palette';
 import { PostChain } from './post';
+import { resolveQuality, ResolutionController } from './quality';
 
 /**
  * 渲染视口：WebGL 渲染器 + 摄影机 + 后期链 + 尺寸自适应。
@@ -14,6 +15,10 @@ export class Viewport {
   readonly camera: THREE.PerspectiveCamera;
   readonly post: PostChain;
   readonly canvas: HTMLCanvasElement;
+  readonly quality = resolveQuality();
+  readonly metrics = { frameMs: 0, renderCpuMs: 0, calls: 0, triangles: 0, geometries: 0, textures: 0, pixelRatio: 1, resolutionScale: 1 };
+  private readonly resolution = new ResolutionController(this.quality);
+  private previousFrame = 0;
 
   /** 基准 FOV，镜头语言里的"呼吸"与"凝视"都相对它做偏移 */
   baseFov = 62;
@@ -38,13 +43,13 @@ export class Viewport {
     this.renderer.setClearColor(0x000000, 1);
 
     // 高 DPI 屏上限制到 1.5，颗粒与色带在更高倍率下反而变弱
-    this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    this.pixelRatio = Math.min(window.devicePixelRatio || 1, this.quality.maxPixelRatio);
     this.renderer.setPixelRatio(this.pixelRatio);
 
     this.camera = new THREE.PerspectiveCamera(this.baseFov, 1, 0.1, 1600);
     // layer 1 放不参与投影的东西（天、海、剪影、微光），主相机照样要看见它们
     this.camera.layers.enable(1);
-    this.post = new PostChain(this.renderer);
+    this.post = new PostChain(this.renderer, this.quality.halation);
 
     this.resize();
   }
@@ -56,6 +61,8 @@ export class Viewport {
   resize(): void {
     const width = window.innerWidth;
     const height = window.innerHeight;
+    this.pixelRatio = Math.min(window.devicePixelRatio || 1, this.quality.maxPixelRatio) * this.resolution.scale;
+    this.renderer.setPixelRatio(this.pixelRatio);
     this.renderer.setSize(width, height, false);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
@@ -67,6 +74,10 @@ export class Viewport {
   }
 
   render(scene: THREE.Scene, time: number): void {
+    const now = performance.now();
+    const frameMs = this.previousFrame ? now - this.previousFrame : 0;
+    this.previousFrame = now;
+    if (this.resolution.sample(document.hidden ? NaN : frameMs)) this.resize();
     const fov = this.baseFov + this.fovOffset;
     if (Math.abs(this.camera.fov - fov) > 0.001) {
       this.camera.fov = fov;
@@ -74,6 +85,11 @@ export class Viewport {
     }
     this.renderer.info.reset();
     this.post.render(scene, this.camera, time);
+    const info = this.renderer.info;
+    Object.assign(this.metrics, { frameMs, renderCpuMs: performance.now() - now,
+      calls: info.render.calls, triangles: info.render.triangles,
+      geometries: info.memory.geometries, textures: info.memory.textures,
+      pixelRatio: this.pixelRatio, resolutionScale: this.resolution.scale });
   }
 
   dispose(): void {

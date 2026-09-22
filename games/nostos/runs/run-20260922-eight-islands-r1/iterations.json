@@ -1,0 +1,93 @@
+[
+  {
+    "id": "floor-and-door-continuity",
+    "issue": "New architecture must not introduce inaccessible clues or floating floors",
+    "evidence": [
+      "src/world/pilot-architecture.ts",
+      "tests/pilot-architecture.test.ts"
+    ],
+    "rootCause": "Circular-only obstacles and unmodified terrain cannot represent inhabited wall openings and floor footprints",
+    "change": "Capsule wall segments, blended terrain floor rectangles, grounded skirts; shared scene and walker height",
+    "verification": "npm run test:nostos -- --maxWorkers=1; pilot tests include BFS through real scene blockers to every interaction",
+    "before": "No segment collision or walk-surface interface",
+    "after": "Both pilot routes and doorway/sightline checks pass",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "pilot-shape-refinement",
+    "issue": "Initial Circe galleries read as generic sheds; some beam support and roof rotation were incorrect",
+    "evidence": [
+      "after/circe-arrival.jpg",
+      "after/circe-middle.jpg",
+      "tests/pilot-architecture.test.ts"
+    ],
+    "rootCause": "Symmetric roof profile, sparse edge hierarchy, generic beam orientation and wall/beam height mismatch",
+    "change": "Eccentric ridge, three roof courses, stepped bearing gables, continuous support, grounded descending drainage spout; angled cave niches",
+    "verification": "Five pilot unit tests and six final camera captures",
+    "before": "Undifferentiated sheds; roof/support inconsistency",
+    "after": "Circe 9456 vertices, Cyclops 3720; geometry checks pass; visual quality awaits human review",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "roof-rain",
+    "issue": "Rectangular shelter zones do not follow the actual cave or sloping roof",
+    "evidence": [
+      "src/world/weather.ts",
+      "tests/weather.test.ts"
+    ],
+    "rootCause": "Shelter bounds approximate irregular architecture",
+    "change": "At load, raycast actual batched roof geometry and set each rain column lower limit; no per-frame raycasts",
+    "verification": "Three weather unit tests and Cyclops browser capture with no shader errors",
+    "before": "Potential roof leakage beyond shelter rectangles",
+    "after": "Roof-sample test keeps drops above actual roof",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "hybrid-input",
+    "issue": "Independent audit found touch-capable laptops could lose mouse pointer lock",
+    "evidence": [
+      "tests/mobile-controls.test.ts",
+      "tests/e2e/mobile-input.spec.ts"
+    ],
+    "rootCause": "maxTouchPoints was treated as the active input method",
+    "change": "Use actual pointer type for mode changes; coarse pointer only for initial mode; mouse and touch handlers remain distinct",
+    "verification": "Five input unit tests and browser multi-touch regression pass",
+    "before": "Touch capability could suppress mouse look",
+    "after": "Hybrid mouse lock unit regression passes; touch move/look, cancellation, pause and orientation browser checks pass",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "resource-sampling",
+    "issue": "First repeated-switch test reported texture count 8 to 9",
+    "evidence": [
+      "after/resources.json",
+      "src/world/silhouette.ts"
+    ],
+    "rootCause": "NPC motif textures are intentionally shared and lazily uploaded on first island visit",
+    "change": "Retain cold samples; compare two subsequent complete warm cycles instead of cold versus warm",
+    "verification": "npm run test:e2e:nostos -- eight-islands.spec.ts --grep resources; exit 0",
+    "before": "Initial combined browser command: 4 passed, 1 failed",
+    "after": "Circe 55 geometries/9 textures; Cyclops 43/9; stable across warm cycles",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "mobile-acceptance",
+    "issue": "Physical-phone 15-minute sustained performance is unverified",
+    "evidence": [
+      "input-snapshot.json",
+      "performance.json"
+    ],
+    "rootCause": "No iPhone 13 Safari or Pixel 6 Chrome physical-device run available",
+    "change": "Added quality tiers, dynamic resolution, low-tier post/shadow reductions, instrumentation; kept acceptance pending",
+    "verification": "Desktop rendering/input checks and short desktop baseline only",
+    "before": "Existing evidence cannot certify required phones",
+    "after": "Still unverified; no mobile performance pass or release approval claimed",
+    "status": "open",
+    "commit": null
+  }
+]

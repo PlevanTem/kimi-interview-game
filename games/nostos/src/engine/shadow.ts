@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { resolveQuality } from './quality';
 
 /**
  * 太阳阴影。
@@ -17,8 +18,6 @@ import * as THREE from 'three';
 /** 不投影的东西放这一层。 */
 export const NO_SHADOW_LAYER = 1;
 
-const SIZE = 2048;
-
 export class ShadowMap {
   readonly target: THREE.WebGLRenderTarget;
   readonly matrix = new THREE.Matrix4();
@@ -26,8 +25,8 @@ export class ShadowMap {
   private readonly depthMaterial: THREE.MeshDepthMaterial;
   private readonly center = new THREE.Vector3();
 
-  constructor() {
-    this.target = new THREE.WebGLRenderTarget(SIZE, SIZE, {
+  constructor(size = resolveQuality().shadowSize) {
+    this.target = new THREE.WebGLRenderTarget(size, size, {
       minFilter: THREE.NearestFilter,
       magFilter: THREE.NearestFilter,
       format: THREE.RGBAFormat,
@@ -41,7 +40,7 @@ export class ShadowMap {
   }
 
   get texel(): number {
-    return 1 / SIZE;
+    return 1 / this.target.width;
   }
 
   /**

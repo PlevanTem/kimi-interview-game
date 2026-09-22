@@ -1,3 +1,4 @@
+import { isBlocked } from '../src/engine/collision';
 import * as THREE from 'three';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -86,7 +87,7 @@ describe('两幕实地通行与线索接近', () => {
     act.dress(d);
     const r = act.terrain.radius, step = 0.75, cells = Math.ceil(r * 2 / step) + 1;
     const ok = (x: number, z: number) => terrain.walkable(x, z) &&
-      !d.blockers.some((b) => Math.hypot(x - b.x, z - b.z) < b.radius + 0.28);
+      !d.blockers.some((b) => isBlocked(x,z,{...b,radius:b.radius+0.28}));
     const key = (ix: number, iz: number) => iz * cells + ix;
     const ix = Math.round((act.def.spawn.x + r) / step), iz = Math.round((act.def.spawn.z + r) / step);
     const seen = new Set<number>([key(ix, iz)]), queue = [[ix, iz]];
@@ -107,9 +108,9 @@ describe('两幕实地通行与线索接近', () => {
     }
     expect(act.def.interactables.filter((p) => !reached.has(p.id)).map((p) => p.id)).toEqual([]);
     // Build geometry directly to verify the same 300k scene budget used by runtime.
-    const batches = (d as unknown as { batches: Map<string, { build(): THREE.BufferGeometry | null }> }).batches;
+    const batches = (d as unknown as { batches: Map<string, { batch: { build(): THREE.BufferGeometry | null } }> }).batches;
     let count = 0;
-    for (const batch of batches.values()) { const g = batch.build(); if (g) { count += g.getAttribute('position').count; g.dispose(); } }
+    for (const { batch } of batches.values()) { const g = batch.build(); if (g) { count += g.getAttribute('position').count; g.dispose(); } }
     expect(count).toBeLessThan(300000);
   });
 });

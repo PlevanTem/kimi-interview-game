@@ -1,9 +1,9 @@
 {
   "$schema": "../../../schemas/context-index.schema.json",
   "contextVersion": "1.0.0",
-  "updatedAt": "2026-09-09",
-  "activeRunId": "run-20260909-calypso-build-r1",
-  "productionState": "calypso_human_accepted_main_integration_authorized_gpu_review_pending",
+  "updatedAt": "2026-09-22T04:43:51.245Z",
+  "activeRunId": "run-20260922-eight-islands-r2",
+  "productionState": "eight_islands_web_merge_authorized",
   "gateState": {
     "gate1": "bypassed_by_user_brief",
     "gate2": "locked",
@@ -40,7 +40,7 @@
     "latestGate2Decision": "games/nostos/runs/run-20260904-nostos-build/gate2-decision.json",
     "styleBibleData": "games/nostos/context/style-bible.json",
     "assetRegistry": "games/nostos/context/asset-registry.json",
-    "iterationLedger": "games/nostos/runs/run-20260909-calypso-build-r1/iterations.json",
+    "iterationLedger": "games/nostos/runs/run-20260922-eight-islands-r2/iterations.json",
     "act12Iterations": "games/nostos/runs/run-20260905-nostos-act12-art-r1/iterations.json",
     "characterTheatreInput": "games/nostos/runs/run-20260905-nostos-character-theatre-r1/input-snapshot.json",
     "characterTheatreVerification": "games/nostos/runs/run-20260905-nostos-character-theatre-r1/verification.json",
@@ -50,7 +50,7 @@
     "prologueVisualRun": "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/run.json",
     "gateBypassDirective": "games/nostos/runs/run-20260905-nostos-prologue-visual-r1/gate-bypass-directive.json",
     "memoryMotifInputSnapshot": "games/nostos/runs/run-20260905-nostos-memory-motifs-r1/input-snapshot.json",
-    "activeRun": "games/nostos/runs/run-20260909-calypso-build-r1/run.json",
+    "activeRun": "games/nostos/runs/run-20260922-eight-islands-r2/run.json",
     "humanReviewR3": "games/nostos/docs/HUMAN_REVIEW_R3.md",
     "humanReviewR3Input": "games/nostos/runs/run-20260907-review-r3/input-snapshot.json",
     "humanReviewR3Verification": "games/nostos/runs/run-20260907-review-r3/verification.json",
@@ -69,7 +69,17 @@
     "openingInputSnapshot": "games/nostos/runs/run-20260905-nostos-opening-r1/input-snapshot.json",
     "openingDirection": "games/nostos/docs/OPENING_DIRECTION.md",
     "openingIterations": "games/nostos/runs/run-20260905-nostos-opening-r1/iterations.json",
-    "openingVerification": "games/nostos/runs/run-20260905-nostos-opening-r1/verification.json"
+    "openingVerification": "games/nostos/runs/run-20260905-nostos-opening-r1/verification.json",
+    "eightIslandsInput": "games/nostos/runs/run-20260922-eight-islands-r1/input-snapshot.json",
+    "technologyDecision": "games/nostos/runs/run-20260922-eight-islands-r1/technology-decision.json",
+    "eightIslandsDesign": "games/nostos/docs/EIGHT_ISLANDS_DESIGN.md",
+    "eightIslandsVerification": "games/nostos/runs/run-20260922-eight-islands-r1/verification.json",
+    "eightIslandsReview": "games/nostos/docs/EIGHT_ISLANDS_REVIEW.html",
+    "eightIslandsR2Input": "games/nostos/runs/run-20260922-eight-islands-r2/input-snapshot.json",
+    "eightIslandsR2Spec": "games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md",
+    "eightIslandsR2Verification": "games/nostos/runs/run-20260922-eight-islands-r2/verification.json",
+    "eightIslandsR2Implementation": "games/nostos/docs/EIGHT_ISLANDS_R2_IMPLEMENTATION.md",
+    "eightIslandsHumanMergeApproval": "games/nostos/runs/run-20260922-eight-islands-r2/human-merge-approval.json"
   },
   "readOrder": [
     "games/nostos/context/brief.md",
@@ -128,6 +138,12 @@
     "games/nostos/runs/run-20260909-calypso-build-r1/input-snapshot.json",
     "games/nostos/runs/run-20260909-calypso-build-r1/run.json",
     "games/nostos/docs/CALYPSO_IMPLEMENTATION.md",
-    "games/nostos/runs/run-20260909-calypso-build-r1/iterations.json"
+    "games/nostos/runs/run-20260909-calypso-build-r1/iterations.json",
+    "games/nostos/runs/run-20260922-eight-islands-r1/input-snapshot.json",
+    "games/nostos/runs/run-20260922-eight-islands-r1/technology-decision.json",
+    "games/nostos/runs/run-20260922-eight-islands-r1/iterations.json",
+    "games/nostos/runs/run-20260922-eight-islands-r2/input-snapshot.json",
+    "games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md",
+    "games/nostos/runs/run-20260922-eight-islands-r2/iterations.json"
   ]
 }
