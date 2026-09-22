@@ -1,0 +1,72 @@
+[
+  {
+    "id": "orphan-distance",
+    "issue": "复合资产原点被旧测试误当成模型中心",
+    "evidence": [
+      "dressing.test.ts 原点半径法导致sirens.wrecks误报11.1m"
+    ],
+    "rootCause": "Test ignored geometry internal coordinates",
+    "change": "真实世界变换后的三角面XZ距离，退化面按边段求距",
+    "verification": "10项dressing检查及真实船肋顶点距锚点<2m",
+    "before": "错误的11.1m判定",
+    "after": "3m要求保持，全部剧情实物检查通过",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "threshold-height",
+    "issue": "新开放家宅入口经过46cm高的旧实体门槛",
+    "evidence": [
+      "独立三点射线约5.06m，地形4.6m"
+    ],
+    "rootCause": "Inherited prop height mismatched newly walkable interior floor",
+    "change": "薄石槛8cm，取消叠石，并补35cm厚山墙",
+    "verification": "domestic-environments.test.ts 实际场景射线",
+    "before": "约46cm穿入实体风险",
+    "after": "门槛表面相对地形4–12cm，门洞与室内净空通过",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "mooring-contact",
+    "issue": "系泊绳末端悬空",
+    "evidence": [
+      "独立审查0.244/0.287/0.291m至木表面，绳半径0.06m"
+    ],
+    "rootCause": "Independent endpoint approximation",
+    "change": "端点直接复用实际船肋/系泊石表面顶点",
+    "verification": "coastal-environments.test.ts 六个端点三角面距离",
+    "before": "至少约18cm净空隙",
+    "after": "六个端点距目标表面<0.001m",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "rock-continuity",
+    "issue": "首轮岩体叠板、洞内悬浮白石",
+    "evidence": [
+      "首轮实机截图和几何检查"
+    ],
+    "rootCause": "Disconnected simplified geometric primitives",
+    "change": "连续封闭不规则岩楔；贴旧岩壳的落地暗石肋",
+    "verification": "岩壳拓扑测试与after/sirens-arrival.jpg、after/calypso-detail.jpg",
+    "before": "独立叠板/悬浮三石",
+    "after": "连续承重及洞壳关系，实机复拍",
+    "status": "verified",
+    "commit": null
+  },
+  {
+    "id": "orchard-drain",
+    "issue": "浅渠初稿只是平直暗色标记",
+    "evidence": [
+      "L03对照实现缺少下降和出口证明"
+    ],
+    "rootCause": "Decorative marks had no sampled flow path",
+    "change": "依实际地形37点建立槽底、低岸与扩口",
+    "verification": "domestic-environments.test.ts 地高/出口/贴合",
+    "before": "无可验证排水方向",
+    "after": "37点严格下坡，总落差>1.5m，见after/lotus-space.jpg",
+    "status": "verified",
+    "commit": null
+  }
+]

@@ -124,8 +124,10 @@ const COMPOSITE_FRAG = /* glsl */ `
     base.b = texture2D(tScene, uv - centered * ca).b;
 
     // --- 光晕：高光向外渗，带暖色 ---
-    vec3 halo = texture2D(tHalation, uv).rgb;
-    base += halo * uHalationTint * uHalation;
+    if (uHalation > 0.0) {
+      vec3 halo = texture2D(tHalation, uv).rgb;
+      base += halo * uHalationTint * uHalation;
+    }
 
     // --- 曝光与胶片曲线 ---
     vec3 color = filmic(base * uExposure);
@@ -197,7 +199,7 @@ export class PostChain {
   private width = 1;
   private height = 1;
 
-  constructor(renderer: THREE.WebGLRenderer) {
+  constructor(renderer: THREE.WebGLRenderer, private readonly halationEnabled = true) {
     this.renderer = renderer;
 
     const targetOptions: THREE.RenderTargetOptions = {
@@ -249,7 +251,7 @@ export class PostChain {
         uGamma: { value: 1 },
         uGain: { value: 1.02 },
         uSaturation: { value: 0.92 },
-        uHalation: { value: 0.5 },
+        uHalation: { value: this.halationEnabled ? 0.5 : 0 },
         uHalationTint: { value: new THREE.Color(0xffc98a) },
         uVignette: { value: 0.42 },
         uGrain: { value: 0.055 },
@@ -272,8 +274,8 @@ export class PostChain {
     this.width = Math.max(1, Math.floor(width * pixelRatio));
     this.height = Math.max(1, Math.floor(height * pixelRatio));
     this.sceneTarget.setSize(this.width, this.height);
-    const bw = Math.max(1, Math.floor(this.width / 4));
-    const bh = Math.max(1, Math.floor(this.height / 4));
+    const bw = this.halationEnabled ? Math.max(1, Math.floor(this.width / 4)) : 1;
+    const bh = this.halationEnabled ? Math.max(1, Math.floor(this.height / 4)) : 1;
     this.blurA.setSize(bw, bh);
     this.blurB.setSize(bw, bh);
     (this.compositeMaterial.uniforms.uResolution!.value as THREE.Vector2).set(this.width, this.height);
@@ -287,7 +289,7 @@ export class PostChain {
     u.uGamma!.value = env.gamma;
     u.uGain!.value = env.gain;
     u.uSaturation!.value = env.saturation;
-    u.uHalation!.value = env.halation;
+    u.uHalation!.value = this.halationEnabled ? env.halation : 0;
     (u.uHalationTint!.value as THREE.Color).setHex(env.halationTint);
     u.uVignette!.value = env.vignette;
     u.uGrain!.value = env.grain;
@@ -323,29 +325,30 @@ export class PostChain {
     renderer.render(scene, camera);
 
     // 2) 高光提取 + 降采样
-    this.quad.material = this.brightMaterial;
-    this.brightMaterial.uniforms.tScene!.value = this.sceneTarget.texture;
-    renderer.setRenderTarget(this.blurA);
-    renderer.render(this.quadScene, this.quadCamera);
+    if (this.halationEnabled) {
+      this.quad.material = this.brightMaterial;
+      this.brightMaterial.uniforms.tScene!.value = this.sceneTarget.texture;
+      renderer.setRenderTarget(this.blurA);
+      renderer.render(this.quadScene, this.quadCamera);
 
-    // 3) 两次一维高斯
-    this.quad.material = this.blurMaterial;
-    const bw = this.blurA.width;
-    const bh = this.blurA.height;
-    this.blurMaterial.uniforms.tSource!.value = this.blurA.texture;
-    (this.blurMaterial.uniforms.uDirection!.value as THREE.Vector2).set(1.4 / bw, 0);
-    renderer.setRenderTarget(this.blurB);
-    renderer.render(this.quadScene, this.quadCamera);
+      // 3) 两次一维高斯
+      this.quad.material = this.blurMaterial;
+      const bw = this.blurA.width;
+      const bh = this.blurA.height;
+      this.blurMaterial.uniforms.tSource!.value = this.blurA.texture;
+      (this.blurMaterial.uniforms.uDirection!.value as THREE.Vector2).set(1.4 / bw, 0);
+      renderer.setRenderTarget(this.blurB);
+      renderer.render(this.quadScene, this.quadCamera);
 
-    this.blurMaterial.uniforms.tSource!.value = this.blurB.texture;
-    (this.blurMaterial.uniforms.uDirection!.value as THREE.Vector2).set(0, 1.4 / bh);
-    renderer.setRenderTarget(this.blurA);
-    renderer.render(this.quadScene, this.quadCamera);
-
+      this.blurMaterial.uniforms.tSource!.value = this.blurB.texture;
+      (this.blurMaterial.uniforms.uDirection!.value as THREE.Vector2).set(0, 1.4 / bh);
+      renderer.setRenderTarget(this.blurA);
+      renderer.render(this.quadScene, this.quadCamera);
+    }
     // 4) 合成到屏幕
     this.quad.material = this.compositeMaterial;
     this.compositeMaterial.uniforms.tScene!.value = this.sceneTarget.texture;
-    this.compositeMaterial.uniforms.tHalation!.value = this.blurA.texture;
+    this.compositeMaterial.uniforms.tHalation!.value = this.halationEnabled ? this.blurA.texture : this.sceneTarget.texture;
     renderer.setRenderTarget(null);
     renderer.render(this.quadScene, this.quadCamera);
   }

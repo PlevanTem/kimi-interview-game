@@ -1,3 +1,6 @@
+import { IslandWeather } from '../world/weather';
+import { CoastalSpray } from '../world/coastal-spray';
+import { ISLAND_LAYOUTS } from '../world/island-layout';
 import { LateEffects } from '../world/late-effects';
 import * as THREE from 'three';
 import { AUDIO, type Soundscape } from '../engine/audio';
@@ -34,6 +37,8 @@ export class Stage {
   blockers: Blocker[] = [];
   vertexCount = 0;
 
+  private weather: IslandWeather | null = null;
+  private spray: CoastalSpray | null = null;
   private dresser: Dresser | null = null;
   private lateEffects: LateEffects | null = null;
   private readonly glints = new Map<string, Glint>();
@@ -64,11 +69,18 @@ export class Stage {
     this.scene.add(this.terrain.mesh);
     this.sea.setShore(new THREE.Vector2(0, 0), this.terrain.shorelineRadius(), 3.2);
 
+    const zones = ISLAND_LAYOUTS[act.def.id]?.shelters ?? [];
+    sharedUniforms.uShelterCount.value = zones.length;
+    sharedUniforms.uShelters.value.forEach((u,i)=>{const z=zones[i];u.set(z?.minX??0,z?.minZ??0,z?.maxX??0,z?.maxZ??0);});
+    sharedUniforms.uShelterRoofs.value.set(...[0,1,2,3].map(i=>zones[i]?.roof??0) as [number,number,number,number]);
     this.dresser = new Dresser(this.scene, this.terrain, act.terrain.seed);
     act.dress(this.dresser);
     this.lateEffects = new LateEffects(act.def.id, this.terrain);
     this.scene.add(this.lateEffects.group);
     const committed = this.dresser.commit();
+    this.weather = new IslandWeather(act.def.id,this.terrain,committed.meshes);
+    if(this.weather.mesh)this.scene.add(this.weather.mesh);
+    if(act.def.id==='sirens'){this.spray=new CoastalSpray(this.terrain);this.scene.add(this.spray.mesh);}
     this.blockers = this.dresser.blockers;
     this.vertexCount = committed.vertexCount;
     const sculpture = act.def.interactables.find((item) => item.modelAsset);
@@ -151,6 +163,8 @@ export class Stage {
     hintId: string | null,
     cameraPosition: THREE.Vector3,
   ): void {
+    this.weather?.update(dt, sharedUniforms.uArtMotion.value > 0);
+    this.spray?.update(dt, sharedUniforms.uArtMotion.value > 0);
     this.lateEffects?.update(dt, sharedUniforms.uArtMotion.value > 0);
     this.sky.follow(cameraPosition);
     this.sea.follow(cameraPosition, this.act.terrain.waterLevel ?? 0);
@@ -161,6 +175,9 @@ export class Stage {
   }
 
   unload(): void {
+    this.weather?.dispose();this.weather=null;
+    this.spray?.dispose();this.spray=null;
+    sharedUniforms.uShelterCount.value=0;
     this.lateEffects?.dispose();
     this.lateEffects = null;
     this.guide.clear();

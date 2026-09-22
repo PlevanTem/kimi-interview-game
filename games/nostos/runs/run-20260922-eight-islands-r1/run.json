@@ -1,0 +1,12 @@
+{
+  "runId": "run-20260922-eight-islands-r1",
+  "gameId": "nostos",
+  "status": "pilots_ready_for_human_review",
+  "branch": "codex/nostos-eight-islands",
+  "baseCommit": "0b89ed08d81ffd610a82883293618fd70dbfc9ad",
+  "humanReviewRequiredBeforeRemainingIslands": true,
+  "updatedAt": "2026-09-22T03:52:13.906Z",
+  "remainingSixProduced": false,
+  "mobileHardwareVerified": false,
+  "published": false
+}

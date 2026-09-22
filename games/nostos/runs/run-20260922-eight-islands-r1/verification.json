@@ -1,0 +1,97 @@
+{
+  "runId": "run-20260922-eight-islands-r1",
+  "status": "功能与视觉候选完成，移动端性能未验收",
+  "scope": "Eight-island design and TWO implemented pilots; six islands await human pilot review",
+  "baseCommit": "0b89ed08d81ffd610a82883293618fd70dbfc9ad",
+  "checks": [
+    {
+      "command": "npm run validate:library",
+      "exitCode": 0,
+      "output": "validate-library: PASS"
+    },
+    {
+      "command": "npm run validate:context",
+      "exitCode": 0,
+      "output": "validate-context: PASS"
+    },
+    {
+      "command": "npm run audit:assets",
+      "exitCode": 0,
+      "output": "audit-assets: PASS"
+    },
+    {
+      "command": "npm run test:nostos -- --maxWorkers=1",
+      "exitCode": 0,
+      "files": 19,
+      "passed": 154
+    },
+    {
+      "command": "npm run build:nostos",
+      "exitCode": 0,
+      "output": "TypeScript check passed; 70 modules; index-DMIeOP2H.js 791.58 kB / gzip 227.86 kB"
+    },
+    {
+      "command": "npm run assets:nostos",
+      "exitCode": 0,
+      "output": "37 modules; asset workbench regenerated"
+    },
+    {
+      "command": "NOSTOS_E2E_PORT=4189 npm run test:e2e:nostos -- eight-islands.spec.ts mobile-input.spec.ts quality-tiers.spec.ts",
+      "exitCode": 1,
+      "passed": 4,
+      "failed": 1,
+      "note": "Initial resource assertion compared cold and warm caches. No game code changed after this run; test sampling corrected with traceable root cause."
+    },
+    {
+      "command": "NOSTOS_E2E_PORT=4189 npm run test:e2e:nostos -- eight-islands.spec.ts --grep resources",
+      "exitCode": 0,
+      "passed": 1,
+      "output": "1 passed (1.2m)"
+    },
+    {
+      "command": "node games/nostos/runs/run-20260922-eight-islands-r1/capture.mjs --baseline",
+      "exitCode": 0,
+      "frames": 6,
+      "errors": []
+    },
+    {
+      "command": "node games/nostos/runs/run-20260922-eight-islands-r1/capture.mjs",
+      "exitCode": 0,
+      "frames": 6,
+      "errors": []
+    },
+    {
+      "command": "node games/nostos/runs/run-20260922-eight-islands-r1/performance.mjs",
+      "exitCode": 0,
+      "output": "RTX 5060 / Edge 153 / 844x390; each pilot before and after sampled 15 seconds. Median RAF 169.49 FPS / P95 6 ms in all four short samples. Circe max draws 28 to 54, Cyclops 25 to 39. Review has 8 sections and 12 loaded comparison images.",
+      "note": "Before build does not implement the low-quality query parameter. This compares deployed baseline to candidate mobile configuration, not identical rendering settings or physical devices."
+    }
+  ],
+  "evidence": [
+    "before/capture.json",
+    "after/capture.json",
+    "after/touch-journey.json",
+    "after/touch-ending.jpg",
+    "after/resources.json",
+    "performance.json"
+  ],
+  "browserCoverage": "All eight acts: visible touch interaction, dialogue, memory, pause/resume, skip, departure, ending. Probe accelerates positioning, so this does not prove every route was manually walked. Pilot BFS tests cover spatial accessibility.",
+  "independentAudit": {
+    "auditor": "quality-auditor",
+    "scope": "Bounded source and screenshot review, not release audit",
+    "finding": "P2 hybrid input mode",
+    "resolution": "Fixed and covered by input regression; no Gate 4 score assigned"
+  },
+  "limitations": [
+    "Six islands are design-only, not rebuilt",
+    "Human visual acceptance pending; studio-demo quality not certified",
+    "No physical-phone sustained performance evidence",
+    "Short desktop pilot samples do not cover thermal throttling or all-eight 15-minute play",
+    "Resource counters represent renderer allocations, not total OS/GPU memory",
+    "Restart is inherited; new browser journey checks ending but does not retest restart"
+  ],
+  "humanVisualAcceptance": false,
+  "mobileHardwareVerified": false,
+  "mergePerformed": false,
+  "published": false
+}

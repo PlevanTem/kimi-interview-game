@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { ACTS } from '../src/game/scenes';
 import { Dresser } from '../src/game/scenes/dresser';
 import type { PlaceOptions, SurfaceName } from '../src/game/scenes/dresser';
-import type { Terrain } from '../src/world/terrain';
+import { Terrain } from '../src/world/terrain';
 
 /**
  * 交互点必须在世界里真的有东西。
@@ -22,17 +22,14 @@ import type { Terrain } from '../src/world/terrain';
  * 跑一幕的 dress()，返回作者**明确摆放**的构件位置。
  *
  * 两处刻意的偏离：
- * 1. 不构造真的 Terrain——它的构造函数会建材质、材质要 Canvas2D，Node 里没有。
- *    Dresser 只用到 heightAt / slopeAt，给个平地桩就够，而我们只量水平距离。
+ * 1. 不调用 Terrain 构造函数（会创建 Canvas2D 材质）；复用它的真实高度采样方法。
+ *    几何按 Dresser 的完整位姿变换，再检查表面距离与露出地表的高度。
  * 2. **scatter 直接跳过。** 散落的碎石是背景，不是旁白在描述的那件东西；
  *    让它参与统计的话，一块随机落点的石头就可能盖住一个真正的孤儿，
  *    这条测试会变成假绿。
  */
 interface Placement {
-  x: number;
-  z: number;
-  /** 水平外接半径：量距离要量到这件东西的边缘，不是它的中心 */
-  r: number;
+  triangles: THREE.Triangle[];
   /** 露出地面多高。<= 0 表示整件埋在地下，游戏里根本看不见 */
   above: number;
   /** 出问题时好认是谁 */
@@ -40,10 +37,7 @@ interface Placement {
 }
 
 function authoredPlacements(act: (typeof ACTS)[number]): Placement[] {
-  const flatGround = {
-    heightAt: () => 1,
-    slopeAt: () => 0,
-  } as unknown as Terrain;
+  const flatGround = Object.assign(Object.create(Terrain.prototype) as Terrain,{params:{waterLevel:0,...act.terrain}});
 
   const dresser = new Dresser(new THREE.Scene(), flatGround, act.terrain.seed);
   const placed: Placement[] = [];
@@ -53,20 +47,20 @@ function authoredPlacements(act: (typeof ACTS)[number]): Placement[] {
     scatter: (...args: unknown[]) => void;
   };
   patched.place = (g, surface, o) => {
-    // 量到边缘而不是中心：一块铺在地上的大石板能盖住交互点，
-    // 但它的中心可能在好几米以外。只看中心会把它误判成孤儿。
-    g.computeBoundingBox();
-    const box = g.boundingBox;
-    let r = 0;
-    let above = Infinity;
-    if (box) {
-      const scale = typeof o.scale === 'number' ? o.scale : 1;
-      const scaleY = Array.isArray(o.scale) ? o.scale[1] : scale;
-      r = Math.max(box.max.x - box.min.x, box.max.z - box.min.z) * 0.5 * scale;
-      // place() 会先贴地再加 lift，所以露出地面的高度就是 lift + 几何顶
-      above = (o.lift ?? 0) + box.max.y * scaleY;
+    // Match Dresser's actual transform. A composite asset can have an origin
+    // far from its surfaces; neither pivot radius nor a huge AABB proves proximity.
+    const scale=o.scale??1,s=typeof scale==='number'?new THREE.Vector3(scale,scale,scale):new THREE.Vector3(...scale);
+    const q=new THREE.Quaternion().setFromEuler(new THREE.Euler(o.tiltX??0,o.yaw??0,o.tiltZ??0,'YXZ'));
+    g.applyMatrix4(new THREE.Matrix4().compose(new THREE.Vector3(o.x,(o.y??flatGround.heightAt(o.x,o.z))+(o.lift??0),o.z),q,s));
+    const p=g.getAttribute('position'),vertices:THREE.Vector3[]=[],triangles:THREE.Triangle[]=[];
+    let above=-Infinity;
+    for(let i=0;i<p.count;i++){
+      above=Math.max(above,p.getY(i)-flatGround.heightAt(p.getX(i),p.getZ(i)));
+      vertices.push(new THREE.Vector3(p.getX(i),0,p.getZ(i)));
     }
-    placed.push({ x: o.x, z: o.z, r, above, label: `${surface} @ (${o.x}, ${o.z})` });
+    const indices=g.index;const count=indices?.count??p.count;
+    for(let i=0;i<count;i+=3)triangles.push(new THREE.Triangle(vertices[indices?.getX(i)??i]!,vertices[indices?.getX(i+1)??i+1]!,vertices[indices?.getX(i+2)??i+2]!));
+    placed.push({triangles,above,label:`${surface} @ (${o.x}, ${o.z})`});g.dispose();
   };
   patched.scatter = () => {};
   // attach 会真的去建网格与贴图（Canvas2D），Node 里跑不了。
@@ -141,9 +135,17 @@ describe('每个交互点在世界里都要有实物', () => {
       for (const item of act.def.interactables) {
         if (DELIBERATE[item.id]) continue;
         let nearest = Infinity;
+        const point=new THREE.Vector3(item.x,0,item.z),closest=new THREE.Vector3();
         for (const p of placed) {
-          const d = Math.max(0, Math.hypot(p.x - item.x, p.z - item.z) - p.r);
-          if (d < nearest) nearest = d;
+          for(const triangle of p.triangles){
+            // Vertical faces project to a segment (zero-area triangle).
+            if(triangle.getArea()>1e-10){triangle.closestPointToPoint(point,closest);nearest=Math.min(nearest,closest.distanceTo(point));}
+            else for(const [a,b] of [[triangle.a,triangle.b],[triangle.b,triangle.c],[triangle.c,triangle.a]]){
+              const dx=b!.x-a!.x,dz=b!.z-a!.z,len=dx*dx+dz*dz;
+              const t=len?Math.max(0,Math.min(1,((point.x-a!.x)*dx+(point.z-a!.z)*dz)/len)):0;
+              nearest=Math.min(nearest,Math.hypot(point.x-a!.x-t*dx,point.z-a!.z-t*dz));
+            }
+          }
         }
         for (const f of features) {
           const d = Math.max(0, Math.hypot(f.x - item.x, f.z - item.z) - f.radius);

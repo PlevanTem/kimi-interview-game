@@ -1,7 +1,8 @@
+import { LIMINAL_TERRAINS, LIMINAL_WALLS } from '../../world/liminal-environments';
+import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
 import {
   pole,
-  shipRib,
   stoneAnchor,
   wreckedRaft,
   weatheredNamePlank,
@@ -147,25 +148,12 @@ export const prologue: Act = {
     },
   },
 
-  terrain: {
-    seed: 20260101,
-    radius: 26,
-    amplitude: 1.05,
-    frequency: 0.06,
-    dome: 2.1,
-    ridge: 0,
-    detail: 'sand',
-    colorFlat: 0x6b6b6b,
-    colorSteep: 0x45474d,
-    colorHigh: 0x7a7970,
-    heightStart: 1.2,
-    heightEnd: 2.6,
-    shoreWetWidth: 5.6,
-    shoreWetColor: 0x26384c,
-    shoreWetStrength: 0.62,
-  },
+  terrain: LIMINAL_TERRAINS.prologue,
 
   dress(d) {
+    placeNarrativeAsset(d, 'game.nostos.environment.prologue_tideland', { x:0, z:0, y:0 }, 2601);
+    for (const [ax,az,bx,bz,t] of LIMINAL_WALLS.prologue) d.wall(ax,az,bx,bz,t);
+    d.wall(-16.25,-6,-17.01,-8.7,.4);
     // ── 散架的木筏：主角十年来所有的家当 ──
     const raft = wreckedRaft(100);
     const raftPlacement = { x: -3.5, z: 2, lift: 0.18, yaw: 0.08, tiltZ: -0.025 };
@@ -194,17 +182,6 @@ export const prologue: Act = {
     // ── 离岛的小船，搁在浅水边 ──
     d.place(boatHull(5.2, 150), 'saltWood', { x: -8, z: 9, lift: 0.42, yaw: 0.35, tiltZ: 0.09 });
     d.place(pole(3.6, 0.09, 151), 'saltWood', { x: -8.3, z: 8.6, lift: 0.7, tiltX: 0.16 });
-
-    // ── 半埋的旧船肋：这片沙洲吃过不止一条船 ──
-    for (let i = 0; i < 3; i += 1) {
-      d.place(shipRib(2.35 + i * 0.16, 0.62, 160 + i), 'charredWood', {
-        x: -17 + i * 1.4,
-        z: -10 - i,
-        lift: -0.78,
-        yaw: 1.1,
-        tiltX: 0.5,
-      });
-    }
 
     // ── 卵石减量，留出木筏后的纯净负形；石头只负责标出潮线 ──
     d.scatter(10, {

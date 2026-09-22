@@ -1,0 +1,31 @@
+{
+  "runId": "run-20260922-eight-islands-r1",
+  "recordedAt": "2026-09-22T03:24:15.833Z",
+  "decisionMaker": "human_user",
+  "request": "PLEASE IMPLEMENT THIS PLAN: NOSTOS eight-island environment upgrade",
+  "baseCommit": "0b89ed08d81ffd610a82883293618fd70dbfc9ad",
+  "authorization": "Approved eight-island design; current Three.js runtime; mobile input and quality foundations; Circe and Cyclops implementation candidates before human sample review.",
+  "scope": [
+    "eight-island design",
+    "mobile controls",
+    "quality tiers",
+    "Circe and Cyclops pilots",
+    "verification"
+  ],
+  "deferred": [
+    "remaining six scene production until human pilot review",
+    "publishing",
+    "main merge"
+  ],
+  "visualApproval": false,
+  "mobileAcceptance": {
+    "devices": [
+      "iPhone 13 Safari",
+      "Pixel 6 Chrome"
+    ],
+    "minutes": 15,
+    "medianFps": 30,
+    "p95Ms": 40,
+    "hardwareVerified": false
+  }
+}

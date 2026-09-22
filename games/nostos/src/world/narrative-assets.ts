@@ -1,3 +1,7 @@
+import { PILOT_ASSETS } from './pilot-architecture';
+import { DOMESTIC_ASSETS } from './domestic-environments';
+import { COASTAL_ASSETS } from './coastal-environments';
+import { LIMINAL_ASSETS } from './liminal-environments';
 import { lateCharacter, weightedLoom, vinePortal, carvedBoundary, braidedRope, homeDetails } from './late-assets';
 import { calypsoCave, calypsoFourRills, calypsoCedar, calypsoSeatRock, calypsoAxe, calypsoCharacter, calypsoRobe, calypsoStump, calypsoDomesticSet, calypsoPaths } from './calypso-assets';
 import * as THREE from 'three';
@@ -197,6 +201,10 @@ function burnedStake(seed: number): NarrativePart[] {
 }
 
 export const NARRATIVE_ASSETS = {
+  ...PILOT_ASSETS,
+  ...DOMESTIC_ASSETS,
+  ...COASTAL_ASSETS,
+  ...LIMINAL_ASSETS,
   'game.nostos.environment.calypso_cave': { name: '卡吕普索洞居 · 横向岩檐与生活内室', make: calypsoCave },
   'game.nostos.environment.calypso_four_rills': { name: '四泉水网 · 同源分流与四处入海', make: calypsoFourRills },
   'game.nostos.environment.calypso_paths': { name: '洞居足迹 · 通向生活与海的磨损带', make: calypsoPaths },

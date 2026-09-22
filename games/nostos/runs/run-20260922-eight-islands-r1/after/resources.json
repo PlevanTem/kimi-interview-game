@@ -1,0 +1,26 @@
+{
+  "circe1": {
+    "geometries": 55,
+    "textures": 8
+  },
+  "cyclops1": {
+    "geometries": 43,
+    "textures": 9
+  },
+  "circe2": {
+    "geometries": 55,
+    "textures": 9
+  },
+  "cyclops2": {
+    "geometries": 43,
+    "textures": 9
+  },
+  "circe3": {
+    "geometries": 55,
+    "textures": 9
+  },
+  "cyclops3": {
+    "geometries": 43,
+    "textures": 9
+  }
+}

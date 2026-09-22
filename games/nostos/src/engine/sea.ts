@@ -19,6 +19,7 @@ const VERT = /* glsl */ `
 
   uniform float uTime;
   uniform float uWaveHeight;
+  uniform vec2 uWind;
   uniform float uWaveChop;
   uniform float uSculptedStyle;
   uniform vec2 uShoreCenter;
@@ -32,7 +33,8 @@ const VERT = /* glsl */ `
   vec3 gerstner(vec2 p, vec2 dir, float steepness, float wavelength, float speed, inout float crest) {
     float k = 6.28318 / wavelength;
     float c = sqrt(9.8 / k) * speed;
-    vec2 d = normalize(dir);
+    vec2 wind=length(uWind)>.001?normalize(uWind):vec2(1.0,0.0);
+    vec2 d = mat2(wind.x,wind.y,-wind.y,wind.x)*normalize(dir);
     float f = k * (dot(d, p) - c * uTime);
     float a = steepness / k;
     crest += cos(f) * steepness;
@@ -175,6 +177,7 @@ export class Sea {
       fragmentShader: FRAG,
       uniforms: {
         uTime: sharedUniforms.uTime,
+        uWind: sharedUniforms.uWind,
         uSculptedStyle: sharedUniforms.uSculptedStyle,
         uCameraPos: sharedUniforms.uCameraPos,
         uSunDir: sharedUniforms.uSunDir,

@@ -10,7 +10,7 @@
     "gate4": "not_started"
   },
   "contextIndex": "games/nostos/context/index.json",
-  "technologyDecision": null,
+  "technologyDecision": "games/nostos/runs/run-20260922-eight-islands-r1/technology-decision.json",
   "createdAt": "2026-09-04T09:00:00+08:00",
-  "updatedAt": "2026-09-05T08:48:12+08:00"
+  "updatedAt": "2026-09-22T04:30:49.839Z"
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "../../../schemas/style-bible.schema.json",
   "id": "nostos-salt-cut-faceted-fresco",
-  "version": 7,
+  "version": 9,
   "status": "draft",
   "approved": false,
   "conceptId": "nostos",
@@ -97,6 +97,7 @@
   },
   "promptPrefix": "NOSTOS, first-person lightweight 3D polygon environment, salt-cut faceted fresco style, readable low-poly silhouettes with controlled medium-scale erosion, three-band non-PBR lighting, porous limestone and terracotta, salt-worn wood and linen, long weather-driven shadows, restrained film grain, broad negative space, authored 3D depth and side faces, 62-degree perspective camera",
   "negativePrompt": "photorealistic PBR, glossy plastic, metallic gold shine, voxel blocks, uniform triangulation, random pebble carpet, tiled pavement grid, spherical tree crowns, dense foliage wall, centered sun, symmetrical temple facade, miniature diorama, black-figure silhouettes in the real world, HUD markers, excessive bloom, heavy grain, text, labels",
+  "eightIslandExtension": {"authorization":"User approved plan 2026-09-22","direction":"games/nostos/docs/EIGHT_ISLANDS_DESIGN.md","implementedPilots":["circe","cyclops"],"pendingProduction":[],"visualAcceptance":false,"mobilePerformance":"unverified on physical phones","continuationAuthorization":"User requested remaining six candidates and GitHub update 2026-09-22","spec":"games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md","implementedCandidates":["prologue","lotus","cyclops","circe","nekyia","sirens","calypso","ithaca"],"verification":"candidate_checks_passed_physical_phone_unverified"},
   "lateActsExtension": {"authorization":"user-directed 2026-09-09","direction":"games/nostos/docs/LATE_ACTS_DIRECTION.md","style":"same pigments; all acts sculptedStyle=1; restrained grain/halation; local figure bounce","ending":"18-second in-engine homecoming; skip, pause, reduced motion"},
   "act12Extension": {
     "authorization": "user_directed_implementation_before_visual_lock",

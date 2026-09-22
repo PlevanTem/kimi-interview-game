@@ -1,0 +1,98 @@
+{
+  "0:0": {
+    "geometries": 21,
+    "textures": 9
+  },
+  "0:1": {
+    "geometries": 49,
+    "textures": 9
+  },
+  "0:2": {
+    "geometries": 43,
+    "textures": 10
+  },
+  "0:3": {
+    "geometries": 55,
+    "textures": 10
+  },
+  "0:4": {
+    "geometries": 24,
+    "textures": 10
+  },
+  "0:5": {
+    "geometries": 50,
+    "textures": 10
+  },
+  "0:6": {
+    "geometries": 67,
+    "textures": 10
+  },
+  "0:7": {
+    "geometries": 37,
+    "textures": 11
+  },
+  "1:0": {
+    "geometries": 22,
+    "textures": 10
+  },
+  "1:1": {
+    "geometries": 50,
+    "textures": 10
+  },
+  "1:2": {
+    "geometries": 44,
+    "textures": 10
+  },
+  "1:3": {
+    "geometries": 56,
+    "textures": 10
+  },
+  "1:4": {
+    "geometries": 25,
+    "textures": 10
+  },
+  "1:5": {
+    "geometries": 51,
+    "textures": 10
+  },
+  "1:6": {
+    "geometries": 68,
+    "textures": 10
+  },
+  "1:7": {
+    "geometries": 37,
+    "textures": 11
+  },
+  "2:0": {
+    "geometries": 22,
+    "textures": 10
+  },
+  "2:1": {
+    "geometries": 50,
+    "textures": 10
+  },
+  "2:2": {
+    "geometries": 44,
+    "textures": 10
+  },
+  "2:3": {
+    "geometries": 56,
+    "textures": 10
+  },
+  "2:4": {
+    "geometries": 25,
+    "textures": 10
+  },
+  "2:5": {
+    "geometries": 51,
+    "textures": 10
+  },
+  "2:6": {
+    "geometries": 68,
+    "textures": 10
+  },
+  "2:7": {
+    "geometries": 37,
+    "textures": 11
+  }
+}

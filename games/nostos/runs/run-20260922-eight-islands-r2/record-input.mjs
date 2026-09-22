@@ -1,0 +1,11 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const here=new URL('./',import.meta.url),game=new URL('../../',import.meta.url);
+const write=(p,x)=>writeFileSync(p,JSON.stringify(x,null,2)+'\n');
+const runId='run-20260922-eight-islands-r2',time=new Date().toISOString();
+write(new URL('input-snapshot.json',here),{runId,recordedAt:time,decisionMaker:'human_user',request:'继续完成后续场景的设计优化，列出细粒度的优化项spec描述再执行，完成后更新github',baseCommit:'0b89ed08d81ffd610a82883293618fd70dbfc9ad',parentRun:'run-20260922-eight-islands-r1',authorization:'Continue remaining six scene candidates after fine-grained spec; verify and update GitHub implementation branch. This supersedes prior wait-before-six-production, not visual or physical-phone acceptance.',spec:'games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md',scope:['ithaca','lotus','sirens','calypso','prologue','nekyia','shared directed climate','eight-island regression','GitHub branch and review delivery'],unchanged:['story IDs and prose','four real NPCs','first-person narrative play','island ordering','Three.js runtime'],notAuthorized:['main merge','Pages production deployment'],humanVisualAcceptance:false,physicalPhoneAcceptance:false});
+write(new URL('run.json',here),{runId,gameId:'nostos',status:'implementing_six_scenes',startedAt:time,branch:'codex/nostos-eight-islands',parentRun:'run-20260922-eight-islands-r1',spec:'games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md'});
+write(new URL('iterations.json',here),[]);
+const p=new URL('context/index.json',game),index=JSON.parse(readFileSync(p,'utf8'));index.activeRunId=runId;index.updatedAt=time;index.productionState='remaining_six_candidates_user_authorized';
+Object.assign(index.sources,{eightIslandsR2Input:`games/nostos/runs/${runId}/input-snapshot.json`,eightIslandsR2Spec:'games/nostos/docs/EIGHT_ISLANDS_R2_SPEC.md',activeRun:`games/nostos/runs/${runId}/run.json`,iterationLedger:`games/nostos/runs/${runId}/iterations.json`});
+index.readOrder.push(index.sources.eightIslandsR2Input,index.sources.eightIslandsR2Spec,index.sources.iterationLedger);write(p,index);
+console.log('R2 input and index recorded.');

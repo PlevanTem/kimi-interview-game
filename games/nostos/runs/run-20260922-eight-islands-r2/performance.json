@@ -1,0 +1,139 @@
+{
+  "scope": "Desktop short baseline: all eight islands, 15 seconds each with slowly rotating view. Not physical-phone acceptance or a 15-minute thermal test.",
+  "capturedAt": "2026-09-22T04:25:55.245Z",
+  "runs": [
+    {
+      "id": "prologue",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 7009,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542373926,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 21,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 0,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "lotus",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 8008,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542368702,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 41,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 1,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "cyclops",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 12968,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 41,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 2,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "circe",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 8012,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 54,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 3,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "nekyia",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 8994,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 23,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 4,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "sirens",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 8006,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 46,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 5,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "calypso",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 8998,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 73,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 6,
+        "samples": 2551
+      }
+    },
+    {
+      "id": "ithaca",
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 5060 (0x00002D05) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0",
+      "transitionWallMs": 9998,
+      "transitionNote": "Includes authored arrival and control latency, outside frame sample",
+      "medianFps": 169.49152542389604,
+      "p95Ms": 6,
+      "maxSlowRunMs": 0,
+      "maxCalls": 42,
+      "rawTrace": {
+        "file": "performance-traces.json.gz",
+        "entry": 7,
+        "samples": 2551
+      }
+    }
+  ],
+  "review": {
+    "sections": 9,
+    "images": 54,
+    "loaded": true
+  }
+}

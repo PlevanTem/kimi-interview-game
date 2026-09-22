@@ -1,3 +1,4 @@
+import { LIMINAL_TERRAINS, LIMINAL_WALLS } from '../../world/liminal-environments';
 import { seaRock as boulder } from '../../world/sea-worn';
 import { placeNarrativeAsset } from '../../world/narrative-assets';
 import { TEXT } from '../../content/script';
@@ -180,23 +181,11 @@ export const nekyia: Act = {
     },
   },
 
-  terrain: {
-    seed: 20260501,
-    radius: 38,
-    amplitude: 1.1,
-    frequency: 0.026,
-    dome: 1.4,
-    ridge: 0,
-    detail: 'sand',
-    colorFlat: 0x9fa3a1,
-    colorSteep: 0x7c807e,
-    colorHigh: 0xafb2b0,
-    heightStart: 1.4,
-    heightEnd: 3,
-    basins: [{ x: -2, z: -13, radius: 4.5, depth: 1.1 }],
-  },
+  terrain: LIMINAL_TERRAINS.nekyia,
 
   dress(d) {
+    placeNarrativeAsset(d, 'game.nostos.environment.nekyia_ritual', { x:0, z:0, y:0 }, 2701);
+    for (const [ax,az,bx,bz,t] of LIMINAL_WALLS.nekyia) d.wall(ax,az,bx,bz,t);
     for (let i = 0; i < 6; i++) {
       placeNarrativeAsset(d, 'game.nostos.prop.carved_boundary', {
         x: i === 0 ? 12.6 : 9 + Math.cos(i * 1.1) * 5.5,
@@ -238,7 +227,7 @@ export const nekyia: Act = {
     d.place(amphora(0.42, 1382), 'ash', { x: 0.5, z: -23.4, lift: 0.42, tiltZ: 1.5, yaw: 0.7 });
 
     // ── 沉在雾里的礁石，作为唯一的空间参照 ──
-    d.scatter(30, {
+    d.scatter(12, {
       exclude: nekyia.def.interactables.map(p => ({ x:p.x, z:p.z, radius:4 })),
       innerRadius: 14,
       outerRadius: 36,

@@ -38,6 +38,8 @@ export type PigmentName = keyof typeof PIGMENT;
 
 /** 一个天候预设完整描述一幕的光、天、雾、海。 */
 export interface EnvPreset {
+  wind?: readonly [number, number];
+  wetness?: number;
   /** First-three-scene polychrome candidate; later acts retain their current rendering. */
   sculptedStyle: number;
   /** 太阳方位角（弧度，0 = +X 方向）与仰角（弧度，0 = 地平线） */
@@ -160,6 +162,7 @@ function preset(patch: Partial<EnvPreset>): EnvPreset {
 export const ENV = {
   /** 序章 · 无名之海：黎明前，一切都还没有名字 */
   dawnAtSea: preset({
+    wind: [0.18, -0.08], wetness: 0,
     sculptedStyle: 1,
     sunAzimuth: 1.9,
     sunElevation: -0.04,
@@ -197,6 +200,7 @@ export const ENV = {
 
   /** 第一幕 · 忘食岸：明净晴日，美好得让人忘记归航。保留键名以兼容场景。 */
   honeyDusk: preset({
+    wind: [0.12, 0.04], wetness: 0,
     sculptedStyle: 1,
     sunAzimuth: 0.08,
     sunElevation: 0.62,
@@ -225,6 +229,7 @@ export const ENV = {
 
   /** 第二幕 · 独眼岬：雷暴逆光，洞口是唯一的亮 */
   thunderCape: preset({
+      wind: [0.8, 0.45], wetness: 0.8,
     sculptedStyle: 1,
     sunAzimuth: 2.5,
     sunElevation: 0.2,
@@ -258,6 +263,7 @@ export const ENV = {
 
   /** 第三幕 · 喀耳刻的柱廊：琥珀室内光，时间在这里停了一年 */
   amberColonnade: preset({
+      wind: [0.06, 0.02], wetness: 0,
     sculptedStyle: 1,
     sunAzimuth: -1.35,
     sunElevation: 0.28,
@@ -287,6 +293,7 @@ export const ENV = {
 
   /** 第四幕 · 亡者之岸：没有方向光，影子不属于任何人 */
   paleShore: preset({
+    wind: [0.035, -0.02], wetness: 0.08,
     sculptedStyle: 1,
     sunAzimuth: 0,
     sunElevation: 1.2,
@@ -320,6 +327,7 @@ export const ENV = {
 
   /** 第五幕 · 塞壬水道：铅灰海雾，看不清歌声从哪来 */
   leadenStrait: preset({
+    wind: [0.65, -0.35], wetness: 0.55,
     sculptedStyle: 1,
     sunAzimuth: 2.9,
     sunElevation: 0.35,
@@ -352,6 +360,7 @@ export const ENV = {
 
   /** 第六幕 · 卡吕普索之岛：永昼，过曝，没有夜晚就没有尽头 */
   endlessDay: preset({
+    wind: [0.1, 0.04], wetness: 0,
     sculptedStyle: 1,
     sunAzimuth: -2.2,
     sunElevation: 0.62,
@@ -385,6 +394,7 @@ export const ENV = {
 
   /** 终章 · 伊萨卡：雾正在散，但没有人吹号 */
   ithacaClearing: preset({
+    wind: [0.08, 0.03], wetness: 0.16,
     sculptedStyle: 1,
     sunAzimuth: -0.35,
     sunElevation: 0.22,

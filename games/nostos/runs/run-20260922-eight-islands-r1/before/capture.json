@@ -1,0 +1,247 @@
+{
+  "url": "https://plevantem.github.io/kimi-interview-game/",
+  "viewport": [
+    1280,
+    720
+  ],
+  "states": [
+    {
+      "view": "circe-arrival",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 28,
+        "geometries": 25,
+        "textures": 10
+      },
+      "act": 3,
+      "actId": "circe",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 158148,
+      "frames": 1320,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "circe.cup",
+      "departId": "circe.depart",
+      "interactableIds": [
+        "circe.vine",
+        "circe.mural",
+        "circe.cups",
+        "circe.loom",
+        "circe.roof",
+        "circe.host",
+        "circe.cup",
+        "circe.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0,
+        "z": 21,
+        "yaw": 0,
+        "pitch": 0.02
+      }
+    },
+    {
+      "view": "circe-middle",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 27,
+        "geometries": 25,
+        "textures": 10
+      },
+      "act": 3,
+      "actId": "circe",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 158148,
+      "frames": 1329,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "circe.cup",
+      "departId": "circe.depart",
+      "interactableIds": [
+        "circe.vine",
+        "circe.mural",
+        "circe.cups",
+        "circe.loom",
+        "circe.roof",
+        "circe.host",
+        "circe.cup",
+        "circe.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 2,
+        "z": 3,
+        "yaw": 0.28,
+        "pitch": 0.08
+      }
+    },
+    {
+      "view": "circe-detail",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 26,
+        "geometries": 25,
+        "textures": 10
+      },
+      "act": 3,
+      "actId": "circe",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 158148,
+      "frames": 1337,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "circe.cup",
+      "departId": "circe.depart",
+      "interactableIds": [
+        "circe.vine",
+        "circe.mural",
+        "circe.cups",
+        "circe.loom",
+        "circe.roof",
+        "circe.host",
+        "circe.cup",
+        "circe.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -6,
+        "z": -6,
+        "yaw": 0.68,
+        "pitch": -0.02
+      }
+    },
+    {
+      "view": "cyclops-arrival",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 24,
+        "geometries": 22,
+        "textures": 12
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 2585,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 6,
+        "z": 30,
+        "yaw": 0.13,
+        "pitch": 0.02
+      }
+    },
+    {
+      "view": "cyclops-middle",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 21,
+        "geometries": 22,
+        "textures": 12
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 2593,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0,
+        "z": -12,
+        "yaw": 0,
+        "pitch": 0.05
+      }
+    },
+    {
+      "view": "cyclops-detail",
+      "phase": "roaming",
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 17,
+        "geometries": 22,
+        "textures": 12
+      },
+      "act": 2,
+      "actId": "cyclops",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 46128,
+      "frames": 2602,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "cyclops.stake",
+      "departId": "cyclops.depart",
+      "interactableIds": [
+        "cyclops.pen",
+        "cyclops.bone",
+        "cyclops.shield",
+        "cyclops.wool",
+        "cyclops.char",
+        "cyclops.stake",
+        "cyclops.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 1,
+        "z": -23,
+        "yaw": 0.25,
+        "pitch": -0.1
+      }
+    }
+  ],
+  "errors": []
+}

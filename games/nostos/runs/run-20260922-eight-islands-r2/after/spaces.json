@@ -1,0 +1,377 @@
+{
+  "note": "Supplemental first-person views of new spatial details; not baseline comparison",
+  "states": [
+    {
+      "id": "prologue",
+      "pose": {
+        "x": -12,
+        "z": -1,
+        "yaw": 0.55,
+        "pitch": -0.05
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 5.700000047683716,
+        "renderCpuMs": 0.20000004768371582,
+        "calls": 16,
+        "triangles": 163928,
+        "geometries": 21,
+        "textures": 8,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 16,
+        "geometries": 21,
+        "textures": 8
+      },
+      "act": 0,
+      "actId": "prologue",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 14586,
+      "frames": 1254,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "prologue.oar",
+      "departId": "prologue.depart",
+      "interactableIds": [
+        "prologue.raft",
+        "prologue.plank",
+        "prologue.water",
+        "prologue.star",
+        "prologue.oar",
+        "prologue.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -12,
+        "z": -1,
+        "yaw": 0.55,
+        "pitch": -0.05
+      }
+    },
+    {
+      "id": "lotus",
+      "pose": {
+        "x": 20,
+        "z": -18,
+        "yaw": 0,
+        "pitch": -0.5
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 5.899999976158142,
+        "renderCpuMs": 0.10000002384185791,
+        "calls": 22,
+        "triangles": 181134,
+        "geometries": 49,
+        "textures": 10,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 22,
+        "geometries": 49,
+        "textures": 10
+      },
+      "act": 1,
+      "actId": "lotus",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 137574,
+      "frames": 2673,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "lotus.helmet",
+      "departId": "lotus.depart",
+      "interactableIds": [
+        "lotus.amphora",
+        "lotus.oar",
+        "lotus.footprints",
+        "lotus.hearth",
+        "lotus.fruit",
+        "lotus.crewman",
+        "lotus.helmet",
+        "lotus.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 20,
+        "z": -18,
+        "yaw": 0,
+        "pitch": -0.5
+      }
+    },
+    {
+      "id": "nekyia",
+      "pose": {
+        "x": -1,
+        "z": -21,
+        "yaw": 0.65,
+        "pitch": -0.55
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 6,
+        "renderCpuMs": 0.19999992847442627,
+        "calls": 18,
+        "triangles": 170188,
+        "geometries": 24,
+        "textures": 10,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 18,
+        "geometries": 24,
+        "textures": 10
+      },
+      "act": 4,
+      "actId": "nekyia",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 50550,
+      "frames": 4282,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "nekyia.bowl",
+      "departId": "nekyia.depart",
+      "interactableIds": [
+        "nekyia.sand",
+        "nekyia.marker",
+        "nekyia.pyre",
+        "nekyia.oarMark",
+        "nekyia.pit",
+        "nekyia.shade",
+        "nekyia.bowl",
+        "nekyia.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -1,
+        "z": -21,
+        "yaw": 0.65,
+        "pitch": -0.55
+      }
+    },
+    {
+      "id": "sirens",
+      "pose": {
+        "x": -8,
+        "z": 21,
+        "yaw": 1.55,
+        "pitch": -0.25
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 5.799999952316284,
+        "renderCpuMs": 0.2999999523162842,
+        "calls": 23,
+        "triangles": 164322,
+        "geometries": 50,
+        "textures": 10,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 23,
+        "geometries": 50,
+        "textures": 10
+      },
+      "act": 5,
+      "actId": "sirens",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 31488,
+      "frames": 5726,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "sirens.rope",
+      "departId": "sirens.depart",
+      "interactableIds": [
+        "sirens.wrecks",
+        "sirens.log",
+        "sirens.wax",
+        "sirens.bones",
+        "sirens.mast",
+        "sirens.rope",
+        "sirens.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": -8,
+        "z": 21,
+        "yaw": 1.55,
+        "pitch": -0.25
+      }
+    },
+    {
+      "id": "calypso",
+      "pose": {
+        "x": 13,
+        "z": -15,
+        "yaw": -0.6,
+        "pitch": -0.08
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 5.700000047683716,
+        "renderCpuMs": 0.3999999761581421,
+        "calls": 20,
+        "triangles": 203718,
+        "geometries": 67,
+        "textures": 10,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 20,
+        "geometries": 67,
+        "textures": 10
+      },
+      "act": 6,
+      "actId": "calypso",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 54336,
+      "frames": 7324,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "calypso.axe",
+      "departId": "calypso.depart",
+      "interactableIds": [
+        "calypso.hollow",
+        "calypso.spring",
+        "calypso.stumps",
+        "calypso.loom",
+        "calypso.robe",
+        "calypso.host",
+        "calypso.axe",
+        "calypso.depart"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 13,
+        "z": -15,
+        "yaw": -0.6,
+        "pitch": -0.08
+      }
+    },
+    {
+      "id": "ithaca",
+      "pose": {
+        "x": 0,
+        "z": -19,
+        "yaw": -1.45,
+        "pitch": -0.06
+      },
+      "phase": "roaming",
+      "quality": {
+        "level": "high",
+        "maxPixelRatio": 1.5,
+        "minScale": 0.75,
+        "shadowSize": 2048,
+        "halation": true,
+        "targetFrameMs": 16.666666666666668,
+        "environmentDensity": 1,
+        "frameMs": 5.600000023841858,
+        "renderCpuMs": 0.3999999761581421,
+        "calls": 30,
+        "triangles": 169254,
+        "geometries": 37,
+        "textures": 11,
+        "pixelRatio": 1,
+        "resolutionScale": 1
+      },
+      "fade": 0,
+      "openingTime": 0,
+      "homecomingTime": 0,
+      "renderStats": {
+        "calls": 30,
+        "geometries": 37,
+        "textures": 11
+      },
+      "act": 7,
+      "actId": "ithaca",
+      "triggered": 0,
+      "focus": null,
+      "vertexCount": 53340,
+      "frames": 9097,
+      "artStyle": 1,
+      "artMotion": 1,
+      "visionTime": 0,
+      "memoryId": "ithaca.threshold",
+      "departId": null,
+      "interactableIds": [
+        "ithaca.smoke",
+        "ithaca.olive",
+        "ithaca.dog",
+        "ithaca.cloth",
+        "ithaca.threshold"
+      ],
+      "narrating": false,
+      "player": {
+        "x": 0,
+        "z": -19,
+        "yaw": -1.45,
+        "pitch": -0.06
+      }
+    }
+  ]
+}

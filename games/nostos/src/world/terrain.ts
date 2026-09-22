@@ -29,6 +29,8 @@ export interface Basin {
 }
 
 export interface TerrainParams {
+  /** Authored single-level floors; same function drives meshes, chart and walking. */
+  walkSurfaces?: Array<{minX:number;maxX:number;minZ:number;maxZ:number;height:number;blend:number}>;
   /** Authored heightfield; still shared by render, controller and sea chart. */
   heightProfile?: 'calypso';
   detailStrength?: number;
@@ -115,6 +117,10 @@ export function terrainHeight(params: TerrainParams, x: number, z: number): numb
     const d = Math.hypot(x - basin.x, z - basin.z);
     const w = smoothstep(basin.radius, basin.radius * 0.3, d);
     h -= basin.depth * w;
+  }
+  for (const floor of params.walkSurfaces ?? []) {
+    const distance = Math.hypot(Math.max(floor.minX-x,0,x-floor.maxX),Math.max(floor.minZ-z,0,z-floor.maxZ));
+    h = lerp(h,floor.height,1-smoothstep(0,floor.blend,distance));
   }
   return h;
 }
